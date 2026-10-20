@@ -112,29 +112,87 @@ urx experiment --config haiku_haiku     # also haiku_sonnet, sonnet_opus; writes
 urx compare-experiments                 # experiments/comparison.{json,md}
 ```
 
-## Quick start (offline, no API key)
+## Quick start
 
-The source cache (`cache/`) and the LLM response cache (`llm_cache/`) are committed, so every committed output can be reproduced with no network access and no key.
+You don't need an API key or network access. The fetched sources (`cache/`) and every LLM response (`llm_cache/`) are committed, so the steps below replay the committed outputs exactly and cost nothing.
+
+**Prerequisites:**
+- Python 3.11 or newer. [uv](https://docs.astral.sh/uv/) is recommended; plain `pip` works too.
+- Node 20 or newer, only for the UI.
+- [ripgrep](https://github.com/BurntSushi/ripgrep), only for the `urx scan` demo.
+
+### 1. Install (about 1 minute)
 
 ```bash
 uv venv --python 3.12 && source .venv/bin/activate
 uv pip install -e '.[dev]'
-
-python extract_upgrade_risks.py --project Django --current-version 3.2 --target-version 4.2 --offline
-urx extract --all --offline        # all five
-urx validate outputs/django_3.2_to_4.2/risk_model.json
-urx eval --no-llm                  # deterministic metrics -> eval/results.{json,md}
-pytest -q                          # unit, adversarial, e2e replay, eval gates, server
+# without uv: python3 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev]'
 ```
+
+This installs the `urx` command. `extract_upgrade_risks.py` is the same CLI under the name the assignment uses.
+
+### 2. Reproduce an upgrade (seconds)
+
+```bash
+python extract_upgrade_risks.py --project Django --current-version 3.2 --target-version 4.2 --offline
+```
+
+Expected output: `Django 3.2->4.2: 151 paths, overall medium, errors=0 warnings=7, ~$0.00`.
+
+The results go to `outputs/django_3.2_to_4.2/`. Start with `report.md` for a readable summary; `risk_model.json` is the machine-readable model.
+
+To reproduce all five upgrades:
+
+```bash
+urx extract --all --offline
+```
+
+### 3. Browse the results in the UI
+
+```bash
+(cd ui && npm install && npm run build)
+urx serve                          # open http://127.0.0.1:8765
+```
+
+Pick an upgrade in the sidebar and click any risk path. The drawer shows its conditions, the verbatim evidence (with **show in source**) and the condition graph. If port 8765 is taken, use `urx serve --port 8800`.
+
+### 4. Check quality
+
+```bash
+pytest -q                          # 79 tests: unit, adversarial validator, offline end-to-end, eval gates, API
+urx validate outputs/django_3.2_to_4.2/risk_model.json   # exit code 1 on any validator error
+urx eval --no-llm                  # recompute deterministic metrics -> eval/results.md
+```
+
+### 5. Try the downstream consumer demo
+
+```bash
+urx scan --model outputs/django_3.2_to_4.2/risk_model.json --repo fixtures/demo_app
+```
+
+This runs each condition's search queries against a synthetic Django 3.2 app and lists the risk paths that fire. It only runs inside `fixtures/`.
+
+### 6. Run online (optional, costs money)
+
+```bash
+echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env       # gitignored
+python extract_upgrade_risks.py --project React --current-version 17 --target-version 18
+```
+
+Online runs only fetch documents and call the model for content that isn't already cached. Each run prints its estimated cost; per-upgrade costs are in the Results table above. Model choices are under [Online runs](#online-runs).
+
+### Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| `OfflineCacheMiss` or `CacheMiss` | That upgrade, source or model isn't cached. Drop `--offline`, and set an API key. |
+| The UI shows a blank page or an old layout | Build the UI first (step 3), then hard-refresh with Cmd+Shift+R or Ctrl+Shift+R. |
+| Different numbers after a replay | Check that `URX_CHEAP_MODEL` and `URX_STRONG_MODEL` are unset. Offline replay uses the models recorded in each output. |
+| `urx scan` finds nothing | Install ripgrep (`brew install ripgrep` or `apt install ripgrep`). |
 
 ## UI
 
-```bash
-cd ui && npm install && npm run build && cd ..
-urx serve                          # http://127.0.0.1:8765
-```
-
-A left sidebar links to every upgrade and page.
+The UI is described here in more detail; to start it, see [Quick start](#quick-start), step 3. A left sidebar links to every upgrade and page.
 
 - **Overview**: headline numbers, then one row per upgrade with its risk mix, path count, gold recall, estimated precision and confidence, followed by a legend of the risk levels.
 - **Upgrade**: risk paths with search and level filters; confidence, type, release and flag filters sit under "More filters". The path drawer shows:
@@ -151,7 +209,7 @@ For UI development, run `cd ui && npm run dev`, which proxies `/api` to port 876
 
 ## Online runs
 
-Add `ANTHROPIC_API_KEY=...` to `.env` (gitignored) and drop `--offline`. Network fetches and model calls happen only for content that isn't cached.
+Add `ANTHROPIC_API_KEY=...` to `.env` (gitignored) and drop `--offline`. Network fetches and model calls happen only for content that isn't cached. To pick models or a provider, set these environment variables:
 
 | Variable | Default | Purpose |
 |---|---|---|
@@ -164,7 +222,6 @@ Add `ANTHROPIC_API_KEY=...` to `.env` (gitignored) and drop `--offline`. Network
 ## Other commands
 
 ```bash
-urx scan --model outputs/django_3.2_to_4.2/risk_model.json --repo fixtures/demo_app
 urx report outputs/django_3.2_to_4.2
 urx export-schema                  # schemas/risk_model.schema.json
 ```
