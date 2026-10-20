@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.2.\nSource: Django 4.2 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"77d2e211335e\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Database backend API\", \"text\": \"inspectdb now uses display_size from DatabaseIntrospection.get_table_description() rather than internal_size for CharField.\"}\n{\"item_id\": \"9e90c3f96d8e\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Dropped support for MariaDB 10.3\", \"text\": \"Upstream support for MariaDB 10.3 ends in May 2023. Django 4.2 supports MariaDB 10.4 and higher.\"}\n{\"item_id\": \"855ce00ef424\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Dropped support for MySQL 5.7\", \"text\": \"Upstream support for MySQL 5.7 ends in October 2023. Django 4.2 supports MySQL 8 and higher.\"}\n{\"item_id\": \"28ca5aec2605\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Dropped support for PostgreSQL 11\", \"text\": \"Upstream support for PostgreSQL 11 ends in November 2023. Django 4.2 supports PostgreSQL 12 and higher.\"}\n{\"item_id\": \"c2185fbe6ace\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Setting update_fields in Model.save() may now be required\", \"text\": \"In order to avoid updating unnecessary columns, QuerySet.update_or_create now passes update_fields to the Model.save() calls. As a consequence, any fields modified in the custom save() methods should be added to the update_fields keyword argument before calling super(). See overriding-model-methods for more details.\"}\n{\"item_id\": \"2e973547a6eb\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Dropped support for raw aggregations on MySQL\", \"text\": \"MySQL 8+ allows functional dependencies on GROUP BY columns, so the pre-Django 4.2 workaround of grouping by primary keys of the main table is removed. As a consequence, using RawSQL() aggregations is no longer supported on MySQL as there is no way to determine if such aggregations are needed or valid in the GROUP BY clause. Use aggregation-functions instead.\"}\n{\"item_id\": \"ff96fdf5226e\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The undocumented django.http.multipartparser.parse_header() function is removed. Use django.utils.http.parse_header_parameters() instead.\"}\n{\"item_id\": \"70fe80f363f1\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"{% blocktranslate asvar ... %} result is now marked as safe for (HTML) output purposes.\"}\n{\"item_id\": \"a1c79e7ede2d\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The autofocus HTML attribute in the admin search box is removed as it can be confusing for screen readers.\"}\n{\"item_id\": \"3e5f2743dd78\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The makemigrations --check option no longer creates missing migration files.\"}\n{\"item_id\": \"3305d472c745\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The alias argument for Expression.get_group_by_cols is removed.\"}\n{\"item_id\": \"f89968188884\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of sqlparse is increased from 0.2.2 to 0.3.1.\"}\n{\"item_id\": \"502a3c1cfd1c\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The undocumented negated parameter of the Exists expression is removed.\"}\n{\"item_id\": \"3a622aa666df\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The is_summary argument of the undocumented Query.add_annotation() method is removed.\"}\n{\"item_id\": \"938ed3a69d66\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of SQLite is increased from 3.9.0 to 3.21.0.\"}\n{\"item_id\": \"57bcb2c11de0\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of asgiref is increased from 3.5.2 to 3.6.0.\"}\n{\"item_id\": \"c9c3297d79c8\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"UserCreationForm now rejects usernames that differ only in case. If you need the previous behavior, use BaseUserCreationForm instead.\"}\n{\"item_id\": \"560861b733ba\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of mysqlclient is increased from 1.4.0 to 1.4.3.\"}\n{\"item_id\": \"63b5efb27876\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of argon2-cffi is increased from 19.1.0 to 19.2.0.\"}\n{\"item_id\": \"54398a5d4430\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of Pillow is increased from 6.2.0 to 6.2.1.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "77d2e211335e",
+    "label": "risk",
+    "reason": "inspectdb now uses display_size instead of internal_size for CharField, a behavior change that can alter generated models."
+   },
+   {
+    "item_id": "9e90c3f96d8e",
+    "label": "risk",
+    "reason": "Django 4.2 drops MariaDB 10.3 and requires MariaDB 10.4 or higher, so deployments on 10.3 must upgrade the database."
+   },
+   {
+    "item_id": "855ce00ef424",
+    "label": "risk",
+    "reason": "Django 4.2 drops MySQL 5.7 and requires MySQL 8 or higher, which requires a database upgrade for affected deployments."
+   },
+   {
+    "item_id": "28ca5aec2605",
+    "label": "risk",
+    "reason": "Django 4.2 drops PostgreSQL 11 and requires PostgreSQL 12 or higher, which requires a database upgrade for affected deployments."
+   },
+   {
+    "item_id": "c2185fbe6ace",
+    "label": "risk",
+    "reason": "update_or_create now passes update_fields to save(), so custom save() methods may need to add modified fields to update_fields to avoid lost updates."
+   },
+   {
+    "item_id": "2e973547a6eb",
+    "label": "risk",
+    "reason": "RawSQL() aggregations are no longer supported on MySQL, so code using them must be rewritten with aggregation functions."
+   },
+   {
+    "item_id": "ff96fdf5226e",
+    "label": "risk",
+    "reason": "The undocumented django.http.multipartparser.parse_header() is removed, so code calling it breaks and must switch to parse_header_parameters()."
+   },
+   {
+    "item_id": "70fe80f363f1",
+    "label": "risk",
+    "reason": "The blocktranslate asvar result is now marked safe, a behavior change that can alter HTML output and escaping in templates."
+   },
+   {
+    "item_id": "a1c79e7ede2d",
+    "label": "risk",
+    "reason": "The autofocus attribute is removed from the admin search box, changing rendered HTML that custom templates or tests may depend on."
+   },
+   {
+    "item_id": "3e5f2743dd78",
+    "label": "risk",
+    "reason": "makemigrations --check no longer creates missing migration files, which can change CI scripts that relied on that side effect."
+   },
+   {
+    "item_id": "3305d472c745",
+    "label": "risk",
+    "reason": "The alias argument of Expression.get_group_by_cols is removed, so custom expressions overriding or calling it will break."
+   },
+   {
+    "item_id": "f89968188884",
+    "label": "risk",
+    "reason": "The minimum supported sqlparse version increases to 0.3.1, so environments pinned to 0.2.2 must upgrade the dependency."
+   },
+   {
+    "item_id": "502a3c1cfd1c",
+    "label": "risk",
+    "reason": "The undocumented negated parameter of Exists is removed, so code passing it will raise errors."
+   },
+   {
+    "item_id": "3a622aa666df",
+    "label": "risk",
+    "reason": "The is_summary argument of Query.add_annotation() is removed, so code calling it with that argument will break."
+   },
+   {
+    "item_id": "938ed3a69d66",
+    "label": "risk",
+    "reason": "The minimum supported SQLite version increases to 3.21.0, so older SQLite installations must be upgraded."
+   },
+   {
+    "item_id": "57bcb2c11de0",
+    "label": "risk",
+    "reason": "The minimum supported asgiref version increases to 3.6.0, so environments pinned to older versions must upgrade the dependency."
+   },
+   {
+    "item_id": "c9c3297d79c8",
+    "label": "risk",
+    "reason": "UserCreationForm now rejects usernames differing only in case, a behavior change that affects signup validation unless BaseUserCreationForm is used."
+   },
+   {
+    "item_id": "560861b733ba",
+    "label": "risk",
+    "reason": "The minimum supported mysqlclient version increases to 1.4.3, so older installed versions must be upgraded."
+   },
+   {
+    "item_id": "63b5efb27876",
+    "label": "risk",
+    "reason": "The minimum supported argon2-cffi version increases to 19.2.0, so older installed versions must be upgraded."
+   },
+   {
+    "item_id": "54398a5d4430",
+    "label": "risk",
+    "reason": "The minimum supported Pillow version increases to 6.2.1, so older installed versions must be upgraded."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2822,
+  "output_tokens": 1880,
+  "stop_reason": "end_turn"
+ }
+}

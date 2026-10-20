@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: 1.24.\nSource: Kubernetes v1.24.0 CHANGELOG.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"e4fe7f496db1\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Docker runtime support using dockershim in the kubelet is now completely removed in 1.24. The kubelet used to have a module called dockershim, which implements CRI support for Docker, and it has seen maintenance issues in the Kubernetes community. From 1.24 onwards, please move to a container runtime that is a full-fledged implementation of CRI (v1alpha1 or v1 compliant) as they become available.\"}\n{\"item_id\": \"52aa04913842\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Fixed bug with leads to Node goes Not-ready state when credentials for vCenter stored in a secret and Zones feature is in use. Zone labels setup moved to KCM component, kubelet skips this step during startup in such case. If credentials stored in cloud-provider config file as plaintext current behaviour does not change and no action required. For proper functioning kube-system:vsphere-legacy-cloud-provider should be allowed to update node object if vCenter credentials stored in secret and Zone feature used.\"}\n{\"item_id\": \"f28549ebfff0\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"The LegacyServiceAccountTokenNoAutoGeneration feature gate is beta, and enabled by default. When enabled, Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount. Use the TokenRequest API to acquire service account tokens, or if a non-expiring token is required, create a Secret API object for the token controller to populate with a service account token by following this guide.\"}\n{\"item_id\": \"785aadd8bc87\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"The calculations for Pod topology spread skew now exclude nodes that don't match the node affinity/selector. This may lead to unschedulable pods if you previously had pods matching the spreading selector on those excluded nodes (not matching the node affinity/selector), especially when the topologyKey is not node-level. Revisit the node affinity and/or pod selector in the topology spread constraints to avoid this scenario.\"}\n{\"item_id\": \"c310af8a4f2d\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Remove the deprecated flag --experimental-check-node-capabilities-before-mount. With CSI now GA, there is a better alternative. Remove any use of --experimental-check-node-capabilities-before-mount from your kubelet scripts or manifests.\"}\n{\"item_id\": \"c40458cba532\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"kubeadm.k8s.io/v1beta2 has been deprecated and will be removed in a future release, possibly in 3 releases (one year). You should start using kubeadm.k8s.io/v1beta3 for new clusters. To migrate your old configuration files on disk you can use the kubeadm config migrate command.\"}\n{\"item_id\": \"f62c5e7a89d7\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Kubeadm: default the kubeadm configuration to the containerd socket (Unix: unix:///var/run/containerd/containerd.sock, Windows: npipe:////./pipe/containerd-containerd) instead of the one for Docker. If the Init|JoinConfiguration.nodeRegistration.criSocket field is empty during cluster creation and multiple sockets are found on the host always throw an error and ask the user to specify which one to use by setting the value in the field. Make sure you update any kubeadm configuration files on disk, to not include the dockershim socket unless you are still using kubelet version < 1.24 with kubeadm >= 1.24. Remove the DockerValidor and ServiceCheck for the docker service from kubeadm preflight. Docker is no longer special cased during host validation and ideally this task should be done in the now external cri-dockerd project where the importance of the compatibility matters. Use crictl for all communication with CRI sockets for actions like pulling images and obtaining a list of running containers instead of using the docker CLI in the case of Docker.\"}\n{\"item_id\": \"a4d50b9429a8\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"The feature gate was mentioned as csiMigrationRBD where it should have been CSIMigrationRBD to be in parity with other migration plugins. This release correct the same and keep it as CSIMigrationRBD. users who have configured this feature gate as csiMigrationRBD has to reconfigure the same to CSIMigrationRBD from this release.\"}\n{\"item_id\": \"764ece33a1b1\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"The experimental dynamic log sanitization feature has been deprecated and removed in the 1.24 release. The feature is no longer available for use.\"}\n{\"item_id\": \"563de469c78b\", \"section\": \"v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Kubeadm: apply second stage of the plan to migrate kubeadm away from the usage of the word master in labels and taints. For new clusters, the label node-role.kubernetes.io/master will no longer be added to control plane nodes, only the label node-role.kubernetes.io/control-plane will be added. For clusters that are being upgraded to 1.24 with kubeadm upgrade apply, the command will remove the label node-role.kubernetes.io/master from existing control plane nodes. For new clusters, both the old taint node-role.kubernetes.io/master:NoSchedule and new taint node-role.kubernetes.io/control-plane:NoSchedule will be added to control plane nodes. In release 1.20 (first stage), a release note instructed to preemptively tolerate the new taint. For clusters that are being upgraded to 1.24 with kubeadm upgrade apply, the command will add the new taint node-role.kubernetes.io/control-plane:NoSchedule to existing control plane nodes. Please adapt your infrastructure to these changes. In 1.25 the old taint node-role.kubernetes.io/master:NoSchedule will be removed.\"}\n{\"item_id\": \"83612c7e78ff\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"Deprecated Service.Spec.LoadBalancerIP. This field was under-specified and its meaning varies across implementations. As of Kubernetes v1.24, users are encouraged to use implementation-specific annotations when available. This field may be removed in a future API version.\"}\n{\"item_id\": \"d22bd86fb46b\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"Kube-apiserver: the --master-count flag and --endpoint-reconciler-type=master-count reconciler are deprecated in favor of the lease reconciler\"}\n{\"item_id\": \"73cf47b4ac91\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"Kube-apiserver: the insecure address flags --address, --insecure-bind-address, --port and --insecure-port (inert since 1.20) are removed\"}\n{\"item_id\": \"5f574240b36a\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"Kubeadm: graduated the UnversionedKubeletConfigMap feature gate to Beta and enabled the feature by default. This implies that 1) for new clusters kubeadm will start using the kube-system/kubelet-config naming scheme for the kubelet ConfigMap and RBAC rules, instead of the legacy kubelet-config-x.yy naming. 2) during upgrade, kubeadm will only write the new scheme ConfigMap and RBAC objects. To disable the feature you can pass UnversionedKubeletConfigMap: false in the kubeadm config for new clusters. For upgrade on existing clusters you can also override the behavior by patching the ClusterConfiguration object in kube-system/kubeadm-config. More details in the associated KEP.\"}\n{\"item_id\": \"7182566a3401\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"Remove tolerate-unready-endpoints annotation in Service deprecated from 1.11, use Service.spec.publishNotReadyAddresses instead.\"}\n{\"item_id\": \"640a294a1c7c\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"Remove deprecated feature gates ValidateProxyRedirects and StreamingProxyRedirects\"}\n{\"item_id\": \"a04fec3fe88e\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"Remove insecure serving configuration from cloud-provider package, which is consumed by cloud-controller-managers.\"}\n{\"item_id\": \"0e1c91b07963\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"The --pod-infra-container-image kubelet flag is deprecated and will be removed in future releases\"}\n{\"item_id\": \"922fc5453f07\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"The client.authentication.k8s.io/v1alpha1 ExecCredential has been removed. If you are using a client-go credential plugin that relies on the v1alpha1 API please contact the distributor of your plugin for instructions on how to migrate to the v1 API.\"}\n{\"item_id\": \"4f4ce3924d48\", \"section\": \"v1.24.0 / Changes by Kind / Deprecation\", \"text\": \"The node.k8s.io/v1alpha1 RuntimeClass API is no longer served. Use the node.k8s.io/v1 API version, available since v1.20\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "e4fe7f496db1",
+    "label": "risk",
+    "reason": "Dockershim is completely removed from the kubelet, so clusters relying on Docker as the runtime must migrate to a CRI-compliant runtime."
+   },
+   {
+    "item_id": "52aa04913842",
+    "label": "risk",
+    "reason": "Zone label handling moved to KCM and vSphere clusters using secret-stored credentials must allow kube-system:vsphere-legacy-cloud-provider to update node objects, which is required config work for those users."
+   },
+   {
+    "item_id": "f28549ebfff0",
+    "label": "risk",
+    "reason": "The feature gate is enabled by default, so Secret-based service account tokens are no longer auto-generated and workloads depending on them must switch to TokenRequest or create Secrets manually."
+   },
+   {
+    "item_id": "785aadd8bc87",
+    "label": "risk",
+    "reason": "Topology spread skew now excludes nodes not matching node affinity, which can make previously schedulable pods unschedulable and requires reviewing constraints."
+   },
+   {
+    "item_id": "c310af8a4f2d",
+    "label": "risk",
+    "reason": "The deprecated kubelet flag --experimental-check-node-capabilities-before-mount is removed, so scripts or manifests using it must be updated."
+   },
+   {
+    "item_id": "c40458cba532",
+    "label": "context",
+    "reason": "kubeadm.k8s.io/v1beta2 is deprecated with removal only planned for a future release, so it still works and the item notes a migration command without requiring action now."
+   },
+   {
+    "item_id": "f62c5e7a89d7",
+    "label": "risk",
+    "reason": "kubeadm now defaults to the containerd socket and errors when multiple sockets exist, so configuration files that reference the dockershim socket must be updated."
+   },
+   {
+    "item_id": "a4d50b9429a8",
+    "label": "risk",
+    "reason": "The feature gate name changed from csiMigrationRBD to CSIMigrationRBD, so users who configured the old spelling must reconfigure it."
+   },
+   {
+    "item_id": "764ece33a1b1",
+    "label": "risk",
+    "reason": "The experimental dynamic log sanitization feature is removed and no longer available, so any configuration using it will break."
+   },
+   {
+    "item_id": "563de469c78b",
+    "label": "risk",
+    "reason": "kubeadm changes the control plane node label and taint (adding control-plane taint, removing master label), and the item explicitly says infrastructure must be adapted to these changes."
+   },
+   {
+    "item_id": "83612c7e78ff",
+    "label": "context",
+    "reason": "Service.spec.loadBalancerIP is deprecated but still functions, and the item only encourages annotations with no required action in this release."
+   },
+   {
+    "item_id": "d22bd86fb46b",
+    "label": "context",
+    "reason": "The --master-count flag and master-count reconciler are deprecated in favor of the lease reconciler but still work, so this is a warning only."
+   },
+   {
+    "item_id": "73cf47b4ac91",
+    "label": "risk",
+    "reason": "The insecure address and port flags are removed, so any deployment still passing them to kube-apiserver will fail to start."
+   },
+   {
+    "item_id": "5f574240b36a",
+    "label": "risk",
+    "reason": "The UnversionedKubeletConfigMap feature gate is enabled by default, changing ConfigMap and RBAC naming on upgrade, which can affect existing tooling and requires overrides to keep legacy behavior."
+   },
+   {
+    "item_id": "7182566a3401",
+    "label": "risk",
+    "reason": "The tolerate-unready-endpoints Service annotation is removed, so Services still using it will no longer get that behavior and must switch to publishNotReadyAddresses."
+   },
+   {
+    "item_id": "640a294a1c7c",
+    "label": "risk",
+    "reason": "The deprecated feature gates ValidateProxyRedirects and StreamingProxyRedirects are removed, so configurations referencing them will be rejected."
+   },
+   {
+    "item_id": "a04fec3fe88e",
+    "label": "risk",
+    "reason": "Insecure serving configuration is removed from the cloud-provider package, which affects cloud-controller-managers that rely on it."
+   },
+   {
+    "item_id": "0e1c91b07963",
+    "label": "context",
+    "reason": "The --pod-infra-container-image kubelet flag is deprecated with removal only in future releases, so it still works today and requires no action now."
+   },
+   {
+    "item_id": "922fc5453f07",
+    "label": "risk",
+    "reason": "The client.authentication.k8s.io/v1alpha1 ExecCredential API is removed, so client-go credential plugins using v1alpha1 will stop working and must migrate to v1."
+   },
+   {
+    "item_id": "4f4ce3924d48",
+    "label": "risk",
+    "reason": "The node.k8s.io/v1alpha1 RuntimeClass API is no longer served, so manifests or clients using it must move to node.k8s.io/v1."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4227,
+  "output_tokens": 2304,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,116 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.1. Source: Django 4.1 release notes (official_release_notes). Section: Django 4.1 release notes / What's new in Django 4.1 / Minor features / Models.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.1\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.1\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nQuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided. In older versions, no prefetching was done.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.1 release notes / What's new in Django 4.1 / Minor features / Models: The order_by argument of the Window expression now accepts string references to fields and transforms. The new CONN_HEALTH_CHECKS setting allows enabling health checks for persistent database connections in order to reduce the number of failed requests, e.g. after database server restart. QuerySet.bulk_create now supports updating fields when a row insertion fails uniqueness constraints. This is supported on MariaDB, MySQL, PostgreSQL, and SQLite 3.24+. QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided. In older versions, no prefetching was done. Q objects and querysets can now be combined using ^ as the exclusive or (XOR) operator. XOR is natively supported on MariaDB and MySQL. For databases that do not support XOR, the query will be converted to an equivalent using AND, OR, and NOT. The new Field.non_db_attrs attribute allows customizing attributes of fields that don't affect a column definition. On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are now created as identity columns rather than serial columns with sequences.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.1 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "QuerySet.iterator() previously ignored prefetch_related(); from 4.1 it prefetches when chunk_size is passed, which changes query behavior and memory/query patterns for existing code that combines iterator(chunk_size=...) with prefetch_related().",
+  "paths": [
+   {
+    "path_name": "QuerySet.iterator() with chunk_size now performs prefetching",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "In Django 4.1 and later, QuerySet.iterator() prefetches related objects when chunk_size is provided; in older versions no prefetching was done. Code that calls iterator(chunk_size=...) on querysets carrying prefetch_related() lookups previously had those lookups silently ignored, and will now execute additional prefetch queries per chunk.",
+    "primary_symbol": "QuerySet.iterator",
+    "symbols": [
+     "QuerySet.iterator",
+     "chunk_size",
+     "prefetch_related"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 3.2 to 4.2 crosses release 4.1, which introduced prefetching support in QuerySet.iterator.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.1",
+      "quotes": [
+       "QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided."
+      ],
+      "relevance": "Ties the behavior change to release 4.1, which is crossed when upgrading from 3.2 to 4.2.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application calls QuerySet.iterator() with the chunk_size argument.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "iterator(chunk_size=",
+      "quotes": [
+       "QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided."
+      ],
+      "relevance": "Prefetching is only performed when chunk_size is provided, so only such calls see the new behavior.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\.iterator\\(\\s*(chunk_size\\s*=|[0-9A-Za-z_]+\\s*\\))"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\.iterator\\([^)]*chunk_size"
+       }
+      ]
+     },
+     {
+      "statement": "The queryset being iterated has prefetch_related() lookups applied, which were previously ignored by iterator() and will now be executed.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "prefetch_related",
+      "quotes": [
+       "In older versions, no prefetching was done."
+      ],
+      "relevance": "Existing prefetch lookups on iterated querysets were ignored before and now take effect, changing the queries executed and memory use.",
+      "ambiguities": [
+       "The text does not explicitly mention prefetch_related(); that it is the source of the prefetch lookups is inferred."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "prefetch_related\\(|Prefetch\\("
+       }
+      ]
+     },
+     {
+      "statement": "The application calls iterator() without chunk_size, in which case behavior is not described as changed.",
+      "category": "api_usage",
+      "role": "disqualifying",
+      "operator": "absent",
+      "expected_value": "chunk_size",
+      "quotes": [
+       "as long as the chunk_size argument is provided"
+      ],
+      "relevance": "Without chunk_size, the text does not state that prefetching is performed, so the change does not apply to those calls.",
+      "ambiguities": [
+       "The text does not state what happens when chunk_size is omitted in 4.1+."
+      ],
+      "derived_by": "inference",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Search the codebase for QuerySet.iterator() calls that pass chunk_size and check whether the querysets use prefetch_related().",
+     "Review and test the additional queries and memory use now produced per chunk, and remove unneeded prefetch_related() lookups or adjust chunk_size if necessary."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3836,
+  "output_tokens": 1386,
+  "stop_reason": "end_turn"
+ }
+}

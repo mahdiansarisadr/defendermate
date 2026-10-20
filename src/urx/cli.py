@@ -85,7 +85,7 @@ def scan(model: Path = typer.Option(..., "--model"), repo: Path = typer.Option(.
     from .scan import scan as run_scan
 
     for r in run_scan(model, repo):
-        flag = "FIRES" if r["fires"] else "  -  "
+        flag = ("FIRES?" if r["needs_review"] else "FIRES ") if r["fires"] else "  -   "
         typer.echo(f"{flag} [{r['risk_level']}] {r['path_name']}")
         for c in r["conditions"].values():
             for h in c["hits"][:2]:
@@ -103,7 +103,7 @@ def export_schema() -> None:
 
 
 @app.command()
-def serve(host: str = "127.0.0.1", port: int = 8000) -> None:
+def serve(host: str = "127.0.0.1", port: int = 8765) -> None:
     """Start the API + UI server."""
     import uvicorn
 

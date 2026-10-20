@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.2.\nSource: Django 4.2 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"6aee09889bb3\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.gis\", \"text\": \"The GeoIP2 class now supports .mmdb files downloaded from DB-IP.\"}\n{\"item_id\": \"0b39c2b85aa2\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.gis\", \"text\": \"The OpenLayers template widget no longer includes inline CSS (which also removes the former map_css block) to better comply with a strict Content Security Policy.\"}\n{\"item_id\": \"920728eda979\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.gis\", \"text\": \"OpenLayersWidget is now based on OpenLayers 7.2.2 (previously 4.6.5).\"}\n{\"item_id\": \"98d69ee45f54\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.gis\", \"text\": \"The new isempty lookup and IsEmpty() expression allow filtering empty geometries on PostGIS.\"}\n{\"item_id\": \"fd4c081b396e\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.gis\", \"text\": \"The new FromWKB() and FromWKT() functions allow creating geometries from Well-known binary (WKB) and Well-known text (WKT) representations.\"}\n{\"item_id\": \"6711379f2817\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.postgres\", \"text\": \"The new trigram_strict_word_similar lookup, and the TrigramStrictWordSimilarity() and TrigramStrictWordDistance() expressions allow using trigram strict word similarity.\"}\n{\"item_id\": \"207215457e7f\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.postgres\", \"text\": \"The arrayfield.overlap lookup now supports QuerySet.values() and values_list() as a right-hand side.\"}\n{\"item_id\": \"5e9e90597547\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.sitemaps\", \"text\": \"The new Sitemap.get_languages_for_item method allows customizing the list of languages for which the item is displayed.\"}\n{\"item_id\": \"4af961482975\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.staticfiles\", \"text\": \"ManifestStaticFilesStorage now has experimental support for replacing paths to JavaScript modules in import and export statements with their hashed counterparts. If you want to try it, subclass ManifestStaticFilesStorage and set the support_js_module_import_aggregation attribute to True.\"}\n{\"item_id\": \"1ea3d002d0fe\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.staticfiles\", \"text\": \"The new ManifestStaticFilesStorage.manifest_hash attribute provides a hash over all files in the manifest and changes whenever one of the files changes.\"}\n{\"item_id\": \"2dc75fae1632\", \"section\": \"What's new in Django 4.2 / Minor features / Database backends\", \"text\": \"The new \\\"assume_role\\\" option is now supported in OPTIONS on PostgreSQL to allow specifying the session role.\"}\n{\"item_id\": \"5ad7bf2db53d\", \"section\": \"What's new in Django 4.2 / Minor features / Database backends\", \"text\": \"The new \\\"server_side_binding\\\" option is now supported in OPTIONS on PostgreSQL with psycopg 3.1.8+ to allow using server-side binding cursors.\"}\n{\"item_id\": \"08fc5b888e48\", \"section\": \"What's new in Django 4.2 / Minor features / Error Reporting\", \"text\": \"The debug page now shows exception notes and fine-grained error locations on Python 3.11+.\"}\n{\"item_id\": \"4de2ba0c777a\", \"section\": \"What's new in Django 4.2 / Minor features / Error Reporting\", \"text\": \"Session cookies are now treated as credentials and therefore hidden and replaced with stars () in error reports.\"}\n{\"item_id\": \"955132e077e5\", \"section\": \"What's new in Django 4.2 / Minor features / Forms\", \"text\": \"ModelForm now accepts the new Meta option formfield_callback to customize form fields.\"}\n{\"item_id\": \"d2add36ec520\", \"section\": \"What's new in Django 4.2 / Minor features / Forms\", \"text\": \"modelform_factory now respects the formfield_callback attribute of the form's Meta.\"}\n{\"item_id\": \"90bf20360deb\", \"section\": \"What's new in Django 4.2 / Minor features / Internationalization\", \"text\": \"Added support and translations for the Central Kurdish (Sorani) language.\"}\n{\"item_id\": \"3c7b64e438ca\", \"section\": \"What's new in Django 4.2 / Minor features / Logging\", \"text\": \"The django-db-logger logger now logs transaction management queries (BEGIN, COMMIT, and ROLLBACK) at the DEBUG level.\"}\n{\"item_id\": \"07482177cb5b\", \"section\": \"What's new in Django 4.2 / Minor features / Management Commands\", \"text\": \"makemessages command now supports locales with private sub-tags such as nl_NL-x-informal.\"}\n{\"item_id\": \"795fa8c2e6c0\", \"section\": \"What's new in Django 4.2 / Minor features / Management Commands\", \"text\": \"The new makemigrations --update option merges model changes into the latest migration and optimizes the resulting operations.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "6aee09889bb3",
+    "label": "context",
+    "reason": "The GeoIP2 class gaining support for DB-IP .mmdb files is a purely additive capability that needs no user action."
+   },
+   {
+    "item_id": "0b39c2b85aa2",
+    "label": "risk",
+    "reason": "The OpenLayers widget no longer includes inline CSS and removes the map_css block, which can break templates or customizations that override or rely on that block."
+   },
+   {
+    "item_id": "920728eda979",
+    "label": "risk",
+    "reason": "OpenLayersWidget switching from OpenLayers 4.6.5 to 7.2.2 is a major bundled dependency change that can alter map behavior and break existing customizations."
+   },
+   {
+    "item_id": "98d69ee45f54",
+    "label": "context",
+    "reason": "The new isempty lookup and IsEmpty() expression are additive PostGIS features that do not change existing behavior."
+   },
+   {
+    "item_id": "fd4c081b396e",
+    "label": "context",
+    "reason": "The new FromWKB() and FromWKT() functions are additive and require no change to existing code."
+   },
+   {
+    "item_id": "6711379f2817",
+    "label": "context",
+    "reason": "The new trigram strict word similarity lookup and expressions are additive PostgreSQL features."
+   },
+   {
+    "item_id": "207215457e7f",
+    "label": "context",
+    "reason": "The arrayfield.overlap lookup now accepting QuerySet values as a right-hand side is an additive extension that changes no existing usage."
+   },
+   {
+    "item_id": "5e9e90597547",
+    "label": "context",
+    "reason": "The new Sitemap.get_languages_for_item method is an optional hook that is additive and needs no action."
+   },
+   {
+    "item_id": "4af961482975",
+    "label": "context",
+    "reason": "The experimental JavaScript module path replacement is opt-in via a subclass and attribute, so it requires no action unless users choose to try it."
+   },
+   {
+    "item_id": "1ea3d002d0fe",
+    "label": "context",
+    "reason": "The new manifest_hash attribute is an additive read-only property that changes no existing behavior."
+   },
+   {
+    "item_id": "2dc75fae1632",
+    "label": "context",
+    "reason": "The new assume_role PostgreSQL OPTIONS key is optional and additive."
+   },
+   {
+    "item_id": "5ad7bf2db53d",
+    "label": "context",
+    "reason": "The new server_side_binding PostgreSQL OPTIONS key is optional and additive, applying only when explicitly configured with psycopg 3.1.8+."
+   },
+   {
+    "item_id": "08fc5b888e48",
+    "label": "context",
+    "reason": "The debug page showing exception notes and finer error locations is additive display output on Python 3.11+ and needs no action."
+   },
+   {
+    "item_id": "4de2ba0c777a",
+    "label": "risk",
+    "reason": "Session cookies are now hidden and replaced in error reports, which changes existing error report output and may affect tooling or workflows that parse those reports."
+   },
+   {
+    "item_id": "955132e077e5",
+    "label": "context",
+    "reason": "The new formfield_callback Meta option on ModelForm is optional and additive."
+   },
+   {
+    "item_id": "d2add36ec520",
+    "label": "risk",
+    "reason": "modelform_factory now respecting Meta.formfield_callback changes generated form fields for existing forms that already define that attribute, which may alter behavior."
+   },
+   {
+    "item_id": "90bf20360deb",
+    "label": "context",
+    "reason": "Adding Central Kurdish (Sorani) support and translations is additive and requires no user action."
+   },
+   {
+    "item_id": "3c7b64e438ca",
+    "label": "risk",
+    "reason": "django-db-logger now logs transaction queries at DEBUG level, which can increase log volume and operational overhead for deployments using it."
+   },
+   {
+    "item_id": "07482177cb5b",
+    "label": "context",
+    "reason": "makemessages now supporting locales with private sub-tags is an additive capability that requires no action."
+   },
+   {
+    "item_id": "795fa8c2e6c0",
+    "label": "context",
+    "reason": "The new makemigrations --update option is an optional additive flag that does not change default behavior."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2538,
+  "output_tokens": 1966,
+  "stop_reason": "end_turn"
+ }
+}

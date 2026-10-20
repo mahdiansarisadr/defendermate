@@ -18,9 +18,13 @@ def _rg(pattern: str, repo: Path) -> list[str]:
     if rg is None:
         raise RuntimeError("ripgrep (rg) is required for scan")
     args = pattern.split(" --glob ")
-    cmd = [rg, "-n", "--no-heading", "-e", args[0]] + (["--glob", args[1]] if len(args) > 1 else []) + [str(repo)]
+    globs = [g.strip().strip("'\"") for g in args[1:]]
+    globs.append("!*.md")
+    cmd = [rg, "-n", "--no-heading", "-e", args[0].strip()] + [x for g in globs for x in ("--glob", g)] + [str(repo)]
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-    return [l for l in r.stdout.splitlines() if l][:20]
+    if r.returncode == 2 and "regex parse error" in r.stderr:
+        r = subprocess.run([rg, "-P", *cmd[1:]], capture_output=True, text=True, timeout=30)
+    return sorted(set(l for l in r.stdout.splitlines() if l))[:20]
 
 
 def scan(model_path: Path, repo: Path) -> list[dict]:
@@ -47,8 +51,9 @@ def scan(model_path: Path, repo: Path) -> list[dict]:
         req = [v for v in cond_hits.values() if v["role"] == "required"]
         alt = [v for v in cond_hits.values() if v["role"] == "alternative"]
         dis = [v for v in cond_hits.values() if v["role"] == "disqualifying"]
-        fires = (all(v["hits"] for v in req) if req else bool(alt)) and (not alt or any(v["hits"] for v in alt)) \
-            and not any(v["hits"] for v in dis)
+        fires = (all(v["hits"] for v in req) if req else bool(alt)) and (not alt or any(v["hits"] for v in alt))
+        # Disqualifier queries are LLM-written and sometimes inverted, so they never silently suppress a path.
+        disputed = fires and any(v["hits"] for v in dis)
         results.append({"path_id": p.path_id, "path_name": p.path_name, "risk_level": p.risk_level,
-                        "fires": fires, "conditions": cond_hits})
+                        "fires": fires, "needs_review": disputed, "conditions": cond_hits})
     return results

@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_from_3_2_to_4_2_crosses_rele_4aae7f\",\n  \"claim\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where combined expressions stopped guessing output_field.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Combined expressions no longer use the error-prone behavior of guessing output_field when argument types match.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_combined_expression_f7e87e\",\n  \"claim\": \"The application uses combined expressions or database functions (for example F() arithmetic, Func, Value, Coalesce) whose source arguments have mixed types and do not set output_field explicitly.\",\n  \"evidence\": [\n   {\n    \"quote\": \"resolving an output_field for database functions and combined expressions may now crash with mixed types\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_expression_already_sets_output_field_1cc102\",\n  \"claim\": \"The expression already sets output_field explicitly, in which case the crash does not apply.\",\n  \"evidence\": [\n   {\n    \"quote\": \"You will need to explicitly set the output_field in such cases.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_from_3_2_to_4_2_crosses_rele_4aae7f",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_combined_expression_f7e87e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_expression_already_sets_output_field_1cc102",
+    "verdict": "partially_supported",
+    "missing": "The quote says output_field must be set explicitly in such cases, but does not explicitly state that expressions already setting output_field are unaffected by the crash."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1261,
+  "output_tokens": 195,
+  "stop_reason": "end_turn"
+ }
+}

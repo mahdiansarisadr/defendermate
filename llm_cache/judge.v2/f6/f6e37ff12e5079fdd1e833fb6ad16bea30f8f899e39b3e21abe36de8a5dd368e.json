@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_which_intro_851a1f\",\n  \"claim\": \"The upgrade crosses React 18, which introduced the consistent useEffect timing change.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Consistent useEffect timing: React now always synchronously flushes effect functions if the update was triggered during a discrete user input event\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Flush useEffect resulting from discrete events like clicks synchronously.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_useeffect_with_effe_4bc68c\",\n  \"claim\": \"The application uses useEffect with effects that run as a result of updates triggered during discrete user input events (e.g. click, keydown).\",\n  \"evidence\": [\n   {\n    \"quote\": \"React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Flush useEffect resulting from discrete events like clicks synchronously.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_s_effects_depend_on_the_e739c3\",\n  \"claim\": \"The application's effects depend on the previous, inconsistent timing of effect execution after user input events.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously, the behavior wasn't always predictable or consistent.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Flush useEffect resulting from discrete events like clicks synchronously.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_which_intro_851a1f",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_useeffect_with_effe_4bc68c",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_s_effects_depend_on_the_e739c3",
+    "verdict": "partially_supported",
+    "missing": "The quotes say the prior behavior was unpredictable/inconsistent and that effects from discrete events are now flushed synchronously, but they do not say that any application's effects depend on the old timing, nor that such dependence causes breakage. The claim's dependency condition is a hypothesis about the app, and the quotes establish only the change itself."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1493,
+  "output_tokens": 254,
+  "stop_reason": "end_turn"
+ }
+}

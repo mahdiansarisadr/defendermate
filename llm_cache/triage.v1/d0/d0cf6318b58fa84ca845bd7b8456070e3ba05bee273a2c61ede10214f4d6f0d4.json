@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django 4.0 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"c9eae58a14c2\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"Calling FileSystemStorage.delete() with an empty name now raises ValueError instead of AssertionError.\"}\n{\"item_id\": \"e86e42c784c5\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"Calling EmailMultiAlternatives.attach_alternative() or EmailMessage.attach() with an invalid content or mimetype arguments now raise ValueError instead of AssertionError.\"}\n{\"item_id\": \"dfca481dc28f\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"assertHTMLEqual no longer considers a non-boolean attribute without a value equal to an attribute with the same name and value.\"}\n{\"item_id\": \"65c12951201f\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"Tests that fail to load, for example due to syntax errors, now always match when using test --tag.\"}\n{\"item_id\": \"2dbc0204e52f\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The undocumented django.contrib.admin.utils.lookup_needs_distinct() function is renamed to lookup_spawns_duplicates().\"}\n{\"item_id\": \"ea54056947f4\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The undocumented HttpRequest.get_raw_uri() method is removed. The HttpRequest.build_absolute_uri method may be a suitable alternative.\"}\n{\"item_id\": \"6842e786aaa5\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The object argument of undocumented ModelAdmin.log_addition(), log_change(), and log_deletion() methods is renamed to obj.\"}\n{\"item_id\": \"5d164bc7e834\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"RssFeed, Atom1Feed, and their subclasses now emit elements with no content as self-closing tags.\"}\n{\"item_id\": \"4393f3191df4\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"NodeList.render() no longer casts the output of render() method for individual nodes to a string. Node.render() should always return a string as documented.\"}\n{\"item_id\": \"4f922a1b5ac8\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The where_class property of django.db.models.sql.query.Query and the where_class argument to the private get_extra_restriction() method of ForeignObject and ForeignObjectRel are removed. If needed, initialize django.db.models.sql.where.WhereNode instead.\"}\n{\"item_id\": \"e7a06ac1ccaf\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The filter_clause argument of the undocumented Query.add_filter() method is replaced by two positional arguments filter_lhs and filter_rhs.\"}\n{\"item_id\": \"81f26f55fc1a\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"CsrfViewMiddleware now uses request.META['CSRF_COOKIE_NEEDS_UPDATE'] in place of request.META['CSRF_COOKIE_USED'], request.csrf_cookie_needs_reset, and response.csrf_cookie_set to track whether the CSRF cookie should be sent. This is an undocumented, private API.\"}\n{\"item_id\": \"71a49b206e18\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The undocumented TRANSLATOR_COMMENT_MARK constant is moved from django.template.base to django.utils.translation.template.\"}\n{\"item_id\": \"e31bd221b8de\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The real_apps argument of the undocumented django.db.migrations.state.ProjectState.init() method must now be a set if provided.\"}\n{\"item_id\": \"82c4486609ce\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"RadioSelect and CheckboxSelectMultiple widgets are now rendered in <div> tags so they are announced more concisely by screen readers. If you need the previous behavior, override the widget template with the appropriate template from Django 3.2.\"}\n{\"item_id\": \"553c4c461adf\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The floatformat template filter no longer depends on the USE_L10N setting and always returns localized output. Use the u suffix to disable localization.\"}\n{\"item_id\": \"40019b0edc1b\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The default value of the USE_L10N setting is changed to True. See the Localization section above for more details.\"}\n{\"item_id\": \"e127992a6fb1\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"As part of the move to zoneinfo, django.utils.timezone.utc is changed to alias datetime.timezone.utc.\"}\n{\"item_id\": \"55be8262b4b7\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The minimum supported version of asgiref is increased from 3.3.2 to 3.4.1.\"}\n{\"item_id\": \"fbfb8889913f\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"As part of the move to zoneinfo, use of pytz time zones is deprecated. Accordingly, the is_dst arguments to the following are also deprecated:\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "c9eae58a14c2",
+    "label": "risk",
+    "reason": "Code that catches AssertionError from FileSystemStorage.delete() with an empty name will no longer catch the new ValueError."
+   },
+   {
+    "item_id": "e86e42c784c5",
+    "label": "risk",
+    "reason": "Code catching AssertionError from attach_alternative() or attach() with invalid arguments will break because these now raise ValueError."
+   },
+   {
+    "item_id": "dfca481dc28f",
+    "label": "risk",
+    "reason": "assertHTMLEqual now treats attributes differently, so existing test assertions may start failing."
+   },
+   {
+    "item_id": "65c12951201f",
+    "label": "risk",
+    "reason": "Tests that fail to load now always match test --tag, which changes which tests run and can alter test suite results."
+   },
+   {
+    "item_id": "2dbc0204e52f",
+    "label": "risk",
+    "reason": "lookup_needs_distinct() is renamed to lookup_spawns_duplicates(), so code calling the old name will fail."
+   },
+   {
+    "item_id": "ea54056947f4",
+    "label": "risk",
+    "reason": "HttpRequest.get_raw_uri() is removed, so any code calling it will raise AttributeError and must switch to build_absolute_uri()."
+   },
+   {
+    "item_id": "6842e786aaa5",
+    "label": "risk",
+    "reason": "The object argument of ModelAdmin.log_addition/log_change/log_deletion is renamed to obj, which breaks keyword callers."
+   },
+   {
+    "item_id": "5d164bc7e834",
+    "label": "risk",
+    "reason": "Feed elements with no content now render as self-closing tags, which changes feed output that consumers may parse."
+   },
+   {
+    "item_id": "4393f3191df4",
+    "label": "risk",
+    "reason": "NodeList.render() no longer converts node output to a string, so custom nodes returning non-string values can break."
+   },
+   {
+    "item_id": "4f922a1b5ac8",
+    "label": "risk",
+    "reason": "where_class and the where_class argument are removed, so code relying on them will fail and must construct WhereNode directly."
+   },
+   {
+    "item_id": "e7a06ac1ccaf",
+    "label": "risk",
+    "reason": "The filter_clause argument of Query.add_filter() is replaced by filter_lhs and filter_rhs, which breaks existing callers."
+   },
+   {
+    "item_id": "81f26f55fc1a",
+    "label": "risk",
+    "reason": "CsrfViewMiddleware switches to a new request.META key, which breaks custom code that depends on the old CSRF tracking attributes."
+   },
+   {
+    "item_id": "71a49b206e18",
+    "label": "risk",
+    "reason": "TRANSLATOR_COMMENT_MARK moves to a new module, so imports from django.template.base will fail."
+   },
+   {
+    "item_id": "e31bd221b8de",
+    "label": "risk",
+    "reason": "The real_apps argument of ProjectState.__init__() must now be a set, so callers passing other types will break."
+   },
+   {
+    "item_id": "82c4486609ce",
+    "label": "risk",
+    "reason": "RadioSelect and CheckboxSelectMultiple markup changes to div tags, which can break custom CSS, JavaScript, or tests and may require template overrides."
+   },
+   {
+    "item_id": "553c4c461adf",
+    "label": "risk",
+    "reason": "floatformat always returns localized output regardless of USE_L10N, which changes rendered output for existing templates."
+   },
+   {
+    "item_id": "40019b0edc1b",
+    "label": "risk",
+    "reason": "The USE_L10N default changes to True, which changes formatting across projects that did not set it explicitly."
+   },
+   {
+    "item_id": "e127992a6fb1",
+    "label": "risk",
+    "reason": "django.utils.timezone.utc now aliases datetime.timezone.utc, which can change behavior for code relying on the old implementation."
+   },
+   {
+    "item_id": "55be8262b4b7",
+    "label": "risk",
+    "reason": "The minimum asgiref version rises from 3.3.2 to 3.4.1, which requires dependency upgrades in some environments."
+   },
+   {
+    "item_id": "fbfb8889913f",
+    "label": "context",
+    "reason": "Use of pytz time zones is deprecated but still works, so this produces only warnings at this release."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2945,
+  "output_tokens": 2008,
+  "stop_reason": "end_turn"
+ }
+}

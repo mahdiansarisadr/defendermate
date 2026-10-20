@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_release_4_0_w_c0fb86\",\n  \"claim\": \"The upgrade crosses Django release 4.0, where the length argument becomes required (3.2 -> 4.2).\",\n  \"evidence\": [\n   {\n    \"quote\": \"The length argument for django.utils.crypto.get_random_string() will be required.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"The length argument for django.utils.crypto.get_random_string() is required.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_django_utils_crypt_fd32a2\",\n  \"claim\": \"The application calls django.utils.crypto.get_random_string() without passing the length argument.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The length argument for django.utils.crypto.get_random_string() will be required.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"The length argument for django.utils.crypto.get_random_string() is required.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"all_get_random_string_calls_already_pass_8c2c72\",\n  \"claim\": \"All get_random_string() calls already pass an explicit length, so the risk does not apply.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The length argument for django.utils.crypto.get_random_string() will be required.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_release_4_0_w_c0fb86",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish that the length argument becomes required in Django 4.0, but say nothing about the specific upgrade path 3.2 -> 4.2 or that it crosses 4.0."
+   },
+   {
+    "condition_id": "the_application_calls_django_utils_crypt_fd32a2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "all_get_random_string_calls_already_pass_8c2c72",
+    "verdict": "not_supported",
+    "missing": "The quote only says length will be required; it does not establish that all calls already pass an explicit length or that the risk does not apply. The claim is a hypothesis about the application, and the quote only implies the risk would not apply for such apps, not that it is the case."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1357,
+  "output_tokens": 288,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,117 @@
+{
+ "prompt_id": "extract.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: React CHANGELOG (18.0.0 section) (official_changelog). Section: Notable Changes / React.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nNo suppression of console logs: When you use Strict Mode, React renders each component twice to help you find unexpected side effects. In React 17, we've suppressed console logs for one of the two renders to make the logs easier to read. In response to community feedback about this being confusing, we've removed the suppression. Instead, if you have React DevTools installed, the second log's renders will be displayed in grey, and there will be an option (off by default) to suppress them completely.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nNotable Changes / React: Components can now render undefined: React no longer throws if you return undefined from a component. This makes the allowed component return values consistent with values that are allowed in the middle of a component tree. We suggest to use a linter to prevent mistakes like forgetting a return statement before JSX. In tests, act warnings are now opt-in: If you're running end-to-end tests, the act warnings are unnecessary. We've introduced an opt-in mechanism so you can enable them only for unit tests where they are useful and beneficial. No warning about setState on unmounted components: Previously, React warned about memory leaks when you call setState on an unmounted component. This warning was added for subscriptions, but people primarily run into it in scenarios where setting state is fine, and workarounds make the code worse. We've removed this warning. No suppression of console logs: When you use Strict Mode, React renders each component twice to help you find unexpected side effects. In React 17, we've suppressed console logs for one of the two renders to make the logs easier to read. In response to community feedback about this being confusing, we've removed the suppression. Instead, if you have React DevTools installed, the second log's renders will be displayed in grey, and there will be an option (off by default) to suppress them completely. Improved memory usage: React now cleans up more internal fields on unmount, making the impact from unfixed memory leaks that may exist in your application code less severe.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. Use derived_by \"inference\" for any condition not directly stated.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "In Strict Mode, React 18 no longer suppresses console logs from the second render, so apps and tests that rely on single or de-duplicated logs from Strict Mode renders will see changed output.",
+  "paths": [
+   {
+    "path_name": "Strict Mode double-render console logs no longer suppressed",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "primary_symbol": "Strict Mode",
+    "symbols": [
+     "Strict Mode",
+     "console logs",
+     "React DevTools"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, which removes the console log suppression that React 17 applied during Strict Mode double renders.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "18",
+      "quotes": [
+       "In React 17, we've suppressed console logs for one of the two renders to make the logs easier to read."
+      ],
+      "relevance": "Ties the behavior change to the 17 -> 18 upgrade: suppression existed in 17 and was removed.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application renders components inside React Strict Mode and logs to the console during render.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "StrictMode",
+      "quotes": [
+       "When you use Strict Mode, React renders each component twice to help you find unexpected side effects."
+      ],
+      "relevance": "The double render, and therefore the duplicate logs, only occurs under Strict Mode.",
+      "ambiguities": [
+       "The text does not name the API (e.g. React.StrictMode); this is inferred from 'Strict Mode'.",
+       "Whether components actually call console methods during render is not stated."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "StrictMode|<React\\.StrictMode"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "console\\.(log|warn|error|info|debug)\\("
+       }
+      ]
+     },
+     {
+      "statement": "Tests or log-based tooling that assert on or parse console output from Strict Mode renders may see duplicate log entries after the upgrade.",
+      "category": "test_coverage",
+      "role": "uncertain",
+      "operator": "unknown",
+      "expected_value": "console output assertions",
+      "quotes": [
+       "we've removed the suppression"
+      ],
+      "relevance": "If anything depends on the suppressed second-render logs, output will now differ.",
+      "ambiguities": [
+       "The text does not say tests or tooling are affected; this is an inference from the behavior change."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "spyOn\\(console|jest\\.spyOn\\(console|console\\.(log|warn|error)\\s*=\\s*"
+       }
+      ]
+     },
+     {
+      "statement": "React DevTools is installed, so the second render's logs display in grey and an option (off by default) can suppress them completely.",
+      "category": "configuration",
+      "role": "optional",
+      "operator": "present",
+      "expected_value": "React DevTools",
+      "quotes": [
+       "if you have React DevTools installed, the second log's renders will be displayed in grey, and there will be an option (off by default) to suppress them completely"
+      ],
+      "relevance": "Mitigates the noise for developers who use DevTools.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Expect duplicate console logs from Strict Mode double renders after upgrading to React 18.",
+     "Install React DevTools to see the second render's logs in grey, or enable its option to suppress them completely (off by default).",
+     "Review any tests or tooling that assert on or parse console output from Strict Mode renders."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3751,
+  "output_tokens": 1227,
+  "stop_reason": "end_turn"
+ }
+}

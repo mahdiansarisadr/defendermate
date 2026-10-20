@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_from_3_2_to_4_2_crosses_rele_f8f3ba\",\n  \"claim\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where get_response became required for MiddlewareMixin.__init__().\",\n  \"evidence\": [\n   {\n    \"quote\": \"The get_response argument for django.utils.deprecation.MiddlewareMixin.init() will be required and won't accept None.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_django_utils_deprec_99f6a0\",\n  \"claim\": \"The application uses django.utils.deprecation.MiddlewareMixin, for example by subclassing it for custom middleware.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The get_response argument for django.utils.deprecation.MiddlewareMixin.init() will be required and won't accept None.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_instantiates_a_middlewar_91fd5d\",\n  \"claim\": \"The application instantiates a MiddlewareMixin subclass directly, or calls its __init__, without get_response or with get_response=None.\",\n  \"evidence\": [\n   {\n    \"quote\": \"will be required and won't accept None.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_from_3_2_to_4_2_crosses_rele_f8f3ba",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_django_utils_deprec_99f6a0",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_instantiates_a_middlewar_91fd5d",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention MiddlewareMixin subclasses or direct instantiation, or that calling __init__ without get_response is a problem; it only says get_response will be required and won't accept None for MiddlewareMixin.__init__(). The quote does not state the consequence either (e.g., an error)."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1280,
+  "output_tokens": 251,
+  "stop_reason": "end_turn"
+ }
+}

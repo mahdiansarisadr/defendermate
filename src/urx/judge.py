@@ -21,15 +21,23 @@ class _Batch(BaseModel):
     verdicts: list[_Verdict]
 
 
+JUDGE_PROMPT = "judge.v2"
+
+
 def judge_claims(client: LLMClient, claims: list[dict], stage: str = "judge") -> dict[str, _Verdict]:
-    res = client.complete("judge.v1", {"claims_json": claims}, _Batch, model_tier="strong", max_tokens=4000, stage=stage)
+    res = client.complete(JUDGE_PROMPT, {"claims_json": claims}, _Batch, model_tier="strong", max_tokens=4000,
+                          stage=stage)
     return {v.condition_id: v for v in res.verdicts}
 
 
-def judge_paths(client: LLMClient, paths: list[RiskPath], log=lambda *a, **k: None) -> dict:
+def judge_paths(client: LLMClient, paths: list[RiskPath], titles: dict[str, str] | None = None,
+                log=lambda *a, **k: None) -> dict:
+    titles = titles or {}
+
     def work(p: RiskPath):
         claims = [{"condition_id": c.condition_id, "claim": c.statement,
-                   "quotes": [e.quote for e in c.evidence if e.quote]}
+                   "evidence": [{"quote": e.quote, "source": titles.get(e.source_id, e.source_id),
+                                 "release_of_change": p.introduced_in} for e in c.evidence if e.quote]}
                   for c in p.conditions if c.derived_by != "rule" and any(e.quote for e in c.evidence)]
         if not claims:
             return p, {}

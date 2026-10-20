@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_0_where_zon_1fdddb\",\n  \"claim\": \"The upgrade crosses Django 4.0, where zoneinfo became the default timezone implementation.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Django 4.0 makes zoneinfo the default implementation.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_the_pytz_normalize_cd49a2\",\n  \"claim\": \"The application uses the pytz normalize() and localize() APIs.\",\n  \"evidence\": [\n   {\n    \"quote\": \"using the pytz normalize() and localize() APIs\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_works_with_non_utc_time_e35f7e\",\n  \"claim\": \"The application works with non-UTC time zones.\",\n  \"evidence\": [\n   {\n    \"quote\": \"if you are working with non-UTC time zones\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_time_zone_setting_is_possibly_involv_0ca498\",\n  \"claim\": \"The TIME_ZONE setting is possibly involved in the pytz usage.\",\n  \"evidence\": [\n   {\n    \"quote\": \"possibly with the TIME_ZONE setting\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"use_deprecated_pytz_is_enabled_which_all_57a7d6\",\n  \"claim\": \"USE_DEPRECATED_PYTZ is enabled, which allows continued use of pytz during 4.x and so defers the audit.\",\n  \"evidence\": [\n   {\n    \"quote\": \"the transitional USE_DEPRECATED_PYTZ setting allows continued use of pytz during the 4.x release cycle\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_0_where_zon_1fdddb",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_the_pytz_normalize_cd49a2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_works_with_non_utc_time_e35f7e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_time_zone_setting_is_possibly_involv_0ca498",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "use_deprecated_pytz_is_enabled_which_all_57a7d6",
+    "verdict": "partially_supported",
+    "missing": "The quote only says the setting allows continued pytz use during 4.x; it does not state that the setting is enabled in the application or that this defers the audit."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1513,
+  "output_tokens": 289,
+  "stop_reason": "end_turn"
+ }
+}

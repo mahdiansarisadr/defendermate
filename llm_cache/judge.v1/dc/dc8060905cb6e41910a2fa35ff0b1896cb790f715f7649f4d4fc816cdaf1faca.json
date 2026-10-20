@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_where_ren_fcee13\",\n  \"claim\": \"The upgrade crosses release 18, where renderToString stops erroring when suspending on the server.\",\n  \"quotes\": [\n   \"Will no longer error when suspending on the server.\"\n  ]\n },\n {\n  \"condition_id\": \"application_server_code_calls_rendertost_fdf0eb\",\n  \"claim\": \"Application server code calls renderToString to render a tree.\",\n  \"quotes\": [\n   \"renderToString: Will no longer error when suspending on the server.\"\n  ]\n },\n {\n  \"condition_id\": \"the_rendered_tree_contains_a_component_t_6bdc75\",\n  \"claim\": \"The rendered tree contains a component that suspends on the server, e.g. within a <Suspense> boundary (lazy components or data fetching with Suspense).\",\n  \"quotes\": [\n   \"emit the fallback HTML for the closest <Suspense> boundary\"\n  ]\n },\n {\n  \"condition_id\": \"code_or_tests_that_relied_on_rendertostr_c37dad\",\n  \"claim\": \"Code or tests that relied on renderToString throwing an error when suspending, or that expect server HTML to contain the final content, may behave differently.\",\n  \"quotes\": [\n   \"Will no longer error when suspending on the server.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_where_ren_fcee13",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention release 18 or that the upgrade crosses it; it only states that renderToString will no longer error when suspending on the server."
+   },
+   {
+    "condition_id": "application_server_code_calls_rendertost_fdf0eb",
+    "verdict": "partially_supported",
+    "missing": "The quote only says renderToString's behavior changes; it does not say that application server code calls renderToString to render a tree. Per the judge's rules, being affected by the change counts, so the core is supported."
+   },
+   {
+    "condition_id": "the_rendered_tree_contains_a_component_t_6bdc75",
+    "verdict": "partially_supported",
+    "missing": "The quote mentions fallback HTML for the closest <Suspense> boundary, but does not mention lazy components or data fetching with Suspense as the cause of suspending."
+   },
+   {
+    "condition_id": "code_or_tests_that_relied_on_rendertostr_c37dad",
+    "verdict": "partially_supported",
+    "missing": "The quote states renderToString no longer errors when suspending, but it does not state that code or tests relying on the error may behave differently, nor that server HTML may be expected to contain final content."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1079,
+  "output_tokens": 418,
+  "stop_reason": "end_turn"
+ }
+}

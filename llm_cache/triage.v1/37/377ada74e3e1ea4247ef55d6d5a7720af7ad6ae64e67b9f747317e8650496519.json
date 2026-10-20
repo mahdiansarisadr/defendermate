@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.1.\nSource: Django 4.1 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"8b920a5ff43e\", \"section\": \"What's new in Django 4.1 / Minor features / Tests\", \"text\": \"SimpleTestCase.assertFormError and assertFormsetError() now support passing a form/formset object directly.\"}\n{\"item_id\": \"6325fba1cf29\", \"section\": \"What's new in Django 4.1 / Minor features / URLs\", \"text\": \"The new ResolverMatch.captured_kwargs attribute stores the captured keyword arguments, as parsed from the URL.\"}\n{\"item_id\": \"c3983fcab816\", \"section\": \"What's new in Django 4.1 / Minor features / URLs\", \"text\": \"The new ResolverMatch.extra_kwargs attribute stores the additional keyword arguments passed to the view function.\"}\n{\"item_id\": \"92b967f0fc3d\", \"section\": \"What's new in Django 4.1 / Minor features / Utilities\", \"text\": \"SimpleLazyObject now supports addition operations.\"}\n{\"item_id\": \"fafa5b765175\", \"section\": \"What's new in Django 4.1 / Minor features / Utilities\", \"text\": \"mark_safe now preserves lazy objects.\"}\n{\"item_id\": \"371da9073fdc\", \"section\": \"What's new in Django 4.1 / Minor features / Validators\", \"text\": \"The new StepValueValidator checks if a value is an integral multiple of a given step size. This new validator is used for the new step_size argument added to form fields representing numeric values.\"}\n{\"item_id\": \"8eccff0ef88c\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Database backend API\", \"text\": \"This section describes changes that may be needed in third-party database backends.\"}\n{\"item_id\": \"846d5e562939\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Database backend API\", \"text\": \"BaseDatabaseFeatures.has_case_insensitive_like is changed from True to False to reflect the behavior of most databases.\"}\n{\"item_id\": \"b65a067970aa\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Database backend API\", \"text\": \"DatabaseIntrospection.get_key_columns() is removed. Use DatabaseIntrospection.get_relations() instead.\"}\n{\"item_id\": \"047e1b0d8cd8\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Database backend API\", \"text\": \"DatabaseOperations.ignore_conflicts_suffix_sql() method is replaced by DatabaseOperations.on_conflict_suffix_sql() that accepts the fields, on_conflict, update_fields, and unique_fields arguments.\"}\n{\"item_id\": \"ee91e7e90a56\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Database backend API\", \"text\": \"The ignore_conflicts argument of the DatabaseOperations.insert_statement() method is replaced by on_conflict that accepts django.db.models.constants.OnConflict.\"}\n{\"item_id\": \"18301b35030f\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Database backend API\", \"text\": \"DatabaseOperations._convert_field_to_tz() is replaced by DatabaseOperations._convert_sql_to_tz() that accepts the sql, params, and tzname arguments.\"}\n{\"item_id\": \"17321a80ff25\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Database backend API\", \"text\": \"Several date and time methods on DatabaseOperations now take sql and params arguments instead of field_name and return 2-tuple containing some SQL and the parameters to be interpolated into that SQL. The changed methods have these new signatures: * DatabaseOperations.date_extract_sql(lookup_type, sql, params) * DatabaseOperations.datetime_extract_sql(lookup_type, sql, params, tzname) * DatabaseOperations.time_extract_sql(lookup_type, sql, params) * DatabaseOperations.date_trunc_sql(lookup_type, sql, params, tzname=None) * DatabaseOperations.datetime_trunc_sql(self, lookup_type, sql, params, tzname) * DatabaseOperations.time_trunc_sql(lookup_type, sql, params, tzname=None) * DatabaseOperations.datetime_cast_date_sql(sql, params, tzname) * DatabaseOperations.datetime_cast_time_sql(sql, params, tzname)\"}\n{\"item_id\": \"2b568d0a78c8\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / django.contrib.gis\", \"text\": \"Support for GDAL 2.1 is removed.\"}\n{\"item_id\": \"23c41fd6405a\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / django.contrib.gis\", \"text\": \"Support for PostGIS 2.4 is removed.\"}\n{\"item_id\": \"6768274eb3ec\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Dropped support for PostgreSQL 10\", \"text\": \"Upstream support for PostgreSQL 10 ends in November 2022. Django 4.1 supports PostgreSQL 11 and higher.\"}\n{\"item_id\": \"f32d11f938a5\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Dropped support for MariaDB 10.2\", \"text\": \"Upstream support for MariaDB 10.2 ends in May 2022. Django 4.1 supports MariaDB 10.3 and higher.\"}\n{\"item_id\": \"0847d3b86f59\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Admin changelist searches spanning multi-valued relationships changes\", \"text\": \"Admin changelist searches using multiple search terms are now applied in a single call to filter(), rather than in sequential filter() calls. For multi-valued relationships, this means that rows from the related model must match all terms rather than any term. For example, if search_fields is set to ['childname', 'childage'], and a user searches for 'Jamal 17', parent rows will be returned only if there is a relationship to some 17-year-old child named Jamal, rather than also returning parents who merely have a younger or older child named Jamal in addition to some other 17-year-old. See the spanning-multi-valued-relationships topic for more discussion of this difference. In Django 4.0 and earlier, get_search_results followed the second example query, but this undocumented behavior led to queries with excessive joins.\"}\n{\"item_id\": \"9c528fc65296\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Reverse foreign key changes for unsaved model instances\", \"text\": \"In order to unify the behavior with many-to-many relations for unsaved model instances, a reverse foreign key now raises ValueError when calling related managers for unsaved objects.\"}\n{\"item_id\": \"1ae1565b067f\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"Related managers for ForeignKey, ManyToManyField, and GenericRelation are now cached on the Model instance to which they belong. *This change was reverted in Django 4.1.2.*\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "8b920a5ff43e",
+    "label": "context",
+    "reason": "Adding support for passing a form or formset object directly is a purely additive option that needs no user action."
+   },
+   {
+    "item_id": "6325fba1cf29",
+    "label": "context",
+    "reason": "The new ResolverMatch.captured_kwargs attribute is a purely additive addition."
+   },
+   {
+    "item_id": "c3983fcab816",
+    "label": "context",
+    "reason": "The new ResolverMatch.extra_kwargs attribute is a purely additive addition."
+   },
+   {
+    "item_id": "92b967f0fc3d",
+    "label": "context",
+    "reason": "Adding addition support to SimpleLazyObject is a purely additive feature."
+   },
+   {
+    "item_id": "fafa5b765175",
+    "label": "risk",
+    "reason": "Changing mark_safe to preserve lazy objects alters existing behavior that could affect rendered output for code relying on the previous handling."
+   },
+   {
+    "item_id": "371da9073fdc",
+    "label": "context",
+    "reason": "The new StepValueValidator and step_size argument are purely additive features."
+   },
+   {
+    "item_id": "8eccff0ef88c",
+    "label": "noise",
+    "reason": "This is only an introductory sentence with no specific change described."
+   },
+   {
+    "item_id": "846d5e562939",
+    "label": "risk",
+    "reason": "Changing the has_case_insensitive_like default from True to False can alter query behavior for third-party backends that depend on it."
+   },
+   {
+    "item_id": "b65a067970aa",
+    "label": "risk",
+    "reason": "DatabaseIntrospection.get_key_columns() is removed, so code calling it will break and must switch to get_relations()."
+   },
+   {
+    "item_id": "047e1b0d8cd8",
+    "label": "risk",
+    "reason": "ignore_conflicts_suffix_sql() is replaced by on_conflict_suffix_sql() with new arguments, so existing backend code must be updated."
+   },
+   {
+    "item_id": "ee91e7e90a56",
+    "label": "risk",
+    "reason": "The ignore_conflicts argument of insert_statement() is replaced by on_conflict, a breaking signature change for backend code."
+   },
+   {
+    "item_id": "18301b35030f",
+    "label": "risk",
+    "reason": "_convert_field_to_tz() is replaced by _convert_sql_to_tz() with different arguments, which breaks code relying on the old method."
+   },
+   {
+    "item_id": "17321a80ff25",
+    "label": "risk",
+    "reason": "Several date and time DatabaseOperations methods change to new signatures with sql and params arguments and 2-tuple returns, breaking existing backend implementations."
+   },
+   {
+    "item_id": "2b568d0a78c8",
+    "label": "risk",
+    "reason": "Support for GDAL 2.1 is removed, so deployments on that version must upgrade GDAL."
+   },
+   {
+    "item_id": "23c41fd6405a",
+    "label": "risk",
+    "reason": "Support for PostGIS 2.4 is removed, so deployments on that version must upgrade PostGIS."
+   },
+   {
+    "item_id": "6768274eb3ec",
+    "label": "risk",
+    "reason": "Django 4.1 drops PostgreSQL 10, so deployments on that version must upgrade the database."
+   },
+   {
+    "item_id": "f32d11f938a5",
+    "label": "risk",
+    "reason": "Django 4.1 drops MariaDB 10.2, so deployments on that version must upgrade the database."
+   },
+   {
+    "item_id": "0847d3b86f59",
+    "label": "risk",
+    "reason": "Multi-term admin searches now require rows to match all terms across multi-valued relationships, changing search results for existing admin users."
+   },
+   {
+    "item_id": "9c528fc65296",
+    "label": "risk",
+    "reason": "Related managers for unsaved instances on reverse foreign keys now raise ValueError, which can break existing code."
+   },
+   {
+    "item_id": "1ae1565b067f",
+    "label": "context",
+    "reason": "The caching change was reverted in Django 4.1.2, so it has no effect on upgrading to the release and needs no user action."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3215,
+  "output_tokens": 1999,
+  "stop_reason": "end_turn"
+ }
+}

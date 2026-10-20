@@ -1,0 +1,111 @@
+{
+ "prompt_id": "extract.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: React CHANGELOG (18.0.0 section) (official_changelog). Section: Breaking Changes / React.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nConsistent useEffect timing: React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event. Previously, the behavior wasn't always predictable or consistent.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nBreaking Changes / React: Automatic batching: This release introduces a performance improvement that changes to the way React batches updates to do more batching automatically. See Automatic batching for fewer renders in React 18 for more info. In the rare case that you need to opt out, wrap the state update in flushSync. Stricter Strict Mode: In the future, React will provide a feature that lets components preserve state between unmounts. To prepare for it, React 18 introduces a new development-only check to Strict Mode. React will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. If this breaks your app, consider removing Strict Mode until you can fix the components to be resilient to remounting with existing state. Consistent useEffect timing: React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event. Previously, the behavior wasn't always predictable or consistent. Stricter hydration errors: Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings. React will no longer attempt to \"patch up\" individual nodes by inserting or deleting a node on the client in an attempt to match the server markup, and will revert to client rendering up to the closest <Suspense> boundary in the tree. This ensures the hydrated tree is consistent and avoids potential privacy and security holes that can be caused by hydration mismatches. Suspense trees are always consistent: If a component suspends before it's fully added to the tree, React will not add it to the tree in an incomplete state or fire its effects. Instead, React will throw away the new tree completely, wait for the asynchronous operation to finish, and then retry rendering again from scratch. React will render the retry attempt concurrently, and without blocking the browser. Layout Effects with Suspense: When a tree re-suspends and reverts to a fallback, React will now clean up layout effects, and then re-create them when the content inside the boundary is shown again. This fixes an issue which prevented component libraries from correctly measuring layout when used with Suspense. New JS Environment Requirements: React now depends on modern browsers features including Promise, Symbol, and Object.assign. If you support older browsers and devices such as Internet Explorer whic\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. Use derived_by \"inference\" for any condition not directly stated.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.\n\nYour previous answer failed schema validation:\n1 validation error for ExtractionResult\npaths.0.description\n  Field required [type=missing, input_value={'path_name': 'Synchronou...avior is as expected.']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\nReturn a corrected answer.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "React 18 changes when effect functions run for updates triggered during discrete user input events. Code that depended on the earlier, inconsistent timing may behave differently.",
+  "paths": [
+   {
+    "path_name": "Synchronous useEffect flushing for updates triggered in discrete input events",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "primary_symbol": "useEffect",
+    "symbols": [
+     "useEffect"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, which makes useEffect timing consistent by flushing effects synchronously for updates triggered during discrete user input events.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "17 -> 18",
+      "quotes": [
+       "React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event"
+      ],
+      "relevance": "Ties the behavior change to the React 18 release being assessed.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application uses useEffect (effect functions) in components.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "useEffect",
+      "quotes": [
+       "React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event"
+      ],
+      "relevance": "The timing change applies to effect functions, so apps without effects are unaffected.",
+      "ambiguities": [
+       "The text does not name specific hooks beyond useEffect in the heading."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\buseEffect\\s*\\("
+       }
+      ]
+     },
+     {
+      "statement": "State updates that trigger effects are made inside discrete user input event handlers such as click or keydown.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "state updates in click/keydown handlers that trigger effects",
+      "quotes": [
+       "if the update was triggered during a discrete user input event such as a click or a keydown event"
+      ],
+      "relevance": "Synchronous flushing applies only when the update is triggered during a discrete user input event.",
+      "ambiguities": [
+       "The text does not state which other events count as discrete user input events."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\b(onClick|onKeyDown|onKeyUp|onKeyPress|onMouseDown|onMouseUp|onInput|onChange|onSubmit)\\b"
+       }
+      ]
+     },
+     {
+      "statement": "The application or its tests rely on the previous effect timing, for example by assuming effects run later after a discrete event.",
+      "category": "test_coverage",
+      "role": "uncertain",
+      "operator": "unknown",
+      "expected_value": "code or tests depending on prior effect timing",
+      "quotes": [
+       "Previously, the behavior wasn't always predictable or consistent."
+      ],
+      "relevance": "Only code sensitive to when effects run is likely to observe a difference; the text does not describe specific breakage.",
+      "ambiguities": [
+       "The text does not state what specific breakage may occur or how apps depend on the old timing."
+      ],
+      "derived_by": "inference",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Review useEffect callbacks that run after state updates triggered in click, keydown or other discrete input handlers, and verify they behave correctly when flushed synchronously.",
+     "Run tests that exercise user input flows and check for timing-dependent assertions on effects."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4086,
+  "output_tokens": 1796,
+  "stop_reason": "end_turn"
+ }
+}

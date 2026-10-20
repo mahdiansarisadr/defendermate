@@ -1,0 +1,422 @@
+{"item_id": "a652ab070c0d", "label": "context", "reason": "This is an introductory paragraph with the release date and a pointer to the upgrade guide; it mentions backwards incompatible changes only generally and does not describe any specific change requiring action.", "swept": true}
+{"item_id": "48d0fa4078a2", "label": "risk", "reason": "Django 4.0 supports only Python 3.8 to 3.10 and 3.2.x is the last series supporting Python 3.6 and 3.7, so upgraders on older runtimes must change their Python version.", "swept": false}
+{"item_id": "083894389294", "label": "risk", "reason": "zoneinfo becomes the default timezone implementation, pytz is deprecated, and non-UTC code using pytz normalize()/localize() needs auditing.", "swept": false}
+{"item_id": "8305149c66b2", "label": "context", "reason": "It points to an optional third-party shim and migration guide, which is a documentation pointer that requires no action at this release.", "swept": false}
+{"item_id": "75ed758cac87", "label": "context", "reason": "The expressions positional argument for UniqueConstraint is a new additive feature with an example.", "swept": false}
+{"item_id": "af66537a17db", "label": "context", "reason": "It states that functional unique constraints are configured through the existing Meta.constraints option, which is an additive capability.", "swept": false}
+{"item_id": "ad0762af0491", "label": "context", "reason": "The scrypt hasher is a new opt-in option that is explicitly not the default, so existing setups are unaffected.", "swept": false}
+{"item_id": "cdaa2a25a4ad", "label": "risk", "reason": "The new Redis cache backend requires redis-py 3.0.0 or higher, a dependency requirement that must be met by users who adopt it.", "swept": false}
+{"item_id": "3299722de626", "label": "risk", "reason": "Forms, formsets, and ErrorList now render through the template engine, which can break projects that override or customize form rendering.", "swept": false}
+{"item_id": "9836e6bd012e", "label": "context", "reason": "A new header block in admin/base.html is an additive template addition that needs no action unless templates are overridden.", "swept": false}
+{"item_id": "3426693daad9", "label": "context", "reason": "ModelAdmin.get_formset_kwargs is a new method that adds customization without changing existing behavior.", "swept": false}
+{"item_id": "229ef95d2e82", "label": "context", "reason": "The navigation sidebar quick filter toolbar is a new additive UI feature.", "swept": false}
+{"item_id": "6096258e1955", "label": "context", "reason": "A new model context variable added to AdminSite.each_context is additive and needs no user action.", "swept": false}
+{"item_id": "15e6d8fdcb7f", "label": "context", "reason": "ModelAdmin.search_help_text is a new optional attribute.", "swept": false}
+{"item_id": "9e18dbd4fd1a", "label": "risk", "reason": "The default verbose_name_plural for inlines changes to verbose_name + 's', which can alter displayed labels in existing admin pages.", "swept": false}
+{"item_id": "4cfcdab2bb00", "label": "risk", "reason": "The bundled jQuery is upgraded from 3.5.1 to 3.6.0, which could affect custom admin JavaScript that depends on jQuery behavior.", "swept": false}
+{"item_id": "890d5e3d5bdc", "label": "noise", "reason": "Allowing ROOT_URLCONF to be a non-string in admindocs is a bug-level fix for esoteric setups that cannot change correct behavior.", "swept": false}
+{"item_id": "153d63a2cca8", "label": "context", "reason": "admindocs now displays cached properties, an additive documentation display improvement.", "swept": false}
+{"item_id": "b52fc1117a62", "label": "risk", "reason": "The default PBKDF2 iteration count increases from 260,000 to 320,000, changing the default hashing behavior and cost for new or updated passwords.", "swept": false}
+{"item_id": "4134bab756ed", "label": "context", "reason": "The new LoginView.next_page attribute and get_default_redirect_url method are additive customization options.", "swept": false}
+{"item_id": "5f228083c6d4", "label": "context", "reason": "Adding support for SpatiaLite 5 is an additive compatibility improvement that needs no user action.", "swept": false}
+{"item_id": "4145706b9cfc", "label": "context", "reason": "Allowing GDALRaster to create rasters in any GDAL virtual filesystem is a purely additive capability.", "swept": false}
+{"item_id": "bd70e4b5b3e9", "label": "context", "reason": "GISModelAdmin is a new class and GeoModelAdmin/OSMGeoAdmin are only deprecated, which still works with a warning.", "swept": false}
+{"item_id": "d009435c5616", "label": "context", "reason": "Connecting by PostgreSQL service name is a new optional connection method with no required changes.", "swept": false}
+{"item_id": "ffdccb4536d4", "label": "context", "reason": "AddConstraintNotValid is a new optional operation that existing projects do not need to use.", "swept": false}
+{"item_id": "02ed17f5128d", "label": "context", "reason": "ValidateConstraint is a new operation for validating constraints and requires no action from existing users.", "swept": false}
+{"item_id": "7418aa16aa66", "label": "context", "reason": "ArraySubquery() is a new expression that is purely additive.", "swept": false}
+{"item_id": "16ca3bddc6f4", "label": "context", "reason": "The trigram word similarity lookup and expressions are new additive features.", "swept": false}
+{"item_id": "78fdb5d1263d", "label": "risk", "reason": "ManifestStaticFilesStorage now rewrites source map references in output, which changes the generated static files and could affect deployments that rely on the previous output.", "swept": false}
+{"item_id": "cba58d40bc99", "label": "context", "reason": "The new manifest_storage argument is optional and additive.", "swept": false}
+{"item_id": "da4b970c4af9", "label": "context", "reason": "The new async cache methods are additive and existing synchronous APIs remain available.", "swept": false}
+{"item_id": "a74c86e31c55", "label": "risk", "reason": "CSRF now consults the Origin header and requires changes to CSRF_TRUSTED_ORIGINS, which may need configuration updates for deployments.", "swept": false}
+{"item_id": "746f811b09bd", "label": "context", "reason": "Including the value in ValidationError params is additive and only enables new placeholder usage in custom messages.", "swept": false}
+{"item_id": "7043b47ce6cd", "label": "risk", "reason": "Non-form errors now get an extra nonform CSS class, which changes rendered markup and could affect styling or tests that depend on the output.", "swept": false}
+{"item_id": "2e1cc39a11aa", "label": "context", "reason": "The deletion_widget attribute and get_deletion_widget method are new optional customization hooks.", "swept": false}
+{"item_id": "bb08a0b5e7e7", "label": "context", "reason": "Malay language support and translations are additive with no user action required.", "swept": false}
+{"item_id": "cc7d5129b958", "label": "risk", "reason": "DeleteView now uses FormMixin and handles deletion in form_valid(), so custom delete() logic must be moved, which can break existing views.", "swept": false}
+{"item_id": "5d4fd50e8c14", "label": "context", "reason": "Passing the database alias as extra logging context is additive and does not change existing behavior.", "swept": false}
+{"item_id": "25892f373a84", "label": "context", "reason": "The new --skip-checks option for runserver is optional and additive.", "swept": false}
+{"item_id": "4c02e8d27910", "label": "context", "reason": "Support for a password file in PostgreSQL dbshell is a new optional feature.", "swept": false}
+{"item_id": "25ae3b36692c", "label": "risk", "reason": "The shell command now honors sys.interactivehook and no longer loads readline in isolated mode, a behavior change that can affect existing shell workflows.", "swept": false}
+{"item_id": "05e74d2737d3", "label": "context", "reason": "The new BaseCommand.suppressed_base_arguments attribute is an additive option that requires no user action.", "swept": false}
+{"item_id": "e8b68ed11a24", "label": "context", "reason": "The new startapp and startproject --exclude options are purely additive and need no user action.", "swept": false}
+{"item_id": "286377c00d22", "label": "context", "reason": "QuerySet.contains() is a new method, so it is an additive feature that requires no changes.", "swept": false}
+{"item_id": "cbaf4aea4275", "label": "context", "reason": "The new precision argument to Round() is an additive option and existing usage is unaffected.", "swept": false}
+{"item_id": "e93152775894", "label": "context", "reason": "bulk_create setting primary keys on SQLite 3.35+ is an added capability that needs no user action.", "swept": false}
+{"item_id": "cfeb9f8977e1", "label": "context", "reason": "DurationField multiplication and division on SQLite is a new capability and requires no user action.", "swept": false}
+{"item_id": "55269b9c02d9", "label": "context", "reason": "bulk_update now returning the updated count is an additive return value that does not break existing callers that ignore it.", "swept": false}
+{"item_id": "62313edd8d63", "label": "context", "reason": "The new Expression.empty_result_set_value attribute is an additive option with no required changes.", "swept": false}
+{"item_id": "20e89dd70ee6", "label": "context", "reason": "Allowing skip_locked on MariaDB 10.6+ is a new capability that requires no user action.", "swept": false}
+{"item_id": "f39d0d106b66", "label": "context", "reason": "Using lookup expressions in annotations, aggregations, and filters is a new feature and needs no action.", "swept": false}
+{"item_id": "e4223684fe39", "label": "context", "reason": "The new default argument for aggregates is opt-in and existing aggregate behavior is unchanged.", "swept": false}
+{"item_id": "4e09125280a7", "label": "risk", "reason": "SecurityMiddleware now adds a Cross-Origin-Opener-Policy header by default, which can break cross-origin popup flows unless users set SECURE_CROSS_ORIGIN_OPENER_POLICY to None.", "swept": false}
+{"item_id": "990da5588a95", "label": "context", "reason": "The new stdout argument for migrate signals is an additive option and the existing behavior is preserved.", "swept": false}
+{"item_id": "6cf8e2eb07b6", "label": "context", "reason": "The new u suffix for floatformat is an additive option that changes nothing for existing templates.", "swept": false}
+{"item_id": "061da81523b2", "label": "context", "reason": "The new serialized_aliases argument is an optional addition and existing calls keep working.", "swept": false}
+{"item_id": "225951192d23", "label": "context", "reason": "The new --buffer option for parallel tests is additive and requires no user action.", "swept": false}
+{"item_id": "42db0e47c022", "label": "context", "reason": "The new logger argument to DiscoverRunner is optional and additive.", "swept": false}
+{"item_id": "e3875855751e", "label": "context", "reason": "The new DiscoverRunner.log method is an additive helper and existing runners are unaffected.", "swept": false}
+{"item_id": "ace741c46175", "label": "context", "reason": "The new --shuffle option is opt-in and does not change default test ordering.", "swept": false}
+{"item_id": "01ced70c389c", "label": "context", "reason": "The new --parallel auto value is a purely additive option that requires no user action.", "swept": false}
+{"item_id": "6e15254fdcf0", "label": "context", "reason": "captureOnCommitCallbacks now capturing nested callbacks is an additive testing enhancement needing no action from users.", "swept": false}
+{"item_id": "d96625116e96", "label": "context", "reason": "This is only an introductory pointer stating that the following section concerns third-party database backends, with no change itself.", "swept": false}
+{"item_id": "d82af4e3c847", "label": "risk", "reason": "Custom database backends overriding year_lookup_bounds methods must accept the new iso_year argument, so third-party backends may break.", "swept": false}
+{"item_id": "a344975cc491", "label": "risk", "reason": "Changing the second argument of _unique_sql() and _create_unique_sql() from columns to fields can break custom schema editor subclasses that rely on the old signature.", "swept": false}
+{"item_id": "3b393a0bcf8d", "label": "risk", "reason": "Removal of PostGIS 2.3 support means deployments on that version must upgrade PostGIS before upgrading Django.", "swept": false}
+{"item_id": "9b95ae21c41f", "label": "risk", "reason": "Removal of GDAL 2.0 and GEOS 3.5 support means deployments using those libraries must upgrade them.", "swept": false}
+{"item_id": "954d4be5adb3", "label": "risk", "reason": "Dropping PostgreSQL 9.6 and raising the minimum psycopg2 to 2.8.4 requires infrastructure and dependency upgrades.", "swept": false}
+{"item_id": "180b6dc87be4", "label": "risk", "reason": "Dropping Oracle 12.2 and 18c support means deployments on those database versions must upgrade to 19c before upgrading Django.", "swept": false}
+{"item_id": "4e9aa14e976b", "label": "risk", "reason": "CSRF_TRUSTED_ORIGINS values must now include a scheme and wildcard syntax, so existing settings need changes.", "swept": false}
+{"item_id": "2808b6b0cd8f", "label": "risk", "reason": "Because CSRF now checks the Origin header, sites using dotted cookie domains may need to configure CSRF_TRUSTED_ORIGINS or requests will fail.", "swept": false}
+{"item_id": "fd2373690a83", "label": "risk", "reason": "The SECURE_BROWSER_XSS_FILTER setting is removed and the X-XSS-Protection header is no longer set, changing response headers and breaking code referencing the setting.", "swept": false}
+{"item_id": "619ff7f40b0a", "label": "risk", "reason": "The autodetector change can cause makemigrations to generate new no-op AlterField migrations for ForeignKey and ManyToManyField, requiring review of generated migrations.", "swept": false}
+{"item_id": "be1adc54b6e0", "label": "risk", "reason": "DeleteView now handles POST via FormMixin, so custom deletion logic in delete() must be moved to form_valid() or the view will behave differently.", "swept": false}
+{"item_id": "a560c1d93108", "label": "risk", "reason": "The inadvertent Oracle naming change breaks models with long names and requires renaming existing tables and columns via migration work.", "swept": false}
+{"item_id": "a91f7d73b3fe", "label": "risk", "reason": "Removing support for cx_Oracle below 7.0 requires upgrading the driver for deployments on Oracle.", "swept": false}
+{"item_id": "8bdce39513d6", "label": "risk", "reason": "The default startproject template now uses STATIC_URL 'static/' without a leading slash, a changed default that can affect existing projects and generated templates.", "swept": false}
+{"item_id": "48124bb77b73", "label": "risk", "reason": "Calling the admin index view method directly no longer applies never_cache, a behavior change that can affect caching of custom code paths.", "swept": false}
+{"item_id": "5734d3967f73", "label": "risk", "reason": "Unsupported sliced queryset operations now raise TypeError instead of AssertionError, which breaks code that catches AssertionError.", "swept": false}
+{"item_id": "bfc5a83b99f4", "label": "risk", "reason": "The reorder_suite() function is renamed and its signature and return type changed, breaking any custom test runners that call it.", "swept": false}
+{"item_id": "c9eae58a14c2", "label": "risk", "reason": "Code that catches AssertionError from FileSystemStorage.delete() with an empty name will no longer catch the new ValueError.", "swept": false}
+{"item_id": "e86e42c784c5", "label": "risk", "reason": "Code catching AssertionError from attach_alternative() or attach() with invalid arguments will break because these now raise ValueError.", "swept": false}
+{"item_id": "dfca481dc28f", "label": "risk", "reason": "assertHTMLEqual now treats attributes differently, so existing test assertions may start failing.", "swept": false}
+{"item_id": "65c12951201f", "label": "risk", "reason": "Tests that fail to load now always match test --tag, which changes which tests run and can alter test suite results.", "swept": false}
+{"item_id": "2dbc0204e52f", "label": "risk", "reason": "lookup_needs_distinct() is renamed to lookup_spawns_duplicates(), so code calling the old name will fail.", "swept": false}
+{"item_id": "ea54056947f4", "label": "risk", "reason": "HttpRequest.get_raw_uri() is removed, so any code calling it will raise AttributeError and must switch to build_absolute_uri().", "swept": false}
+{"item_id": "6842e786aaa5", "label": "risk", "reason": "The object argument of ModelAdmin.log_addition/log_change/log_deletion is renamed to obj, which breaks keyword callers.", "swept": false}
+{"item_id": "5d164bc7e834", "label": "risk", "reason": "Feed elements with no content now render as self-closing tags, which changes feed output that consumers may parse.", "swept": false}
+{"item_id": "4393f3191df4", "label": "risk", "reason": "NodeList.render() no longer converts node output to a string, so custom nodes returning non-string values can break.", "swept": false}
+{"item_id": "4f922a1b5ac8", "label": "risk", "reason": "where_class and the where_class argument are removed, so code relying on them will fail and must construct WhereNode directly.", "swept": false}
+{"item_id": "e7a06ac1ccaf", "label": "risk", "reason": "The filter_clause argument of Query.add_filter() is replaced by filter_lhs and filter_rhs, which breaks existing callers.", "swept": false}
+{"item_id": "81f26f55fc1a", "label": "risk", "reason": "CsrfViewMiddleware switches to a new request.META key, which breaks custom code that depends on the old CSRF tracking attributes.", "swept": false}
+{"item_id": "71a49b206e18", "label": "risk", "reason": "TRANSLATOR_COMMENT_MARK moves to a new module, so imports from django.template.base will fail.", "swept": false}
+{"item_id": "e31bd221b8de", "label": "risk", "reason": "The real_apps argument of ProjectState.__init__() must now be a set, so callers passing other types will break.", "swept": false}
+{"item_id": "82c4486609ce", "label": "risk", "reason": "RadioSelect and CheckboxSelectMultiple markup changes to div tags, which can break custom CSS, JavaScript, or tests and may require template overrides.", "swept": false}
+{"item_id": "553c4c461adf", "label": "risk", "reason": "floatformat always returns localized output regardless of USE_L10N, which changes rendered output for existing templates.", "swept": false}
+{"item_id": "40019b0edc1b", "label": "risk", "reason": "The USE_L10N default changes to True, which changes formatting across projects that did not set it explicitly.", "swept": false}
+{"item_id": "e127992a6fb1", "label": "risk", "reason": "django.utils.timezone.utc now aliases datetime.timezone.utc, which can change behavior for code relying on the old implementation.", "swept": false}
+{"item_id": "55be8262b4b7", "label": "risk", "reason": "The minimum asgiref version rises from 3.3.2 to 3.4.1, which requires dependency upgrades in some environments.", "swept": false}
+{"item_id": "fbfb8889913f", "label": "context", "reason": "Use of pytz time zones is deprecated but still works, so this produces only warnings at this release.", "swept": false}
+{"item_id": "f3404224f235", "label": "context", "reason": "QuerySet.datetimes is listed as a pytz-related deprecation in 4.0, so it still works and only warns.", "swept": false}
+{"item_id": "39cd0c296db0", "label": "context", "reason": "The Trunc function is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "e619ba06dda9", "label": "context", "reason": "TruncSecond is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "ff4ebf3b833e", "label": "context", "reason": "TruncMinute is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "c92b62710ef6", "label": "context", "reason": "TruncHour is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "bb619f45e446", "label": "context", "reason": "TruncDay is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "2fe85d42aaf4", "label": "context", "reason": "TruncWeek is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "1eb81fb4e833", "label": "context", "reason": "TruncMonth is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "0c69852a9ddb", "label": "context", "reason": "TruncQuarter is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "fcaaedd66a08", "label": "context", "reason": "TruncYear is listed under the pytz deprecation, which warns but does not yet break existing code.", "swept": false}
+{"item_id": "0a7b7aa3f9a0", "label": "context", "reason": "make_aware is listed under the pytz deprecation, which warns but still works in this release.", "swept": false}
+{"item_id": "9daf549457c4", "label": "context", "reason": "The pytz removal is scheduled for Django 5.0, so it requires no action for an upgrade ending at 4.2.", "swept": false}
+{"item_id": "05f5a4b5aab9", "label": "context", "reason": "The USE_TZ default change is scheduled for Django 5.0, after this upgrade target, and the text notes it can be opted out of before then.", "swept": false}
+{"item_id": "d203653b0498", "label": "risk", "reason": "The USE_L10N default changes from False to True in this release and the setting is deprecated, so existing date and number formatting may change.", "swept": false}
+{"item_id": "608925ca1322", "label": "context", "reason": "The SERIALIZE test setting is deprecated but still functions, so it only triggers a warning.", "swept": false}
+{"item_id": "2875d7160824", "label": "context", "reason": "The undocumented baseconv module is deprecated with a warning and still works.", "swept": false}
+{"item_id": "337f56e8e16f", "label": "context", "reason": "The undocumented datetime_safe module is deprecated with a warning and still works.", "swept": false}
+{"item_id": "d6b3a9c7d22a", "label": "context", "reason": "The sitemap protocol default change is scheduled for Django 5.0, beyond this upgrade's target.", "swept": false}
+{"item_id": "4c5124844886", "label": "context", "reason": "The extra_tests argument is deprecated but still accepted, so only a warning is produced.", "swept": false}
+{"item_id": "0b270d2064ce", "label": "context", "reason": "The aggregate return-value change is scheduled for Django 5.0, and the text gives an explicit way to keep the old behavior.", "swept": false}
+{"item_id": "2cb7550f5b28", "label": "context", "reason": "GeoModelAdmin and OSMGeoAdmin are deprecated with replacements named, so they still work and need no action at this release.", "swept": false}
+{"item_id": "b3620f1cecd2", "label": "context", "reason": "The undocumented BaseForm._html_output() is only deprecated, so it still functions and requires no action now.", "swept": false}
+{"item_id": "9ebc0642c98f", "label": "context", "reason": "Returning a str from ErrorList and ErrorDict is merely deprecated, so existing code keeps working for now.", "swept": false}
+{"item_id": "2635290ddaf4", "label": "risk", "reason": "Features that finished their deprecation cycle are removed in 4.0, so applications still using them will break and need changes.", "swept": false}
+{"item_id": "5674b8e96856", "label": "risk", "reason": "The urlquote and urlunquote functions in django.utils.http are removed, so any import or call will fail.", "swept": false}
+{"item_id": "f1141e461da7", "label": "risk", "reason": "force_text() and smart_text() are removed from django.utils.encoding, which breaks code that imports them.", "swept": false}
+{"item_id": "25791e29d249", "label": "risk", "reason": "The ugettext family of translation functions is removed, so code calling them will raise errors.", "swept": false}
+{"item_id": "1db32246ed66", "label": "risk", "reason": "set_language() no longer writes the language to request.session, so code relying on that session key will behave differently.", "swept": false}
+{"item_id": "48bc388e6e95", "label": "risk", "reason": "Custom Expression.get_group_by_cols() subclasses must accept alias=None in their signature, so existing overrides need updating.", "swept": false}
+{"item_id": "bf93a3e043c3", "label": "risk", "reason": "django.utils.text.unescape_entities() is removed, so callers will fail.", "swept": false}
+{"item_id": "454c8617c64d", "label": "risk", "reason": "django.utils.http.is_safe_url() is removed, so code importing or calling it will break.", "swept": false}
+{"item_id": "6ae7f4fc4282", "label": "context", "reason": "This is only a pointer to the 3.1 deprecation notes and requires no action by itself.", "swept": false}
+{"item_id": "203b876a2869", "label": "risk", "reason": "The PASSWORD_RESET_TIMEOUT_DAYS setting is removed, so projects using it must migrate to PASSWORD_RESET_TIMEOUT.", "swept": false}
+{"item_id": "623a6bcb70a9", "label": "risk", "reason": "isnull lookups no longer accept non-boolean values, so queries passing such values will now behave differently or fail.", "swept": false}
+{"item_id": "9a669338bd2a", "label": "risk", "reason": "The InvalidQuery exception class is removed, so any code importing or catching it will break.", "swept": false}
+{"item_id": "0b878be388e2", "label": "risk", "reason": "The django-admin.py entry point is removed, so scripts or deployments invoking it must switch to django-admin.", "swept": false}
+{"item_id": "363de8547813", "label": "risk", "reason": "HttpRequest.is_ajax() is removed, so views and middleware calling it will raise AttributeError.", "swept": false}
+{"item_id": "6cfe4fd911f5", "label": "risk", "reason": "Support for pre-3.1 CookieStorage cookie formats is removed, so old message cookies will no longer be read.", "swept": false}
+{"item_id": "bfc7148e05b4", "label": "risk", "reason": "Pre-3.1 SHA-1 admin password reset tokens are no longer accepted, so outstanding reset links will stop working.", "swept": false}
+{"item_id": "278d148e4f5b", "label": "risk", "reason": "Pre-3.1 session encoding support is removed, so existing sessions in that format will be invalidated or fail to decode.", "swept": false}
+{"item_id": "7f1917495523", "label": "risk", "reason": "Removal of support for SHA-1 Signer signatures means existing signed data from pre-3.1 Django may fail to validate after upgrade.", "swept": false}
+{"item_id": "d5608fec8f09", "label": "risk", "reason": "Removing SHA-1 dumps() signature support in loads() can cause previously signed values to fail verification after upgrade.", "swept": false}
+{"item_id": "3b3b7b0c07b6", "label": "risk", "reason": "Removing support for pre-3.1 SHA-1 user sessions can log out or break sessions still stored with that algorithm.", "swept": false}
+{"item_id": "4fa1c2a912d0", "label": "risk", "reason": "The get_response argument is now required and no longer accepts None, so custom MiddlewareMixin subclasses passing None will break.", "swept": false}
+{"item_id": "26ac93184483", "label": "risk", "reason": "Removing the providing_args argument from Signal breaks any code that passes it when creating signals.", "swept": false}
+{"item_id": "e640a3db0623", "label": "risk", "reason": "The length argument of get_random_string() is now required, so calls that omit it will raise errors.", "swept": false}
+{"item_id": "7ea4ee0a3d8c", "label": "risk", "reason": "Removing the list message for ModelMultipleChoiceField changes error message behavior and may break code or tests relying on it.", "swept": false}
+{"item_id": "e5ddc41b4207", "label": "risk", "reason": "Support for raw column aliases in order_by() is removed, so existing queries using them will fail.", "swept": false}
+{"item_id": "e6a59f68daa0", "label": "risk", "reason": "NullBooleanField is removed for models, so models using it must be migrated to BooleanField with null=True or similar.", "swept": false}
+{"item_id": "11dd7dc23bb7", "label": "risk", "reason": "django.conf.urls.url() is removed, so URLconfs importing it must switch to re_path() or path().", "swept": false}
+{"item_id": "779088ee5a78", "label": "risk", "reason": "The contrib.postgres JSONField model field is removed, so models using it must be migrated to models.JSONField.", "swept": false}
+{"item_id": "0697db84c099", "label": "risk", "reason": "KeyTransform and KeyTextTransform in contrib.postgres.fields.jsonb are removed, so imports and usages will break.", "swept": false}
+{"item_id": "f8a8f1f5295e", "label": "risk", "reason": "The contrib.postgres forms JSONField is removed, so forms importing it must switch to forms.JSONField.", "swept": false}
+{"item_id": "c27fcb31deb2", "label": "risk", "reason": "The ifequal and ifnotequal template tags are removed, so templates using them will fail to render and need rewriting with if.", "swept": false}
+{"item_id": "2a6ec20bbcb2", "label": "risk", "reason": "Removing the DEFAULT_HASHING_ALGORITHM setting means projects relying on it must migrate to the new hashing configuration.", "swept": false}
+{"item_id": "c00f64b80487", "label": "context", "reason": "This is an introductory overview with the release date that points to the upgrade guide and mentions backwards incompatible changes generally, but it describes no specific change requiring action.", "swept": true}
+{"item_id": "238a66ad559a", "label": "risk", "reason": "Supporting only Python 3.8 to 3.11 means users on older Python runtimes must upgrade their interpreter, which is a raised minimum runtime requirement.", "swept": false}
+{"item_id": "5b53e8ba7c9f", "label": "context", "reason": "Async HTTP method handlers on class-based views are a purely additive feature that requires no change to existing code.", "swept": false}
+{"item_id": "f3df2cb994c5", "label": "context", "reason": "This is a documentation pointer to more details on async class-based views.", "swept": false}
+{"item_id": "ad9371acb94e", "label": "context", "reason": "The asynchronous QuerySet interface is a new additive API and existing synchronous code keeps working.", "swept": false}
+{"item_id": "494d39915bba", "label": "context", "reason": "The text explains that database operations remain synchronous and that the new interface wraps them, so no user action is needed.", "swept": false}
+{"item_id": "ba6d1ee8c627", "label": "risk", "reason": "Check, unique, and exclusion constraints are now checked during model validation, which can make existing forms or full_clean() calls fail on data that previously passed.", "swept": false}
+{"item_id": "43aff940aa60", "label": "context", "reason": "The new div-based form templates are opt-in via FORM_RENDERER, and the default change is deferred to Django 5.0, so no action is needed now.", "swept": false}
+{"item_id": "57dc2c3085f0", "label": "risk", "reason": "Multi-instance upgrades must set CSRF_COOKIE_MASKED to True during the transition, and this deprecated setting is removed in Django 5.0, so it is a required config change.", "swept": false}
+{"item_id": "25362d873437", "label": "risk", "reason": "Dark mode CSS variables moved to a separate stylesheet and template block, which can affect projects that override admin templates or stylesheets.", "swept": false}
+{"item_id": "10eeb39bef9f", "label": "context", "reason": "Custom FieldListFilter subclasses gain an optional separator control, which is additive and does not change existing behavior.", "swept": false}
+{"item_id": "4ec37c33913a", "label": "context", "reason": "Pagination of the admin history view is a visible improvement but needs no action from users.", "swept": false}
+{"item_id": "f9c3d4e08629", "label": "context", "reason": "Related widget wrappers gaining a link to the change form is an additive UI enhancement.", "swept": false}
+{"item_id": "69d014559367", "label": "context", "reason": "AdminSite.get_app_list gaining the ability to reorder apps and models is an additive option.", "swept": false}
+{"item_id": "eb08131ad90f", "label": "risk", "reason": "The increased PBKDF2 iteration count changes the default for newly hashed passwords, which affects login and hashing performance and deployment capacity.", "swept": false}
+{"item_id": "cb72533592f5", "label": "context", "reason": "RemoteUserBackend.configure_user can optionally synchronize attributes, which is a new additive hook.", "swept": false}
+{"item_id": "21951f9f8c89", "label": "context", "reason": "GEOSGeometry.make_valid() is a new additive method.", "swept": false}
+{"item_id": "4fd5d5dfaa47", "label": "context", "reason": "The new clone argument for GEOSGeometry.normalize is an optional additive parameter.", "swept": false}
+{"item_id": "989aa9673150", "label": "context", "reason": "BitXor() is a new additive aggregate function.", "swept": false}
+{"item_id": "6ee3238d4f74", "label": "context", "reason": "Covering index support for SpGistIndex on PostgreSQL 14+ is a new additive option.", "swept": false}
+{"item_id": "b2caa89fd56d", "label": "context", "reason": "ExclusionConstraint gaining SP-GiST covering support on PostgreSQL 14+ is a purely additive feature that needs no user action.", "swept": false}
+{"item_id": "42fe562d0bfe", "label": "context", "reason": "The new default_bounds attribute is an optional addition that existing code does not need to change to work.", "swept": false}
+{"item_id": "ebc2579427f6", "label": "context", "reason": "OpClass() support in ExclusionConstraint is a new optional capability with no required action.", "swept": false}
+{"item_id": "4fb250ab2261", "label": "risk", "reason": "The item explicitly states that custom sitemap index templates should be updated because the context variables changed.", "swept": false}
+{"item_id": "6889aef93636", "label": "risk", "reason": "ManifestStaticFilesStorage now rewrites source map references to hashed names, a behavior change that can affect deployed CSS and source map resolution.", "swept": false}
+{"item_id": "78f2a18807ef", "label": "risk", "reason": "Third-party database backends must now implement get_database_version() and call super() in init_connection_state() for the version check to work, which is required work for those backends.", "swept": false}
+{"item_id": "4c3e088921ae", "label": "risk", "reason": "Form.template_name becomes a property deferring to the renderer, a change to existing API behavior that can affect subclasses and project-level form rendering.", "swept": false}
+{"item_id": "6225dba30e92", "label": "context", "reason": "The new div template and as_div method are additive, and the item notes the div style only becomes the default in Django 5.0, so no action is needed now.", "swept": false}
+{"item_id": "360636040d2b", "label": "context", "reason": "The transitional renderers are opt-in and the item states that their deprecation only happens later, so nothing needs to change at this release.", "swept": false}
+{"item_id": "e76c02e71378", "label": "context", "reason": "This is guidance for projects that want a different output style, and it requires no action unless the user chooses to adopt it.", "swept": false}
+{"item_id": "95ca0d1c28c3", "label": "context", "reason": "The new tag argument for label_tag is an optional addition with no required changes.", "swept": false}
+{"item_id": "0a62c598404f", "label": "context", "reason": "The new edit_only argument is an optional addition for formset factories and does not change existing behavior.", "swept": false}
+{"item_id": "ddfc258ea945", "label": "context", "reason": "Hashable objects for Media js and css are a new optional capability that existing code does not require.", "swept": false}
+{"item_id": "49df4de0c190", "label": "context", "reason": "The new use_fieldset attributes are additive hints for rendering and need no user action.", "swept": false}
+{"item_id": "b0d8cb041f41", "label": "context", "reason": "The new formset error message keys are an optional customization that does not affect existing behavior.", "swept": false}
+{"item_id": "170e82846c32", "label": "context", "reason": "The step_size argument is optional and only applies to fields where it is explicitly set.", "swept": false}
+{"item_id": "b51989a86f49", "label": "context", "reason": "The i18n_patterns improvement for script and region language codes is a feature enhancement that needs no user action.", "swept": false}
+{"item_id": "8b66440cf339", "label": "context", "reason": "The added logging for makemigrations --no-input is informational and does not change migration output.", "swept": false}
+{"item_id": "d9b32c65d652", "label": "context", "reason": "The new --scriptable option is opt-in and does not affect existing workflows unless used.", "swept": false}
+{"item_id": "b54f1e7dd5ad", "label": "context", "reason": "The new migrate --prune option is opt-in and only acts when explicitly requested.", "swept": false}
+{"item_id": "9552bcfd53c9", "label": "risk", "reason": "Generated files are now auto-formatted with black when it is on PATH, which changes output and may create unexpected diffs in existing workflows.", "swept": false}
+{"item_id": "c5b78092c138", "label": "context", "reason": "The new optimizemigration command is a purely additive feature that requires no action.", "swept": false}
+{"item_id": "be315231d848", "label": "context", "reason": "The new RenameIndex operation is an additive option that existing migrations do not need to adopt.", "swept": false}
+{"item_id": "7ee233e1d9f0", "label": "risk", "reason": "The autodetector now generates RenameIndex instead of RemoveIndex and AddIndex, changing the migrations it produces for index renames.", "swept": false}
+{"item_id": "435ecfd5f8dd", "label": "risk", "reason": "The autodetector now generates RenameIndex instead of AlterIndexTogether and AddIndex when moving indexes, changing generated migration output.", "swept": false}
+{"item_id": "6ea1afadc189", "label": "context", "reason": "Window order_by accepting string references is a new additive capability with no required change.", "swept": false}
+{"item_id": "52c3147df4da", "label": "context", "reason": "The new CONN_HEALTH_CHECKS setting is opt-in and existing deployments are unaffected unless they enable it.", "swept": false}
+{"item_id": "1431a1b1be2d", "label": "context", "reason": "bulk_create update-on-conflict support is a new additive option that does not change existing calls.", "swept": false}
+{"item_id": "9904b07bdbf4", "label": "risk", "reason": "QuerySet.iterator now prefetches related objects when chunk_size is given, which changes query behavior and counts for existing code.", "swept": false}
+{"item_id": "72e9f028f184", "label": "context", "reason": "The new ^ XOR operator for Q objects and querysets is additive and does not alter existing queries.", "swept": false}
+{"item_id": "f905c9e1c1dd", "label": "context", "reason": "The new Field.non_db_attrs attribute is an additive option for custom fields.", "swept": false}
+{"item_id": "c965f571e3a6", "label": "risk", "reason": "On PostgreSQL, auto fields are now created as identity columns instead of serial sequences, which affects schema generation in migrations and deployments.", "swept": false}
+{"item_id": "06f5518ad68b", "label": "context", "reason": "Accepting timedelta for max_age in set_cookie is an additive convenience with no action needed.", "swept": false}
+{"item_id": "1226c4f8b4b5", "label": "context", "reason": "The new SECRET_KEY_FALLBACKS setting is optional and only needed if the user chooses to rotate keys.", "swept": false}
+{"item_id": "d7c5c0db1df6", "label": "context", "reason": "Supporting a comma-separated protocol list in SECURE_PROXY_SSL_HEADER extends existing behavior and requires no action.", "swept": false}
+{"item_id": "f2f4a7adc149", "label": "risk", "reason": "pre_delete and post_delete now send an extra origin kwarg, which can break receivers whose signatures do not accept additional keyword arguments.", "swept": false}
+{"item_id": "ce0665108f22", "label": "context", "reason": "Dropping the requirement for an id attribute on json_script wrappers relaxes markup rules and needs no action.", "swept": false}
+{"item_id": "b9ae30a81b7a", "label": "risk", "reason": "The cached template loader is now enabled by default when DEBUG is True, which changes development behavior so template edits may require a restart unless overridden.", "swept": false}
+{"item_id": "7f2cd3f90f22", "label": "context", "reason": "Parallel test support on spawn-based platforms is an added capability that does not require action.", "swept": false}
+{"item_id": "3be893c17fb5", "label": "risk", "reason": "A nested durable atomic block in TestCase now raises RuntimeError, so existing tests relying on the old behavior may fail.", "swept": false}
+{"item_id": "8b920a5ff43e", "label": "context", "reason": "Adding support for passing a form or formset object directly is a purely additive option that needs no user action.", "swept": false}
+{"item_id": "6325fba1cf29", "label": "context", "reason": "The new ResolverMatch.captured_kwargs attribute is a purely additive addition.", "swept": false}
+{"item_id": "c3983fcab816", "label": "context", "reason": "The new ResolverMatch.extra_kwargs attribute is a purely additive addition.", "swept": false}
+{"item_id": "92b967f0fc3d", "label": "context", "reason": "Adding addition support to SimpleLazyObject is a purely additive feature.", "swept": false}
+{"item_id": "fafa5b765175", "label": "risk", "reason": "Changing mark_safe to preserve lazy objects alters existing behavior that could affect rendered output for code relying on the previous handling.", "swept": false}
+{"item_id": "371da9073fdc", "label": "context", "reason": "The new StepValueValidator and step_size argument are purely additive features.", "swept": false}
+{"item_id": "8eccff0ef88c", "label": "noise", "reason": "This is only an introductory sentence with no specific change described.", "swept": false}
+{"item_id": "846d5e562939", "label": "risk", "reason": "Changing the has_case_insensitive_like default from True to False can alter query behavior for third-party backends that depend on it.", "swept": false}
+{"item_id": "b65a067970aa", "label": "risk", "reason": "DatabaseIntrospection.get_key_columns() is removed, so code calling it will break and must switch to get_relations().", "swept": false}
+{"item_id": "047e1b0d8cd8", "label": "risk", "reason": "ignore_conflicts_suffix_sql() is replaced by on_conflict_suffix_sql() with new arguments, so existing backend code must be updated.", "swept": false}
+{"item_id": "ee91e7e90a56", "label": "risk", "reason": "The ignore_conflicts argument of insert_statement() is replaced by on_conflict, a breaking signature change for backend code.", "swept": false}
+{"item_id": "18301b35030f", "label": "risk", "reason": "_convert_field_to_tz() is replaced by _convert_sql_to_tz() with different arguments, which breaks code relying on the old method.", "swept": false}
+{"item_id": "17321a80ff25", "label": "risk", "reason": "Several date and time DatabaseOperations methods change to new signatures with sql and params arguments and 2-tuple returns, breaking existing backend implementations.", "swept": false}
+{"item_id": "2b568d0a78c8", "label": "risk", "reason": "Support for GDAL 2.1 is removed, so deployments on that version must upgrade GDAL.", "swept": false}
+{"item_id": "23c41fd6405a", "label": "risk", "reason": "Support for PostGIS 2.4 is removed, so deployments on that version must upgrade PostGIS.", "swept": false}
+{"item_id": "6768274eb3ec", "label": "risk", "reason": "Django 4.1 drops PostgreSQL 10, so deployments on that version must upgrade the database.", "swept": false}
+{"item_id": "f32d11f938a5", "label": "risk", "reason": "Django 4.1 drops MariaDB 10.2, so deployments on that version must upgrade the database.", "swept": false}
+{"item_id": "0847d3b86f59", "label": "risk", "reason": "Multi-term admin searches now require rows to match all terms across multi-valued relationships, changing search results for existing admin users.", "swept": false}
+{"item_id": "9c528fc65296", "label": "risk", "reason": "Related managers for unsaved instances on reverse foreign keys now raise ValueError, which can break existing code.", "swept": false}
+{"item_id": "1ae1565b067f", "label": "context", "reason": "The caching change was reverted in Django 4.1.2, so it has no effect on upgrading to the release and needs no user action.", "swept": false}
+{"item_id": "d235b709fae2", "label": "risk", "reason": "The test runner now returns a non-zero exit code for unexpected successes, which can make existing CI pipelines fail.", "swept": false}
+{"item_id": "9ef19212796e", "label": "risk", "reason": "CsrfViewMiddleware no longer masks the CSRF cookie, a behavior change that can affect code relying on the previous cookie value.", "swept": false}
+{"item_id": "811c62acd013", "label": "risk", "reason": "The middleware now stores the unmasked secret in request.META['CSRF_COOKIE'], a changed internal value that custom code may depend on.", "swept": false}
+{"item_id": "d62049d23ad8", "label": "risk", "reason": "ModelAdmin.actions and inlines now default to tuples, so code that mutates these attributes in place will break.", "swept": false}
+{"item_id": "10bcd8c3f75a", "label": "risk", "reason": "The type=\"text/css\" attribute is removed from CSS form media link tags, changing rendered output that tests or custom code may check.", "swept": false}
+{"item_id": "a945c6845fc3", "label": "risk", "reason": "formset:added and formset:removed events no longer depend on jQuery, so custom JavaScript relying on jQuery event handling will stop working.", "swept": false}
+{"item_id": "347f78e7a2ef", "label": "risk", "reason": "The exc_info argument of log_response() is replaced by exception, which breaks any caller using the old argument name.", "swept": false}
+{"item_id": "e943e5b8eb13", "label": "risk", "reason": "The size argument of was_modified_since() is removed, so callers passing it will fail.", "swept": false}
+{"item_id": "275590062314", "label": "risk", "reason": "The admin log out UI now uses POST requests, so bookmarked or GET-based logout links will no longer work.", "swept": false}
+{"item_id": "10c38e88021c", "label": "risk", "reason": "The InlineAdminFormSet.non_form_errors property is replaced by a method, so template or code access to the property will break.", "swept": false}
+{"item_id": "c837d4645ffd", "label": "risk", "reason": "The cached template loader is now enabled in development, a changed default that can alter template behavior during development.", "swept": false}
+{"item_id": "e3897c3ce3f3", "label": "risk", "reason": "SuccessURLAllowedHostsMixin is replaced by RedirectURLMixin, so code subclassing the removed mixin will break.", "swept": false}
+{"item_id": "7c13ed5ddcac", "label": "risk", "reason": "Custom BaseConstraint subclasses must now implement validate(), so existing constraints without it need code changes.", "swept": false}
+{"item_id": "ed9cb67b5fac", "label": "risk", "reason": "URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved, breaking any code that imports or calls them from their old location.", "swept": false}
+{"item_id": "3a088cfe5903", "label": "risk", "reason": "Model.full_clean now converts exclude to a set and sets are preferred for exclude arguments, so code passing other types to these methods may be affected.", "swept": false}
+{"item_id": "64797d029ea0", "label": "risk", "reason": "The minimum supported asgiref version is raised from 3.4.1 to 3.5.2, requiring dependency upgrades where older versions are pinned.", "swept": false}
+{"item_id": "c88a783f2f23", "label": "risk", "reason": "Combined expressions no longer guess output_field and may crash with mixed types, so affected queries need an explicitly set output_field.", "swept": false}
+{"item_id": "bac31edda1c1", "label": "risk", "reason": "makemessages no longer updates .po files when they are up to date, a behavior change that can affect workflows checking or diffing translation files.", "swept": false}
+{"item_id": "774669112334", "label": "context", "reason": "Logging out via GET is deprecated but still works, so it needs no immediate action beyond planning a move to POST.", "swept": false}
+{"item_id": "e3287f68a4af", "label": "context", "reason": "The flat-list sitemap index context is deprecated with only a warning, so custom templates can be updated later without breaking now.", "swept": false}
+{"item_id": "b71418e1cb40", "label": "context", "reason": "The CSRF_COOKIE_MASKED setting is only deprecated, so it still works and needs no action in this release.", "swept": false}
+{"item_id": "1c468cbb5e4d", "label": "context", "reason": "The name argument of cached_property is deprecated but still accepted, so existing code keeps working.", "swept": false}
+{"item_id": "cea13e880819", "label": "risk", "reason": "Moving ExclusionConstraint opclasses to OpClass() causes makemigrations to generate new RemoveConstraint/AddConstraint operations that the user must wrap in SeparateDatabaseAndState, which is migration work.", "swept": false}
+{"item_id": "db011b432012", "label": "context", "reason": "Passing errors=None to assertFormError is deprecated while errors=[] is the replacement, so tests keep working for now.", "swept": false}
+{"item_id": "0d0c7ecbd443", "label": "risk", "reason": "PickleSerializer is deprecated for security reasons, so deployments using it may need to switch serializers and handle existing sessions.", "swept": false}
+{"item_id": "053af02de5cb", "label": "risk", "reason": "QuerySet.iterator() with prefetch_related now needs a chunk_size, and previously no prefetching happened, so existing code can see changed query behavior.", "swept": false}
+{"item_id": "7e1b420bc9b7", "label": "context", "reason": "Passing unsaved model instances to related filters only emits a deprecation warning now and the exception comes in Django 5.0.", "swept": false}
+{"item_id": "c73942ca2ace", "label": "risk", "reason": "RemoteUserBackend subclasses whose configure_user does not accept the new created argument are deprecated and will break, so they need updating.", "swept": false}
+{"item_id": "1c09430c2c28", "label": "context", "reason": "The django.utils.timezone.utc alias is deprecated but still works, so only a warning is produced.", "swept": false}
+{"item_id": "763b390fb488", "label": "context", "reason": "Passing a response object with a form name to assertFormError is deprecated but still functions, and the replacement pattern is given.", "swept": false}
+{"item_id": "b62596da85f5", "label": "context", "reason": "The undocumented OpenLayersWidget is deprecated, which only produces a warning.", "swept": false}
+{"item_id": "ae08a1f59810", "label": "context", "reason": "CryptPasswordHasher is deprecated but remains available, so no immediate action is needed.", "swept": false}
+{"item_id": "bdb25000993c", "label": "context", "reason": "Passing nulls_first=False or nulls_last=False is deprecated in favor of None, but the old form still works.", "swept": false}
+{"item_id": "1de3b5d51df3", "label": "context", "reason": "The default.html form templates are deprecated proxies that still work, and the specific templates are the recommended replacement.", "swept": false}
+{"item_id": "ded28d6314a8", "label": "risk", "reason": "LogoutView.get_next_page() is renamed to get_success_url(), so overrides of the old method will no longer be called.", "swept": false}
+{"item_id": "aaa6d06fb792", "label": "context", "reason": "This is a documentation pointer to the 3.2 deprecated-features notes and requires no direct action in itself.", "swept": false}
+{"item_id": "27ce20f71257", "label": "risk", "reason": "Support for setUpTestData class attributes that cannot be deep-copied is removed, so affected tests will fail.", "swept": false}
+{"item_id": "58d2aa35d1e5", "label": "risk", "reason": "Using a boolean value for BaseCommand.requires_system_checks is removed, so custom commands must be updated.", "swept": false}
+{"item_id": "0f29f6bf0255", "label": "risk", "reason": "The whitelist argument and domain_whitelist attribute of EmailValidator are removed, so code using them will break.", "swept": false}
+{"item_id": "a862afb17086", "label": "risk", "reason": "The default_app_config variable is removed, so apps relying on it must be updated to use the new automatic app config discovery.", "swept": false}
+{"item_id": "5a2388d7b867", "label": "risk", "reason": "Removing repr() comparison behavior in assertQuerysetEqual() changes test outcomes and can break existing test suites that relied on the old string comparison.", "swept": false}
+{"item_id": "8f6ba3148481", "label": "risk", "reason": "The MemcachedCache backend is removed, so deployments using it must migrate to PyMemcacheCache or PyLibMCCache or they will fail.", "swept": false}
+{"item_id": "c7948d8294cb", "label": "risk", "reason": "Support for the pre-3.2 cookie message format is removed, so existing cookies in that format will no longer be read and users may lose messages during upgrade.", "swept": false}
+{"item_id": "d0ed878046d6", "label": "context", "reason": "The introduction states the release's scope and points to the upgrade guide without itself requiring any change.", "swept": false}
+{"item_id": "17eb8e735cf2", "label": "risk", "reason": "Django 4.2 supports Python 3.8 through 3.12, which raises the runtime floor for users upgrading from 3.2 and may require a Python upgrade.", "swept": false}
+{"item_id": "1a184ee069dc", "label": "risk", "reason": "Psycopg 3 support is additive, but the text warns of breaking differences from psycopg2 and that psycopg2 support is likely to be deprecated, so code may need changes.", "swept": false}
+{"item_id": "2ec0a1679b97", "label": "context", "reason": "The new db_comment and db_table_comment options are purely additive and require no action unless the user chooses to adopt them.", "swept": false}
+{"item_id": "d80f8703e138", "label": "context", "reason": "The new AlterModelTableComment operation is an additive feature that existing projects do not need to use.", "swept": false}
+{"item_id": "33f5df64d892", "label": "risk", "reason": "GZipMiddleware now adds up to 100 random bytes to gzip responses, a change in response content that can affect size-sensitive clients or tests.", "swept": false}
+{"item_id": "6fdd1415c046", "label": "context", "reason": "InMemoryStorage is a new optional class for tests and requires no action from upgrading users.", "swept": false}
+{"item_id": "f9e770ea346c", "label": "context", "reason": "The new STORAGES setting is additive, and the old settings are only deprecated, so they still work and only emit warnings.", "swept": false}
+{"item_id": "81ab0885142a", "label": "context", "reason": "The admin color theme toggle is a new UI feature that requires no user action.", "swept": false}
+{"item_id": "f9c4f11d8139", "label": "risk", "reason": "The admin's default font stack changes to system fonts, which alters the default appearance and may affect custom CSS that relied on the previous fonts.", "swept": false}
+{"item_id": "eac45dc3792c", "label": "context", "reason": "Additional template blocks and hooks are optional customization points that add no required change.", "swept": false}
+{"item_id": "0bd5044ce5f2", "label": "context", "reason": "Making chosen options filterable is a purely additive admin widget enhancement.", "swept": false}
+{"item_id": "efc985f3d8e5", "label": "context", "reason": "A new nav-breadcrumbs block is an additive template hook that requires no action unless customized.", "swept": false}
+{"item_id": "adb6b74c90c0", "label": "risk", "reason": "ModelAdmin.list_editable now wraps edits in atomic transactions, a behavior change that can affect how partial failures are handled.", "swept": false}
+{"item_id": "a1bed74e7e0b", "label": "context", "reason": "The bundled jQuery bump from 3.6.0 to 3.6.4 is a minor dependency update that needs no user action.", "swept": false}
+{"item_id": "718a4dad75ad", "label": "risk", "reason": "The PBKDF2 default iteration count rises from 390,000 to 600,000, a changed default that increases hashing cost and affects deployment performance.", "swept": false}
+{"item_id": "066cdf6e86f1", "label": "risk", "reason": "UserCreationForm now saves many-to-many fields for custom user models, a behavior change that can alter existing form-handling code.", "swept": false}
+{"item_id": "9661653ab636", "label": "context", "reason": "BaseUserCreationForm is a new recommended base class, and existing code does not need to change.", "swept": false}
+{"item_id": "bd2b084c07da", "label": "risk", "reason": "The GeoJSON serializer now outputs an id key by default, changing serialized output that downstream consumers may depend on.", "swept": false}
+{"item_id": "22c827a1aa4d", "label": "context", "reason": "GDALRaster accepting pathlib.Path is an additive convenience that requires no action.", "swept": false}
+{"item_id": "6aee09889bb3", "label": "context", "reason": "The GeoIP2 class gaining support for DB-IP .mmdb files is a purely additive capability that needs no user action.", "swept": false}
+{"item_id": "0b39c2b85aa2", "label": "risk", "reason": "The OpenLayers widget no longer includes inline CSS and removes the map_css block, which can break templates or customizations that override or rely on that block.", "swept": false}
+{"item_id": "920728eda979", "label": "risk", "reason": "OpenLayersWidget switching from OpenLayers 4.6.5 to 7.2.2 is a major bundled dependency change that can alter map behavior and break existing customizations.", "swept": false}
+{"item_id": "98d69ee45f54", "label": "context", "reason": "The new isempty lookup and IsEmpty() expression are additive PostGIS features that do not change existing behavior.", "swept": false}
+{"item_id": "fd4c081b396e", "label": "context", "reason": "The new FromWKB() and FromWKT() functions are additive and require no change to existing code.", "swept": false}
+{"item_id": "6711379f2817", "label": "context", "reason": "The new trigram strict word similarity lookup and expressions are additive PostgreSQL features.", "swept": false}
+{"item_id": "207215457e7f", "label": "context", "reason": "The arrayfield.overlap lookup now accepting QuerySet values as a right-hand side is an additive extension that changes no existing usage.", "swept": false}
+{"item_id": "5e9e90597547", "label": "context", "reason": "The new Sitemap.get_languages_for_item method is an optional hook that is additive and needs no action.", "swept": false}
+{"item_id": "4af961482975", "label": "context", "reason": "The experimental JavaScript module path replacement is opt-in via a subclass and attribute, so it requires no action unless users choose to try it.", "swept": false}
+{"item_id": "1ea3d002d0fe", "label": "context", "reason": "The new manifest_hash attribute is an additive read-only property that changes no existing behavior.", "swept": false}
+{"item_id": "2dc75fae1632", "label": "context", "reason": "The new assume_role PostgreSQL OPTIONS key is optional and additive.", "swept": false}
+{"item_id": "5ad7bf2db53d", "label": "context", "reason": "The new server_side_binding PostgreSQL OPTIONS key is optional and additive, applying only when explicitly configured with psycopg 3.1.8+.", "swept": false}
+{"item_id": "08fc5b888e48", "label": "context", "reason": "The debug page showing exception notes and finer error locations is additive display output on Python 3.11+ and needs no action.", "swept": false}
+{"item_id": "4de2ba0c777a", "label": "risk", "reason": "Session cookies are now hidden and replaced in error reports, which changes existing error report output and may affect tooling or workflows that parse those reports.", "swept": false}
+{"item_id": "955132e077e5", "label": "context", "reason": "The new formfield_callback Meta option on ModelForm is optional and additive.", "swept": false}
+{"item_id": "d2add36ec520", "label": "risk", "reason": "modelform_factory now respecting Meta.formfield_callback changes generated form fields for existing forms that already define that attribute, which may alter behavior.", "swept": false}
+{"item_id": "90bf20360deb", "label": "context", "reason": "Adding Central Kurdish (Sorani) support and translations is additive and requires no user action.", "swept": false}
+{"item_id": "3c7b64e438ca", "label": "risk", "reason": "django-db-logger now logs transaction queries at DEBUG level, which can increase log volume and operational overhead for deployments using it.", "swept": false}
+{"item_id": "07482177cb5b", "label": "context", "reason": "makemessages now supporting locales with private sub-tags is an additive capability that requires no action.", "swept": false}
+{"item_id": "795fa8c2e6c0", "label": "context", "reason": "The new makemigrations --update option is an optional additive flag that does not change default behavior.", "swept": false}
+{"item_id": "f51080de07d5", "label": "context", "reason": "Migrations gaining serialization support for enum.Flag is a purely additive capability that needs no user action.", "swept": false}
+{"item_id": "11e268d77f8d", "label": "context", "reason": "Expanded window-function filtering is a new capability, and the stated exception needs no action from existing code.", "swept": false}
+{"item_id": "7852de4fc5f3", "label": "context", "reason": "Support for Prefetch objects with sliced querysets is a new additive option.", "swept": false}
+{"item_id": "aa0d9a47efd0", "label": "context", "reason": "Registering lookups on Field instances is a new additive feature.", "swept": false}
+{"item_id": "3fe16843a88d", "label": "context", "reason": "The new robust argument for on_commit is an optional additive parameter.", "swept": false}
+{"item_id": "7a46763b4a24", "label": "context", "reason": "The new KT() expression is an additive API for JSONField transforms.", "swept": false}
+{"item_id": "a0c030f195fd", "label": "risk", "reason": "Changing Now() to microsecond precision on MySQL and millisecond precision on SQLite alters returned timestamp values, which could affect stored data or comparisons in existing code.", "swept": false}
+{"item_id": "3529b05cf5e6", "label": "context", "reason": "Negating BooleanField F() expressions with ~F() is a new additive capability.", "swept": false}
+{"item_id": "800b44404f9a", "label": "context", "reason": "Asynchronous adelete, arefresh_from_db, and asave methods are new additive APIs.", "swept": false}
+{"item_id": "c37c5b66a44f", "label": "context", "reason": "Asynchronous related manager methods such as aadd and aset are new additive APIs.", "swept": false}
+{"item_id": "038b61cc4773", "label": "context", "reason": "CharField.max_length no longer being required on PostgreSQL is a relaxation that needs no user action.", "swept": false}
+{"item_id": "b45308bdfb3a", "label": "context", "reason": "Async iterator support in StreamingHttpResponse under ASGI is a new additive feature.", "swept": false}
+{"item_id": "dfab6be30a14", "label": "context", "reason": "The test --debug-sql option now formats SQL output, a cosmetic additive change that needs no user action.", "swept": false}
+{"item_id": "3c644e41de5f", "label": "context", "reason": "The new headers parameter on test clients is an additive convenience option; the old syntax still works.", "swept": false}
+{"item_id": "b324d4a103c9", "label": "context", "reason": "The new encoder parameter for json_script is an optional additive argument.", "swept": false}
+{"item_id": "36c565f333bf", "label": "risk", "reason": "The vendored urlsplit now strips additional characters, which can change results for projects that incorrectly use the internal url_has_allowed_host_and_scheme function.", "swept": false}
+{"item_id": "474657f2d67d", "label": "context", "reason": "The new content_disposition_header function is an additive utility.", "swept": false}
+{"item_id": "4f6961bfad6c", "label": "risk", "reason": "The updated common passwords list can cause passwords that previously validated to be rejected, which changes application behavior.", "swept": false}
+{"item_id": "d9bbd9ce6057", "label": "noise", "reason": "This is a section heading that only describes scope and contains no actionable change.", "swept": false}
+{"item_id": "bc68c49e0cc9", "label": "risk", "reason": "Removing DatabaseFeatures.allows_group_by_pk breaks third-party database backends that still reference it.", "swept": false}
+{"item_id": "77d2e211335e", "label": "risk", "reason": "inspectdb now uses display_size instead of internal_size for CharField, a behavior change that can alter generated models.", "swept": false}
+{"item_id": "9e90c3f96d8e", "label": "risk", "reason": "Django 4.2 drops MariaDB 10.3 and requires MariaDB 10.4 or higher, so deployments on 10.3 must upgrade the database.", "swept": false}
+{"item_id": "855ce00ef424", "label": "risk", "reason": "Django 4.2 drops MySQL 5.7 and requires MySQL 8 or higher, which requires a database upgrade for affected deployments.", "swept": false}
+{"item_id": "28ca5aec2605", "label": "risk", "reason": "Django 4.2 drops PostgreSQL 11 and requires PostgreSQL 12 or higher, which requires a database upgrade for affected deployments.", "swept": false}
+{"item_id": "c2185fbe6ace", "label": "risk", "reason": "update_or_create now passes update_fields to save(), so custom save() methods may need to add modified fields to update_fields to avoid lost updates.", "swept": false}
+{"item_id": "2e973547a6eb", "label": "risk", "reason": "RawSQL() aggregations are no longer supported on MySQL, so code using them must be rewritten with aggregation functions.", "swept": false}
+{"item_id": "ff96fdf5226e", "label": "risk", "reason": "The undocumented django.http.multipartparser.parse_header() is removed, so code calling it breaks and must switch to parse_header_parameters().", "swept": false}
+{"item_id": "70fe80f363f1", "label": "risk", "reason": "The blocktranslate asvar result is now marked safe, a behavior change that can alter HTML output and escaping in templates.", "swept": false}
+{"item_id": "a1c79e7ede2d", "label": "risk", "reason": "The autofocus attribute is removed from the admin search box, changing rendered HTML that custom templates or tests may depend on.", "swept": false}
+{"item_id": "3e5f2743dd78", "label": "risk", "reason": "makemigrations --check no longer creates missing migration files, which can change CI scripts that relied on that side effect.", "swept": false}
+{"item_id": "3305d472c745", "label": "risk", "reason": "The alias argument of Expression.get_group_by_cols is removed, so custom expressions overriding or calling it will break.", "swept": false}
+{"item_id": "f89968188884", "label": "risk", "reason": "The minimum supported sqlparse version increases to 0.3.1, so environments pinned to 0.2.2 must upgrade the dependency.", "swept": false}
+{"item_id": "502a3c1cfd1c", "label": "risk", "reason": "The undocumented negated parameter of Exists is removed, so code passing it will raise errors.", "swept": false}
+{"item_id": "3a622aa666df", "label": "risk", "reason": "The is_summary argument of Query.add_annotation() is removed, so code calling it with that argument will break.", "swept": false}
+{"item_id": "938ed3a69d66", "label": "risk", "reason": "The minimum supported SQLite version increases to 3.21.0, so older SQLite installations must be upgraded.", "swept": false}
+{"item_id": "57bcb2c11de0", "label": "risk", "reason": "The minimum supported asgiref version increases to 3.6.0, so environments pinned to older versions must upgrade the dependency.", "swept": false}
+{"item_id": "c9c3297d79c8", "label": "risk", "reason": "UserCreationForm now rejects usernames differing only in case, a behavior change that affects signup validation unless BaseUserCreationForm is used.", "swept": false}
+{"item_id": "560861b733ba", "label": "risk", "reason": "The minimum supported mysqlclient version increases to 1.4.3, so older installed versions must be upgraded.", "swept": false}
+{"item_id": "63b5efb27876", "label": "risk", "reason": "The minimum supported argon2-cffi version increases to 19.2.0, so older installed versions must be upgraded.", "swept": false}
+{"item_id": "54398a5d4430", "label": "risk", "reason": "The minimum supported Pillow version increases to 6.2.1, so older installed versions must be upgraded.", "swept": false}
+{"item_id": "9f7cd4116a20", "label": "risk", "reason": "The minimum supported jinja2 version is raised from 2.9.2 to 2.11.0, so upgraders with older jinja2 must update the dependency.", "swept": false}
+{"item_id": "416d240b4b82", "label": "risk", "reason": "The minimum supported redis-py version is raised from 3.0.0 to 3.4.0, requiring a dependency upgrade for some users.", "swept": false}
+{"item_id": "82893dde3d39", "label": "risk", "reason": "Manually instantiated WSGIRequest objects must now receive a file-like wsgi.input, which can break code that previously relied on Django's leniency.", "swept": false}
+{"item_id": "eb40b4548dd5", "label": "risk", "reason": "Support for PROJ versions below 5 is removed, so deployments with older PROJ libraries will no longer work with GIS features.", "swept": false}
+{"item_id": "00724892fd0d", "label": "risk", "reason": "EmailBackend now verifies hostnames and certificates by default, which can break SMTP connections that previously worked, unless the ssl_context override is used.", "swept": false}
+{"item_id": "7c850d649782", "label": "risk", "reason": "Meta.index_together is deprecated and the text says existing index_together must be migrated, which requires migration work, so it is labeled conservatively as risk.", "swept": false}
+{"item_id": "7acb3c5ef6c3", "label": "context", "reason": "This is a code example showing the replacement indexes option, serving as a documentation pointer with no required action by itself.", "swept": false}
+{"item_id": "135190988399", "label": "risk", "reason": "Upgrading requires running makemigrations to generate a RenameIndex migration and optionally squashing migrations, which is migration work.", "swept": false}
+{"item_id": "593149004d50", "label": "risk", "reason": "Passing JSON-encoded string literals to JSONField is deprecated and code using them must change, and the text indicates future behavior that could break such code, so it is labeled conservatively as risk.", "swept": false}
+{"item_id": "e7518b33829c", "label": "context", "reason": "This example shows the recommended replacement form for JSONField values and is documentation guidance only.", "swept": false}
+{"item_id": "c10518b8519f", "label": "risk", "reason": "The text states that from Django 5.1 string literals will be implicitly interpreted as JSON, an upcoming behavior change that users must prepare for, so it is labeled conservatively as risk.", "swept": false}
+{"item_id": "ccf7efa7fb78", "label": "context", "reason": "BaseUserManager.make_random_password() is only deprecated, so it still works and the item points to a recommended alternative.", "swept": false}
+{"item_id": "9c07bd8fce11", "label": "context", "reason": "The length_is template filter is deprecated but still functional, and the item gives a replacement pattern with no required action now.", "swept": false}
+{"item_id": "6fefc45e1c5b", "label": "context", "reason": "The SHA1 and MD5 password hashers are deprecated but remain available, so no immediate action is required.", "swept": false}
+{"item_id": "7aa583d71488", "label": "context", "reason": "CICharField is deprecated in favor of CharField with a non-deterministic collation, and the deprecated field still works in this release.", "swept": false}
+{"item_id": "a808aa6859c4", "label": "context", "reason": "CIEmailField is deprecated in favor of EmailField with db_collation, and the old field still functions in this release.", "swept": false}
+{"item_id": "21a99475f55f", "label": "context", "reason": "CITextField is deprecated in favor of TextField with db_collation, and the old field still functions in this release.", "swept": false}
+{"item_id": "1260cdcac17c", "label": "context", "reason": "The CIText mixin is deprecated but still available, so it needs no action at this release.", "swept": false}
+{"item_id": "caadcd75abce", "label": "context", "reason": "The map_height and map_width attributes are deprecated, but they still work and the item recommends CSS sizing as an optional alternative.", "swept": false}
+{"item_id": "f2dabf3d3a62", "label": "context", "reason": "SimpleTestCase.assertFormsetError() is deprecated in favor of assertFormSetError(), a warning-level deprecation that still works.", "swept": false}
+{"item_id": "1a859feb7a7c", "label": "context", "reason": "The item says assertQuerysetEqual() is deprecated in favor of assertQuerySetEqual(), which is a warning-only deprecation with no required change at this release.", "swept": false}
+{"item_id": "da15f943632d", "label": "context", "reason": "Passing positional arguments to Signer and TimestampSigner is deprecated in favor of keyword-only arguments, so existing code keeps working for now.", "swept": false}
+{"item_id": "cfbc93d580e3", "label": "context", "reason": "The DEFAULT_FILE_STORAGE setting is deprecated in favor of STORAGES[\"default\"], and the old setting still functions at this release.", "swept": false}
+{"item_id": "a9f76b0b610b", "label": "context", "reason": "The STATICFILES_STORAGE setting is deprecated in favor of STORAGES[\"staticfiles\"], and the deprecated setting still works at this release.", "swept": false}
+{"item_id": "eff8496f6b99", "label": "context", "reason": "The get_storage_class() function is deprecated, which is a warning-only change that does not require action in this release.", "swept": false}
+{"item_id": "47b4cbe3630a", "label": "context", "reason": "The text is only a pointer to the Django 3.2 release notes and describes no change requiring user action.", "swept": false}
+{"item_id": "6c7f2320ab9c", "label": "risk", "reason": "Support for assigning non-deepcopyable objects to class attributes in TestCase.setUpTestData() will be removed, so existing tests may break.", "swept": false}
+{"item_id": "7cdf3b770f77", "label": "risk", "reason": "BaseCommand.requires_system_checks will stop accepting boolean values, so custom management commands using booleans must be updated.", "swept": false}
+{"item_id": "f1aa7437c521", "label": "risk", "reason": "The whitelist argument and domain_whitelist attribute of EmailValidator will be removed, so code using them will fail.", "swept": false}
+{"item_id": "e7345dafcb02", "label": "risk", "reason": "The default_app_config module variable will be removed, so apps relying on it must migrate to AppConfig auto-detection or explicit configuration.", "swept": false}
+{"item_id": "c65aa8819d90", "label": "risk", "reason": "assertQuerysetEqual() will no longer automatically call repr() on querysets compared to strings, so existing test assertions may start failing.", "swept": false}
+{"item_id": "b804ec16334c", "label": "risk", "reason": "django.core.cache.backends.memcached.MemcachedCache will be removed, so deployments using it must switch backends before upgrading.", "swept": false}
+{"item_id": "605db9ea2a1c", "label": "risk", "reason": "Support for the pre-3.2 cookie message format in CookieStorage will be removed, so sessions holding old-format messages may be affected during upgrade.", "swept": false}
+{"item_id": "52f05962b07a", "label": "context", "reason": "This is a documentation pointer to the Django 3.0 release notes and requires no action at this release.", "swept": false}
+{"item_id": "a117abded9c9", "label": "risk", "reason": "The urlquote, urlquote_plus, urlunquote and urlunquote_plus functions will be removed, so code calling them will break.", "swept": false}
+{"item_id": "ae244a81eb76", "label": "risk", "reason": "force_text() and smart_text() will be removed, so code that imports or calls them will break.", "swept": false}
+{"item_id": "fdfabdc2ef66", "label": "risk", "reason": "The ugettext family of translation functions will be removed, so code using them will break.", "swept": false}
+{"item_id": "44be31b11b26", "label": "risk", "reason": "set_language() will stop writing the user language to request.session, which changes behavior for code that reads that session key.", "swept": false}
+{"item_id": "55fd9f1953d5", "label": "risk", "reason": "Expression.get_group_by_cols() subclasses will be required to accept alias=None, so custom expressions must update their signatures.", "swept": false}
+{"item_id": "353dce6de9d0", "label": "risk", "reason": "django.utils.text.unescape_entities() will be removed, so code calling it will break.", "swept": false}
+{"item_id": "39308127d1d3", "label": "risk", "reason": "django.utils.http.is_safe_url() will be removed, so code calling it will break.", "swept": false}
+{"item_id": "4af894a9e5da", "label": "context", "reason": "This is a documentation pointer to the Django 3.1 release notes and requires no action at this release.", "swept": false}
+{"item_id": "a4fbd461a0b7", "label": "risk", "reason": "The PASSWORD_RESET_TIMEOUT_DAYS setting will be removed, so projects still using it must switch to PASSWORD_RESET_TIMEOUT.", "swept": false}
+{"item_id": "722f0d2ec067", "label": "risk", "reason": "Using non-boolean right-hand values with the isnull lookup will no longer be allowed, so such queries will fail.", "swept": false}
+{"item_id": "d65fd7c6bed2", "label": "risk", "reason": "The InvalidQuery exception class will be removed, so code that catches or imports it will break.", "swept": false}
+{"item_id": "34ae635b5499", "label": "risk", "reason": "The django-admin.py entry point will be removed, so scripts or deployments invoking it must switch to django-admin.", "swept": false}
+{"item_id": "bbdf41dc5189", "label": "risk", "reason": "HttpRequest.is_ajax() will be removed, so views relying on it will break.", "swept": false}
+{"item_id": "58dde18e64ba", "label": "risk", "reason": "Support for the pre-3.1 CookieStorage cookie format will be removed, so old message cookies will no longer be read.", "swept": false}
+{"item_id": "7c87f57261a4", "label": "risk", "reason": "Support for pre-3.1 SHA-1 admin password reset tokens will be removed, so outstanding reset links using that format will stop working.", "swept": false}
+{"item_id": "ab4751fecf4a", "label": "risk", "reason": "Support for the pre-3.1 session encoding format will be removed, so existing sessions in the old format will no longer load.", "swept": false}
+{"item_id": "d6b11bcd70dd", "label": "risk", "reason": "Support for SHA-1 signed django.core.signing.Signer signatures from before 3.1 will be removed, so those signatures will no longer validate.", "swept": false}
+{"item_id": "913c7ea9c7c3", "label": "risk", "reason": "Support for SHA-1 dumps() signatures in loads() from before 3.1 will be removed, so those values will fail to load.", "swept": false}
+{"item_id": "1b13bf2ffe6c", "label": "risk", "reason": "Support for pre-3.1 SHA-1 user sessions will be removed, so those sessions will be invalidated and users must log in again.", "swept": false}
+{"item_id": "9ac0382d088c", "label": "risk", "reason": "The get_response argument of MiddlewareMixin.__init__() becomes required and will no longer accept None, which breaks code that relied on passing None.", "swept": false}
+{"item_id": "9c88f0b69f90", "label": "risk", "reason": "The providing_args argument of django.dispatch.Signal will be removed, so code passing it will fail.", "swept": false}
+{"item_id": "e0dadc01c3bc", "label": "risk", "reason": "The length argument of get_random_string() becomes required, so calls that omit it will break.", "swept": false}
+{"item_id": "d32aa9d8ff4c", "label": "risk", "reason": "The list message for ModelMultipleChoiceField will be removed, so custom code or error message overrides that use it will stop working.", "swept": false}
+{"item_id": "3ad4abcaed6f", "label": "risk", "reason": "Passing raw column aliases to QuerySet.order_by() will be removed, so queries relying on that behavior will break.", "swept": false}
+{"item_id": "53a53343cf9c", "label": "risk", "reason": "The NullBooleanField model is removed (leaving only a stub for migrations), so code using it directly must be migrated to BooleanField(null=True).", "swept": false}
+{"item_id": "2bd634349d9d", "label": "risk", "reason": "django.conf.urls.url() will be removed, so URL configurations using it must be changed to re_path() or path().", "swept": false}
+{"item_id": "bdc251c02a7e", "label": "risk", "reason": "The postgres JSONField model is removed (leaving a stub for migrations), so models using it must switch to the builtin models.JSONField.", "swept": false}
+{"item_id": "884073716424", "label": "risk", "reason": "The postgres forms JSONField, jsonb KeyTransform, and KeyTextTransform will be removed, so code importing them will fail and needs replacement.", "swept": false}
+{"item_id": "021f8f7ccfbb", "label": "risk", "reason": "The {% ifequal %} and {% ifnotequal %} template tags will be removed, so templates using them must be rewritten with {% if %}.", "swept": false}
+{"item_id": "69838bd2911a", "label": "risk", "reason": "The DEFAULT_HASHING_ALGORITHM transitional setting will be removed, so projects relying on it must migrate to the newer hashing configuration.", "swept": false}

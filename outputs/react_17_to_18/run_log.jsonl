@@ -1,0 +1,29 @@
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.0, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "run_start", "project": "React", "current": "17", "target": "18", "offline": true, "models": {"cheap": "claude-haiku-5-5", "strong": "claude-sonnet-5-5"}}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.0, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "plan"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.0, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "plan", "releases": ["18"], "future": ["19"]}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.0, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "plan", "seconds": 0.0}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.0, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "fetch"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.01, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "fetch", "seconds": 0.01}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.01, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "parse"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.04, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "parsed", "items_total": 130, "items_on_path": 130, "items_future": 0, "items_dropped_r4": 0, "revert_candidates": 0, "patch_notes_scanned": 0}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.04, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "parse", "seconds": 0.04}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.04, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "triage"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.05, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "triage_done", "batches": 7}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.05, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "triage", "seconds": 0.01}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.05, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "extract"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.14, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "extracted", "paths": 40, "failures": 0}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.14, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "extract", "seconds": 0.1}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.14, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "link"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.15, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "link", "seconds": 0.0}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.15, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "compose"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.15, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "compose", "seconds": 0.0}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.15, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "judge"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.16, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "judge_done", "supported": 50, "partially_supported": 27, "not_supported": 2, "failed": 0}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.16, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "judge", "seconds": 0.01}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.16, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "rubric"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.16, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "rubric", "seconds": 0.0}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.16, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "assemble"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.19, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "assemble", "seconds": 0.03}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.19, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_start", "stage": "validate"}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.23, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "stage_end", "stage": "validate", "seconds": 0.04}
+{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.23, "run_id": "e72187420b", "upgrade": "react_17_to_18", "event": "run_end", "status": "ok", "final_paths": 25, "validation": {"errors": 0, "warnings": 3, "by_code": {"W4_no_search_queries": 3}}, "usage": {"triage": {"calls": 7, "cache_hits": 7, "input_tokens": 17818, "output_tokens": 14682, "usd_estimate": 0.0, "usd_full": 0.091228}, "extract": {"calls": 57, "cache_hits": 57, "input_tokens": 224298, "output_tokens": 49426, "usd_estimate": 0.0, "usd_full": 1.4142839999999999}, "judge": {"calls": 25, "cache_hits": 25, "input_tokens": 33830, "output_tokens": 5939, "usd_estimate": 0.0, "usd_full": 0.190575}}}

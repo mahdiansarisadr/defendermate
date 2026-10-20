@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_the_t_eb5730\",\n  \"claim\": \"The upgrade crosses React 18, where the TypeScript definitions change so children must be explicit.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The most notable change is that the children prop now needs to be listed explicitly when defining props\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_uses_typescript_and_depends_7adbca\",\n  \"claim\": \"The project uses TypeScript and depends on @types/react and @types/react-dom, which must be updated to the latest versions.\",\n  \"evidence\": [\n   {\n    \"quote\": \"If your project uses TypeScript, you will need to update your @types/react and @types/react-dom dependencies to the latest versions.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"component_props_interfaces_types_do_not_88914d\",\n  \"claim\": \"Component props interfaces/types do not list children explicitly but components receive children.\",\n  \"evidence\": [\n   {\n    \"quote\": \"children?: React.ReactNode;\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_the_t_eb5730",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_project_uses_typescript_and_depends_7adbca",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "component_props_interfaces_types_do_not_88914d",
+    "verdict": "not_supported",
+    "missing": "The quote is only a code snippet showing children?: React.ReactNode declared in a props interface; it does not state that props types lacking an explicit children declaration while components receive children are affected, nor any consequence of that situation."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1222,
+  "output_tokens": 211,
+  "stop_reason": "end_turn"
+ }
+}

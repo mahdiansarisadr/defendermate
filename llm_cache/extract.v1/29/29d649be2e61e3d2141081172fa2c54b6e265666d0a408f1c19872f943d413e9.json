@@ -1,0 +1,103 @@
+{
+ "prompt_id": "extract.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: React CHANGELOG (18.0.0 section) (official_changelog). Section: React / React DOM Test Utils.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nExpand act warning to cover all APIs that might schedule React work. (#22607 by @acdlite)\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nReact / React DOM Test Utils: Throw when act is used in production. (#21686 by @acdlite) Support disabling spurious act warnings with global.IS_REACT_ACT_ENVIRONMENT. (#22561 by @acdlite) Expand act warning to cover all APIs that might schedule React work. (#22607 by @acdlite) Make act batch updates. (#21797 by @acdlite) Remove warning for dangling passive effects. (#22609 by @acdlite)\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. Use derived_by \"inference\" for any condition not directly stated.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.\n\nYour previous answer failed schema validation:\n1 validation error for ExtractionResult\npaths.0.description\n  Field required [type=missing, input_value={'path_name': 'Expanded a...n the parent context.']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\nReturn a corrected answer.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Expanded act warning may surface new warnings in tests",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "tests",
+    "primary_symbol": "act",
+    "symbols": [
+     "act",
+     "global.IS_REACT_ACT_ENVIRONMENT"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, which expands the act warning to cover all APIs that might schedule React work.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "18",
+      "quotes": [
+       "Expand act warning to cover all APIs that might schedule React work."
+      ],
+      "relevance": "Ties the changed act warning behavior to release 18.",
+      "ambiguities": [
+       "The text does not give the previous React version range beyond the 17 -> 18 upgrade being assessed."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The test suite exercises React work (updates, rendering or other scheduling APIs) and may use act, so the expanded warning could now appear for work that is not wrapped in act.",
+      "category": "test_coverage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "act",
+      "quotes": [
+       "Expand act warning to cover all APIs that might schedule React work."
+      ],
+      "relevance": "The warning now covers more APIs, so tests that schedule React work outside act may emit additional warnings.",
+      "ambiguities": [
+       "The text does not state which APIs are now covered or the exact conditions under which the warning fires.",
+       "The text does not say whether the warning fails tests or is only logged."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\bact\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "react-dom/test-utils"
+       }
+      ]
+     },
+     {
+      "statement": "Tests may set global.IS_REACT_ACT_ENVIRONMENT to disable spurious act warnings.",
+      "category": "configuration",
+      "role": "uncertain",
+      "operator": "present",
+      "expected_value": "IS_REACT_ACT_ENVIRONMENT",
+      "quotes": [
+       "Support disabling spurious act warnings with global.IS_REACT_ACT_ENVIRONMENT."
+      ],
+      "relevance": "The parent context names a mechanism for disabling spurious act warnings, which may affect whether the expanded warning appears.",
+      "ambiguities": [
+       "The text does not state whether setting this flag suppresses the expanded warning or what value is required."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "IS_REACT_ACT_ENVIRONMENT"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Run the test suite on React 18 and review any new act warnings for React work that is not wrapped in act.",
+     "Wrap the React work that triggers the new warnings in act, or review use of global.IS_REACT_ACT_ENVIRONMENT for spurious warnings."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3471,
+  "output_tokens": 1622,
+  "stop_reason": "end_turn"
+ }
+}

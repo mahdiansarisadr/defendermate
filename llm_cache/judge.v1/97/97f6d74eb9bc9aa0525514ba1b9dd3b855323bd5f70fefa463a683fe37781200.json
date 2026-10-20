@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_updat_f16acb\",\n  \"claim\": \"The upgrade crosses React 18, where updating tests to createRoot can produce the act environment warning.\",\n  \"quotes\": [\n   \"When you first update your tests to use createRoot, you may see this warning in your test console\"\n  ]\n },\n {\n  \"condition_id\": \"tests_use_createroot_to_render_component_6273ec\",\n  \"claim\": \"Tests use createRoot to render components.\",\n  \"quotes\": [\n   \"When you first update your tests to use createRoot\"\n  ]\n },\n {\n  \"condition_id\": \"the_test_setup_does_not_set_globalthis_i_c012ee\",\n  \"claim\": \"The test setup does not set globalThis.IS_REACT_ACT_ENVIRONMENT to true.\",\n  \"quotes\": [\n   \"To fix this, set globalThis.IS_REACT_ACT_ENVIRONMENT to true before running your test\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_updat_f16acb",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention React 18 or an upgrade crossing it, nor does it name the specific 'act environment' warning; it only says a warning may appear when tests are first updated to use createRoot."
+   },
+   {
+    "condition_id": "tests_use_createroot_to_render_component_6273ec",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_test_setup_does_not_set_globalthis_i_c012ee",
+    "verdict": "partially_supported",
+    "missing": "The quote only gives the fix of setting the flag to true before running tests. It does not state that the current test setup lacks this setting."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 963,
+  "output_tokens": 252,
+  "stop_reason": "end_turn"
+ }
+}

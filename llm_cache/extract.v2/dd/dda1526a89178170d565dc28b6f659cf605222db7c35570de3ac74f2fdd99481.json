@@ -1,0 +1,80 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.1. Source: Django 4.1 release notes (official_release_notes). Section: Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.1\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.1\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nThe admin log out UI now uses POST requests.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous: Related managers for ForeignKey, ManyToManyField, and GenericRelation are now cached on the Model instance to which they belong. *This change was reverted in Django 4.1.2.* The Django test runner now returns a non-zero error code for unexpected successes from tests marked with unittest.expectedFailure. CsrfViewMiddleware no longer masks the CSRF cookie like it does the CSRF token in the DOM. CsrfViewMiddleware now uses request.META['CSRF_COOKIE'] for storing the unmasked CSRF secret rather than a masked version. This is an undocumented, private API. The ModelAdmin.actions and inlines attributes now default to an empty tuple rather than an empty list to discourage unintended mutation. The type=\"text/css\" attribute is no longer included in <link> tags for CSS form media. formset:added and formset:removed JavaScript events are now pure JavaScript events and don't depend on jQuery. See admin-javascript-inline-form-events for more details on the change. The exc_info argument of the undocumented django.utils.log.log_response() function is replaced by exception. The size argument of the undocumented django.views.static.was_modified_since() function is removed. The admin log out UI now uses POST requests. The undocumented InlineAdminFormSet.non_form_errors property is replaced by the non_form_errors() method. This is consistent with BaseFormSet. As per above, the cached template loader is now enabled in development. You may specify OPTIONS['loaders'] to override this, if necessary. The undocumented django.contrib.auth.views.SuccessURLAllowedHostsMixin mixin is replaced by RedirectURLMixin. BaseConstraint subclasses must implement validate method to allow those constraints to be used for validation. The undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved to django.contrib.admindocs.utils. The Model.full_clean method now converts an exclude value to a set. It's also preferable to pass an exclude value as a set to the Model.clean_fields, Model.full_clean, Model.validate_unique, and Model.validate_constraints methods. The minimum supported version of asgiref is increased from 3.4.1 to 3.5.2. Combined expressions no longer use the error-prone behavior of guessing output_field when argument types match. As a consequence, resolving an output_field for database functions and combined expressions may now crash with mixed types. You will n\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.1 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "The admin log out UI now uses POST requests, which can break customized admin templates, tests, or links that rely on GET-based logout.",
+  "paths": [
+   {
+    "path_name": "Admin log out UI now uses POST requests",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "The Django admin log out UI now uses POST requests instead of the previous behavior. The text lists this as a backwards incompatible change, so custom templates, links, tests or integrations that depend on the previous log out request method in the admin may be affected. The text does not state the previous method or the exact impact.",
+    "primary_symbol": "admin log out",
+    "symbols": [
+     "admin log out",
+     "POST"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.1, where the admin log out UI change was introduced (3.2 -> 4.2).",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.1",
+      "quotes": [
+       "The admin log out UI now uses POST requests."
+      ],
+      "relevance": "Ties the change to the 4.1 backwards incompatible changes; upgrading from 3.2 to 4.2 crosses 4.1.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application uses the Django admin log out UI, or has custom templates, links, tests or integrations that depend on how admin log out requests are made.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "admin log out",
+      "quotes": [
+       "The admin log out UI now uses POST requests."
+      ],
+      "relevance": "The change affects the admin log out UI; only apps using the admin and its log out flow are affected.",
+      "ambiguities": [
+       "The text does not state what request method was used previously or which customizations are affected."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "admin:logout|admin/logout|logout"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "django\\.contrib\\.admin"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Check the admin log out flow after upgrading and confirm it works with POST requests.",
+     "Review any custom admin templates, links or tests that trigger admin log out (e.g. via GET) and update them to use POST."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4264,
+  "output_tokens": 792,
+  "stop_reason": "end_turn"
+ }
+}

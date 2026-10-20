@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_which_add_b06963\",\n  \"claim\": \"The upgrade crosses release 18, which adds the exports field to package.json.\",\n  \"quotes\": [\n   \"Add exports field to package.json.\"\n  ]\n },\n {\n  \"condition_id\": \"application_code_or_build_tooling_import_3ae78d\",\n  \"claim\": \"Application code or build tooling imports React package files via deep or subpath imports (e.g. react/..., react-dom/...) rather than only the package root.\",\n  \"quotes\": [\n   \"Add exports field to package.json.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_which_add_b06963",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention release 18 or that the upgrade crosses it; it only states that an exports field was added to package.json."
+   },
+   {
+    "condition_id": "application_code_or_build_tooling_import_3ae78d",
+    "verdict": "not_supported",
+    "missing": "The quote only says an exports field was added to package.json. It does not say that application code or build tooling uses deep or subpath imports of React packages, or that such imports are affected."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 832,
+  "output_tokens": 192,
+  "stop_reason": "end_turn"
+ }
+}

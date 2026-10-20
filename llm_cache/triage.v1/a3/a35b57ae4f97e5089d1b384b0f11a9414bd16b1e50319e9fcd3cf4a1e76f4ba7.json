@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.1.\nSource: Django 4.1 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"b71418e1cb40\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"CSRF_COOKIE_MASKED transitional setting is deprecated.\"}\n{\"item_id\": \"1c468cbb5e4d\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The name argument of django.utils.functional.cached_property is deprecated as it's unnecessary as of Python 3.6.\"}\n{\"item_id\": \"cea13e880819\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The opclasses argument of django.contrib.postgres.constraints.ExclusionConstraint is deprecated in favor of using OpClass() in ExclusionConstraint.expressions. To use it, you need to add 'django.contrib.postgres' in your INSTALLED_APPS. After making this change, makemigrations will generate a new migration with two operations: RemoveConstraint and AddConstraint. Since this change has no effect on the database schema, the SeparateDatabaseAndState operation can be used to only update the migration state without running any SQL. Move the generated operations into the state_operations argument of SeparateDatabaseAndState. For example: class Migration(migrations.Migration): ... operations = [ migrations.SeparateDatabaseAndState( database_operations=[], state_operations=[ migrations.RemoveConstraint(...), migrations.AddConstraint(...), ], ), ]\"}\n{\"item_id\": \"db011b432012\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The undocumented ability to pass errors=None to SimpleTestCase.assertFormError and assertFormsetError() is deprecated. Use errors=[] instead.\"}\n{\"item_id\": \"0d0c7ecbd443\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"django.contrib.sessions.serializers.PickleSerializer is deprecated due to the risk of remote code execution.\"}\n{\"item_id\": \"053af02de5cb\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated. In older versions, no prefetching was done. Providing a value for chunk_size signifies that the additional query per chunk needed to prefetch is desired.\"}\n{\"item_id\": \"7e1b420bc9b7\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"Passing unsaved model instances to related filters is deprecated. In Django 5.0, the exception will be raised.\"}\n{\"item_id\": \"c73942ca2ace\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"created=True is added to the signature of RemoteUserBackend.configure_user. Support for RemoteUserBackend subclasses that do not accept this argument is deprecated.\"}\n{\"item_id\": \"1c09430c2c28\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The django.utils.timezone.utc alias to datetime.timezone.utc is deprecated. Use datetime.timezone.utc directly.\"}\n{\"item_id\": \"763b390fb488\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"Passing a response object and a form/formset name to SimpleTestCase.assertFormError() and assertFormsetError() is deprecated. Use: assertFormError(response.context[\\\"form_name\\\"], ...) assertFormsetError(response.context[\\\"formset_name\\\"], ...) or pass the form/formset object directly instead.\"}\n{\"item_id\": \"b62596da85f5\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The undocumented django.contrib.gis.admin.OpenLayersWidget is deprecated.\"}\n{\"item_id\": \"ae08a1f59810\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"django.contrib.auth.hashers.CryptPasswordHasher is deprecated.\"}\n{\"item_id\": \"bdb25000993c\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The ability to pass nulls_first=False or nulls_last=False to Expression.asc() and Expression.desc() methods, and the OrderBy expression is deprecated. Use None instead.\"}\n{\"item_id\": \"1de3b5d51df3\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The \\\"django/forms/default.html\\\" and \\\"django/forms/formsets/default.html\\\" templates which are a proxy to the table-based templates are deprecated. Use the specific template instead.\"}\n{\"item_id\": \"ded28d6314a8\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The undocumented LogoutView.get_next_page() method is renamed to get_success_url().\"}\n{\"item_id\": \"aaa6d06fb792\", \"section\": \"Django 4.1 release notes / Features removed in 4.1\", \"text\": \"These features have reached the end of their deprecation cycle and are removed in Django 4.1. See deprecated-features-3.2 for details on these changes, including how to remove usage of these features.\"}\n{\"item_id\": \"27ce20f71257\", \"section\": \"Django 4.1 release notes / Features removed in 4.1\", \"text\": \"Support for assigning objects which don't support creating deep copies with copy.deepcopy() to class attributes in TestCase.setUpTestData() is removed.\"}\n{\"item_id\": \"58d2aa35d1e5\", \"section\": \"Django 4.1 release notes / Features removed in 4.1\", \"text\": \"Support for using a boolean value in BaseCommand.requires_system_checks is removed.\"}\n{\"item_id\": \"0f29f6bf0255\", \"section\": \"Django 4.1 release notes / Features removed in 4.1\", \"text\": \"The whitelist argument and domain_whitelist attribute of django.core.validators.EmailValidator are removed.\"}\n{\"item_id\": \"a862afb17086\", \"section\": \"Django 4.1 release notes / Features removed in 4.1\", \"text\": \"The default_app_config application configuration variable is removed.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "b71418e1cb40",
+    "label": "context",
+    "reason": "The CSRF_COOKIE_MASKED setting is only deprecated, so it still works and needs no action in this release."
+   },
+   {
+    "item_id": "1c468cbb5e4d",
+    "label": "context",
+    "reason": "The name argument of cached_property is deprecated but still accepted, so existing code keeps working."
+   },
+   {
+    "item_id": "cea13e880819",
+    "label": "risk",
+    "reason": "Moving ExclusionConstraint opclasses to OpClass() causes makemigrations to generate new RemoveConstraint/AddConstraint operations that the user must wrap in SeparateDatabaseAndState, which is migration work."
+   },
+   {
+    "item_id": "db011b432012",
+    "label": "context",
+    "reason": "Passing errors=None to assertFormError is deprecated while errors=[] is the replacement, so tests keep working for now."
+   },
+   {
+    "item_id": "0d0c7ecbd443",
+    "label": "risk",
+    "reason": "PickleSerializer is deprecated for security reasons, so deployments using it may need to switch serializers and handle existing sessions."
+   },
+   {
+    "item_id": "053af02de5cb",
+    "label": "risk",
+    "reason": "QuerySet.iterator() with prefetch_related now needs a chunk_size, and previously no prefetching happened, so existing code can see changed query behavior."
+   },
+   {
+    "item_id": "7e1b420bc9b7",
+    "label": "context",
+    "reason": "Passing unsaved model instances to related filters only emits a deprecation warning now and the exception comes in Django 5.0."
+   },
+   {
+    "item_id": "c73942ca2ace",
+    "label": "risk",
+    "reason": "RemoteUserBackend subclasses whose configure_user does not accept the new created argument are deprecated and will break, so they need updating."
+   },
+   {
+    "item_id": "1c09430c2c28",
+    "label": "context",
+    "reason": "The django.utils.timezone.utc alias is deprecated but still works, so only a warning is produced."
+   },
+   {
+    "item_id": "763b390fb488",
+    "label": "context",
+    "reason": "Passing a response object with a form name to assertFormError is deprecated but still functions, and the replacement pattern is given."
+   },
+   {
+    "item_id": "b62596da85f5",
+    "label": "context",
+    "reason": "The undocumented OpenLayersWidget is deprecated, which only produces a warning."
+   },
+   {
+    "item_id": "ae08a1f59810",
+    "label": "context",
+    "reason": "CryptPasswordHasher is deprecated but remains available, so no immediate action is needed."
+   },
+   {
+    "item_id": "bdb25000993c",
+    "label": "context",
+    "reason": "Passing nulls_first=False or nulls_last=False is deprecated in favor of None, but the old form still works."
+   },
+   {
+    "item_id": "1de3b5d51df3",
+    "label": "context",
+    "reason": "The default.html form templates are deprecated proxies that still work, and the specific templates are the recommended replacement."
+   },
+   {
+    "item_id": "ded28d6314a8",
+    "label": "risk",
+    "reason": "LogoutView.get_next_page() is renamed to get_success_url(), so overrides of the old method will no longer be called."
+   },
+   {
+    "item_id": "aaa6d06fb792",
+    "label": "context",
+    "reason": "This is a documentation pointer to the 3.2 deprecated-features notes and requires no direct action in itself."
+   },
+   {
+    "item_id": "27ce20f71257",
+    "label": "risk",
+    "reason": "Support for setUpTestData class attributes that cannot be deep-copied is removed, so affected tests will fail."
+   },
+   {
+    "item_id": "58d2aa35d1e5",
+    "label": "risk",
+    "reason": "Using a boolean value for BaseCommand.requires_system_checks is removed, so custom commands must be updated."
+   },
+   {
+    "item_id": "0f29f6bf0255",
+    "label": "risk",
+    "reason": "The whitelist argument and domain_whitelist attribute of EmailValidator are removed, so code using them will break."
+   },
+   {
+    "item_id": "a862afb17086",
+    "label": "risk",
+    "reason": "The default_app_config variable is removed, so apps relying on it must be updated to use the new automatic app config discovery."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2989,
+  "output_tokens": 2461,
+  "stop_reason": "end_turn"
+ }
+}

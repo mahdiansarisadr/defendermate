@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_0_0_which_i_ea47b5\",\n  \"claim\": \"The upgrade crosses React 18.0.0, which introduced the revert to client render on text mismatch.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Revert to client render on text mismatch\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_text_content_on_1ebb1e\",\n  \"claim\": \"The application renders text content on the server that can mismatch the text rendered on the client.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Revert to client render on text mismatch\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_react_dom_server_re_bc5141\",\n  \"claim\": \"The application uses React DOM Server rendering.\",\n  \"evidence\": [\n   {\n    \"quote\": \"React DOM Server\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_0_0_which_i_ea47b5",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_renders_text_content_on_1ebb1e",
+    "verdict": "partially_supported",
+    "missing": "The quote only says React reverts to client render on text mismatch; it does not explicitly say server-rendered text can mismatch client text, nor does it describe hydration or SSR context. The claim's core (text mismatch scenario affected) is implied but not stated."
+   },
+   {
+    "condition_id": "the_application_uses_react_dom_server_re_bc5141",
+    "verdict": "partially_supported",
+    "missing": "The quote is only a section heading 'React DOM Server'; it does not state any behavior or change affecting apps using server rendering, so it only establishes that such a section exists in the changelog."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1176,
+  "output_tokens": 290,
+  "stop_reason": "end_turn"
+ }
+}

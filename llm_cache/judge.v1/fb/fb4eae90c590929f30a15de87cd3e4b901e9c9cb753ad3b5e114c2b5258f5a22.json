@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whi_43e4e1\",\n  \"claim\": \"The upgrade crosses React release 18, which introduces the new JS environment requirements.\",\n  \"quotes\": [\n   \"React now depends on modern browsers features including Promise, Symbol, and Object.assign.\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_supports_older_browsers_57dec5\",\n  \"claim\": \"The application supports older browsers or devices, such as Internet Explorer, that do not provide Promise, Symbol, or Object.assign natively or have non-compliant implementations.\",\n  \"quotes\": [\n   \"If you support older browsers and devices such as Internet Explorer which do not provide modern browser features natively or have non-compliant implementations\"\n  ]\n },\n {\n  \"condition_id\": \"the_bundled_application_does_not_already_7f1d34\",\n  \"claim\": \"The bundled application does not already include a global polyfill for Promise, Symbol, and Object.assign.\",\n  \"quotes\": [\n   \"consider including a global polyfill in your bundled application\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whi_43e4e1",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention React release 18 or that the upgrade crosses it; it only states React now depends on modern browser features (Promise, Symbol, Object.assign). The attribution of this requirement to release 18 is not stated."
+   },
+   {
+    "condition_id": "the_application_supports_older_browsers_57dec5",
+    "verdict": "partially_supported",
+    "missing": "The quote is a conditional (\"If you support older browsers...\") and does not establish that the application actually supports such browsers; it also does not name Promise, Symbol, or Object.assign as the missing features."
+   },
+   {
+    "condition_id": "the_bundled_application_does_not_already_7f1d34",
+    "verdict": "not_supported",
+    "missing": "The quote only recommends considering a global polyfill; it does not state whether the application already includes one, nor mention Promise, Symbol, or Object.assign specifically."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1001,
+  "output_tokens": 335,
+  "stop_reason": "end_turn"
+ }
+}

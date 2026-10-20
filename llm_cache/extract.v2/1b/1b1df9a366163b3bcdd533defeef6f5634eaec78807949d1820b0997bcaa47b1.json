@@ -1,0 +1,132 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.1. Source: Django 4.1 release notes (official_release_notes). Section: Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.1\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.1\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nThe usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated. In older versions, no prefetching was done. Providing a value for chunk_size signifies that the additional query per chunk needed to prefetch is desired.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.1 release notes / Features deprecated in 4.1 / Miscellaneous: The context for sitemap index templates of a flat list of URLs is deprecated. Custom sitemap index templates should be updated for the adjusted context variables, expecting a list of objects with location and optional lastmod attributes. CSRF_COOKIE_MASKED transitional setting is deprecated. The name argument of django.utils.functional.cached_property is deprecated as it's unnecessary as of Python 3.6. The opclasses argument of django.contrib.postgres.constraints.ExclusionConstraint is deprecated in favor of using OpClass() in ExclusionConstraint.expressions. To use it, you need to add 'django.contrib.postgres' in your INSTALLED_APPS. After making this change, makemigrations will generate a new migration with two operations: RemoveConstraint and AddConstraint. Since this change has no effect on the database schema, the SeparateDatabaseAndState operation can be used to only update the migration state without running any SQL. Move the generated operations into the state_operations argument of SeparateDatabaseAndState. For example: class Migration(migrations.Migration): ... operations = [ migrations.SeparateDatabaseAndState( database_operations=[], state_operations=[ migrations.RemoveConstraint(...), migrations.AddConstraint(...), ], ), ] The undocumented ability to pass errors=None to SimpleTestCase.assertFormError and assertFormsetError() is deprecated. Use errors=[] instead. django.contrib.sessions.serializers.PickleSerializer is deprecated due to the risk of remote code execution. The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated. In older versions, no prefetching was done. Providing a value for chunk_size signifies that the additional query per chunk needed to prefetch is desired. Passing unsaved model instances to related filters is deprecated. In Django 5.0, the exception will be raised. created=True is added to the signature of RemoteUserBackend.configure_user. Support for RemoteUserBackend subclasses that do not accept this argument is deprecated. The django.utils.timezone.utc alias to datetime.timezone.utc is deprecated. Use datetime.timezone.utc directly. Passing a response object and a form/formset name to SimpleTestCase.assertFormError() and assertFormsetError() is deprecated. Use: assertFormError(response.context[\"form_name\"], ...) assertFormsetError(response.context[\"formset_name\"], ...) or \n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.1 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "QuerySet.iterator() with prefetch_related and no chunk_size",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "Calling QuerySet.iterator() on a queryset that prefetches related objects without chunk_size is deprecated as of 4.1. Older versions did no prefetching in this case. Callers must pass chunk_size to signal that the additional prefetch query per chunk is wanted.",
+    "primary_symbol": "QuerySet.iterator()",
+    "symbols": [
+     "QuerySet.iterator()",
+     "chunk_size",
+     "prefetch_related"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.1, which deprecates iterator() on prefetching querysets without chunk_size.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.1",
+      "quotes": [
+       "The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated."
+      ],
+      "relevance": "Ties the change to release 4.1, which falls between 3.2 and 4.2.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application calls QuerySet.iterator().",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "iterator(",
+      "quotes": [
+       "The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated."
+      ],
+      "relevance": "The deprecation applies only to code that calls QuerySet.iterator().",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\.iterator\\("
+       }
+      ]
+     },
+     {
+      "statement": "The queryset passed to iterator() prefetches related objects (for example via prefetch_related or Prefetch).",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "prefetch_related",
+      "quotes": [
+       "on a queryset that prefetches related objects without providing the chunk_size argument"
+      ],
+      "relevance": "Only querysets that prefetch related objects are affected.",
+      "ambiguities": [
+       "The text does not name prefetch_related or Prefetch as the mechanism."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "prefetch_related\\(|Prefetch\\("
+       }
+      ]
+     },
+     {
+      "statement": "The iterator() call does not pass a chunk_size argument.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "absent",
+      "expected_value": "chunk_size",
+      "quotes": [
+       "without providing the chunk_size argument is deprecated"
+      ],
+      "relevance": "Calls that already provide chunk_size are not deprecated, and that value signals that prefetching is wanted.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\.iterator\\((?!.*chunk_size)"
+       }
+      ]
+     },
+     {
+      "statement": "Prefetching is now performed on iterator(), with one additional query per chunk, where older versions did none.",
+      "category": "behavior",
+      "role": "optional",
+      "operator": "present",
+      "expected_value": "additional query per chunk",
+      "quotes": [
+       "In older versions, no prefetching was done.",
+       "the additional query per chunk needed to prefetch"
+      ],
+      "relevance": "Code that relied on the old behavior may see extra queries.",
+      "ambiguities": [
+       "The text does not say what happens when chunk_size is omitted, or when the deprecation ends."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Find iterator() calls on querysets that use prefetch_related or Prefetch and pass an explicit chunk_size to each, accepting the additional prefetch query per chunk.",
+     "Run the test suite with deprecation warnings enabled to surface these calls."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4347,
+  "output_tokens": 2545,
+  "stop_reason": "end_turn"
+ }
+}

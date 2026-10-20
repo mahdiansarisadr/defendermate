@@ -1,0 +1,131 @@
+{
+ "prompt_id": "extract.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: How to Upgrade to React 18 (official_migration_guide). Section: Automatic Batching.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nReact 18 adds out-of-the-box performance improvements by doing more batching by default. Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default: // Before React 18 only React events were batched function handleClick() { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) } setTimeout(() => { setCount(c => c + 1); setFlag(f => !f); // React will render twice, once for each state update (no batching) }, 1000);\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nAutomatic Batching: React 18 adds out-of-the-box performance improvements by doing more batching by default. Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default: // Before React 18 only React events were batched function handleClick() { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) } setTimeout(() => { setCount(c => c + 1); setFlag(f => !f); // React will render twice, once for each state update (no batching) }, 1000); Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from. This means that updates inside of timeouts, promises, native event handlers or any other event will batch the same way as updates inside of React events: // After React 18 updates inside of timeouts, promises, // native event handlers or any other event are batched. function handleClick() { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) } setTimeout(() => { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) }, 1000); This is a breaking change, but we expect this to result in less work rendering, and therefore better performance in your applications. To opt-out of automatic batching, you can use flushSync: import { flushSync } from 'react-dom'; function handleClick() { flushSync(() => { setCounter(c => c + 1); }); // React has updated the DOM by now flushSync(() => { setFlag(f => !f); }); // React has updated the DOM by now } For more information, see the Automatic batching deep dive.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. Use derived_by \"inference\" for any condition not directly stated.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.\n\nYour previous answer failed schema validation:\n1 validation error for ExtractionResult\npaths.0.description\n  Field required [type=missing, input_value={'path_name': 'Automatic ...f automatic batching.\"]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\nReturn a corrected answer.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "Automatic batching under createRoot is explicitly called a breaking change: state updates in timeouts, promises and native event handlers are now batched, which can alter render timing and DOM-read behavior.",
+  "paths": [
+   {
+    "path_name": "Automatic batching of state updates outside React event handlers",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "primary_symbol": "createRoot",
+    "symbols": [
+     "createRoot",
+     "flushSync",
+     "setTimeout"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, where createRoot enables automatic batching of all updates",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "17",
+      "quotes": [
+       "Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from."
+      ],
+      "relevance": "Ties the batching behavior change to release 18.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The app renders with createRoot (the new root API) rather than the legacy root",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "createRoot",
+      "quotes": [
+       "Starting in React 18 with createRoot, all updates will be automatically batched"
+      ],
+      "relevance": "The text states that automatic batching starts in React 18 with createRoot.",
+      "ambiguities": [
+       "The text does not say what happens to apps that stay on the legacy root API."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "createRoot\\s*\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "from ['\\\"]react-dom/client['\\\"]"
+       }
+      ]
+     },
+     {
+      "statement": "State updates are made inside promises, setTimeout, native event handlers or other non-React events, which were previously not batched",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "setState calls inside setTimeout, promises or native event handlers",
+      "quotes": [
+       "Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default"
+      ],
+      "relevance": "These updates previously caused one render each and will now be batched into a single render.",
+      "ambiguities": [
+       "The text does not say how to identify all such update sites in a codebase."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "setTimeout\\s*\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\.then\\s*\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "addEventListener\\s*\\("
+       }
+      ]
+     },
+     {
+      "statement": "Code relies on the DOM or rendered state being updated between consecutive state updates outside React events",
+      "category": "behavior",
+      "role": "uncertain",
+      "operator": "unknown",
+      "expected_value": "code depends on intermediate renders",
+      "quotes": [
+       "React has updated the DOM by now"
+      ],
+      "relevance": "Code that assumed a render after each update may behave differently once updates are batched; the text only shows flushSync as the way to force DOM updates.",
+      "ambiguities": [
+       "The text does not explicitly state that code depending on intermediate renders will break."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "flushSync"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Review state updates made inside setTimeout, promises and native event handlers for reliance on a render after each update",
+     "Wrap updates that must be applied to the DOM immediately in flushSync imported from 'react-dom' to opt out of automatic batching",
+     "Test affected components after switching to createRoot"
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4084,
+  "output_tokens": 1950,
+  "stop_reason": "end_turn"
+ }
+}

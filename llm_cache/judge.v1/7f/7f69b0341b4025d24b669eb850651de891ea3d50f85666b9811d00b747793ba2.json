@@ -1,0 +1,45 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_in_which_308e9e\",\n  \"claim\": \"The upgrade crosses release 18, in which act throws when used in production.\",\n  \"quotes\": [\n   \"Throw when act is used in production.\",\n   \"Expand act warning to cover all APIs that might schedule React work\",\n   \"Make act batch updates.\"\n  ]\n },\n {\n  \"condition_id\": \"application_or_test_code_calls_act_154882\",\n  \"claim\": \"Application or test code calls act.\",\n  \"quotes\": [\n   \"Throw when act is used in production.\",\n   \"Make act batch updates.\"\n  ]\n },\n {\n  \"condition_id\": \"act_is_executed_in_a_production_build_e_e3f7bc\",\n  \"claim\": \"act is executed in a production build (e.g. NODE_ENV=production or production bundles of React).\",\n  \"quotes\": [\n   \"Throw when act is used in production.\"\n  ]\n },\n {\n  \"condition_id\": \"the_project_has_tests_that_cause_react_w_aa78af\",\n  \"claim\": \"The project has tests that cause React work to be scheduled (updates, renders and similar) without wrapping it in act.\",\n  \"quotes\": [\n   \"Expand act warning to cover all APIs that might schedule React work\"\n  ]\n },\n {\n  \"condition_id\": \"the_global_is_react_act_environment_may_463b5e\",\n  \"claim\": \"The global IS_REACT_ACT_ENVIRONMENT may be configured in the test setup to control spurious act warnings.\",\n  \"quotes\": [\n   \"Support disabling spurious act warnings with global.IS_REACT_ACT_ENVIRONMENT\"\n  ]\n },\n {\n  \"condition_id\": \"test_assertions_depend_on_updates_being_4eb629\",\n  \"claim\": \"Test assertions depend on updates being flushed or rendered in a particular order or timing inside act.\",\n  \"quotes\": [\n   \"Make act batch updates.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_in_which_308e9e",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not mention release 18 or that the upgrade crosses it; they only state that act throws when used in production."
+   },
+   {
+    "condition_id": "application_or_test_code_calls_act_154882",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "act_is_executed_in_a_production_build_e_e3f7bc",
+    "verdict": "partially_supported",
+    "missing": "The quote states act throws in production but does not specify NODE_ENV=production or production bundles, nor that act is actually executed there."
+   },
+   {
+    "condition_id": "the_project_has_tests_that_cause_react_w_aa78af",
+    "verdict": "partially_supported",
+    "missing": "The quote says the act warning is expanded to cover APIs that might schedule React work, but does not explicitly say that tests which schedule work outside act are affected, or mention updates and renders."
+   },
+   {
+    "condition_id": "the_global_is_react_act_environment_may_463b5e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "test_assertions_depend_on_updates_being_4eb629",
+    "verdict": "partially_supported",
+    "missing": "The quote only says act now batches updates; it does not state that test assertions depend on flush order or timing, or that behavior changes for such tests."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1289,
+  "output_tokens": 455,
+  "stop_reason": "end_turn"
+ }
+}

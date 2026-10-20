@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_0_where_th_a6af52\",\n  \"claim\": \"The upgrade crosses release 4.0, where the JSONField model field is removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The django.contrib.postgres.fields.JSONField model field is removed, except for support in historical migrations.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"The model django.contrib.postgres.fields.JSONField will be removed.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_references_django_contri_676b82\",\n  \"claim\": \"The application references django.contrib.postgres.fields.JSONField in non-migration code (e.g. model definitions).\",\n  \"evidence\": [\n   {\n    \"quote\": \"The django.contrib.postgres.fields.JSONField model field is removed\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"The model django.contrib.postgres.fields.JSONField will be removed.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"A stub field will remain for compatibility with historical migrations.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"usage_only_inside_historical_migrations_dddf46\",\n  \"claim\": \"Usage only inside historical migrations remains supported and is not affected.\",\n  \"evidence\": [\n   {\n    \"quote\": \"except for support in historical migrations\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_0_where_th_a6af52",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_references_django_contri_676b82",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "usage_only_inside_historical_migrations_dddf46",
+    "verdict": "partially_supported",
+    "missing": "The quote only says the removal excepts support in historical migrations; it does not explicitly state that migration-only usage is entirely unaffected by the upgrade, nor does it say anything about other impacts."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1399,
+  "output_tokens": 201,
+  "stop_reason": "end_turn"
+ }
+}

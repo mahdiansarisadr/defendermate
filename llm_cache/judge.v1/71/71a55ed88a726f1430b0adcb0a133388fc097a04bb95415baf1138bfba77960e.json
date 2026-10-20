@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whe_d33580\",\n  \"claim\": \"The upgrade crosses React release 18, where the Suspense fallback={undefined} behavior changed.\",\n  \"quotes\": [\n   \"Suspense fallback={undefined} now behaves the same as null and isn't ignored.\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_a_suspense_compo_55afe2\",\n  \"claim\": \"The application renders a Suspense component with fallback={undefined} or a fallback prop that can evaluate to undefined.\",\n  \"quotes\": [\n   \"Suspense fallback={undefined} now behaves the same as null and isn't ignored.\"\n  ]\n },\n {\n  \"condition_id\": \"the_suspense_boundary_actually_suspends_0da42a\",\n  \"claim\": \"The Suspense boundary actually suspends, so that its fallback is shown.\",\n  \"quotes\": [\n   \"Suspense fallback={undefined} now behaves the same as null and isn't ignored.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whe_d33580",
+    "verdict": "partially_supported",
+    "missing": "The quote states the behavior change but does not say it occurred in React 18 or that the upgrade crosses that release."
+   },
+   {
+    "condition_id": "the_application_renders_a_suspense_compo_55afe2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_suspense_boundary_actually_suspends_0da42a",
+    "verdict": "not_supported",
+    "missing": "The quote says nothing about whether a boundary suspends or when the fallback is shown; it only states that fallback={undefined} now behaves like null."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 982,
+  "output_tokens": 228,
+  "stop_reason": "end_turn"
+ }
+}

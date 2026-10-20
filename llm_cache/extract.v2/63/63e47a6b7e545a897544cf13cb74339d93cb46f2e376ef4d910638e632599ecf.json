@@ -1,0 +1,101 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.1. Source: Django 4.1 release notes (official_release_notes). Section: Django 4.1 release notes / Features removed in 4.1.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.1\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.1\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nTransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.1 release notes / Features removed in 4.1: These features have reached the end of their deprecation cycle and are removed in Django 4.1. See deprecated-features-3.2 for details on these changes, including how to remove usage of these features. Support for assigning objects which don't support creating deep copies with copy.deepcopy() to class attributes in TestCase.setUpTestData() is removed. Support for using a boolean value in BaseCommand.requires_system_checks is removed. The whitelist argument and domain_whitelist attribute of django.core.validators.EmailValidator are removed. The default_app_config application configuration variable is removed. TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values. The django.core.cache.backends.memcached.MemcachedCache backend is removed. Support for the pre-Django 3.2 format of messages used by django.contrib.messages.storage.cookie.CookieStorage is removed.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.1 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "Removal of a deprecated behavior in Django 4.1: assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values, so tests comparing against repr() strings can fail.",
+  "paths": [
+   {
+    "path_name": "assertQuerysetEqual no longer applies repr() to querysets compared with strings",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "tests",
+    "description": "TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values. Tests that compare a queryset to repr()-style strings can behave differently or fail after the upgrade to 4.1 or later.",
+    "primary_symbol": "TransactionTestCase.assertQuerysetEqual",
+    "symbols": [
+     "TransactionTestCase.assertQuerysetEqual",
+     "assertQuerysetEqual",
+     "repr"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses Django 4.1, where this behavior change was made as part of the removal of deprecated features.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.1",
+      "quotes": [
+       "TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values."
+      ],
+      "relevance": "The text states the change is among the features removed in Django 4.1, so a 3.2 to 4.2 upgrade crosses it.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Test code calls assertQuerysetEqual() on a TransactionTestCase (or subclass such as TestCase) and compares a queryset to string values.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "assertQuerysetEqual",
+      "quotes": [
+       "TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values."
+      ],
+      "relevance": "Only tests that call assertQuerysetEqual() with string values are affected by the change.",
+      "ambiguities": [
+       "The text names TransactionTestCase only; it does not say whether subclasses such as TestCase are affected."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "assertQuerysetEqual\\s*\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "assertQuerysetEqual\\([^)]*['\\\"]<"
+       }
+      ]
+     },
+     {
+      "statement": "The comparison values are strings, such as repr() output like '<Model: name>', rather than model instances or other non-string values.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "string values compared against a queryset",
+      "quotes": [
+       "when compared to string values"
+      ],
+      "relevance": "The text limits the behavior change to comparisons against string values.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "assertQuerysetEqual\\([\\s\\S]{0,200}\\[\\s*['\\\"]<"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search the test suite for assertQuerysetEqual() calls that compare against strings, especially repr()-style strings.",
+     "Update such assertions to compare against the actual objects, or otherwise adjust the expected values to match the new behavior in 4.1 and later.",
+     "Run the test suite on 4.2 and fix any assertQuerysetEqual() failures."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3738,
+  "output_tokens": 1185,
+  "stop_reason": "end_turn"
+ }
+}

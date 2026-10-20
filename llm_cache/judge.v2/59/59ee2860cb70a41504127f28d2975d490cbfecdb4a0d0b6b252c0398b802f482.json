@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_updat_0765d4\",\n  \"claim\": \"The upgrade crosses React 18, where updating tests to createRoot triggers the act environment warning.\",\n  \"evidence\": [\n   {\n    \"quote\": \"When you first update your tests to use createRoot, you may see this warning in your test console\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"tests_have_been_updated_to_use_createroo_00a1fd\",\n  \"claim\": \"Tests have been updated to use createRoot.\",\n  \"evidence\": [\n   {\n    \"quote\": \"When you first update your tests to use createRoot\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_test_setup_does_not_set_globalthis_i_c012ee\",\n  \"claim\": \"The test setup does not set globalThis.IS_REACT_ACT_ENVIRONMENT to true.\",\n  \"evidence\": [\n   {\n    \"quote\": \"set globalThis.IS_REACT_ACT_ENVIRONMENT to true before running your test\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"tests_use_a_testing_library_that_does_no_f90f49\",\n  \"claim\": \"Tests use a testing library that does not configure the flag automatically.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Eventually, we expect testing libraries will configure this for you automatically.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_updat_0765d4",
+    "verdict": "partially_supported",
+    "missing": "The quote only says a warning may appear in the test console when tests are first updated to createRoot. It does not name it as the act environment warning, and it does not state that the upgrade crosses React 18 (only the section metadata implies that)."
+   },
+   {
+    "condition_id": "tests_have_been_updated_to_use_createroo_00a1fd",
+    "verdict": "partially_supported",
+    "missing": "The quote only describes what may happen when you first update tests to createRoot. It does not state that tests have actually been updated, which is a hypothesis about the deployment."
+   },
+   {
+    "condition_id": "the_test_setup_does_not_set_globalthis_i_c012ee",
+    "verdict": "partially_supported",
+    "missing": "The quote instructs setting the flag to true before running tests. It does not say the setup lacks it or that omitting it causes the issue, though that is implied."
+   },
+   {
+    "condition_id": "tests_use_a_testing_library_that_does_no_f90f49",
+    "verdict": "partially_supported",
+    "missing": "The quote only says libraries are expected to configure the flag automatically in the future. It does not state that any particular library currently fails to do so, or that the tests use such a library."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1356,
+  "output_tokens": 424,
+  "stop_reason": "end_turn"
+ }
+}

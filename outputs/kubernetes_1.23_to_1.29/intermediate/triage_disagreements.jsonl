@@ -1,0 +1,1 @@
+{"item_id": "b1ae46f95284", "cheap": "noise", "strong": "risk", "reason": "States that v1.25 stopped serving deprecated API versions, so manifests and clients still using those removed versions will break and need migration when upgrading from 1.23 to 1.29."}

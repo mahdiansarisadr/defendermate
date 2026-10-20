@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_where_act_75b4ac\",\n  \"claim\": \"The upgrade crosses release 18, where act warnings in tests became opt-in.\",\n  \"evidence\": [\n   {\n    \"quote\": \"In tests, act warnings are now opt-in\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_has_unit_tests_that_use_act_3ac750\",\n  \"claim\": \"The project has unit tests that use act and rely on act warnings to catch problems.\",\n  \"evidence\": [\n   {\n    \"quote\": \"We've introduced an opt-in mechanism so you can enable them only for unit tests where they are useful and beneficial.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"if_the_project_only_runs_end_to_end_test_75d576\",\n  \"claim\": \"If the project only runs end-to-end tests, act warnings are unnecessary and the change has no impact.\",\n  \"evidence\": [\n   {\n    \"quote\": \"If you're running end-to-end tests, the act warnings are unnecessary.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_where_act_75b4ac",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_project_has_unit_tests_that_use_act_3ac750",
+    "verdict": "partially_supported",
+    "missing": "The quote says act warnings are opt-in for useful unit tests, but does not state that projects use act or rely on the warnings to catch problems; it is a hypothesis about the project, and the quote only establishes that affected projects have unit tests where warnings are useful."
+   },
+   {
+    "condition_id": "if_the_project_only_runs_end_to_end_test_75d576",
+    "verdict": "partially_supported",
+    "missing": "The quote supports that act warnings are unnecessary for end-to-end tests, but does not state that the change has no impact on such projects."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1233,
+  "output_tokens": 276,
+  "stop_reason": "end_turn"
+ }
+}

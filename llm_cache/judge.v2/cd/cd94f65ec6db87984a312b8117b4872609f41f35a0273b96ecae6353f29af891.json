@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_release_4_2_w_ac0c99\",\n  \"claim\": \"The upgrade crosses Django release 4.2, which introduced the GZipMiddleware BREACH mitigation.\",\n  \"evidence\": [\n   {\n    \"quote\": \"GZipMiddleware now includes a mitigation for the BREACH attack.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_gzipmiddleware_to_g_1959a0\",\n  \"claim\": \"The application uses GZipMiddleware to gzip responses.\",\n  \"evidence\": [\n   {\n    \"quote\": \"GZipMiddleware now includes a mitigation for the BREACH attack.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"code_tests_caches_or_clients_depend_on_g_df5d0a\",\n  \"claim\": \"Code, tests, caches or clients depend on gzip response bytes or length being deterministic.\",\n  \"evidence\": [\n   {\n    \"quote\": \"It will add up to 100 random bytes to gzip responses to make BREACH attacks harder.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_release_4_2_w_ac0c99",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_gzipmiddleware_to_g_1959a0",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "code_tests_caches_or_clients_depend_on_g_df5d0a",
+    "verdict": "partially_supported",
+    "missing": "The quote only says up to 100 random bytes are added to gzip responses, which implies non-deterministic bytes/length. It does not state that any code, tests, caches or clients depend on deterministic gzip output or are affected by this change."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1234,
+  "output_tokens": 229,
+  "stop_reason": "end_turn"
+ }
+}

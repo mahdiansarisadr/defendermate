@@ -1,0 +1,102 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: React CHANGELOG (18.0.0 section) (official_changelog). Section: Breaking Changes / React.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nNew JS Environment Requirements: React now depends on modern browsers features including Promise, Symbol, and Object.assign. If you support older browsers and devices such as Internet Explorer which do not provide modern browser features natively or have non-compliant implementations, consider including a global polyfill in your bundled application.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nBreaking Changes / React: Automatic batching: This release introduces a performance improvement that changes to the way React batches updates to do more batching automatically. See Automatic batching for fewer renders in React 18 for more info. In the rare case that you need to opt out, wrap the state update in flushSync. Stricter Strict Mode: In the future, React will provide a feature that lets components preserve state between unmounts. To prepare for it, React 18 introduces a new development-only check to Strict Mode. React will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. If this breaks your app, consider removing Strict Mode until you can fix the components to be resilient to remounting with existing state. Consistent useEffect timing: React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event. Previously, the behavior wasn't always predictable or consistent. Stricter hydration errors: Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings. React will no longer attempt to \"patch up\" individual nodes by inserting or deleting a node on the client in an attempt to match the server markup, and will revert to client rendering up to the closest <Suspense> boundary in the tree. This ensures the hydrated tree is consistent and avoids potential privacy and security holes that can be caused by hydration mismatches. Suspense trees are always consistent: If a component suspends before it's fully added to the tree, React will not add it to the tree in an incomplete state or fire its effects. Instead, React will throw away the new tree completely, wait for the asynchronous operation to finish, and then retry rendering again from scratch. React will render the retry attempt concurrently, and without blocking the browser. Layout Effects with Suspense: When a tree re-suspends and reverts to a fallback, React will now clean up layout effects, and then re-create them when the content inside the boundary is shown again. This fixes an issue which prevented component libraries from correctly measuring layout when used with Suspense. New JS Environment Requirements: React now depends on modern browsers features including Promise, Symbol, and Object.assign. If you support older browsers and devices such as Internet Explorer whic\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "React 18 depends on modern browser features (Promise, Symbol, Object.assign); apps that support older browsers such as Internet Explorer without these features can break unless a global polyfill is included.",
+  "paths": [
+   {
+    "path_name": "Modern JS environment requirement (Promise, Symbol, Object.assign) for older browsers",
+    "risk_type": "runtime_requirement",
+    "risk_level": "high",
+    "affected_surface": "runtime",
+    "description": "React 18 now depends on modern browser features including Promise, Symbol, and Object.assign. Older browsers and devices such as Internet Explorer that lack these features natively or have non-compliant implementations may not run React 18 unless a global polyfill is included in the bundled application.",
+    "primary_symbol": "Object.assign",
+    "symbols": [
+     "Promise",
+     "Symbol",
+     "Object.assign"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React release 18, which introduces the new JS environment requirements.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "17",
+      "quotes": [
+       "New JS Environment Requirements: React now depends on modern browsers features including Promise, Symbol, and Object.assign."
+      ],
+      "relevance": "Ties the requirement to the React 18 release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application supports older browsers or devices (such as Internet Explorer) that lack native or compliant Promise, Symbol, or Object.assign.",
+      "category": "runtime",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Internet Explorer or other older browser targets",
+      "quotes": [
+       "If you support older browsers and devices such as Internet Explorer which do not provide modern browser features natively or have non-compliant implementations"
+      ],
+      "relevance": "Only apps targeting such environments are affected by the new requirement.",
+      "ambiguities": [
+       "The text does not enumerate which specific browsers or versions lack these features beyond naming Internet Explorer."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "(?i)\\b(ie ?11|ie 11|internet explorer|ie >= ?\\d+|ie_mob)\\b"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "browserslist"
+       }
+      ]
+     },
+     {
+      "statement": "The application does not already include a global polyfill for Promise, Symbol, and Object.assign.",
+      "category": "dependency",
+      "role": "disqualifying",
+      "operator": "present",
+      "expected_value": "global polyfill for Promise, Symbol, Object.assign",
+      "quotes": [
+       "consider including a global polyfill in your bundled application"
+      ],
+      "relevance": "If a global polyfill is already bundled, the missing-feature risk does not apply.",
+      "ambiguities": [
+       "The text does not name a specific polyfill library."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "core-js|es6-promise|object-assign|polyfill\\.io|@babel/polyfill|react-app-polyfill"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Include a global polyfill for Promise, Symbol, and Object.assign in the bundled application if older browsers or devices such as Internet Explorer must be supported.",
+     "Review the supported browser targets for the application before upgrading to React 18."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4122,
+  "output_tokens": 1127,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_1_where_thi_861cce\",\n  \"claim\": \"The upgrade crosses Django 4.1, where this behavior change was made as part of the removal of deprecated features.\",\n  \"evidence\": [\n   {\n    \"quote\": \"TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"TransactionTestCase.assertQuerysetEqual() will no longer automatically call repr() on a queryset when compared to string values.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"test_code_calls_assertquerysetequal_on_a_c72f16\",\n  \"claim\": \"Test code calls assertQuerysetEqual() on a TransactionTestCase (or subclass such as TestCase) and compares a queryset to string values.\",\n  \"evidence\": [\n   {\n    \"quote\": \"TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"TransactionTestCase.assertQuerysetEqual() will no longer automatically call repr() on a queryset when compared to string values.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_comparison_values_are_strings_such_a_9d7439\",\n  \"claim\": \"The comparison values are strings, such as repr() output like '<Model: name>', rather than model instances or other non-string values.\",\n  \"evidence\": [\n   {\n    \"quote\": \"when compared to string values\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_queryset_is_compared_to_string_value_e88fbd\",\n  \"claim\": \"The queryset is compared to string values, which previously relied on the automatic repr() call.\",\n  \"evidence\": [\n   {\n    \"quote\": \"when compared to string values\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_1_where_thi_861cce",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish the change is in 4.1 (release notes and deprecation timeline), but do not explicitly state it was part of a removal of deprecated features beyond the deprecation timeline context; the 'upgrade crosses 4.1' is a deployment hypothesis."
+   },
+   {
+    "condition_id": "test_code_calls_assertquerysetequal_on_a_c72f16",
+    "verdict": "partially_supported",
+    "missing": "Quotes mention TransactionTestCase.assertQuerysetEqual() but do not state that subclasses such as TestCase are affected."
+   },
+   {
+    "condition_id": "the_comparison_values_are_strings_such_a_9d7439",
+    "verdict": "partially_supported",
+    "missing": "Quote only says 'when compared to string values'; it does not mention repr() output like '<Model: name>' as examples or contrast with model instances/non-string values."
+   },
+   {
+    "condition_id": "the_queryset_is_compared_to_string_value_e88fbd",
+    "verdict": "partially_supported",
+    "missing": "The quote fragment only says 'when compared to string values'; it does not itself state that the repr() call was previously automatic or that comparisons relied on it."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1579,
+  "output_tokens": 434,
+  "stop_reason": "end_turn"
+ }
+}

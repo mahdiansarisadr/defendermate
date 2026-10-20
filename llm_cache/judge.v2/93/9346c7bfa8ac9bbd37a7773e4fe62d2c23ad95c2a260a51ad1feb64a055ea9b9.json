@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_0_which_ch_c94455\",\n  \"claim\": \"The upgrade crosses release 4.0, which changed the signatures of these DatabaseOperations methods.\",\n  \"evidence\": [\n   {\n    \"quote\": \"methods now take the optional iso_year argument in order to support bounds for ISO-8601 week-numbering years\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_uses_a_third_party_or_custom_3a953e\",\n  \"claim\": \"The project uses a third-party or custom database backend whose DatabaseOperations subclass defines or overrides year_lookup_bounds_for_date_field() or year_lookup_bounds_for_datetime_field().\",\n  \"evidence\": [\n   {\n    \"quote\": \"DatabaseOperations.year_lookup_bounds_for_date_field() and year_lookup_bounds_for_datetime_field() methods now take the optional iso_year argument\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"This section describes changes that may be needed in third-party database backends.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_uses_only_django_s_built_in_711252\",\n  \"claim\": \"The project uses only Django's built-in database backends and does not override or call these methods.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This section describes changes that may be needed in third-party database backends.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_0_which_ch_c94455",
+    "verdict": "partially_supported",
+    "missing": "The quote only says the methods \"now take the optional iso_year argument\" and does not name the DatabaseOperations methods. The 4.0 release notes do establish that this change is in 4.0, and an added optional argument is a signature change, so the core holds."
+   },
+   {
+    "condition_id": "the_project_uses_a_third_party_or_custom_3a953e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_project_uses_only_django_s_built_in_711252",
+    "verdict": "not_supported",
+    "missing": "The quote says only that third-party backends may need changes. It does not say that projects using only built-in backends, or projects that neither override nor call these methods, are unaffected. It also says nothing about whether a project calls the methods."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1359,
+  "output_tokens": 297,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,351 @@
+{
+ "r5": [
+  {
+   "path_id": "django_84122a3576",
+   "rule": "R5",
+   "applies_if_from": "<3.1"
+  },
+  {
+   "path_id": "django_f4b497adf3",
+   "rule": "R5",
+   "applies_if_from": "<3.1"
+  },
+  {
+   "path_id": "django_1626051056",
+   "rule": "R5",
+   "applies_if_from": "<3.1"
+  },
+  {
+   "path_id": "django_0509c3518f",
+   "rule": "R5",
+   "applies_if_from": "<3.1"
+  }
+ ],
+ "r1": [
+  {
+   "revert_item": "4bb3da777ac8",
+   "patch": "4.1.2",
+   "path_id": null,
+   "quote": "Reverted caching related managers for ForeignKey, ManyToManyField, and GenericRelation that caused the incorrect refreshing of related objects (#33984).",
+   "explanation": "unresolved: The note reverts the caching of related managers, which is a different 4.1 change. None of the candidates describes manager caching. The reverse FK ValueError path concerns related managers on unsaved instances, but that behavior is a separate change that the note does not revert. The other candidates (iterator prefetch, admin search, setUpTestData, mark_safe) are unrelated to it."
+  }
+ ],
+ "r1_unresolved": [
+  "Revert note in 4.1.2 not linked to a risk path (unresolved: The note reverts the caching of related managers, which is a different 4.1 change. None of the candidates describes manager caching. The reverse FK )"
+ ],
+ "r2": [
+  {
+   "superseded": "django_2c131b516a",
+   "by": "django_11d22d1a94",
+   "symbol": "python"
+  },
+  {
+   "superseded": "django_a12b455885",
+   "by": "django_11d22d1a94",
+   "symbol": "python"
+  },
+  {
+   "superseded": "django_0462ac970c",
+   "by": "django_5f49526547",
+   "symbol": "pbkdf2passwordhasher"
+  },
+  {
+   "superseded": "django_4272430545",
+   "by": "django_5f49526547",
+   "symbol": "pbkdf2passwordhasher"
+  },
+  {
+   "superseded": "django_bbcfffaebc",
+   "by": "django_7e17fe7b65",
+   "symbol": "gdal"
+  },
+  {
+   "superseded": "django_7c13be2e7c",
+   "by": "django_38a3f575e2",
+   "symbol": "asgiref"
+  },
+  {
+   "superseded": "django_712ae46924",
+   "by": "django_38a3f575e2",
+   "symbol": "asgiref"
+  },
+  {
+   "superseded": "django_fba66c53b7",
+   "by": "django_66bc7c0863",
+   "symbol": "postgresql"
+  }
+ ],
+ "r3": [],
+ "merge": [
+  {
+   "kept": "django_a0a165bd4b",
+   "merged": "django_a0a165bd4b",
+   "release": "4.0",
+   "symbol": "CSRF_TRUSTED_ORIGINS"
+  },
+  {
+   "kept": "django_18e8b24987",
+   "merged": "django_18e8b24987",
+   "release": "4.0",
+   "symbol": "DeleteView"
+  },
+  {
+   "kept": "django_80d51ec58c",
+   "merged": "django_80d51ec58c",
+   "release": "4.0",
+   "symbol": "USE_L10N"
+  },
+  {
+   "kept": "django_529e399225",
+   "merged": "django_529e399225",
+   "release": "4.0",
+   "symbol": "django.utils.http.urlquote"
+  },
+  {
+   "kept": "django_bda96f577c",
+   "merged": "django_bda96f577c",
+   "release": "4.0",
+   "symbol": "django.utils.encoding.force_text"
+  },
+  {
+   "kept": "django_0509683299",
+   "merged": "django_0509683299",
+   "release": "4.0",
+   "symbol": "django.utils.translation.ugettext"
+  },
+  {
+   "kept": "django_e8dd99cb1e",
+   "merged": "django_e8dd99cb1e",
+   "release": "4.0",
+   "symbol": "django.views.i18n.set_language"
+  },
+  {
+   "kept": "django_0bf0a41371",
+   "merged": "django_1ab83c8509",
+   "release": "4.0",
+   "symbol": "django.db.models.Expression.get_group_by_cols()"
+  },
+  {
+   "kept": "django_1c0cf6becb",
+   "merged": "django_1c0cf6becb",
+   "release": "4.0",
+   "symbol": "django.utils.text.unescape_entities"
+  },
+  {
+   "kept": "django_b4c063edf8",
+   "merged": "django_b4c063edf8",
+   "release": "4.0",
+   "symbol": "django.utils.http.is_safe_url"
+  },
+  {
+   "kept": "django_bcd84f8d7d",
+   "merged": "django_bcd84f8d7d",
+   "release": "4.0",
+   "symbol": "PASSWORD_RESET_TIMEOUT_DAYS"
+  },
+  {
+   "kept": "django_b921454a50",
+   "merged": "django_b921454a50",
+   "release": "4.0",
+   "symbol": "isnull"
+  },
+  {
+   "kept": "django_f1dbbd4617",
+   "merged": "django_f1dbbd4617",
+   "release": "4.0",
+   "symbol": "django.db.models.query_utils.InvalidQuery"
+  },
+  {
+   "kept": "django_d7efdc3269",
+   "merged": "django_d7efdc3269",
+   "release": "4.0",
+   "symbol": "django-admin.py"
+  },
+  {
+   "kept": "django_0757526eed",
+   "merged": "django_0757526eed",
+   "release": "4.0",
+   "symbol": "HttpRequest.is_ajax()"
+  },
+  {
+   "kept": "django_84122a3576",
+   "merged": "django_84122a3576",
+   "release": "4.0",
+   "symbol": "django.contrib.messages.storage.cookie.CookieStorage"
+  },
+  {
+   "kept": "django_4db2f08fa1",
+   "merged": "django_8807a416e8",
+   "release": "4.0",
+   "symbol": "pre-Django 3.1 password reset tokens"
+  },
+  {
+   "kept": "django_c1af6215cc",
+   "merged": "django_c1af6215cc",
+   "release": "4.0",
+   "symbol": "pre-Django 3.1 encoding format of sessions"
+  },
+  {
+   "kept": "django_f4b497adf3",
+   "merged": "django_f4b497adf3",
+   "release": "4.0",
+   "symbol": "django.core.signing.Signer"
+  },
+  {
+   "kept": "django_1626051056",
+   "merged": "django_1626051056",
+   "release": "4.0",
+   "symbol": "django.core.signing.loads()"
+  },
+  {
+   "kept": "django_0509c3518f",
+   "merged": "django_0509c3518f",
+   "release": "4.0",
+   "symbol": "pre-Django 3.1 user sessions (SHA-1)"
+  },
+  {
+   "kept": "django_bbcad62967",
+   "merged": "django_bbcad62967",
+   "release": "4.0",
+   "symbol": "django.dispatch.Signal"
+  },
+  {
+   "kept": "django_4fceb7f197",
+   "merged": "django_4fceb7f197",
+   "release": "4.0",
+   "symbol": "django.utils.crypto.get_random_string"
+  },
+  {
+   "kept": "django_48318ce619",
+   "merged": "django_48318ce619",
+   "release": "4.0",
+   "symbol": "ModelMultipleChoiceField"
+  },
+  {
+   "kept": "django_a45385a040",
+   "merged": "django_a45385a040",
+   "release": "4.0",
+   "symbol": "QuerySet.order_by()"
+  },
+  {
+   "kept": "django_122b44b57e",
+   "merged": "django_122b44b57e",
+   "release": "4.0",
+   "symbol": "NullBooleanField"
+  },
+  {
+   "kept": "django_373bc7ec5b",
+   "merged": "django_373bc7ec5b",
+   "release": "4.0",
+   "symbol": "django.conf.urls.url"
+  },
+  {
+   "kept": "django_48bd5222f5",
+   "merged": "django_48bd5222f5",
+   "release": "4.0",
+   "symbol": "django.contrib.postgres.fields.JSONField"
+  },
+  {
+   "kept": "django_dfc647ada4",
+   "merged": "django_dfc647ada4",
+   "release": "4.0",
+   "symbol": "django.contrib.postgres.fields.jsonb.KeyTransform"
+  },
+  {
+   "kept": "django_48bd5222f5",
+   "merged": "django_48bd5222f5",
+   "release": "4.0",
+   "symbol": "django.contrib.postgres.forms.JSONField"
+  },
+  {
+   "kept": "django_07eb37a61f",
+   "merged": "django_07eb37a61f",
+   "release": "4.0",
+   "symbol": "{% ifequal %}"
+  },
+  {
+   "kept": "django_8683c043db",
+   "merged": "django_8683c043db",
+   "release": "4.0",
+   "symbol": "DEFAULT_HASHING_ALGORITHM"
+  },
+  {
+   "kept": "django_50a921cea2",
+   "merged": "django_50a921cea2",
+   "release": "4.1",
+   "symbol": "QuerySet.iterator()"
+  },
+  {
+   "kept": "django_8ffa5d85a3",
+   "merged": "django_8ffa5d85a3",
+   "release": "4.1",
+   "symbol": "OPTIONS['loaders']"
+  },
+  {
+   "kept": "django_51841a4bc3",
+   "merged": "django_51841a4bc3",
+   "release": "4.1",
+   "symbol": "request.META['CSRF_COOKIE']"
+  },
+  {
+   "kept": "django_3efaf434da",
+   "merged": "django_ada46b9deb",
+   "release": "4.1",
+   "symbol": "TestCase.setUpTestData()"
+  },
+  {
+   "kept": "django_7a421fde8d",
+   "merged": "django_7a421fde8d",
+   "release": "4.1",
+   "symbol": "BaseCommand.requires_system_checks"
+  },
+  {
+   "kept": "django_ffce931536",
+   "merged": "django_ffce931536",
+   "release": "4.1",
+   "symbol": "django.core.validators.EmailValidator"
+  },
+  {
+   "kept": "django_48c3fd8caa",
+   "merged": "django_48c3fd8caa",
+   "release": "4.1",
+   "symbol": "default_app_config"
+  },
+  {
+   "kept": "django_2394866b35",
+   "merged": "django_2394866b35",
+   "release": "4.1",
+   "symbol": "TransactionTestCase.assertQuerysetEqual"
+  },
+  {
+   "kept": "django_44c2815817",
+   "merged": "django_44c2815817",
+   "release": "4.1",
+   "symbol": "django.core.cache.backends.memcached.MemcachedCache"
+  },
+  {
+   "kept": "django_ffb36c7ea4",
+   "merged": "django_ffb36c7ea4",
+   "release": "4.1",
+   "symbol": "django.contrib.messages.storage.cookie.CookieStorage"
+  },
+  {
+   "kept": "django_11d22d1a94",
+   "merged": "django_f8f2cbcb04",
+   "release": "4.2",
+   "symbol": "Python"
+  },
+  {
+   "kept": "django_aeb030463f",
+   "merged": "django_05801a7f9f",
+   "release": "4.2",
+   "symbol": "index_together"
+  },
+  {
+   "kept": "django_0e37c20feb",
+   "merged": "django_0e37c20feb",
+   "release": "4.2",
+   "symbol": "JSONField"
+  }
+ ]
+}

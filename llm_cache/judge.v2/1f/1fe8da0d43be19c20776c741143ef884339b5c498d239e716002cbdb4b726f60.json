@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_where_act_aee8e9\",\n  \"claim\": \"The upgrade crosses release 18, where act began throwing in production.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Throw when act is used in production.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Expand act warning to cover all APIs that might schedule React work.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Make act batch updates.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_its_tests_call_act_992ad2\",\n  \"claim\": \"The application or its tests call act.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Throw when act is used in production.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"act_is_executed_in_a_production_build_or_b7a687\",\n  \"claim\": \"act is executed in a production build, or the production-mode React bundle is used where act runs.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Throw when act is used in production.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_s_tests_use_act_or_run_r_1dc455\",\n  \"claim\": \"The application's tests use act, or run React work in a way that the act warning covers.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Expand act warning to cover all APIs that might schedule React work.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Make act batch updates.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_test_setup_sets_global_is_react_act_5e2192\",\n  \"claim\": \"The test setup sets global.IS_REACT_ACT_ENVIRONMENT, which can disable spurious act warnings.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support disabling spurious act warnings with global.IS_REACT_ACT_ENVIRONMENT.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_where_act_aee8e9",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_its_tests_call_act_992ad2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "act_is_executed_in_a_production_build_or_b7a687",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_s_tests_use_act_or_run_r_1dc455",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_test_setup_sets_global_is_react_act_5e2192",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1683,
+  "output_tokens": 231,
+  "stop_reason": "end_turn"
+ }
+}

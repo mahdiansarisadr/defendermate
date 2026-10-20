@@ -1,0 +1,116 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release *. Source: Kubernetes Version Skew Policy (official_api_docs). Section: Supported version skew / kube-apiserver.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nIn highly-available (HA) clusters, the newest and oldest kube-apiserver instances must be within one minor version. Example:\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nSupported version skew / kube-apiserver: In highly-available (HA) clusters, the newest and oldest kube-apiserver instances must be within one minor version. Example: newest kube-apiserver is at {{< skew currentVersion >}} other kube-apiserver instances are supported at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}}\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release * (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "HA kube-apiserver minor version skew exceeded during multi-minor upgrade",
+    "risk_type": "operational_risk",
+    "risk_level": "medium",
+    "affected_surface": "deployment",
+    "description": "In HA clusters, the newest and oldest kube-apiserver instances must be within one minor version. Going from 1.23 to 1.29 spans several minor versions, so any period where kube-apiserver instances run at versions more than one minor apart would fall outside the supported skew.",
+    "primary_symbol": "kube-apiserver",
+    "symbols": [
+     "kube-apiserver"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": "highly-available (HA) clusters",
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 1.23 to 1.29 crosses the release that states the HA kube-apiserver skew limit of one minor version.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "upgrade from 1.23 to 1.29 spans more than one minor version",
+      "quotes": [
+       "the newest and oldest kube-apiserver instances must be within one minor version"
+      ],
+      "relevance": "The skew limit is violated if kube-apiserver instances are left more than one minor version apart, which is what a 1.23 to 1.29 jump would produce.",
+      "ambiguities": [
+       "The text gives the release only as '*' and does not name a specific version that introduced the constraint."
+      ],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster is highly available and runs more than one kube-apiserver instance.",
+      "category": "deployment",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "multiple kube-apiserver instances",
+      "quotes": [
+       "In highly-available (HA) clusters, the newest and oldest kube-apiserver instances must be within one minor version."
+      ],
+      "relevance": "The constraint is stated for HA clusters with multiple kube-apiserver instances.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pods -n kube-system -l component=kube-apiserver -o wide"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get nodes -l node-role.kubernetes.io/control-plane"
+       }
+      ]
+     },
+     {
+      "statement": "During the upgrade, kube-apiserver instances run at versions more than one minor apart, for example when upgrading instances one at a time across several minor versions.",
+      "category": "deployment",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "kube-apiserver version difference greater than one minor version",
+      "quotes": [
+       "the newest and oldest kube-apiserver instances must be within one minor version"
+      ],
+      "relevance": "Only mixed-version states that exceed one minor version violate the stated skew.",
+      "ambiguities": [
+       "The text does not describe the upgrade procedure or how long mixed versions coexist."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pods -n kube-system -l component=kube-apiserver -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.containers[0].image}{\"\\n\"}{end}'"
+       }
+      ]
+     },
+     {
+      "statement": "The cluster has a single kube-apiserver instance, so no HA skew between apiservers arises.",
+      "category": "deployment",
+      "role": "disqualifying",
+      "operator": "absent",
+      "expected_value": "HA control plane with multiple kube-apiserver instances",
+      "quotes": [
+       "In highly-available (HA) clusters, the newest and oldest kube-apiserver instances must be within one minor version."
+      ],
+      "relevance": "The constraint is stated only for HA clusters.",
+      "ambiguities": [
+       "The text does not discuss non-HA clusters."
+      ],
+      "derived_by": "inference",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Check how many kube-apiserver instances the cluster runs and their current versions.",
+     "Upgrade kube-apiserver instances in steps so the newest and oldest instances stay within one minor version at all times, rather than jumping from 1.23 to 1.29 in one move."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3466,
+  "output_tokens": 2157,
+  "stop_reason": "end_turn"
+ }
+}

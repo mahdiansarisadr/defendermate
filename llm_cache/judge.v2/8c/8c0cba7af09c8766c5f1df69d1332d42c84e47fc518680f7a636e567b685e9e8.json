@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_1_which_su_1062be\",\n  \"claim\": \"The upgrade crosses release 4.1, which supports MariaDB 10.3 and higher and drops MariaDB 10.2.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Django 4.1 supports MariaDB 10.3 and higher.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_uses_a_mariadb_database_s_fed905\",\n  \"claim\": \"The deployment uses a MariaDB database server at version 10.2 (less than 10.3) with Django.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Upstream support for MariaDB 10.2 ends in May 2022.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_1_which_su_1062be",
+    "verdict": "partially_supported",
+    "missing": "The quote states only that Django 4.1 supports MariaDB 10.3 and higher. It does not say that MariaDB 10.2 support is dropped in 4.1, although that is implied. The upgrade crossing 4.1 is a deployment hypothesis."
+   },
+   {
+    "condition_id": "the_deployment_uses_a_mariadb_database_s_fed905",
+    "verdict": "not_supported",
+    "missing": "The quote says only that upstream support for MariaDB 10.2 ends in May 2022. It does not say Django 4.1 drops MariaDB 10.2 or requires 10.3+, and it does not establish that a deployment on 10.2 is affected by the Django upgrade."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1082,
+  "output_tokens": 284,
+  "stop_reason": "end_turn"
+ }
+}

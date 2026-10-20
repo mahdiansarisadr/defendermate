@@ -1,0 +1,99 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release 1.27. Source: Kubernetes v1.27.0 CHANGELOG (official_changelog). Section: v1.27.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade).\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nGive terminal phase correctly to all pods that will not be restarted. In particular, assign Failed phase to pods which are deleted while pending. Also, assign a terminal phase (Succeeded or Failed, depending on the exit statuses of the pod containers) to pods which are deleted while running. This fixes the issue for jobs using pod failure policy (with JobPodFailurePolicy and PodDisruptionConditions feature gates enabled) that their pods could get stuck in the pending phase when deleted. Users who maintain controllers which relied on the fact that pods with RestartPolicy=Always never enter the Succeeded phase may need to adapt their controllers. This is because as a consequence of the change pods which use RestartPolicy=Always may end up in the Succeeded phase in two scenarios: pod deletion and graceful node shutdown.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nv1.27.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade): 'The IPv6DualStack feature gate for external cloud providers was removed. (The feature became GA in 1.23 and the gate was removed for all other components several releases ago.) If you were still manually enabling it you must stop now.' Give terminal phase correctly to all pods that will not be restarted. In particular, assign Failed phase to pods which are deleted while pending. Also, assign a terminal phase (Succeeded or Failed, depending on the exit statuses of the pod containers) to pods which are deleted while running. This fixes the issue for jobs using pod failure policy (with JobPodFailurePolicy and PodDisruptionConditions feature gates enabled) that their pods could get stuck in the pending phase when deleted. Users who maintain controllers which relied on the fact that pods with RestartPolicy=Always never enter the Succeeded phase may need to adapt their controllers. This is because as a consequence of the change pods which use RestartPolicy=Always may end up in the Succeeded phase in two scenarios: pod deletion and graceful node shutdown. The in-tree cloud provider for AWS (and the EBS storage plugin) has now been removed. Please use the external cloud provider and CSI driver from https://github.com/kubernetes/cloud-provider-aws instead.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 1.27 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Controllers assuming RestartPolicy=Always pods never reach Succeeded phase",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "Pods are now given a terminal phase when they will not be restarted. As a result, pods with RestartPolicy=Always may end up in the Succeeded phase on pod deletion and graceful node shutdown. Custom controllers that relied on such pods never entering Succeeded may need adaptation.",
+    "primary_symbol": "RestartPolicy=Always",
+    "symbols": [
+     "RestartPolicy=Always",
+     "Succeeded",
+     "Failed",
+     "pod phase"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.27, which introduced the terminal pod phase change.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "1.26",
+      "quotes": [
+       "Give terminal phase correctly to all pods that will not be restarted."
+      ],
+      "relevance": "The change is listed in the v1.27.0 urgent upgrade notes, and the 1.23 -> 1.29 upgrade crosses it.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The deployment runs custom controllers that rely on pods with RestartPolicy=Always never entering the Succeeded phase.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "RestartPolicy=Always",
+      "quotes": [
+       "Users who maintain controllers which relied on the fact that pods with RestartPolicy=Always never enter the Succeeded phase may need to adapt their controllers."
+      ],
+      "relevance": "The text names these controllers as the ones that may need to adapt.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "restartPolicy:\\s*Always|RestartPolicy(Always)?"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "PodSucceeded|Phase\\s*==\\s*.*Succeeded|status\\.phase"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pods -A -o jsonpath='{range .items[?(@.spec.restartPolicy==\"Always\")]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}'"
+       }
+      ]
+     },
+     {
+      "statement": "Pods with RestartPolicy=Always are deleted or the node is gracefully shut down, so they can end up in the Succeeded phase.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "contains",
+      "expected_value": "pod deletion or graceful node shutdown",
+      "quotes": [
+       "pods which use RestartPolicy=Always may end up in the Succeeded phase in two scenarios: pod deletion and graceful node shutdown"
+      ],
+      "relevance": "These are the two scenarios in which the new Succeeded phase for such pods is observable.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Review custom controllers and operators for logic that assumes pods with RestartPolicy=Always never reach the Succeeded phase.",
+     "Update controller logic to handle the Succeeded phase for pods with RestartPolicy=Always on pod deletion and graceful node shutdown.",
+     "Test controller behavior against pod deletion and graceful node shutdown scenarios."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4070,
+  "output_tokens": 1184,
+  "stop_reason": "end_turn"
+ }
+}

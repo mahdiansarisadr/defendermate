@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whi_37f256\",\n  \"claim\": \"The upgrade crosses React release 18, which introduced the change to revert to client render on text mismatch.\",\n  \"quotes\": [\n   \"Revert to client render on text mismatch.\"\n  ]\n },\n {\n  \"condition_id\": \"the_app_uses_react_server_rendering_reac_19a367\",\n  \"claim\": \"The app uses React server rendering (React DOM Server) and hydrates on the client, so server-rendered text can mismatch client-rendered text.\",\n  \"quotes\": [\n   \"Revert to client render on text mismatch.\"\n  ]\n },\n {\n  \"condition_id\": \"server_and_client_render_different_text_33585f\",\n  \"claim\": \"Server and client render different text content for the same component, such as time, locale or random values.\",\n  \"quotes\": [\n   \"Revert to client render on text mismatch.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whi_37f256",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention React release 18 or that the change was introduced in that release; it only states reverting to client render on text mismatch."
+   },
+   {
+    "condition_id": "the_app_uses_react_server_rendering_reac_19a367",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention React DOM Server or client hydration explicitly; it only implies server/client rendering through the text mismatch behavior."
+   },
+   {
+    "condition_id": "server_and_client_render_different_text_33585f",
+    "verdict": "partially_supported",
+    "missing": "The quote only mentions text mismatch; it does not state examples like time, locale, or random values, nor that the same component renders different text on server and client."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 938,
+  "output_tokens": 274,
+  "stop_reason": "end_turn"
+ }
+}

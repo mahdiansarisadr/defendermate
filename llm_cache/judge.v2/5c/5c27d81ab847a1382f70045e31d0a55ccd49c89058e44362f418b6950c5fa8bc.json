@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_1_which_in_2dddb3\",\n  \"claim\": \"The upgrade crosses release 4.1, which introduced the minimum_database_version attribute for third-party backends.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Third-party database backends can now specify the minimum required version of the database using the DatabaseFeatures.minimum_database_version attribute\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_ships_or_uses_a_third_party_46042c\",\n  \"claim\": \"The project ships or uses a third-party/custom database backend that sets DatabaseFeatures.minimum_database_version.\",\n  \"evidence\": [\n   {\n    \"quote\": \"DatabaseFeatures.minimum_database_version attribute which is a tuple\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_backend_s_databasewrapper_does_not_i_620e3e\",\n  \"claim\": \"The backend's DatabaseWrapper does not implement get_database_version() returning a tuple of the current database version.\",\n  \"evidence\": [\n   {\n    \"quote\": \"backends must also implement DatabaseWrapper.get_database_version(), which returns a tuple of the current database version\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_backend_s_databasewrapper_init_conne_1c8d38\",\n  \"claim\": \"The backend's DatabaseWrapper.init_connection_state() does not call super(), so the version check will not run.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The backend's DatabaseWrapper.init_connection_state() method must call super() in order for the check to run.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_1_which_in_2dddb3",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_project_ships_or_uses_a_third_party_46042c",
+    "verdict": "partially_supported",
+    "missing": "The quote only describes the attribute as a tuple; it does not establish that a project ships or uses a third-party backend that sets it (though it is a hypothesis about the deployment)."
+   },
+   {
+    "condition_id": "the_backend_s_databasewrapper_does_not_i_620e3e",
+    "verdict": "partially_supported",
+    "missing": "The quote says backends must implement get_database_version() returning a tuple, but does not state the consequence of not implementing it (e.g., failure). The claim is framed as a condition of non-implementation, which the quote implies is a requirement."
+   },
+   {
+    "condition_id": "the_backend_s_databasewrapper_init_conne_1c8d38",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1450,
+  "output_tokens": 330,
+  "stop_reason": "end_turn"
+ }
+}

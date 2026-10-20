@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: React. Upgrade: 17 -> 18. Release of these items: 18.\nSource: React CHANGELOG (18.0.0 section).\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"9cf7cddaacbf\", \"section\": \"Breaking Changes / React\", \"text\": \"Stricter Strict Mode: In the future, React will provide a feature that lets components preserve state between unmounts. To prepare for it, React 18 introduces a new development-only check to Strict Mode. React will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. If this breaks your app, consider removing Strict Mode until you can fix the components to be resilient to remounting with existing state.\"}\n{\"item_id\": \"949a5508ab9c\", \"section\": \"Breaking Changes / React\", \"text\": \"Consistent useEffect timing: React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event. Previously, the behavior wasn't always predictable or consistent.\"}\n{\"item_id\": \"e699a5483e59\", \"section\": \"Breaking Changes / React\", \"text\": \"Stricter hydration errors: Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings. React will no longer attempt to \\\"patch up\\\" individual nodes by inserting or deleting a node on the client in an attempt to match the server markup, and will revert to client rendering up to the closest <Suspense> boundary in the tree. This ensures the hydrated tree is consistent and avoids potential privacy and security holes that can be caused by hydration mismatches.\"}\n{\"item_id\": \"c4942d435676\", \"section\": \"Breaking Changes / React\", \"text\": \"Suspense trees are always consistent: If a component suspends before it's fully added to the tree, React will not add it to the tree in an incomplete state or fire its effects. Instead, React will throw away the new tree completely, wait for the asynchronous operation to finish, and then retry rendering again from scratch. React will render the retry attempt concurrently, and without blocking the browser.\"}\n{\"item_id\": \"6f45a989df4d\", \"section\": \"Breaking Changes / React\", \"text\": \"Layout Effects with Suspense: When a tree re-suspends and reverts to a fallback, React will now clean up layout effects, and then re-create them when the content inside the boundary is shown again. This fixes an issue which prevented component libraries from correctly measuring layout when used with Suspense.\"}\n{\"item_id\": \"0c2fdbe75268\", \"section\": \"Breaking Changes / React\", \"text\": \"New JS Environment Requirements: React now depends on modern browsers features including Promise, Symbol, and Object.assign. If you support older browsers and devices such as Internet Explorer which do not provide modern browser features natively or have non-compliant implementations, consider including a global polyfill in your bundled application.\"}\n{\"item_id\": \"3e65f4f071af\", \"section\": \"Breaking Changes / Scheduler (Experimental)\", \"text\": \"Remove unstable scheduler/tracing API\"}\n{\"item_id\": \"2834ff584bc2\", \"section\": \"Notable Changes / React\", \"text\": \"Components can now render undefined: React no longer throws if you return undefined from a component. This makes the allowed component return values consistent with values that are allowed in the middle of a component tree. We suggest to use a linter to prevent mistakes like forgetting a return statement before JSX.\"}\n{\"item_id\": \"fe4e379c83ca\", \"section\": \"Notable Changes / React\", \"text\": \"In tests, act warnings are now opt-in: If you're running end-to-end tests, the act warnings are unnecessary. We've introduced an opt-in mechanism so you can enable them only for unit tests where they are useful and beneficial.\"}\n{\"item_id\": \"e7224b12d15e\", \"section\": \"Notable Changes / React\", \"text\": \"No warning about setState on unmounted components: Previously, React warned about memory leaks when you call setState on an unmounted component. This warning was added for subscriptions, but people primarily run into it in scenarios where setting state is fine, and workarounds make the code worse. We've removed this warning.\"}\n{\"item_id\": \"ff5e46845651\", \"section\": \"Notable Changes / React\", \"text\": \"No suppression of console logs: When you use Strict Mode, React renders each component twice to help you find unexpected side effects. In React 17, we've suppressed console logs for one of the two renders to make the logs easier to read. In response to community feedback about this being confusing, we've removed the suppression. Instead, if you have React DevTools installed, the second log's renders will be displayed in grey, and there will be an option (off by default) to suppress them completely.\"}\n{\"item_id\": \"38a35c67c536\", \"section\": \"Notable Changes / React\", \"text\": \"Improved memory usage: React now cleans up more internal fields on unmount, making the impact from unfixed memory leaks that may exist in your application code less severe.\"}\n{\"item_id\": \"7101cfc96a61\", \"section\": \"Notable Changes / React DOM Server\", \"text\": \"renderToString: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and then retry rendering the same content on the client. It is still recommended that you switch to a streaming API like renderToPipeableStream or renderToReadableStream instead.\"}\n{\"item_id\": \"94306f3195dd\", \"section\": \"Notable Changes / React DOM Server\", \"text\": \"renderToStaticMarkup: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and retry rendering on the client.\"}\n{\"item_id\": \"856034318329\", \"section\": \"React\", \"text\": \"Add useTransition and useDeferredValue to separate urgent updates from transitions. (#10426, #10715, #15593, #15272, #15578, #15769, #17058, #18796, #19121, #19703, #19719, #19724, #20672, #20976 by @acdlite, @lunaruan, @rickhanlonii, and @sebmarkbage)\"}\n{\"item_id\": \"238ab5e207dc\", \"section\": \"React\", \"text\": \"Add useId for generating unique IDs. (#17322, #18576, #22644, #22672, #21260 by @acdlite, @lunaruan, and @sebmarkbage)\"}\n{\"item_id\": \"39aed7f53d1b\", \"section\": \"React\", \"text\": \"Add useSyncExternalStore to help external store libraries integrate with React. (#15022, #18000, #18771, #22211, #22292, #22239, #22347, #23150 by @acdlite, @bvaughn, and @drarmstr)\"}\n{\"item_id\": \"e1af4988c3ec\", \"section\": \"React\", \"text\": \"Add startTransition as a version of useTransition without pending feedback. (#19696 by @rickhanlonii)\"}\n{\"item_id\": \"93f0bd148088\", \"section\": \"React\", \"text\": \"Add useInsertionEffect for CSS-in-JS libraries. (#21913 by @rickhanlonii)\"}\n{\"item_id\": \"f6a0cbb14437\", \"section\": \"React\", \"text\": \"Make Suspense remount layout effects when content reappears. (#19322, #19374, #19523, #20625, #21079 by @acdlite, @bvaughn, and @lunaruan)\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "9cf7cddaacbf",
+    "label": "risk",
+    "reason": "Strict Mode now unmounts and remounts every component on first mount, which can break apps whose components are not resilient to remounting."
+   },
+   {
+    "item_id": "949a5508ab9c",
+    "label": "risk",
+    "reason": "React now always synchronously flushes effects for discrete input updates, a timing change that can alter existing behavior."
+   },
+   {
+    "item_id": "e699a5483e59",
+    "label": "risk",
+    "reason": "Hydration text mismatches are now errors instead of warnings and cause client re-rendering up to the nearest Suspense boundary, a behavior change that can break hydrated apps."
+   },
+   {
+    "item_id": "c4942d435676",
+    "label": "risk",
+    "reason": "Components that suspend are now discarded and re-rendered from scratch, a behavior change for suspending trees."
+   },
+   {
+    "item_id": "6f45a989df4d",
+    "label": "risk",
+    "reason": "Layout effects are now cleaned up and re-created when a boundary reverts to fallback, changing effect lifecycle behavior."
+   },
+   {
+    "item_id": "0c2fdbe75268",
+    "label": "risk",
+    "reason": "React now requires modern browser features such as Promise, Symbol, and Object.assign, so older browsers like Internet Explorer need polyfills."
+   },
+   {
+    "item_id": "3e65f4f071af",
+    "label": "risk",
+    "reason": "The unstable scheduler/tracing API is removed, so any code using it will break."
+   },
+   {
+    "item_id": "2834ff584bc2",
+    "label": "context",
+    "reason": "Components may now return undefined without throwing, which is a relaxation that requires no user action."
+   },
+   {
+    "item_id": "fe4e379c83ca",
+    "label": "risk",
+    "reason": "Act warnings in tests are now opt-in rather than default, changing test behavior for users who relied on them."
+   },
+   {
+    "item_id": "e7224b12d15e",
+    "label": "context",
+    "reason": "The setState-on-unmounted warning is removed, which requires no user action and does not break correct code."
+   },
+   {
+    "item_id": "ff5e46845651",
+    "label": "risk",
+    "reason": "Console logs for the second Strict Mode render are no longer suppressed by default, changing default log output that may confuse existing workflows."
+   },
+   {
+    "item_id": "38a35c67c536",
+    "label": "context",
+    "reason": "React cleans up more internal fields on unmount, a improvement that needs no user action."
+   },
+   {
+    "item_id": "7101cfc96a61",
+    "label": "risk",
+    "reason": "renderToString no longer errors on server suspension and instead emits fallback HTML, changing server rendering behavior."
+   },
+   {
+    "item_id": "94306f3195dd",
+    "label": "risk",
+    "reason": "renderToStaticMarkup no longer errors on server suspension and instead emits fallback HTML, changing server rendering behavior."
+   },
+   {
+    "item_id": "856034318329",
+    "label": "context",
+    "reason": "useTransition and useDeferredValue are new additive APIs that require no migration."
+   },
+   {
+    "item_id": "238ab5e207dc",
+    "label": "context",
+    "reason": "useId is a purely additive new hook for generating unique IDs."
+   },
+   {
+    "item_id": "39aed7f53d1b",
+    "label": "context",
+    "reason": "useSyncExternalStore is a purely additive new hook for external store integration."
+   },
+   {
+    "item_id": "e1af4988c3ec",
+    "label": "context",
+    "reason": "startTransition is a new additive API that requires no user action."
+   },
+   {
+    "item_id": "93f0bd148088",
+    "label": "context",
+    "reason": "useInsertionEffect is a purely additive new hook for CSS-in-JS libraries."
+   },
+   {
+    "item_id": "f6a0cbb14437",
+    "label": "risk",
+    "reason": "Layout effects are now remounted when Suspense content reappears, a lifecycle behavior change that can affect existing components."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3078,
+  "output_tokens": 2038,
+  "stop_reason": "end_turn"
+ }
+}

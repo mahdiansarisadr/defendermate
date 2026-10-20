@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.1.\nSource: Django 4.1 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"9552bcfd53c9\", \"section\": \"What's new in Django 4.1 / Minor features / Management Commands\", \"text\": \"Python files created by startproject, startapp, optimizemigration, makemigrations, and squashmigrations are now formatted using the black command if it is present on your PATH.\"}\n{\"item_id\": \"c5b78092c138\", \"section\": \"What's new in Django 4.1 / Minor features / Management Commands\", \"text\": \"The new optimizemigration command allows optimizing operations for a migration.\"}\n{\"item_id\": \"be315231d848\", \"section\": \"What's new in Django 4.1 / Minor features / Migrations\", \"text\": \"The new RenameIndex operation allows renaming indexes defined in the Meta.indexes or index_together options.\"}\n{\"item_id\": \"7ee233e1d9f0\", \"section\": \"What's new in Django 4.1 / Minor features / Migrations\", \"text\": \"The migrations autodetector now generates RenameIndex operations instead of RemoveIndex and AddIndex, when renaming indexes defined in the Meta.indexes.\"}\n{\"item_id\": \"435ecfd5f8dd\", \"section\": \"What's new in Django 4.1 / Minor features / Migrations\", \"text\": \"The migrations autodetector now generates RenameIndex operations instead of AlterIndexTogether and AddIndex, when moving indexes defined in the Meta.index_together to the Meta.indexes.\"}\n{\"item_id\": \"6ea1afadc189\", \"section\": \"What's new in Django 4.1 / Minor features / Models\", \"text\": \"The order_by argument of the Window expression now accepts string references to fields and transforms.\"}\n{\"item_id\": \"52c3147df4da\", \"section\": \"What's new in Django 4.1 / Minor features / Models\", \"text\": \"The new CONN_HEALTH_CHECKS setting allows enabling health checks for persistent database connections in order to reduce the number of failed requests, e.g. after database server restart.\"}\n{\"item_id\": \"1431a1b1be2d\", \"section\": \"What's new in Django 4.1 / Minor features / Models\", \"text\": \"QuerySet.bulk_create now supports updating fields when a row insertion fails uniqueness constraints. This is supported on MariaDB, MySQL, PostgreSQL, and SQLite 3.24+.\"}\n{\"item_id\": \"9904b07bdbf4\", \"section\": \"What's new in Django 4.1 / Minor features / Models\", \"text\": \"QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided. In older versions, no prefetching was done.\"}\n{\"item_id\": \"72e9f028f184\", \"section\": \"What's new in Django 4.1 / Minor features / Models\", \"text\": \"Q objects and querysets can now be combined using ^ as the exclusive or (XOR) operator. XOR is natively supported on MariaDB and MySQL. For databases that do not support XOR, the query will be converted to an equivalent using AND, OR, and NOT.\"}\n{\"item_id\": \"f905c9e1c1dd\", \"section\": \"What's new in Django 4.1 / Minor features / Models\", \"text\": \"The new Field.non_db_attrs attribute allows customizing attributes of fields that don't affect a column definition.\"}\n{\"item_id\": \"c965f571e3a6\", \"section\": \"What's new in Django 4.1 / Minor features / Models\", \"text\": \"On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are now created as identity columns rather than serial columns with sequences.\"}\n{\"item_id\": \"06f5518ad68b\", \"section\": \"What's new in Django 4.1 / Minor features / Requests and Responses\", \"text\": \"HttpResponse.set_cookie now supports timedelta objects for the max_age argument.\"}\n{\"item_id\": \"1226c4f8b4b5\", \"section\": \"What's new in Django 4.1 / Minor features / Security\", \"text\": \"The new SECRET_KEY_FALLBACKS setting allows providing a list of values for secret key rotation.\"}\n{\"item_id\": \"d7c5c0db1df6\", \"section\": \"What's new in Django 4.1 / Minor features / Security\", \"text\": \"The SECURE_PROXY_SSL_HEADER setting now supports a comma-separated list of protocols in the header value.\"}\n{\"item_id\": \"f2f4a7adc149\", \"section\": \"What's new in Django 4.1 / Minor features / Signals\", \"text\": \"The pre_delete and post_delete signals now dispatch the origin of the deletion.\"}\n{\"item_id\": \"ce0665108f22\", \"section\": \"What's new in Django 4.1 / Minor features / Templates\", \"text\": \"The HTML <script> element id attribute is no longer required when wrapping the json_script template filter.\"}\n{\"item_id\": \"b9ae30a81b7a\", \"section\": \"What's new in Django 4.1 / Minor features / Templates\", \"text\": \"The cached template loader is now enabled in development, when DEBUG is True, and OPTIONS['loaders'] isn't specified. You may specify OPTIONS['loaders'] to override this, if necessary.\"}\n{\"item_id\": \"7f2cd3f90f22\", \"section\": \"What's new in Django 4.1 / Minor features / Tests\", \"text\": \"The DiscoverRunner now supports running tests in parallel on macOS, Windows, and any other systems where the default multiprocessing start method is spawn.\"}\n{\"item_id\": \"3be893c17fb5\", \"section\": \"What's new in Django 4.1 / Minor features / Tests\", \"text\": \"A nested atomic block marked as durable in django.test.TestCase now raises a RuntimeError, the same as outside of tests.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "9552bcfd53c9",
+    "label": "risk",
+    "reason": "Generated files are now auto-formatted with black when it is on PATH, which changes output and may create unexpected diffs in existing workflows."
+   },
+   {
+    "item_id": "c5b78092c138",
+    "label": "context",
+    "reason": "The new optimizemigration command is a purely additive feature that requires no action."
+   },
+   {
+    "item_id": "be315231d848",
+    "label": "context",
+    "reason": "The new RenameIndex operation is an additive option that existing migrations do not need to adopt."
+   },
+   {
+    "item_id": "7ee233e1d9f0",
+    "label": "risk",
+    "reason": "The autodetector now generates RenameIndex instead of RemoveIndex and AddIndex, changing the migrations it produces for index renames."
+   },
+   {
+    "item_id": "435ecfd5f8dd",
+    "label": "risk",
+    "reason": "The autodetector now generates RenameIndex instead of AlterIndexTogether and AddIndex when moving indexes, changing generated migration output."
+   },
+   {
+    "item_id": "6ea1afadc189",
+    "label": "context",
+    "reason": "Window order_by accepting string references is a new additive capability with no required change."
+   },
+   {
+    "item_id": "52c3147df4da",
+    "label": "context",
+    "reason": "The new CONN_HEALTH_CHECKS setting is opt-in and existing deployments are unaffected unless they enable it."
+   },
+   {
+    "item_id": "1431a1b1be2d",
+    "label": "context",
+    "reason": "bulk_create update-on-conflict support is a new additive option that does not change existing calls."
+   },
+   {
+    "item_id": "9904b07bdbf4",
+    "label": "risk",
+    "reason": "QuerySet.iterator now prefetches related objects when chunk_size is given, which changes query behavior and counts for existing code."
+   },
+   {
+    "item_id": "72e9f028f184",
+    "label": "context",
+    "reason": "The new ^ XOR operator for Q objects and querysets is additive and does not alter existing queries."
+   },
+   {
+    "item_id": "f905c9e1c1dd",
+    "label": "context",
+    "reason": "The new Field.non_db_attrs attribute is an additive option for custom fields."
+   },
+   {
+    "item_id": "c965f571e3a6",
+    "label": "risk",
+    "reason": "On PostgreSQL, auto fields are now created as identity columns instead of serial sequences, which affects schema generation in migrations and deployments."
+   },
+   {
+    "item_id": "06f5518ad68b",
+    "label": "context",
+    "reason": "Accepting timedelta for max_age in set_cookie is an additive convenience with no action needed."
+   },
+   {
+    "item_id": "1226c4f8b4b5",
+    "label": "context",
+    "reason": "The new SECRET_KEY_FALLBACKS setting is optional and only needed if the user chooses to rotate keys."
+   },
+   {
+    "item_id": "d7c5c0db1df6",
+    "label": "context",
+    "reason": "Supporting a comma-separated protocol list in SECURE_PROXY_SSL_HEADER extends existing behavior and requires no action."
+   },
+   {
+    "item_id": "f2f4a7adc149",
+    "label": "risk",
+    "reason": "pre_delete and post_delete now send an extra origin kwarg, which can break receivers whose signatures do not accept additional keyword arguments."
+   },
+   {
+    "item_id": "ce0665108f22",
+    "label": "context",
+    "reason": "Dropping the requirement for an id attribute on json_script wrappers relaxes markup rules and needs no action."
+   },
+   {
+    "item_id": "b9ae30a81b7a",
+    "label": "risk",
+    "reason": "The cached template loader is now enabled by default when DEBUG is True, which changes development behavior so template edits may require a restart unless overridden."
+   },
+   {
+    "item_id": "7f2cd3f90f22",
+    "label": "context",
+    "reason": "Parallel test support on spawn-based platforms is an added capability that does not require action."
+   },
+   {
+    "item_id": "3be893c17fb5",
+    "label": "risk",
+    "reason": "A nested durable atomic block in TestCase now raises RuntimeError, so existing tests relying on the old behavior may fail."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2573,
+  "output_tokens": 2537,
+  "stop_reason": "end_turn"
+ }
+}

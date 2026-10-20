@@ -12,11 +12,11 @@ from pathlib import Path
 from typing import Any
 
 from . import compose, config, items as items_mod
-from .extract import ItemResult, extract_item
+from .extract import ItemResult, extract_item, short_hash
 from .facts import extract_facts, facts_for_release
 from .fetch import fetch_all
 from .judge import judge_paths
-from .link import merge_duplicates
+from .link import full_symbol, merge_duplicates
 from .llm import LLMClient
 from .models import (
     APP_SIDE_CATEGORIES, ChangeItem, ContextFact, Disagreement, Evidence, EvidenceSummary, RiskModel, RiskPath,
@@ -78,6 +78,26 @@ def _write_jsonl(path: Path, rows) -> None:
     with path.open("w") as f:
         for r in rows:
             f.write(json.dumps(r.model_dump() if hasattr(r, "model_dump") else r, ensure_ascii=False, default=str) + "\n")
+
+
+def _ensure_unique_path_ids(paths: list[RiskPath]) -> None:
+    """Distinct risks can share a risk_key (norm_symbol keeps only the last dotted component)."""
+    seen: set[str] = set()
+    for p in sorted(paths, key=lambda p: (p.path_id, full_symbol(p.primary_symbol), p.path_name)):
+        if p.path_id in seen:
+            p.path_id = f"{p.path_id}_{short_hash(full_symbol(p.primary_symbol), p.path_name, n=4)}"
+        seen.add(p.path_id)
+
+
+def _ensure_unique_condition_ids(paths: list[RiskPath]) -> None:
+    """One statement can be emitted under two categories. Runs after the judge, whose cache key
+    includes condition ids."""
+    for p in paths:
+        cids: set[str] = set()
+        for c in p.conditions:
+            if c.condition_id in cids:
+                c.condition_id = f"{c.condition_id}_{c.category}"
+            cids.add(c.condition_id)
 
 
 def _repair(model: RiskModel, ctx: CacheContext, rejected: list[dict]) -> None:
@@ -256,6 +276,7 @@ def run_upgrade(project: str, current: str, target: str, offline: bool = False, 
         with log.stage("link"):
             fpaths, requires = compose.fact_paths(reg, facts, plan, pslug, inventory)
             linked, merge_log = merge_duplicates(raw_paths + fpaths)
+            _ensure_unique_path_ids(linked)
             _write_jsonl(inter / "release_risks.jsonl", linked)
             funnel.update(fact_paths=len(fpaths), linked_paths=len(linked), merged=len(merge_log))
 
@@ -283,7 +304,8 @@ def run_upgrade(project: str, current: str, target: str, offline: bool = False, 
             funnel.update(composed_paths=len(paths), disqualified=len(disq), superseded=len(r2_log))
 
         with log.stage("judge"):
-            judge_stats = judge_paths(client, paths, log=log)
+            judge_stats = judge_paths(client, paths, titles={k: v.title for k, v in inventory.items()}, log=log)
+            _ensure_unique_condition_ids(paths)
 
         with log.stage("rubric"):
             tiers = {k: v.authority_tier for k, v in inventory.items()}

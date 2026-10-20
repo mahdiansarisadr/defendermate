@@ -11,7 +11,7 @@ from pydantic import BaseModel
 
 from .config import upgrade_slug
 from .extract import canonical_version_value, condition_id, norm_symbol, short_hash
-from .link import BM25, path_text
+from .link import BM25, path_text, symbols_equal
 from .llm import ExtractionFailed, LLMClient
 from .models import (
     ChangeItem, Condition, ContextFact, Disagreement, DisqualifiedCandidate, Evidence, RequiresUpgrade, RiskPath,
@@ -90,10 +90,20 @@ def r1_reverts(client: LLMClient, paths: list[RiskPath], revert_items: list[Chan
         log.append({"revert_item": it.item_id, "patch": patch, **res.model_dump()})
         hit = next((p for p in top if p.path_id == res.path_id), None)
         quote_ok = normalize(res.quote) in corpora.get(it.source_id, "")
+        reverted_by_target = vkey(patch) <= vkey(target) or patch.startswith(target + ".")
         if hit is None or not quote_ok:
             unresolved.append(f"Revert note in {patch} not linked to a risk path ({res.explanation[:160]})")
+            if quote_ok and reverted_by_target:
+                q = normalize(res.quote)
+                disq.append(DisqualifiedCandidate(
+                    candidate_id=f"revert_{it.item_id}", statement=q,
+                    reason=f"R1: a {it.release} change was reverted in {patch}, at or before the target; "
+                           "no extracted risk path matched it, so the revert is recorded on its own.",
+                    evidence=[Evidence(source_id=it.source_id, source_type=inventory[it.source_id].source_type,
+                                       quote_or_summary=q, quote=q, verified=True,
+                                       relevance="Patch release note stating the revert.")]))
             continue
-        if vkey(patch) <= vkey(target) or patch.startswith(target + "."):
+        if reverted_by_target:
             hit.reverted_in = patch
             removed.add(hit.path_id)
             disq.append(DisqualifiedCandidate(
@@ -110,14 +120,19 @@ def r1_reverts(client: LLMClient, paths: list[RiskPath], revert_items: list[Chan
 # ---------- R2 supersession ----------
 
 def r2_supersession(paths: list[RiskPath]) -> tuple[list[RiskPath], list[dict]]:
-    groups: dict[tuple[str, str], list[RiskPath]] = defaultdict(list)
-    for p in paths:
-        key = norm_symbol(p.primary_symbol)
-        if key and p.introduced_in != "*":
-            groups[(key, p.risk_type)].append(p)
+    cands = [p for p in paths if p.primary_symbol and p.introduced_in != "*"]
+    groups: list[list[RiskPath]] = []
+    for p in cands:
+        for g in groups:
+            if g[0].risk_type == p.risk_type and symbols_equal(g[0].primary_symbol, p.primary_symbol):
+                g.append(p)
+                break
+        else:
+            groups.append([p])
     superseded: set[str] = set()
     log = []
-    for (sym, _), g in groups.items():
+    for g in groups:
+        sym = norm_symbol(g[0].primary_symbol)
         if len({p.introduced_in for p in g}) < 2:
             continue
         g.sort(key=lambda p: vkey(p.introduced_in))

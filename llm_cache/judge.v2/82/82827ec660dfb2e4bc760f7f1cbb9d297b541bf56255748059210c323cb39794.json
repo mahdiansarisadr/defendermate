@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_1_where_th_0f112a\",\n  \"claim\": \"The upgrade crosses release 4.1, where the test runner exit code behavior changed (upgrading from 3.2 to 4.2).\",\n  \"evidence\": [\n   {\n    \"quote\": \"The Django test runner now returns a non-zero error code for unexpected successes from tests marked with unittest.expectedFailure.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_test_suite_contains_tests_marked_wit_350721\",\n  \"claim\": \"The test suite contains tests marked with unittest.expectedFailure and is run with the Django test runner.\",\n  \"evidence\": [\n   {\n    \"quote\": \"unexpected successes from tests marked with unittest.expectedFailure\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"one_or_more_tests_marked_with_expectedfa_63e76d\",\n  \"claim\": \"One or more tests marked with expectedFailure currently pass (unexpected success), for example because the underlying bug was fixed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"unexpected successes from tests marked with unittest.expectedFailure\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"ci_or_automation_relies_on_the_exit_code_3e05a3\",\n  \"claim\": \"CI or automation relies on the exit code of the Django test runner (manage.py test).\",\n  \"evidence\": [\n   {\n    \"quote\": \"The Django test runner now returns a non-zero error code\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_1_where_th_0f112a",
+    "verdict": "partially_supported",
+    "missing": "The quote establishes the exit code change in 4.1, but not that an upgrade from 3.2 to 4.2 crosses it; the version range is stated only in the claim."
+   },
+   {
+    "condition_id": "the_test_suite_contains_tests_marked_wit_350721",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "one_or_more_tests_marked_with_expectedfa_63e76d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "ci_or_automation_relies_on_the_exit_code_3e05a3",
+    "verdict": "partially_supported",
+    "missing": "The quote says the runner returns a non-zero exit code for unexpected successes, but says nothing about CI or automation relying on the exit code of manage.py test."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1410,
+  "output_tokens": 305,
+  "stop_reason": "end_turn"
+ }
+}

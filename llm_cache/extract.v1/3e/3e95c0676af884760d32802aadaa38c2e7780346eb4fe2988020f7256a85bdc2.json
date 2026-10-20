@@ -1,0 +1,115 @@
+{
+ "prompt_id": "extract.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: How to Upgrade to React 18 (official_migration_guide). Section: Dropping Support for Internet Explorer.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nIn this release, React is dropping support for Internet Explorer, which is going out of support on June 15, 2022. We're making this change now because new features introduced in React 18 are built using modern browser features such as microtasks which cannot be adequately polyfilled in IE. If you need to support Internet Explorer we recommend you stay with React 17.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDropping Support for Internet Explorer: In this release, React is dropping support for Internet Explorer, which is going out of support on June 15, 2022. We're making this change now because new features introduced in React 18 are built using modern browser features such as microtasks which cannot be adequately polyfilled in IE. If you need to support Internet Explorer we recommend you stay with React 17.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. Use derived_by \"inference\" for any condition not directly stated.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.\n\nYour previous answer failed schema validation:\n1 validation error for ExtractionResult\npaths.0.description\n  Field required [type=missing, input_value={'path_name': 'Internet E...pgrading to React 18.']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\nReturn a corrected answer.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "React 18 drops Internet Explorer support. Apps that must still run in IE cannot adequately polyfill the modern browser features React 18 relies on.",
+  "paths": [
+   {
+    "path_name": "Internet Explorer support dropped in React 18",
+    "risk_type": "runtime_requirement",
+    "risk_level": "high",
+    "affected_surface": "runtime",
+    "primary_symbol": "Internet Explorer",
+    "symbols": [
+     "Internet Explorer",
+     "microtasks"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React release 18, which drops Internet Explorer support.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "17",
+      "quotes": [
+       "In this release, React is dropping support for Internet Explorer"
+      ],
+      "relevance": "Ties the removal of Internet Explorer support to React 18.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\"react(-dom)?\"\\s*:\\s*\"[^\"]*\\b18"
+       }
+      ]
+     },
+     {
+      "statement": "The application must still support Internet Explorer users or browsers.",
+      "category": "runtime",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Internet Explorer",
+      "quotes": [
+       "If you need to support Internet Explorer we recommend you stay with React 17."
+      ],
+      "relevance": "Only apps that must support IE are affected. The text recommends staying on React 17 in that case.",
+      "ambiguities": [
+       "The text does not say how the failure appears in IE, only that new features cannot be adequately polyfilled."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "(?i)\\bie\\s*(9|10|11)\\b|\\bie\\s*<=?\\s*11\\b|msie|trident"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "(?i)browserslist|\"ie\\s+11\"|not dead"
+       }
+      ]
+     },
+     {
+      "statement": "React 18 features rely on modern browser features such as microtasks that cannot be adequately polyfilled in IE.",
+      "category": "behavior",
+      "role": "optional",
+      "operator": "contains",
+      "expected_value": "microtasks",
+      "quotes": [
+       "new features introduced in React 18 are built using modern browser features such as microtasks which cannot be adequately polyfilled in IE"
+      ],
+      "relevance": "Explains why polyfills are not a sufficient workaround for IE.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "If the application does not need to support Internet Explorer, this risk does not apply.",
+      "category": "runtime",
+      "role": "disqualifying",
+      "operator": "absent",
+      "expected_value": "Internet Explorer",
+      "quotes": [
+       "If you need to support Internet Explorer we recommend you stay with React 17."
+      ],
+      "relevance": "The recommendation to stay on React 17 is conditioned on needing IE support.",
+      "ambiguities": [
+       "The text does not state explicitly that apps without IE support are unaffected; this is inferred from the conditional wording."
+      ],
+      "derived_by": "inference",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Check whether the application must support Internet Explorer, for example via browserslist configuration or analytics.",
+     "If IE support is required, stay on React 17 as the text recommends.",
+     "If IE support is not required, proceed with the upgrade to React 18."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3506,
+  "output_tokens": 1699,
+  "stop_reason": "end_turn"
+ }
+}

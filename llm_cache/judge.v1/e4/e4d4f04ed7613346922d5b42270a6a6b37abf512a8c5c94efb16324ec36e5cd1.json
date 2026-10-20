@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_the_t_c1d7b9\",\n  \"claim\": \"The upgrade crosses React 18, where the TypeScript definitions changed so children must be declared explicitly.\",\n  \"quotes\": [\n   \"The most notable change is that the children prop now needs to be listed explicitly when defining props\"\n  ]\n },\n {\n  \"condition_id\": \"the_project_uses_typescript_and_depends_7adbca\",\n  \"claim\": \"The project uses TypeScript and depends on @types/react and @types/react-dom, which must be updated to the latest versions.\",\n  \"quotes\": [\n   \"If your project uses TypeScript, you will need to update your @types/react and @types/react-dom dependencies to the latest versions.\"\n  ]\n },\n {\n  \"condition_id\": \"component_props_interfaces_or_types_that_138eec\",\n  \"claim\": \"Component props interfaces or types that use children without declaring it explicitly will fail type checking under the new types.\",\n  \"quotes\": [\n   \"children?: React.ReactNode;\",\n   \"The new types are safer and catch issues that used to be ignored by the type checker.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_the_t_c1d7b9",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention React 18 or that the upgrade crosses it, nor that this is a TypeScript definitions change. It only states that the children prop must now be listed explicitly when defining props."
+   },
+   {
+    "condition_id": "the_project_uses_typescript_and_depends_7adbca",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "component_props_interfaces_or_types_that_138eec",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not explicitly say that components using children without declaring it will fail type checking. They only show a children declaration and say the new types are safer and catch previously ignored issues."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1016,
+  "output_tokens": 264,
+  "stop_reason": "end_turn"
+ }
+}

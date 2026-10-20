@@ -17,6 +17,9 @@ from .models import (
 from .normalize import normalize, opening_quote
 
 
+EXTRACT_PROMPT = "extract.v2"
+
+
 class DraftQuery(BaseModel):
     tool: Literal["ripgrep", "kubectl", "sql"]
     query: str
@@ -116,14 +119,14 @@ def extract_item(client: LLMClient, item: ChangeItem, parent_text: str, facts: l
         "facts": [f.model_dump() for f in facts] or "none",
     }
     try:
-        res = client.complete("extract.v1", variables, ExtractionResult, model_tier="strong", max_tokens=12000,
+        res = client.complete(EXTRACT_PROMPT, variables, ExtractionResult, model_tier="strong", max_tokens=12000,
                               stage="extract")
         bad = _bad_quotes(res, corpus)
         if bad:
             note = ("These quotes are NOT exact substrings of the ITEM/PARENT text: "
                     + " | ".join(repr(b) for b in bad[:10])
                     + ". Re-emit the complete answer; copy every quote exactly, character for character.")
-            res = client.complete("extract.v1", variables, ExtractionResult, model_tier="strong", max_tokens=12000,
+            res = client.complete(EXTRACT_PROMPT, variables, ExtractionResult, model_tier="strong", max_tokens=12000,
                                   stage="extract_repair", repair_note=note)
     except ExtractionFailed as e:
         out.failed = str(e)

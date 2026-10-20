@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_2_which_int_2cf82a\",\n  \"claim\": \"The upgrade crosses Django 4.2, which introduced the stricter wsgi.input requirement for WSGIRequest.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Manually instantiated WSGIRequest objects must be provided a file-like object for wsgi.input.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_its_tests_manually_in_0c8d42\",\n  \"claim\": \"The application or its tests manually instantiate WSGIRequest objects.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Manually instantiated WSGIRequest objects must be provided a file-like object for wsgi.input.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_environ_passed_to_wsgirequest_sets_w_be6fbe\",\n  \"claim\": \"The environ passed to WSGIRequest sets wsgi.input to something that is not a file-like object, for example a string, bytes or None.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously, Django was more lax than the expected behavior as specified by the WSGI specification.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_2_which_int_2cf82a",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_its_tests_manually_in_0c8d42",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_environ_passed_to_wsgirequest_sets_w_be6fbe",
+    "verdict": "partially_supported",
+    "missing": "The quote only says Django was previously more lax than the WSGI spec. It does not say that wsgi.input set to a non-file-like value (string, bytes, None) is affected, nor that such values were previously accepted."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1268,
+  "output_tokens": 222,
+  "stop_reason": "end_turn"
+ }
+}

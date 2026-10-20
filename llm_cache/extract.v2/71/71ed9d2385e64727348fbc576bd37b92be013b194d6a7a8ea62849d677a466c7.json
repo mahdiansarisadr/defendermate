@@ -1,0 +1,136 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.2. Source: Django 4.2 release notes (official_release_notes). Section: Django 4.2 release notes / Features deprecated in 4.2 / index_together option is deprecated in favor of indexes.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.2\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.2\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nThe Meta.index_together option is deprecated in favor of the indexes option. Migrating existing index_together should be handled as a migration. For example: class Author(models.Model): rank = models.IntegerField() name = models.CharField(max_length=30) class Meta: index_together = [[\"rank\", \"name\"]]\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.2 release notes / Features deprecated in 4.2 / index_together option is deprecated in favor of indexes: The Meta.index_together option is deprecated in favor of the indexes option. Migrating existing index_together should be handled as a migration. For example: class Author(models.Model): rank = models.IntegerField() name = models.CharField(max_length=30) class Meta: index_together = [[\"rank\", \"name\"]] Should become: class Author(models.Model): rank = models.IntegerField() name = models.CharField(max_length=30) class Meta: indexes = [models.Index(fields=[\"rank\", \"name\"])] Running the makemigrations command will generate a migration containing a RenameIndex operation which will rename the existing index. Next, consider squashing migrations to remove index_together from historical migrations. The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files. For backward compatibility reasons, it's still part of the public API, and there's no plan to deprecate or remove it, but it should not be used for new migrations. Use AddIndex and RemoveIndex operations instead.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.2 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Meta.index_together deprecated in favor of Meta.indexes",
+    "risk_type": "removed_api",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "Meta.index_together is deprecated in 4.2 in favor of the indexes option. Existing index_together definitions should be migrated to indexes, and the migration should be handled as a migration.",
+    "primary_symbol": "Meta.index_together",
+    "symbols": [
+     "Meta.index_together",
+     "indexes",
+     "models.Index"
+    ],
+    "fires_at": "future_removal",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.2, where Meta.index_together is deprecated.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.2",
+      "quotes": [
+       "The Meta.index_together option is deprecated in favor of the indexes option."
+      ],
+      "relevance": "Ties the deprecation to release 4.2, which the 3.2 -> 4.2 upgrade crosses.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application defines index_together in a model's Meta class.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "index_together",
+      "quotes": [
+       "Migrating existing index_together should be handled as a migration"
+      ],
+      "relevance": "Only models that use Meta.index_together are affected by the deprecation.",
+      "ambiguities": [
+       "The provided text does not state the version in which index_together will be removed."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "index_together"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Replace Meta.index_together with Meta.indexes using models.Index(fields=[...]).",
+     "Run makemigrations to generate the migration for the change.",
+     "Consider squashing migrations to remove index_together from historical migrations."
+    ]
+   },
+   {
+    "path_name": "AlterIndexTogether not to be used in new migrations",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "AlterIndexTogether is officially supported only for pre-Django 4.2 migration files. It remains part of the public API with no plan to deprecate or remove it, but it should not be used in new migrations. AddIndex and RemoveIndex should be used instead.",
+    "primary_symbol": "AlterIndexTogether",
+    "symbols": [
+     "AlterIndexTogether",
+     "AddIndex",
+     "RemoveIndex"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.2, from which AlterIndexTogether is officially supported only for pre-4.2 migration files.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.2",
+      "quotes": [
+       "The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files."
+      ],
+      "relevance": "Ties the support change to release 4.2.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The codebase uses or writes AlterIndexTogether in migration files, or plans to add it to new migrations.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "AlterIndexTogether",
+      "quotes": [
+       "The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files."
+      ],
+      "relevance": "Only migrations that use AlterIndexTogether are affected. Existing pre-4.2 migrations are still supported.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "AlterIndexTogether"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Do not use AlterIndexTogether in new migrations.",
+     "Use AddIndex and RemoveIndex operations instead for new migrations."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3860,
+  "output_tokens": 2123,
+  "stop_reason": "end_turn"
+ }
+}

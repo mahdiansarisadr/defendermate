@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django 4.0 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"f3404224f235\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.query.QuerySet.datetimes\"}\n{\"item_id\": \"39cd0c296db0\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.Trunc\"}\n{\"item_id\": \"e619ba06dda9\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncSecond\"}\n{\"item_id\": \"ff4ebf3b833e\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncMinute\"}\n{\"item_id\": \"c92b62710ef6\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncHour\"}\n{\"item_id\": \"bb619f45e446\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncDay\"}\n{\"item_id\": \"2fe85d42aaf4\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncWeek\"}\n{\"item_id\": \"1eb81fb4e833\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncMonth\"}\n{\"item_id\": \"0c69852a9ddb\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncQuarter\"}\n{\"item_id\": \"fcaaedd66a08\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.db.models.functions.TruncYear\"}\n{\"item_id\": \"0a7b7aa3f9a0\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"django.utils.timezone.make_aware\"}\n{\"item_id\": \"9daf549457c4\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Use of pytz time zones\", \"text\": \"Support for use of pytz will be removed in Django 5.0.\"}\n{\"item_id\": \"05f5a4b5aab9\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Time zone support\", \"text\": \"In order to follow good practice, the default value of the USE_TZ setting will change from False to True, and time zone support will be enabled by default, in Django 5.0. Note that the default settings.py file created by django-admin startproject includes USE_TZ = True since Django 1.4. You can set USE_TZ to False in your project settings before then to opt-out.\"}\n{\"item_id\": \"d203653b0498\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Localization\", \"text\": \"In order to follow good practice, the default value of the USE_L10N setting is changed from False to True. Moreover USE_L10N is deprecated as of this release. Starting with Django 5.0, by default, any date or number displayed by Django will be localized. The {% localize %} tag and the localize/ unlocalize filters will still be honored by Django.\"}\n{\"item_id\": \"608925ca1322\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"SERIALIZE test setting is deprecated as it can be inferred from the databases with the serialized_rollback option enabled.\"}\n{\"item_id\": \"2875d7160824\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"The undocumented django.utils.baseconv module is deprecated.\"}\n{\"item_id\": \"337f56e8e16f\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"The undocumented django.utils.datetime_safe module is deprecated.\"}\n{\"item_id\": \"d6b3a9c7d22a\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"The default sitemap protocol for sitemaps built outside the context of a request will change from 'http' to 'https' in Django 5.0.\"}\n{\"item_id\": \"4c5124844886\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"The extra_tests argument for DiscoverRunner.build_suite and DiscoverRunner.run_tests is deprecated.\"}\n{\"item_id\": \"0b270d2064ce\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"The ArrayAgg, JSONBAgg, and StringAgg aggregates will return None when there are no rows instead of [], [], and '' respectively in Django 5.0. If you need the previous behavior, explicitly set default to Value([]), Value('[]'), or Value('').\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "f3404224f235",
+    "label": "context",
+    "reason": "QuerySet.datetimes is listed as a pytz-related deprecation in 4.0, so it still works and only warns."
+   },
+   {
+    "item_id": "39cd0c296db0",
+    "label": "context",
+    "reason": "The Trunc function is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "e619ba06dda9",
+    "label": "context",
+    "reason": "TruncSecond is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "ff4ebf3b833e",
+    "label": "context",
+    "reason": "TruncMinute is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "c92b62710ef6",
+    "label": "context",
+    "reason": "TruncHour is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "bb619f45e446",
+    "label": "context",
+    "reason": "TruncDay is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "2fe85d42aaf4",
+    "label": "context",
+    "reason": "TruncWeek is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "1eb81fb4e833",
+    "label": "context",
+    "reason": "TruncMonth is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "0c69852a9ddb",
+    "label": "context",
+    "reason": "TruncQuarter is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "fcaaedd66a08",
+    "label": "context",
+    "reason": "TruncYear is listed under the pytz deprecation, which warns but does not yet break existing code."
+   },
+   {
+    "item_id": "0a7b7aa3f9a0",
+    "label": "context",
+    "reason": "make_aware is listed under the pytz deprecation, which warns but still works in this release."
+   },
+   {
+    "item_id": "9daf549457c4",
+    "label": "context",
+    "reason": "The pytz removal is scheduled for Django 5.0, so it requires no action for an upgrade ending at 4.2."
+   },
+   {
+    "item_id": "05f5a4b5aab9",
+    "label": "context",
+    "reason": "The USE_TZ default change is scheduled for Django 5.0, after this upgrade target, and the text notes it can be opted out of before then."
+   },
+   {
+    "item_id": "d203653b0498",
+    "label": "risk",
+    "reason": "The USE_L10N default changes from False to True in this release and the setting is deprecated, so existing date and number formatting may change."
+   },
+   {
+    "item_id": "608925ca1322",
+    "label": "context",
+    "reason": "The SERIALIZE test setting is deprecated but still functions, so it only triggers a warning."
+   },
+   {
+    "item_id": "2875d7160824",
+    "label": "context",
+    "reason": "The undocumented baseconv module is deprecated with a warning and still works."
+   },
+   {
+    "item_id": "337f56e8e16f",
+    "label": "context",
+    "reason": "The undocumented datetime_safe module is deprecated with a warning and still works."
+   },
+   {
+    "item_id": "d6b3a9c7d22a",
+    "label": "context",
+    "reason": "The sitemap protocol default change is scheduled for Django 5.0, beyond this upgrade's target."
+   },
+   {
+    "item_id": "4c5124844886",
+    "label": "context",
+    "reason": "The extra_tests argument is deprecated but still accepted, so only a warning is produced."
+   },
+   {
+    "item_id": "0b270d2064ce",
+    "label": "context",
+    "reason": "The aggregate return-value change is scheduled for Django 5.0, and the text gives an explicit way to keep the old behavior."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2556,
+  "output_tokens": 1902,
+  "stop_reason": "end_turn"
+ }
+}

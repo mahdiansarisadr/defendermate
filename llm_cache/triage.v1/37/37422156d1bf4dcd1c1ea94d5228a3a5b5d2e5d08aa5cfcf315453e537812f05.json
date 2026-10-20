@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django 4.0 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"a652ab070c0d\", \"section\": \"Django 4.0 release notes\", \"text\": \"*December 7, 2021* Welcome to Django 4.0! These release notes cover the new features, as well as some backwards incompatible changes you'll want to be aware of when upgrading from Django 3.2 or earlier. We've begun the deprecation process for some features. See the /howto/upgrade-version guide if you're updating an existing project.\"}\n{\"item_id\": \"48d0fa4078a2\", \"section\": \"Django 4.0 release notes / Python compatibility\", \"text\": \"Django 4.0 supports Python 3.8, 3.9, and 3.10. We highly recommend and only officially support the latest release of each series. The Django 3.2.x series is the last to support Python 3.6 and 3.7.\"}\n{\"item_id\": \"083894389294\", \"section\": \"Django 4.0 release notes / What's new in Django 4.0 / zoneinfo default timezone implementation\", \"text\": \"The Python standard library's zoneinfo is now the default timezone implementation in Django. This is the next step in the migration from using pytz to using zoneinfo. Django 3.2 allowed the use of non-pytz time zones. Django 4.0 makes zoneinfo the default implementation. Support for pytz is now deprecated and will be removed in Django 5.0. zoneinfo is part of the Python standard library from Python 3.9. The backports.zoneinfo package is automatically installed alongside Django if you are using Python 3.8. The move to zoneinfo should be largely transparent. Selection of the current timezone, conversion of datetime instances to the current timezone in forms and templates, as well as operations on aware datetimes in UTC are unaffected. However, if you are working with non-UTC time zones, and using the pytz normalize() and localize() APIs, possibly with the TIME_ZONE setting, you will need to audit your code, since pytz and zoneinfo are not entirely equivalent. To give time for such an audit, the transitional USE_DEPRECATED_PYTZ setting allows continued use of pytz during the 4.x release cycle. This setting will be removed in Django 5.0.\"}\n{\"item_id\": \"8305149c66b2\", \"section\": \"Django 4.0 release notes / What's new in Django 4.0 / zoneinfo default timezone implementation\", \"text\": \"In addition, a pytz_deprecation_shim package, created by the zoneinfo author, can be used to assist with the migration from pytz. This package provides shims to help you safely remove pytz, and has a detailed migration guide showing how to move to the new zoneinfo APIs. Using pytz_deprecation_shim and the USE_DEPRECATED_PYTZ transitional setting is recommended if you need a gradual update path.\"}\n{\"item_id\": \"75ed758cac87\", \"section\": \"Django 4.0 release notes / What's new in Django 4.0 / Functional unique constraints\", \"text\": \"The new *expressions positional argument of UniqueConstraint() enables creating functional unique constraints on expressions and database functions. For example: from django.db import models from django.db.models import UniqueConstraint from django.db.models.functions import Lower class MyModel(models.Model): first_name = models.CharField(max_length=255) last_name = models.CharField(max_length=255) class Meta: constraints = [ UniqueConstraint( Lower(\\\"first_name\\\"), Lower(\\\"last_name\\\").desc(), name=\\\"first_last_name_unique\\\", ), ]\"}\n{\"item_id\": \"af66537a17db\", \"section\": \"Django 4.0 release notes / What's new in Django 4.0 / Functional unique constraints\", \"text\": \"Functional unique constraints are added to models using the Meta.constraints option.\"}\n{\"item_id\": \"ad0762af0491\", \"section\": \"Django 4.0 release notes / What's new in Django 4.0 / scrypt password hasher\", \"text\": \"The new scrypt password hasher is more secure and recommended over PBKDF2. However, it's not the default as it requires OpenSSL 1.1+ and more memory.\"}\n{\"item_id\": \"cdaa2a25a4ad\", \"section\": \"Django 4.0 release notes / What's new in Django 4.0 / Redis cache backend\", \"text\": \"The new django.core.cache.backends.redis.RedisCache cache backend provides built-in support for caching with Redis. redis-py 3.0.0 or higher is required. For more details, see the documentation on caching with Redis in Django.\"}\n{\"item_id\": \"3299722de626\", \"section\": \"Django 4.0 release notes / What's new in Django 4.0 / Template based form rendering\", \"text\": \"Forms, Formsets, and ErrorList are now rendered using the template engine to enhance customization. See the new render, get_context, and template_name for Form and formset rendering for Formset.\"}\n{\"item_id\": \"9836e6bd012e\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admin\", \"text\": \"The admin/base.html template now has a new block header which contains the admin site header.\"}\n{\"item_id\": \"3426693daad9\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admin\", \"text\": \"The new ModelAdmin.get_formset_kwargs method allows customizing the keyword arguments passed to the constructor of a formset.\"}\n{\"item_id\": \"229ef95d2e82\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admin\", \"text\": \"The navigation sidebar now has a quick filter toolbar.\"}\n{\"item_id\": \"6096258e1955\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admin\", \"text\": \"The new context variable model which contains the model class for each model is added to the AdminSite.each_context method.\"}\n{\"item_id\": \"15e6d8fdcb7f\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admin\", \"text\": \"The new ModelAdmin.search_help_text attribute allows specifying a descriptive text for the search box.\"}\n{\"item_id\": \"9e18dbd4fd1a\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admin\", \"text\": \"The InlineModelAdmin.verbose_name_plural attribute now fallbacks to the InlineModelAdmin.verbose_name + 's'.\"}\n{\"item_id\": \"4cfcdab2bb00\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admin\", \"text\": \"jQuery is upgraded from version 3.5.1 to 3.6.0.\"}\n{\"item_id\": \"890d5e3d5bdc\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admindocs\", \"text\": \"The admindocs now allows esoteric setups where ROOT_URLCONF is not a string.\"}\n{\"item_id\": \"153d63a2cca8\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.admindocs\", \"text\": \"The model section of the admindocs now shows cached properties.\"}\n{\"item_id\": \"b52fc1117a62\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.auth\", \"text\": \"The default iteration count for the PBKDF2 password hasher is increased from 260,000 to 320,000.\"}\n{\"item_id\": \"4134bab756ed\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.auth\", \"text\": \"The new LoginView.next_page attribute and get_default_redirect_url method allow customizing the redirect after login.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "a652ab070c0d",
+    "label": "noise",
+    "reason": "The opening paragraph is introductory marketing-style welcome text with no actionable change."
+   },
+   {
+    "item_id": "48d0fa4078a2",
+    "label": "risk",
+    "reason": "Django 4.0 supports only Python 3.8 to 3.10 and 3.2.x is the last series supporting Python 3.6 and 3.7, so upgraders on older runtimes must change their Python version."
+   },
+   {
+    "item_id": "083894389294",
+    "label": "risk",
+    "reason": "zoneinfo becomes the default timezone implementation, pytz is deprecated, and non-UTC code using pytz normalize()/localize() needs auditing."
+   },
+   {
+    "item_id": "8305149c66b2",
+    "label": "context",
+    "reason": "It points to an optional third-party shim and migration guide, which is a documentation pointer that requires no action at this release."
+   },
+   {
+    "item_id": "75ed758cac87",
+    "label": "context",
+    "reason": "The expressions positional argument for UniqueConstraint is a new additive feature with an example."
+   },
+   {
+    "item_id": "af66537a17db",
+    "label": "context",
+    "reason": "It states that functional unique constraints are configured through the existing Meta.constraints option, which is an additive capability."
+   },
+   {
+    "item_id": "ad0762af0491",
+    "label": "context",
+    "reason": "The scrypt hasher is a new opt-in option that is explicitly not the default, so existing setups are unaffected."
+   },
+   {
+    "item_id": "cdaa2a25a4ad",
+    "label": "risk",
+    "reason": "The new Redis cache backend requires redis-py 3.0.0 or higher, a dependency requirement that must be met by users who adopt it."
+   },
+   {
+    "item_id": "3299722de626",
+    "label": "risk",
+    "reason": "Forms, formsets, and ErrorList now render through the template engine, which can break projects that override or customize form rendering."
+   },
+   {
+    "item_id": "9836e6bd012e",
+    "label": "context",
+    "reason": "A new header block in admin/base.html is an additive template addition that needs no action unless templates are overridden."
+   },
+   {
+    "item_id": "3426693daad9",
+    "label": "context",
+    "reason": "ModelAdmin.get_formset_kwargs is a new method that adds customization without changing existing behavior."
+   },
+   {
+    "item_id": "229ef95d2e82",
+    "label": "context",
+    "reason": "The navigation sidebar quick filter toolbar is a new additive UI feature."
+   },
+   {
+    "item_id": "6096258e1955",
+    "label": "context",
+    "reason": "A new model context variable added to AdminSite.each_context is additive and needs no user action."
+   },
+   {
+    "item_id": "15e6d8fdcb7f",
+    "label": "context",
+    "reason": "ModelAdmin.search_help_text is a new optional attribute."
+   },
+   {
+    "item_id": "9e18dbd4fd1a",
+    "label": "risk",
+    "reason": "The default verbose_name_plural for inlines changes to verbose_name + 's', which can alter displayed labels in existing admin pages."
+   },
+   {
+    "item_id": "4cfcdab2bb00",
+    "label": "risk",
+    "reason": "The bundled jQuery is upgraded from 3.5.1 to 3.6.0, which could affect custom admin JavaScript that depends on jQuery behavior."
+   },
+   {
+    "item_id": "890d5e3d5bdc",
+    "label": "noise",
+    "reason": "Allowing ROOT_URLCONF to be a non-string in admindocs is a bug-level fix for esoteric setups that cannot change correct behavior."
+   },
+   {
+    "item_id": "153d63a2cca8",
+    "label": "context",
+    "reason": "admindocs now displays cached properties, an additive documentation display improvement."
+   },
+   {
+    "item_id": "b52fc1117a62",
+    "label": "risk",
+    "reason": "The default PBKDF2 iteration count increases from 260,000 to 320,000, changing the default hashing behavior and cost for new or updated passwords."
+   },
+   {
+    "item_id": "4134bab756ed",
+    "label": "context",
+    "reason": "The new LoginView.next_page attribute and get_default_redirect_url method are additive customization options."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3221,
+  "output_tokens": 2214,
+  "stop_reason": "end_turn"
+ }
+}

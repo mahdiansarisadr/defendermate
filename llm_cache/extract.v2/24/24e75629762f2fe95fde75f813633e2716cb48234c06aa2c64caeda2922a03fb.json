@@ -1,0 +1,264 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release 1.29. Source: Kubernetes v1.29.0 CHANGELOG (official_changelog). Section: v1.29.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade).\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nStopped accepting component configuration for kube-proxy and kubelet during kubeadm upgrade plan --config. This was a legacy behavior that was not well supported for upgrades and could be used only at the plan stage to determine if the configuration for these components stored in the cluster needs manual version migration. In the future, kubeadm will attempt alternative component config migration approaches. - kubeadm: a separate \"super-admin.conf\" file is now deployed. The User in admin.conf is now bound to a new RBAC Group kubeadm:cluster-admins that has cluster-admin ClusterRole access. The User in super-admin.conf is now bound to the system:masters built-in super-powers / break-glass Group that can bypass RBAC. Before this change, the default admin.conf was bound to system:masters Group, which was undesired. Executing kubeadm init phase kubeconfig all or just kubeadm init will now generate the new super-admin.conf file. The cluster admin can then decide to keep the file present on a node host or move it to a safe location. kubadm certs renew will renew the certificate in super-admin.conf to one year if the file exists; if it does not exist a \"MISSING\" note will be printed. kubeadm upgrade apply for this release will migrate this particular node to the two file setup. Subsequent kubeadm releases will continue to optionally renew the certificate in super-admin.conf if the file exists on disk and if renew on upgrade is not disabled. kubeadm join --control-plane will now generate only an admin.conf file that has the less privileged User.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\n(none)\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 1.29 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "kubeadm upgrade plan --config no longer accepts kube-proxy/kubelet component config",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "deployment",
+    "description": "kubeadm upgrade plan --config no longer accepts component configuration for kube-proxy and kubelet. The text describes this as a legacy plan-stage behavior used to decide whether the stored component config needs manual version migration.",
+    "primary_symbol": "kubeadm upgrade plan --config",
+    "symbols": [
+     "kubeadm upgrade plan --config",
+     "kube-proxy",
+     "kubelet"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": "kubeadm",
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.29, where kubeadm stopped accepting kube-proxy and kubelet component configuration for upgrade plan --config",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.29",
+      "quotes": [
+       "Stopped accepting component configuration for kube-proxy and kubelet during kubeadm upgrade plan --config."
+      ],
+      "relevance": "Ties the change to release 1.29.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Upgrade runbooks or automation pass kube-proxy or kubelet component configuration to kubeadm upgrade plan via --config",
+      "category": "deployment",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "kubeadm upgrade plan --config",
+      "quotes": [
+       "Stopped accepting component configuration for kube-proxy and kubelet during kubeadm upgrade plan --config"
+      ],
+      "relevance": "Only workflows that supply this config to the plan stage are affected.",
+      "ambiguities": [
+       "The text does not state whether kubeadm errors or ignores the component config when it is supplied."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "kubeadm\\s+upgrade\\s+plan.*--config"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "KubeProxyConfiguration|KubeletConfiguration"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Stop passing kube-proxy and kubelet component config to kubeadm upgrade plan --config.",
+     "Manually check whether the kube-proxy and kubelet configuration stored in the cluster needs version migration, since the plan-stage check is gone."
+    ]
+   },
+   {
+    "path_name": "admin.conf is now bound to a less privileged group",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "deployment",
+    "description": "The User in admin.conf is now bound to the RBAC Group kubeadm:cluster-admins (cluster-admin ClusterRole) instead of system:masters. A separate super-admin.conf holds the system:masters User that can bypass RBAC. kubeadm upgrade apply migrates the node to the two-file setup, and kubeadm join --control-plane generates only the less privileged admin.conf.",
+    "primary_symbol": "admin.conf",
+    "symbols": [
+     "admin.conf",
+     "super-admin.conf",
+     "kubeadm:cluster-admins",
+     "system:masters",
+     "kubeadm join --control-plane",
+     "kubeadm upgrade apply"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": "kubeadm",
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.29, where kubeadm upgrade apply migrates the node to the two-file admin.conf/super-admin.conf setup",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.29",
+      "quotes": [
+       "kubeadm upgrade apply for this release will migrate this particular node to the two file setup."
+      ],
+      "relevance": "Ties the change to this release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Tooling or automation uses kubeadm-generated admin.conf, which was previously bound to system:masters",
+      "category": "deployment",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "admin.conf",
+      "quotes": [
+       "Before this change, the default admin.conf was bound to system:masters Group, which was undesired."
+      ],
+      "relevance": "Credentials taken from admin.conf now carry the less privileged identity.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "/etc/kubernetes/admin\\.conf|admin\\.conf"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get clusterrolebinding -o wide | grep kubeadm:cluster-admins"
+       }
+      ]
+     },
+     {
+      "statement": "Control-plane nodes are joined with kubeadm join --control-plane, so they only get the less privileged admin.conf",
+      "category": "deployment",
+      "role": "optional",
+      "operator": "present",
+      "expected_value": "kubeadm join --control-plane",
+      "quotes": [
+       "kubeadm join --control-plane will now generate only an admin.conf file that has the less privileged User"
+      ],
+      "relevance": "New control-plane nodes will not have super-admin.conf.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "kubeadm\\s+join.*--control-plane"
+       }
+      ]
+     },
+     {
+      "statement": "Workflows depend on admin.conf bypassing RBAC (system:masters) rather than cluster-admin ClusterRole access",
+      "category": "behavior",
+      "role": "uncertain",
+      "operator": "unknown",
+      "expected_value": "RBAC bypass needed",
+      "quotes": [
+       "The User in super-admin.conf is now bound to the system:masters built-in super-powers / break-glass Group that can bypass RBAC."
+      ],
+      "relevance": "Only workflows needing RBAC bypass would be affected by the admin.conf change.",
+      "ambiguities": [
+       "The text does not state which operations, if any, stop working with the less privileged admin.conf."
+      ],
+      "derived_by": "inference",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Use super-admin.conf only for break-glass operations that need to bypass RBAC.",
+     "Check that tooling using admin.conf works with the kubeadm:cluster-admins group (cluster-admin ClusterRole).",
+     "Decide whether to keep super-admin.conf on the node or move it to a safe location."
+    ]
+   },
+   {
+    "path_name": "New super-admin.conf file handling and certificate renewal",
+    "risk_type": "operational_risk",
+    "risk_level": "low",
+    "affected_surface": "deployment",
+    "description": "kubeadm init and kubeadm init phase kubeconfig all now generate super-admin.conf, a break-glass credential that can bypass RBAC. kubeadm certs renew renews its certificate to one year if the file exists, and prints a MISSING note otherwise. The cluster admin decides whether to keep the file on the node or move it to a safe location.",
+    "primary_symbol": "super-admin.conf",
+    "symbols": [
+     "super-admin.conf",
+     "kubeadm certs renew",
+     "kubeadm init",
+     "kubeadm init phase kubeconfig all"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": "kubeadm",
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.29, where kubeadm upgrade apply deploys the super-admin.conf two-file setup",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.29",
+      "quotes": [
+       "kubeadm upgrade apply for this release will migrate this particular node to the two file setup."
+      ],
+      "relevance": "Ties the change to this release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Certificates on kubeadm nodes are renewed with kubeadm certs renew, or node hosts are managed so that a new super-admin.conf on disk matters",
+      "category": "deployment",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "kubeadm certs renew",
+      "quotes": [
+       "kubadm certs renew will renew the certificate in super-admin.conf to one year if the file exists"
+      ],
+      "relevance": "Renewal behavior changes, and a MISSING note is printed if the file is absent.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "kubeadm\\s+certs\\s+renew"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "super-admin\\.conf"
+       }
+      ]
+     },
+     {
+      "statement": "The administrator has not decided where super-admin.conf is kept, leaving a break-glass credential on the node host",
+      "category": "configuration",
+      "role": "optional",
+      "operator": "present",
+      "expected_value": "super-admin.conf",
+      "quotes": [
+       "The cluster admin can then decide to keep the file present on a node host or move it to a safe location."
+      ],
+      "relevance": "Leaving it on the node host keeps a credential that can bypass RBAC there.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "super-admin\\.conf"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "After upgrade, decide whether to keep super-admin.conf on the node or move it to a safe location.",
+     "Update certificate renewal runbooks and monitoring for the super-admin.conf renewal and the MISSING note."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3842,
+  "output_tokens": 4429,
+  "stop_reason": "end_turn"
+ }
+}

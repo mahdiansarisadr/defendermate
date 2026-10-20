@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: *.\nSource: Kubernetes Version Skew Policy.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"03e7eaad0b0e\", \"section\": \"\", \"text\": \"This document describes the maximum version skew supported between various Kubernetes components. Specific cluster deployment tools may place additional restrictions on version skew.\"}\n{\"item_id\": \"3f90ebf7d56b\", \"section\": \"Supported versions\", \"text\": \"Kubernetes versions are expressed as x.y.z, where x is the major version, y is the minor version, and z is the patch version, following Semantic Versioning terminology. For more information, see Kubernetes Release Versioning. The Kubernetes project maintains release branches for the most recent three minor releases ({{< skew latestVersion >}}, {{< skew prevMinorVersion >}}, {{< skew oldestMinorVersion >}}). Kubernetes 1.19 and newer receive approximately 1 year of patch support. Kubernetes 1.18 and older received approximately 9 months of patch support. Applicable fixes, including security fixes, may be backported to those three release branches, depending on severity and feasibility. Patch releases are cut from those branches at a regular cadence, plus additional urgent releases, when required. The Release Managers group owns this decision. For more information, see the Kubernetes patch releases page.\"}\n{\"item_id\": \"7a0af15d78a5\", \"section\": \"Supported version skew / kube-apiserver\", \"text\": \"In highly-available (HA) clusters, the newest and oldest kube-apiserver instances must be within one minor version. Example:\"}\n{\"item_id\": \"5761d9db3473\", \"section\": \"Supported version skew / kube-apiserver\", \"text\": \"newest kube-apiserver is at {{< skew currentVersion >}}\"}\n{\"item_id\": \"164255fc7658\", \"section\": \"Supported version skew / kube-apiserver\", \"text\": \"other kube-apiserver instances are supported at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}}\"}\n{\"item_id\": \"a91c05b05413\", \"section\": \"Supported version skew / kubelet\", \"text\": \"kubelet must not be newer than kube-apiserver.\"}\n{\"item_id\": \"ef5d691af221\", \"section\": \"Supported version skew / kubelet\", \"text\": \"kubelet may be up to three minor versions older than kube-apiserver (kubelet < 1.25 may only be up to two minor versions older than kube-apiserver).\"}\n{\"item_id\": \"8050b2e14b40\", \"section\": \"Supported version skew / kubelet\", \"text\": \"Example:\"}\n{\"item_id\": \"56523a9c215e\", \"section\": \"Supported version skew / kubelet\", \"text\": \"kube-apiserver is at {{< skew currentVersion >}}\"}\n{\"item_id\": \"a99b7faa18b4\", \"section\": \"Supported version skew / kubelet\", \"text\": \"kubelet is supported at {{< skew currentVersion >}}, {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}}\"}\n{\"item_id\": \"d932e3d05fa6\", \"section\": \"Supported version skew / kubelet\", \"text\": \"{{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the allowed kubelet versions. {{</ note >}} Example:\"}\n{\"item_id\": \"df925a76e38a\", \"section\": \"Supported version skew / kubelet\", \"text\": \"kube-apiserver instances are at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}}\"}\n{\"item_id\": \"d4e1e5fde426\", \"section\": \"Supported version skew / kubelet\", \"text\": \"kubelet is supported at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\"}\n{\"item_id\": \"ee7c98ad9224\", \"section\": \"Supported version skew / kube-proxy\", \"text\": \"kube-proxy must not be newer than kube-apiserver.\"}\n{\"item_id\": \"36e8d3a4fa72\", \"section\": \"Supported version skew / kube-proxy\", \"text\": \"kube-proxy may be up to three minor versions older than kube-apiserver (kube-proxy < 1.25 may only be up to two minor versions older than kube-apiserver).\"}\n{\"item_id\": \"bffd712e7030\", \"section\": \"Supported version skew / kube-proxy\", \"text\": \"kube-proxy may be up to three minor versions older or newer than the kubelet instance it runs alongside (kube-proxy < 1.25 may only be up to two minor versions older or newer than the kubelet instance it runs alongside).\"}\n{\"item_id\": \"76397bf05a9d\", \"section\": \"Supported version skew / kube-proxy\", \"text\": \"kube-proxy is supported at {{< skew currentVersion >}}, {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}}\"}\n{\"item_id\": \"2f6fa8c15ee3\", \"section\": \"Supported version skew / kube-proxy\", \"text\": \"{{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the allowed kube-proxy versions. {{</ note >}} Example:\"}\n{\"item_id\": \"21a0276cf25c\", \"section\": \"Supported version skew / kube-proxy\", \"text\": \"kube-proxy is supported at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\"}\n{\"item_id\": \"8fbe8a074488\", \"section\": \"Supported version skew / kube-controller-manager, kube-scheduler, and cloud-controller-manager\", \"text\": \"kube-controller-manager, kube-scheduler, and cloud-controller-manager must not be newer than the kube-apiserver instances they communicate with. They are expected to match the kube-apiserver minor version, but may be up to one minor version older (to allow live upgrades). Example:\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "03e7eaad0b0e",
+    "label": "context",
+    "reason": "It is an introductory documentation pointer stating that version skew limits exist and that deployment tools may add restrictions."
+   },
+   {
+    "item_id": "3f90ebf7d56b",
+    "label": "context",
+    "reason": "It describes the patch-support policy for release branches and requires no user action at this upgrade."
+   },
+   {
+    "item_id": "7a0af15d78a5",
+    "label": "risk",
+    "reason": "It states that HA kube-apiserver instances must stay within one minor version of each other, a constraint that affects how a multi-step upgrade must be sequenced."
+   },
+   {
+    "item_id": "5761d9db3473",
+    "label": "context",
+    "reason": "It is a labeled example line showing the newest kube-apiserver at the current version."
+   },
+   {
+    "item_id": "164255fc7658",
+    "label": "context",
+    "reason": "It is an example showing other kube-apiserver instances supported at the current and previous minor versions."
+   },
+   {
+    "item_id": "a91c05b05413",
+    "label": "risk",
+    "reason": "It states that kubelet must not be newer than kube-apiserver, which constrains upgrade ordering and could break a deployment that upgrades nodes first."
+   },
+   {
+    "item_id": "ef5d691af221",
+    "label": "risk",
+    "reason": "It limits kubelet to up to three minor versions behind kube-apiserver, with a two-version limit for kubelet below 1.25, so older nodes may need intermediate upgrades."
+   },
+   {
+    "item_id": "8050b2e14b40",
+    "label": "noise",
+    "reason": "It is only the label 'Example:' with no content."
+   },
+   {
+    "item_id": "56523a9c215e",
+    "label": "context",
+    "reason": "It is an example line showing kube-apiserver at the current version."
+   },
+   {
+    "item_id": "a99b7faa18b4",
+    "label": "context",
+    "reason": "It lists the kubelet versions supported with the current kube-apiserver, which is informational and needs no action."
+   },
+   {
+    "item_id": "d932e3d05fa6",
+    "label": "risk",
+    "reason": "The note says version skew among HA kube-apiserver instances narrows the allowed kubelet versions, which can force a different upgrade sequence."
+   },
+   {
+    "item_id": "df925a76e38a",
+    "label": "context",
+    "reason": "It is an example showing kube-apiserver instances at the current and previous minor versions."
+   },
+   {
+    "item_id": "d4e1e5fde426",
+    "label": "context",
+    "reason": "It is an explanatory example stating which kubelet versions are not supported because they would be newer than kube-apiserver."
+   },
+   {
+    "item_id": "ee7c98ad9224",
+    "label": "risk",
+    "reason": "It states that kube-proxy must not be newer than kube-apiserver, which constrains upgrade ordering."
+   },
+   {
+    "item_id": "36e8d3a4fa72",
+    "label": "risk",
+    "reason": "It limits kube-proxy to up to three minor versions behind kube-apiserver, with a two-version limit below 1.25, so older proxies may need intermediate upgrades."
+   },
+   {
+    "item_id": "bffd712e7030",
+    "label": "risk",
+    "reason": "It limits kube-proxy skew relative to kubelet to three minor versions in either direction, with a two-version limit below 1.25, which can require upgrade sequencing."
+   },
+   {
+    "item_id": "76397bf05a9d",
+    "label": "context",
+    "reason": "It lists the kube-proxy versions supported with the current kube-apiserver, which is informational and needs no action."
+   },
+   {
+    "item_id": "2f6fa8c15ee3",
+    "label": "risk",
+    "reason": "The note says version skew among HA kube-apiserver instances narrows the allowed kube-proxy versions, which can force a different upgrade sequence."
+   },
+   {
+    "item_id": "21a0276cf25c",
+    "label": "context",
+    "reason": "It is an example listing supported kube-proxy versions and explaining why the current version is excluded."
+   },
+   {
+    "item_id": "8fbe8a074488",
+    "label": "risk",
+    "reason": "It states that kube-controller-manager, kube-scheduler, and cloud-controller-manager must not be newer than kube-apiserver and may only be one minor version older, which constrains upgrade order."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2917,
+  "output_tokens": 2318,
+  "stop_reason": "end_turn"
+ }
+}

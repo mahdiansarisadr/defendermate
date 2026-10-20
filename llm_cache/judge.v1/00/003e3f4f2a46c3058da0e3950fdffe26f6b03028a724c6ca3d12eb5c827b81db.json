@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_the_release_18c168\",\n  \"claim\": \"The upgrade crosses React 18, the release that drops Internet Explorer support.\",\n  \"quotes\": [\n   \"In this release, React is dropping support for Internet Explorer\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_must_support_or_be_serve_6469d8\",\n  \"claim\": \"The application must support or be served to users on Internet Explorer.\",\n  \"quotes\": [\n   \"If you need to support Internet Explorer we recommend you stay with React 17.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_the_release_18c168",
+    "verdict": "partially_supported",
+    "missing": "The quote says only that 'this release' drops Internet Explorer support; it does not say the release is React 18, nor that the upgrade crosses it."
+   },
+   {
+    "condition_id": "the_application_must_support_or_be_serve_6469d8",
+    "verdict": "partially_supported",
+    "missing": "The quote is conditional advice ('If you need to support Internet Explorer, stay with React 17'). It does not say the application must support IE, only what to do if it does."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 829,
+  "output_tokens": 200,
+  "stop_reason": "end_turn"
+ }
+}

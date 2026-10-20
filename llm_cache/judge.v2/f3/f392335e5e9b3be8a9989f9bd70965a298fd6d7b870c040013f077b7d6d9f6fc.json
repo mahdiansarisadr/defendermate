@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_react_129a49\",\n  \"claim\": \"The upgrade crosses React 18, where ReactDOM.render is no longer supported.\",\n  \"evidence\": [\n   {\n    \"quote\": \"ReactDOM.render is no longer supported in React 18. Use createRoot instead.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"ReactDOM.render has been deprecated.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_render_from_react_f48090\",\n  \"claim\": \"The application calls render from react-dom (ReactDOM.render) to mount its root.\",\n  \"evidence\": [\n   {\n    \"quote\": \"import { render } from 'react-dom'; const container = document.getElementById('app'); render(<App tab=\\\"home\\\" />, container);\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Using it will warn and run your app in React 17 mode.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_has_already_switched_to_c1f83c\",\n  \"claim\": \"The application has already switched to createRoot from react-dom/client.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Until you switch to the new API, your app will behave as if it's running React 17.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_react_129a49",
+    "verdict": "partially_supported",
+    "missing": "The first quote says ReactDOM.render is no longer supported in React 18, which supports the claim. But the changelog quote says it is only 'deprecated', and the claim's wording about crossing React 18 as an upgrade is not stated directly; the quotes are slightly inconsistent about 'no longer supported' vs 'deprecated'."
+   },
+   {
+    "condition_id": "the_application_calls_render_from_react_f48090",
+    "verdict": "partially_supported",
+    "missing": "The quotes show an example of code using render from react-dom, and that using it warns and runs in React 17 mode, but they do not establish that the application calls it; this is an application hypothesis, and the quotes show affected apps that use the legacy render API. The 'to mount its root' detail is only illustrated by the example."
+   },
+   {
+    "condition_id": "the_application_has_already_switched_to_c1f83c",
+    "verdict": "not_supported",
+    "missing": "The quote only says that until you switch to the new API the app behaves like React 17; it says nothing about createRoot from react-dom/client being adopted, nor does it describe the state of an application that has already switched."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1346,
+  "output_tokens": 413,
+  "stop_reason": "end_turn"
+ }
+}

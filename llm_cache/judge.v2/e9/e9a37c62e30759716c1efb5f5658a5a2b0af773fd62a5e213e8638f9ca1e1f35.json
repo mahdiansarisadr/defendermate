@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_from_3_2_to_4_2_crosses_rele_e6db29\",\n  \"claim\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where support for GDAL 2.1 was removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support for GDAL 2.1 is removed.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"Support for GDAL 2.0 and GEOS 3.5 is removed.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_uses_django_contrib_gis_w_fa05d3\",\n  \"claim\": \"The deployment uses django.contrib.gis with GDAL version 2.1 installed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support for GDAL 2.1 is removed.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_from_3_2_to_4_2_crosses_rele_e6db29",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not state that 3.2 to 4.2 crosses 4.1 (a version-ordering fact); the second quote is labeled as from the 4.0 notes but release_of_change 4.1 and concerns GDAL 2.0, not 2.1, so it adds nothing. The core claim that 4.1 removed GDAL 2.1 support is supported by the first quote."
+   },
+   {
+    "condition_id": "the_deployment_uses_django_contrib_gis_w_fa05d3",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1140,
+  "output_tokens": 238,
+  "stop_reason": "end_turn"
+ }
+}

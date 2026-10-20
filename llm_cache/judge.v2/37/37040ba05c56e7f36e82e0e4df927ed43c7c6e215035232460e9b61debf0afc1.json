@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_0_where_the_bbfc2d\",\n  \"claim\": \"The upgrade crosses Django 4.0, where the migrations autodetector began using model states and field operations stopped specifying attributes not passed at initialization.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The migrations autodetector now uses model states instead of model classes.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_defines_models_with_fore_8b538d\",\n  \"claim\": \"The application defines models with ForeignKey fields (migrations are managed and makemigrations is run).\",\n  \"evidence\": [\n   {\n    \"quote\": \"migration operations for ForeignKey and ManyToManyField fields no longer specify attributes which were not passed to the fields during initialization\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_defines_models_with_many_5952f0\",\n  \"claim\": \"The application defines models with ManyToManyField fields (migrations are managed and makemigrations is run).\",\n  \"evidence\": [\n   {\n    \"quote\": \"running makemigrations might generate no-op AlterField operations for ManyToManyField and ForeignKey fields in some cases\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_0_where_the_bbfc2d",
+    "verdict": "partially_supported",
+    "missing": "The quote only states that the autodetector uses model states instead of model classes in 4.0; it does not state that field operations stopped specifying attributes not passed at initialization (that part of the claim is not in the quote)."
+   },
+   {
+    "condition_id": "the_application_defines_models_with_fore_8b538d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_defines_models_with_many_5952f0",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1266,
+  "output_tokens": 209,
+  "stop_reason": "end_turn"
+ }
+}

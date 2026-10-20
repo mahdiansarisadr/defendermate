@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_which_intro_c1c53c\",\n  \"claim\": \"The upgrade crosses React 18, which introduces the new development-only Strict Mode check.\",\n  \"evidence\": [\n   {\n    \"quote\": \"React 18 introduces a new development-only check to Strict Mode\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_wraps_components_in_stri_33d494\",\n  \"claim\": \"The application wraps components in Strict Mode, so the new unmount/remount check applies.\",\n  \"evidence\": [\n   {\n    \"quote\": \"React will automatically unmount and remount every component, whenever a component mounts for the first time\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_app_runs_in_a_development_environmen_d2476e\",\n  \"claim\": \"The app runs in a development environment, because the check is development-only.\",\n  \"evidence\": [\n   {\n    \"quote\": \"React 18 introduces a new development-only check to Strict Mode\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"components_are_not_resilient_to_being_re_04ace9\",\n  \"claim\": \"Components are not resilient to being remounted with existing state, so the remount breaks the app.\",\n  \"evidence\": [\n   {\n    \"quote\": \"until you can fix the components to be resilient to remounting with existing state\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_which_intro_c1c53c",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_wraps_components_in_stri_33d494",
+    "verdict": "partially_supported",
+    "missing": "The quote states that React will unmount and remount every component on first mount, but does not say this happens in Strict Mode. It also does not say the application wraps components in Strict Mode."
+   },
+   {
+    "condition_id": "the_app_runs_in_a_development_environmen_d2476e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "components_are_not_resilient_to_being_re_04ace9",
+    "verdict": "partially_supported",
+    "missing": "The quote implies that components need to be made resilient to remounting with existing state. It does not say that any particular components lack this resilience, nor that remounting breaks the app."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1365,
+  "output_tokens": 295,
+  "stop_reason": "end_turn"
+ }
+}

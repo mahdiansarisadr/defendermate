@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_2_where_met_788825\",\n  \"claim\": \"The upgrade crosses Django 4.2, where Meta.index_together is deprecated.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The Meta.index_together option is deprecated in favor of the indexes option\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   },\n   {\n    \"quote\": \"The Meta.index_together option is deprecated in favor of the indexes option.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"models_declare_meta_index_together_28615b\",\n  \"claim\": \"Models declare Meta.index_together.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Migrating existing index_together should be handled as a migration\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"existing_migration_files_use_the_alterin_061605\",\n  \"claim\": \"Existing migration files use the AlterIndexTogether operation, so squashing is advised and it must not be used in new migrations.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_2_where_met_788825",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "models_declare_meta_index_together_28615b",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "existing_migration_files_use_the_alterin_061605",
+    "verdict": "partially_supported",
+    "missing": "The quote says AlterIndexTogether is officially supported only for pre-4.2 migration files, but does not state that squashing is advised or explicitly that it must not be used in new migrations (only implied)."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1273,
+  "output_tokens": 201,
+  "stop_reason": "end_turn"
+ }
+}

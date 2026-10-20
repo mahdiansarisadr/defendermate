@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_1_where_adm_792000\",\n  \"claim\": \"The upgrade crosses Django 4.1, where admin multi-term search behavior changed (3.2 -> 4.2 includes 4.1).\",\n  \"evidence\": [\n   {\n    \"quote\": \"Admin changelist searches using multiple search terms are now applied in a single call to filter(), rather than in sequential filter() calls.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"a_modeladmin_defines_search_fields_that_ef82c7\",\n  \"claim\": \"A ModelAdmin defines search_fields that span a multi-valued relationship (e.g. reverse foreign key or many-to-many), such as ['childname', 'childage'].\",\n  \"evidence\": [\n   {\n    \"quote\": \"if search_fields is set to ['childname', 'childage']\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"For multi-valued relationships, this means that rows from the related model must match all terms rather than any term.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_overrides_or_calls_get_s_01058a\",\n  \"claim\": \"The application overrides or calls get_search_results, which followed the old sequential-filter behavior in 4.0 and earlier.\",\n  \"evidence\": [\n   {\n    \"quote\": \"In Django 4.0 and earlier, get_search_results followed the second example query\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"users_or_tests_rely_on_multi_term_admin_853f8a\",\n  \"claim\": \"Users or tests rely on multi-term admin searches returning parents whose different related rows each match different terms.\",\n  \"evidence\": [\n   {\n    \"quote\": \"parent rows will be returned only if there is a relationship to some 17-year-old child named Jamal\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_1_where_adm_792000",
+    "verdict": "partially_supported",
+    "missing": "The quote says the change is in 4.1 but does not state the user's upgrade path (3.2 -> 4.2) or that it crosses 4.1; the quote also does not say 'multi-term search behavior changed' beyond filter() call batching (core is supported)."
+   },
+   {
+    "condition_id": "a_modeladmin_defines_search_fields_that_ef82c7",
+    "verdict": "partially_supported",
+    "missing": "Quotes mention search_fields ['childname','childage'] as an example and multi-valued relationships, but do not explicitly state that a ModelAdmin spans reverse FK/M2M relationships or that such configurations are affected as a condition; the specifics of reverse foreign key / many-to-many are not stated."
+   },
+   {
+    "condition_id": "the_application_overrides_or_calls_get_s_01058a",
+    "verdict": "partially_supported",
+    "missing": "Quote states get_search_results followed the second (sequential) example query in 4.0 and earlier, but does not mention applications overriding or calling it, nor explicitly name it as 'sequential filter' behavior."
+   },
+   {
+    "condition_id": "users_or_tests_rely_on_multi_term_admin_853f8a",
+    "verdict": "partially_supported",
+    "missing": "The quote describes the new behavior (single related row must match all terms), but does not state the old behavior of returning parents whose different related rows match different terms, nor that users or tests rely on it."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1528,
+  "output_tokens": 511,
+  "stop_reason": "end_turn"
+ }
+}

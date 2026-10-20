@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django deprecation timeline.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"52f05962b07a\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"See the Django 3.0 release notes for more details on these changes.\"}\n{\"item_id\": \"a117abded9c9\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() will be removed.\"}\n{\"item_id\": \"ae244a81eb76\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.utils.encoding.force_text() and smart_text() will be removed.\"}\n{\"item_id\": \"fdfabdc2ef66\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.utils.translation.ugettext(), ugettext_lazy(), ugettext_noop(), ungettext(), and ungettext_lazy() will be removed.\"}\n{\"item_id\": \"44be31b11b26\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.views.i18n.set_language() will no longer set the user language in request.session (key django.utils.translation.LANGUAGE_SESSION_KEY).\"}\n{\"item_id\": \"55fd9f1953d5\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"alias=None will be required in the signature of django.db.models.Expression.get_group_by_cols() subclasses.\"}\n{\"item_id\": \"353dce6de9d0\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.utils.text.unescape_entities() will be removed.\"}\n{\"item_id\": \"39308127d1d3\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.utils.http.is_safe_url() will be removed.\"}\n{\"item_id\": \"4af894a9e5da\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"See the Django 3.1 release notes for more details on these changes.\"}\n{\"item_id\": \"a4fbd461a0b7\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The PASSWORD_RESET_TIMEOUT_DAYS setting will be removed.\"}\n{\"item_id\": \"722f0d2ec067\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The undocumented usage of the isnull lookup with non-boolean values as the right-hand side will no longer be allowed.\"}\n{\"item_id\": \"d65fd7c6bed2\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The django.db.models.query_utils.InvalidQuery exception class will be removed.\"}\n{\"item_id\": \"34ae635b5499\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The django-admin.py entry point will be removed.\"}\n{\"item_id\": \"bbdf41dc5189\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The HttpRequest.is_ajax() method will be removed.\"}\n{\"item_id\": \"58dde18e64ba\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"Support for the pre-Django 3.1 encoding format of cookies values used by django.contrib.messages.storage.cookie.CookieStorage will be removed.\"}\n{\"item_id\": \"7c87f57261a4\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"Support for the pre-Django 3.1 password reset tokens in the admin site (that use the SHA-1 hashing algorithm) will be removed.\"}\n{\"item_id\": \"ab4751fecf4a\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"Support for the pre-Django 3.1 encoding format of sessions will be removed.\"}\n{\"item_id\": \"d6b11bcd70dd\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"Support for the pre-Django 3.1 django.core.signing.Signer signatures (encoded with the SHA-1 algorithm) will be removed.\"}\n{\"item_id\": \"913c7ea9c7c3\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"Support for the pre-Django 3.1 django.core.signing.dumps() signatures (encoded with the SHA-1 algorithm) in django.core.signing.loads() will be removed.\"}\n{\"item_id\": \"1b13bf2ffe6c\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"Support for the pre-Django 3.1 user sessions (that use the SHA-1 algorithm) will be removed.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "52f05962b07a",
+    "label": "context",
+    "reason": "This is a documentation pointer to the Django 3.0 release notes and requires no action at this release."
+   },
+   {
+    "item_id": "a117abded9c9",
+    "label": "risk",
+    "reason": "The urlquote, urlquote_plus, urlunquote and urlunquote_plus functions will be removed, so code calling them will break."
+   },
+   {
+    "item_id": "ae244a81eb76",
+    "label": "risk",
+    "reason": "force_text() and smart_text() will be removed, so code that imports or calls them will break."
+   },
+   {
+    "item_id": "fdfabdc2ef66",
+    "label": "risk",
+    "reason": "The ugettext family of translation functions will be removed, so code using them will break."
+   },
+   {
+    "item_id": "44be31b11b26",
+    "label": "risk",
+    "reason": "set_language() will stop writing the user language to request.session, which changes behavior for code that reads that session key."
+   },
+   {
+    "item_id": "55fd9f1953d5",
+    "label": "risk",
+    "reason": "Expression.get_group_by_cols() subclasses will be required to accept alias=None, so custom expressions must update their signatures."
+   },
+   {
+    "item_id": "353dce6de9d0",
+    "label": "risk",
+    "reason": "django.utils.text.unescape_entities() will be removed, so code calling it will break."
+   },
+   {
+    "item_id": "39308127d1d3",
+    "label": "risk",
+    "reason": "django.utils.http.is_safe_url() will be removed, so code calling it will break."
+   },
+   {
+    "item_id": "4af894a9e5da",
+    "label": "context",
+    "reason": "This is a documentation pointer to the Django 3.1 release notes and requires no action at this release."
+   },
+   {
+    "item_id": "a4fbd461a0b7",
+    "label": "risk",
+    "reason": "The PASSWORD_RESET_TIMEOUT_DAYS setting will be removed, so projects still using it must switch to PASSWORD_RESET_TIMEOUT."
+   },
+   {
+    "item_id": "722f0d2ec067",
+    "label": "risk",
+    "reason": "Using non-boolean right-hand values with the isnull lookup will no longer be allowed, so such queries will fail."
+   },
+   {
+    "item_id": "d65fd7c6bed2",
+    "label": "risk",
+    "reason": "The InvalidQuery exception class will be removed, so code that catches or imports it will break."
+   },
+   {
+    "item_id": "34ae635b5499",
+    "label": "risk",
+    "reason": "The django-admin.py entry point will be removed, so scripts or deployments invoking it must switch to django-admin."
+   },
+   {
+    "item_id": "bbdf41dc5189",
+    "label": "risk",
+    "reason": "HttpRequest.is_ajax() will be removed, so views relying on it will break."
+   },
+   {
+    "item_id": "58dde18e64ba",
+    "label": "risk",
+    "reason": "Support for the pre-3.1 CookieStorage cookie format will be removed, so old message cookies will no longer be read."
+   },
+   {
+    "item_id": "7c87f57261a4",
+    "label": "risk",
+    "reason": "Support for pre-3.1 SHA-1 admin password reset tokens will be removed, so outstanding reset links using that format will stop working."
+   },
+   {
+    "item_id": "ab4751fecf4a",
+    "label": "risk",
+    "reason": "Support for the pre-3.1 session encoding format will be removed, so existing sessions in the old format will no longer load."
+   },
+   {
+    "item_id": "d6b11bcd70dd",
+    "label": "risk",
+    "reason": "Support for SHA-1 signed django.core.signing.Signer signatures from before 3.1 will be removed, so those signatures will no longer validate."
+   },
+   {
+    "item_id": "913c7ea9c7c3",
+    "label": "risk",
+    "reason": "Support for SHA-1 dumps() signatures in loads() from before 3.1 will be removed, so those values will fail to load."
+   },
+   {
+    "item_id": "1b13bf2ffe6c",
+    "label": "risk",
+    "reason": "Support for pre-3.1 SHA-1 user sessions will be removed, so those sessions will be invalidated and users must log in again."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2263,
+  "output_tokens": 1727,
+  "stop_reason": "end_turn"
+ }
+}

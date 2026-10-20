@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_0_where_cs_df086b\",\n  \"claim\": \"The upgrade crosses release 4.0, where CSRF protection began consulting the Origin header.\",\n  \"evidence\": [\n   {\n    \"quote\": \"As CSRF protection now consults the Origin header\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"CSRF protection now consults the Origin header, if present.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"csrf_cookie_domain_is_set_to_a_value_sta_b4ea3e\",\n  \"claim\": \"CSRF_COOKIE_DOMAIN is set to a value starting with a dot to allow requests from subdomains.\",\n  \"evidence\": [\n   {\n    \"quote\": \"particularly if you allow requests from subdomains by setting CSRF_COOKIE_DOMAIN\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"some changes to the CSRF_TRUSTED_ORIGINS setting are required\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"csrf_use_sessions_is_enabled_and_session_945db9\",\n  \"claim\": \"CSRF_USE_SESSIONS is enabled and SESSION_COOKIE_DOMAIN is set to a value starting with a dot.\",\n  \"evidence\": [\n   {\n    \"quote\": \"(or SESSION_COOKIE_DOMAIN if CSRF_USE_SESSIONS is enabled)\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"csrf_trusted_origins_is_not_already_conf_82eddc\",\n  \"claim\": \"CSRF_TRUSTED_ORIGINS is not already configured to cover the subdomain origins.\",\n  \"evidence\": [\n   {\n    \"quote\": \"you may need to set CSRF_TRUSTED_ORIGINS\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"requests_reaching_the_application_includ_817a84\",\n  \"claim\": \"Requests reaching the application include an Origin header, so the new Origin check applies.\",\n  \"evidence\": [\n   {\n    \"quote\": \"CSRF protection now consults the Origin header, if present.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_0_where_cs_df086b",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "csrf_cookie_domain_is_set_to_a_value_sta_b4ea3e",
+    "verdict": "partially_supported",
+    "missing": "The quotes mention setting CSRF_COOKIE_DOMAIN to allow subdomain requests, but do not state that the value must start with a dot."
+   },
+   {
+    "condition_id": "csrf_use_sessions_is_enabled_and_session_945db9",
+    "verdict": "partially_supported",
+    "missing": "The quotes only mention SESSION_COOKIE_DOMAIN as an alternative when CSRF_USE_SESSIONS is enabled; they do not state that it must start with a dot."
+   },
+   {
+    "condition_id": "csrf_trusted_origins_is_not_already_conf_82eddc",
+    "verdict": "partially_supported",
+    "missing": "The quote says you may need to set CSRF_TRUSTED_ORIGINS, but does not state that it is not already configured to cover the subdomain origins."
+   },
+   {
+    "condition_id": "requests_reaching_the_application_includ_817a84",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1715,
+  "output_tokens": 411,
+  "stop_reason": "end_turn"
+ }
+}

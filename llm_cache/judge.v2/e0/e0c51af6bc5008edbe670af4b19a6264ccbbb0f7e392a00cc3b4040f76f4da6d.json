@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_from_3_2_to_4_2_crosses_rele_4d748b\",\n  \"claim\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where reverse foreign key related managers began raising ValueError for unsaved objects.\",\n  \"evidence\": [\n   {\n    \"quote\": \"a reverse foreign key now raises ValueError when calling related managers for unsaved objects\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_accesses_reverse_foreign_8a28ef\",\n  \"claim\": \"The application accesses reverse foreign key related managers (e.g. <model>_set or a custom related_name) on model instances that have not yet been saved.\",\n  \"evidence\": [\n   {\n    \"quote\": \"calling related managers for unsaved objects\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_from_3_2_to_4_2_crosses_rele_4d748b",
+    "verdict": "partially_supported",
+    "missing": "The quote establishes the change occurred in 4.1, but does not state that the upgrade from 3.2 to 4.2 crosses 4.1 (implied by version ordering), nor explicitly that this was a change in behavior from earlier raising no error (\"began raising\")."
+   },
+   {
+    "condition_id": "the_application_accesses_reverse_foreign_8a28ef",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1101,
+  "output_tokens": 198,
+  "stop_reason": "end_turn"
+ }
+}

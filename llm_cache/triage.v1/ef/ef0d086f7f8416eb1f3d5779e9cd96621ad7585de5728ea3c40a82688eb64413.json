@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.2.\nSource: Django 4.2 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"d0ed878046d6\", \"section\": \"Django 4.2 release notes\", \"text\": \"*April 3, 2023* Welcome to Django 4.2! These release notes cover the new features, as well as some backwards incompatible changes you'll want to be aware of when upgrading from Django 4.1 or earlier. We've begun the deprecation process for some features. See the /howto/upgrade-version guide if you're updating an existing project. Django 4.2 is designated as a long-term support release. It will receive security updates for at least three years after its release. Support for the previous LTS, Django 3.2, will end in April 2024.\"}\n{\"item_id\": \"17eb8e735cf2\", \"section\": \"Django 4.2 release notes / Python compatibility\", \"text\": \"Django 4.2 supports Python 3.8, 3.9, 3.10, 3.11, and 3.12 (as of 4.2.8). We highly recommend and only officially support the latest release of each series.\"}\n{\"item_id\": \"1a184ee069dc\", \"section\": \"Django 4.2 release notes / What's new in Django 4.2 / Psycopg 3 support\", \"text\": \"Django now supports psycopg version 3.1.8 or higher. To update your code, install the psycopg library, you don't need to change the ENGINE as django.db.backends.postgresql supports both libraries. Support for psycopg2 is likely to be deprecated and removed at some point in the future. Be aware that psycopg 3 introduces some breaking changes over psycopg2. As a consequence, you may need to make some changes to account for differences from psycopg2.\"}\n{\"item_id\": \"2ec0a1679b97\", \"section\": \"Django 4.2 release notes / What's new in Django 4.2 / Comments on columns and tables\", \"text\": \"The new Field.db_comment and Meta.db_table_comment options allow creating comments on columns and tables, respectively. For example: from django.db import models class Question(models.Model): text = models.TextField(db_comment=\\\"Poll question\\\") pub_date = models.DateTimeField( db_comment=\\\"Date and time when the question was published\\\", ) class Meta: db_table_comment = \\\"Poll questions\\\" class Answer(models.Model): question = models.ForeignKey( Question, on_delete=models.CASCADE, db_comment=\\\"Reference to a question\\\", ) answer = models.TextField(db_comment=\\\"Question answer\\\") class Meta: db_table_comment = \\\"Question answers\\\"\"}\n{\"item_id\": \"d80f8703e138\", \"section\": \"Django 4.2 release notes / What's new in Django 4.2 / Comments on columns and tables\", \"text\": \"Also, the new AlterModelTableComment operation allows changing table comments defined in the Meta.db_table_comment.\"}\n{\"item_id\": \"33f5df64d892\", \"section\": \"Django 4.2 release notes / What's new in Django 4.2 / Mitigation for the BREACH attack\", \"text\": \"GZipMiddleware now includes a mitigation for the BREACH attack. It will add up to 100 random bytes to gzip responses to make BREACH attacks harder. Read more about the mitigation technique in the Heal The Breach (HTB) paper.\"}\n{\"item_id\": \"6fdd1415c046\", \"section\": \"Django 4.2 release notes / What's new in Django 4.2 / In-memory file storage\", \"text\": \"The new django.core.files.storage.InMemoryStorage class provides a non-persistent storage useful for speeding up tests by avoiding disk access.\"}\n{\"item_id\": \"f9e770ea346c\", \"section\": \"Django 4.2 release notes / What's new in Django 4.2 / Custom file storages\", \"text\": \"The new STORAGES setting allows configuring multiple custom file storage backends. It also controls storage engines for managing files (the \\\"default\\\" key) and static files (the \\\"staticfiles\\\" key). The old DEFAULT_FILE_STORAGE and STATICFILES_STORAGE settings are deprecated as of this release.\"}\n{\"item_id\": \"81ab0885142a\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.admin\", \"text\": \"The light or dark color theme of the admin can now be toggled in the UI, as well as being set to follow the system setting.\"}\n{\"item_id\": \"f9c4f11d8139\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.admin\", \"text\": \"The admin's font stack now prefers system UI fonts and no longer requires downloading fonts. Additionally, CSS variables are available to more easily override the default font families.\"}\n{\"item_id\": \"eac45dc3792c\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.admin\", \"text\": \"The admin/delete_confirmation.html template now has some additional blocks and scripting hooks to ease customization.\"}\n{\"item_id\": \"0bd5044ce5f2\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.admin\", \"text\": \"The chosen options of filter_horizontal and filter_vertical widgets are now filterable.\"}\n{\"item_id\": \"efc985f3d8e5\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.admin\", \"text\": \"The admin/base.html template now has a new block nav-breadcrumbs which contains the navigation landmark and the breadcrumbs block.\"}\n{\"item_id\": \"adb6b74c90c0\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.admin\", \"text\": \"ModelAdmin.list_editable now uses atomic transactions when making edits.\"}\n{\"item_id\": \"a1bed74e7e0b\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.admin\", \"text\": \"jQuery is upgraded from version 3.6.0 to 3.6.4.\"}\n{\"item_id\": \"718a4dad75ad\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.auth\", \"text\": \"The default iteration count for the PBKDF2 password hasher is increased from 390,000 to 600,000.\"}\n{\"item_id\": \"066cdf6e86f1\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.auth\", \"text\": \"UserCreationForm now saves many-to-many form fields for a custom user model.\"}\n{\"item_id\": \"9661653ab636\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.auth\", \"text\": \"The new BaseUserCreationForm is now the recommended base class for customizing the user creation form.\"}\n{\"item_id\": \"bd2b084c07da\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.gis\", \"text\": \"The GeoJSON serializer now outputs the id key for serialized features, which defaults to the primary key of objects.\"}\n{\"item_id\": \"22c827a1aa4d\", \"section\": \"What's new in Django 4.2 / Minor features / django.contrib.gis\", \"text\": \"The GDALRaster class now supports pathlib.Path.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "d0ed878046d6",
+    "label": "context",
+    "reason": "The introduction states the release's scope and points to the upgrade guide without itself requiring any change."
+   },
+   {
+    "item_id": "17eb8e735cf2",
+    "label": "risk",
+    "reason": "Django 4.2 supports Python 3.8 through 3.12, which raises the runtime floor for users upgrading from 3.2 and may require a Python upgrade."
+   },
+   {
+    "item_id": "1a184ee069dc",
+    "label": "risk",
+    "reason": "Psycopg 3 support is additive, but the text warns of breaking differences from psycopg2 and that psycopg2 support is likely to be deprecated, so code may need changes."
+   },
+   {
+    "item_id": "2ec0a1679b97",
+    "label": "context",
+    "reason": "The new db_comment and db_table_comment options are purely additive and require no action unless the user chooses to adopt them."
+   },
+   {
+    "item_id": "d80f8703e138",
+    "label": "context",
+    "reason": "The new AlterModelTableComment operation is an additive feature that existing projects do not need to use."
+   },
+   {
+    "item_id": "33f5df64d892",
+    "label": "risk",
+    "reason": "GZipMiddleware now adds up to 100 random bytes to gzip responses, a change in response content that can affect size-sensitive clients or tests."
+   },
+   {
+    "item_id": "6fdd1415c046",
+    "label": "context",
+    "reason": "InMemoryStorage is a new optional class for tests and requires no action from upgrading users."
+   },
+   {
+    "item_id": "f9e770ea346c",
+    "label": "context",
+    "reason": "The new STORAGES setting is additive, and the old settings are only deprecated, so they still work and only emit warnings."
+   },
+   {
+    "item_id": "81ab0885142a",
+    "label": "context",
+    "reason": "The admin color theme toggle is a new UI feature that requires no user action."
+   },
+   {
+    "item_id": "f9c4f11d8139",
+    "label": "risk",
+    "reason": "The admin's default font stack changes to system fonts, which alters the default appearance and may affect custom CSS that relied on the previous fonts."
+   },
+   {
+    "item_id": "eac45dc3792c",
+    "label": "context",
+    "reason": "Additional template blocks and hooks are optional customization points that add no required change."
+   },
+   {
+    "item_id": "0bd5044ce5f2",
+    "label": "context",
+    "reason": "Making chosen options filterable is a purely additive admin widget enhancement."
+   },
+   {
+    "item_id": "efc985f3d8e5",
+    "label": "context",
+    "reason": "A new nav-breadcrumbs block is an additive template hook that requires no action unless customized."
+   },
+   {
+    "item_id": "adb6b74c90c0",
+    "label": "risk",
+    "reason": "ModelAdmin.list_editable now wraps edits in atomic transactions, a behavior change that can affect how partial failures are handled."
+   },
+   {
+    "item_id": "a1bed74e7e0b",
+    "label": "context",
+    "reason": "The bundled jQuery bump from 3.6.0 to 3.6.4 is a minor dependency update that needs no user action."
+   },
+   {
+    "item_id": "718a4dad75ad",
+    "label": "risk",
+    "reason": "The PBKDF2 default iteration count rises from 390,000 to 600,000, a changed default that increases hashing cost and affects deployment performance."
+   },
+   {
+    "item_id": "066cdf6e86f1",
+    "label": "risk",
+    "reason": "UserCreationForm now saves many-to-many fields for custom user models, a behavior change that can alter existing form-handling code."
+   },
+   {
+    "item_id": "9661653ab636",
+    "label": "context",
+    "reason": "BaseUserCreationForm is a new recommended base class, and existing code does not need to change."
+   },
+   {
+    "item_id": "bd2b084c07da",
+    "label": "risk",
+    "reason": "The GeoJSON serializer now outputs an id key by default, changing serialized output that downstream consumers may depend on."
+   },
+   {
+    "item_id": "22c827a1aa4d",
+    "label": "context",
+    "reason": "GDALRaster accepting pathlib.Path is an additive convenience that requires no action."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3038,
+  "output_tokens": 2176,
+  "stop_reason": "end_turn"
+ }
+}

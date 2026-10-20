@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django 4.0 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"25ae3b36692c\", \"section\": \"What's new in Django 4.0 / Minor features / Management Commands\", \"text\": \"The shell command now respects sys.interactivehook at startup. This allows loading shell history between interactive sessions. As a consequence, readline is no longer loaded if running in *isolated* mode.\"}\n{\"item_id\": \"05e74d2737d3\", \"section\": \"What's new in Django 4.0 / Minor features / Management Commands\", \"text\": \"The new BaseCommand.suppressed_base_arguments attribute allows suppressing unsupported default command options in the help output.\"}\n{\"item_id\": \"e8b68ed11a24\", \"section\": \"What's new in Django 4.0 / Minor features / Management Commands\", \"text\": \"The new startapp --exclude and startproject --exclude options allow excluding directories from the template.\"}\n{\"item_id\": \"286377c00d22\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"New QuerySet.contains(obj) method returns whether the queryset contains the given object. This tries to perform the query in the simplest and fastest way possible.\"}\n{\"item_id\": \"cbaf4aea4275\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"The new precision argument of the Round() database function allows specifying the number of decimal places after rounding.\"}\n{\"item_id\": \"e93152775894\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"QuerySet.bulk_create now sets the primary key on objects when using SQLite 3.35+.\"}\n{\"item_id\": \"cfeb9f8977e1\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"DurationField now supports multiplying and dividing by scalar values on SQLite.\"}\n{\"item_id\": \"55269b9c02d9\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"QuerySet.bulk_update now returns the number of objects updated.\"}\n{\"item_id\": \"62313edd8d63\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"The new Expression.empty_result_set_value attribute allows specifying a value to return when the function is used over an empty result set.\"}\n{\"item_id\": \"20e89dd70ee6\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"The skip_locked argument of QuerySet.select_for_update() is now allowed on MariaDB 10.6+.\"}\n{\"item_id\": \"f39d0d106b66\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"Lookup expressions may now be used in QuerySet annotations, aggregations, and directly in filters.\"}\n{\"item_id\": \"e4223684fe39\", \"section\": \"What's new in Django 4.0 / Minor features / Models\", \"text\": \"The new default argument for built-in aggregates allows specifying a value to be returned when the queryset (or grouping) contains no entries, rather than None.\"}\n{\"item_id\": \"4e09125280a7\", \"section\": \"What's new in Django 4.0 / Minor features / Requests and Responses\", \"text\": \"The SecurityMiddleware now adds the Cross-Origin Opener Policy header with a value of 'same-origin' to prevent cross-origin popups from sharing the same browsing context. You can prevent this header from being added by setting the SECURE_CROSS_ORIGIN_OPENER_POLICY setting to None.\"}\n{\"item_id\": \"990da5588a95\", \"section\": \"What's new in Django 4.0 / Minor features / Signals\", \"text\": \"The new stdout argument for pre_migrate and post_migrate signals allows redirecting output to a stream-like object. It should be preferred over sys.stdout and print when emitting verbose output in order to allow proper capture when testing.\"}\n{\"item_id\": \"6cf8e2eb07b6\", \"section\": \"What's new in Django 4.0 / Minor features / Templates\", \"text\": \"floatformat template filter now allows using the u suffix to force disabling localization.\"}\n{\"item_id\": \"061da81523b2\", \"section\": \"What's new in Django 4.0 / Minor features / Tests\", \"text\": \"The new serialized_aliases argument of django.test.utils.setup_databases determines which DATABASES aliases test databases should have their state serialized to allow usage of the serialized_rollback feature.\"}\n{\"item_id\": \"225951192d23\", \"section\": \"What's new in Django 4.0 / Minor features / Tests\", \"text\": \"Django test runner now supports a --buffer option with parallel tests.\"}\n{\"item_id\": \"42db0e47c022\", \"section\": \"What's new in Django 4.0 / Minor features / Tests\", \"text\": \"The new logger argument to DiscoverRunner allows a Python logger to be used for logging.\"}\n{\"item_id\": \"e3875855751e\", \"section\": \"What's new in Django 4.0 / Minor features / Tests\", \"text\": \"The new DiscoverRunner.log method provides a way to log messages that uses the DiscoverRunner.logger, or prints to the console if not set.\"}\n{\"item_id\": \"ace741c46175\", \"section\": \"What's new in Django 4.0 / Minor features / Tests\", \"text\": \"Django test runner now supports a --shuffle option to execute tests in a random order.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "25ae3b36692c",
+    "label": "risk",
+    "reason": "The shell command now honors sys.interactivehook and no longer loads readline in isolated mode, a behavior change that can affect existing shell workflows."
+   },
+   {
+    "item_id": "05e74d2737d3",
+    "label": "context",
+    "reason": "The new BaseCommand.suppressed_base_arguments attribute is an additive option that requires no user action."
+   },
+   {
+    "item_id": "e8b68ed11a24",
+    "label": "context",
+    "reason": "The new startapp and startproject --exclude options are purely additive and need no user action."
+   },
+   {
+    "item_id": "286377c00d22",
+    "label": "context",
+    "reason": "QuerySet.contains() is a new method, so it is an additive feature that requires no changes."
+   },
+   {
+    "item_id": "cbaf4aea4275",
+    "label": "context",
+    "reason": "The new precision argument to Round() is an additive option and existing usage is unaffected."
+   },
+   {
+    "item_id": "e93152775894",
+    "label": "context",
+    "reason": "bulk_create setting primary keys on SQLite 3.35+ is an added capability that needs no user action."
+   },
+   {
+    "item_id": "cfeb9f8977e1",
+    "label": "context",
+    "reason": "DurationField multiplication and division on SQLite is a new capability and requires no user action."
+   },
+   {
+    "item_id": "55269b9c02d9",
+    "label": "context",
+    "reason": "bulk_update now returning the updated count is an additive return value that does not break existing callers that ignore it."
+   },
+   {
+    "item_id": "62313edd8d63",
+    "label": "context",
+    "reason": "The new Expression.empty_result_set_value attribute is an additive option with no required changes."
+   },
+   {
+    "item_id": "20e89dd70ee6",
+    "label": "context",
+    "reason": "Allowing skip_locked on MariaDB 10.6+ is a new capability that requires no user action."
+   },
+   {
+    "item_id": "f39d0d106b66",
+    "label": "context",
+    "reason": "Using lookup expressions in annotations, aggregations, and filters is a new feature and needs no action."
+   },
+   {
+    "item_id": "e4223684fe39",
+    "label": "context",
+    "reason": "The new default argument for aggregates is opt-in and existing aggregate behavior is unchanged."
+   },
+   {
+    "item_id": "4e09125280a7",
+    "label": "risk",
+    "reason": "SecurityMiddleware now adds a Cross-Origin-Opener-Policy header by default, which can break cross-origin popup flows unless users set SECURE_CROSS_ORIGIN_OPENER_POLICY to None."
+   },
+   {
+    "item_id": "990da5588a95",
+    "label": "context",
+    "reason": "The new stdout argument for migrate signals is an additive option and the existing behavior is preserved."
+   },
+   {
+    "item_id": "6cf8e2eb07b6",
+    "label": "context",
+    "reason": "The new u suffix for floatformat is an additive option that changes nothing for existing templates."
+   },
+   {
+    "item_id": "061da81523b2",
+    "label": "context",
+    "reason": "The new serialized_aliases argument is an optional addition and existing calls keep working."
+   },
+   {
+    "item_id": "225951192d23",
+    "label": "context",
+    "reason": "The new --buffer option for parallel tests is additive and requires no user action."
+   },
+   {
+    "item_id": "42db0e47c022",
+    "label": "context",
+    "reason": "The new logger argument to DiscoverRunner is optional and additive."
+   },
+   {
+    "item_id": "e3875855751e",
+    "label": "context",
+    "reason": "The new DiscoverRunner.log method is an additive helper and existing runners are unaffected."
+   },
+   {
+    "item_id": "ace741c46175",
+    "label": "context",
+    "reason": "The new --shuffle option is opt-in and does not change default test ordering."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2460,
+  "output_tokens": 1695,
+  "stop_reason": "end_turn"
+ }
+}

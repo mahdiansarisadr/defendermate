@@ -36,9 +36,12 @@ def condition_confidence(c: Condition, tiers: dict[str, int]) -> tuple[Confidenc
     if c.role == "uncertain" or (c.judge and c.judge.verdict == "not_supported"):
         conf = "low"
         why.append("cap: uncertain or judge not supported -> low")
-    elif ev_tiers and min(ev_tiers) > 1 and conf == "high":
+    elif conf == "high" and ev_tiers and min(ev_tiers) > 1:
         conf = "medium"
         why.append("cap: tier 2/3 only -> at most medium")
+    elif conf == "high" and c.derived_by == "inference":
+        conf = "medium"
+        why.append("cap: inferred -> at most medium")
     elif not ev_tiers:
         conf = "low"
     return conf, score, why
@@ -55,7 +58,8 @@ def apply_rubric(paths: list[RiskPath], tiers: dict[str, int]) -> None:
 def overall_confidence(paths: list[RiskPath], failures: int, rejected_tier1: int) -> Confidence:
     if not paths:
         return "low"
-    share = sum(p.confidence == "high" for p in paths) / len(paths)
-    if share >= 0.7 and failures == 0 and rejected_tier1 == 0:
+    high = sum(p.confidence == "high" for p in paths) / len(paths)
+    at_least_medium = sum(p.confidence != "low" for p in paths) / len(paths)
+    if high >= 0.7 and failures == 0 and rejected_tier1 == 0:
         return "high"
-    return "medium" if share >= 0.4 else "low"
+    return "medium" if at_least_medium >= 0.7 else "low"

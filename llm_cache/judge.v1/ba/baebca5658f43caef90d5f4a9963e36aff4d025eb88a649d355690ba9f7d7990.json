@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_react_129a49\",\n  \"claim\": \"The upgrade crosses React 18, where ReactDOM.render is no longer supported.\",\n  \"quotes\": [\n   \"ReactDOM.render is no longer supported in React 18. Use createRoot instead.\",\n   \"We've also removed the callback from render, since it usually does not have the expected result when using Suspense\",\n   \"ReactDOM.render has been deprecated.\"\n  ]\n },\n {\n  \"condition_id\": \"application_code_calls_render_reactdom_r_766bc9\",\n  \"claim\": \"Application code calls render (ReactDOM.render) imported from react-dom to mount the app.\",\n  \"quotes\": [\n   \"import { render } from 'react-dom';\",\n   \"render(<App tab=\\\"home\\\" />, container);\",\n   \"render(<App tab=\\\"home\\\" />, container, () => { console.log('rendered'); });\",\n   \"const root = createRoot(container);\",\n   \"Using it will warn and run your app in React 17 mode.\"\n  ]\n },\n {\n  \"condition_id\": \"if_the_app_already_uses_createroot_from_bcdf08\",\n  \"claim\": \"If the app already uses createRoot from react-dom/client, this risk does not apply.\",\n  \"quotes\": [\n   \"import { createRoot } from 'react-dom/client';\"\n  ]\n },\n {\n  \"condition_id\": \"until_the_app_switches_to_the_new_api_it_412130\",\n  \"claim\": \"Until the app switches to the new API it behaves as React 17 and does not get the concurrent renderer.\",\n  \"quotes\": [\n   \"Until you switch to the new API, your app will behave as if it's running React 17.\",\n   \"There is no one-to-one replacement for the old render callback API — it depends on your use case.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_react_129a49",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "application_code_calls_render_reactdom_r_766bc9",
+    "verdict": "partially_supported",
+    "missing": "The quotes show example code using render from react-dom, but do not establish that the application's own code calls it to mount the app; the claim is based on the stated application-uses-X allowance, though the app-mounting specifics are only illustrative."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1232,
+  "output_tokens": 172,
+  "stop_reason": "end_turn"
+ }
+}

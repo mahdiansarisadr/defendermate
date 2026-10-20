@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_2_where_the_81f59f\",\n  \"claim\": \"The upgrade crosses Django 4.2, where the logger started logging transaction management queries.\",\n  \"evidence\": [\n   {\n    \"quote\": \"now logs transaction management queries (BEGIN, COMMIT, and ROLLBACK) at the DEBUG level\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_deployment_configures_d1e3b4\",\n  \"claim\": \"The application or deployment configures or consumes the django-db-logger logger, for example in LOGGING handlers or loggers with DEBUG level enabled.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The django-db-logger logger now logs transaction management queries\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_logger_or_handler_level_is_set_to_de_a86090\",\n  \"claim\": \"The logger or handler level is set to DEBUG or lower so the new DEBUG-level messages are emitted, increasing log output.\",\n  \"evidence\": [\n   {\n    \"quote\": \"at the DEBUG level\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_2_where_the_81f59f",
+    "verdict": "partially_supported",
+    "missing": "The quote does not name the logger (django-db-logger) in this quote, and does not itself state that the upgrade crosses 4.2; the release metadata only establishes the change is in 4.2. The core claim that 4.2 started logging transaction management queries is supported."
+   },
+   {
+    "condition_id": "the_application_or_deployment_configures_d1e3b4",
+    "verdict": "partially_supported",
+    "missing": "The quote establishes the logger's new behavior but not that applications configure or consume it via LOGGING handlers/loggers with DEBUG level; that configuration scenario is a hypothesis to be checked downstream."
+   },
+   {
+    "condition_id": "the_logger_or_handler_level_is_set_to_de_a86090",
+    "verdict": "partially_supported",
+    "missing": "The quote states the messages are logged at DEBUG level, but not that deployments with DEBUG or lower level will emit them or that this increases log output; the volume impact is inferred."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1243,
+  "output_tokens": 361,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django 4.0 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"2cb7550f5b28\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"The django.contrib.gis.admin.GeoModelAdmin and OSMGeoAdmin classes are deprecated. Use ModelAdmin and GISModelAdmin instead.\"}\n{\"item_id\": \"b3620f1cecd2\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"Since form rendering now uses the template engine, the undocumented BaseForm._html_output() helper method is deprecated.\"}\n{\"item_id\": \"9ebc0642c98f\", \"section\": \"Django 4.0 release notes / Features deprecated in 4.0 / Miscellaneous\", \"text\": \"The ability to return a str from ErrorList and ErrorDict is deprecated. It is expected these methods return a SafeString.\"}\n{\"item_id\": \"2635290ddaf4\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"These features have reached the end of their deprecation cycle and are removed in Django 4.0. See deprecated-features-3.0 for details on these changes, including how to remove usage of these features.\"}\n{\"item_id\": \"5674b8e96856\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() are removed.\"}\n{\"item_id\": \"f1141e461da7\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"django.utils.encoding.force_text() and smart_text() are removed.\"}\n{\"item_id\": \"25791e29d249\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"django.utils.translation.ugettext(), ugettext_lazy(), ugettext_noop(), ungettext(), and ungettext_lazy() are removed.\"}\n{\"item_id\": \"1db32246ed66\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\"}\n{\"item_id\": \"48bc388e6e95\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"alias=None is required in the signature of django.db.models.Expression.get_group_by_cols() subclasses.\"}\n{\"item_id\": \"bf93a3e043c3\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"django.utils.text.unescape_entities() is removed.\"}\n{\"item_id\": \"454c8617c64d\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"django.utils.http.is_safe_url() is removed.\"}\n{\"item_id\": \"6ae7f4fc4282\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"See deprecated-features-3.1 for details on these changes, including how to remove usage of these features.\"}\n{\"item_id\": \"203b876a2869\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"The PASSWORD_RESET_TIMEOUT_DAYS setting is removed.\"}\n{\"item_id\": \"623a6bcb70a9\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"The isnull lookup no longer allows using non-boolean values as the right-hand side.\"}\n{\"item_id\": \"9a669338bd2a\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"The django.db.models.query_utils.InvalidQuery exception class is removed.\"}\n{\"item_id\": \"0b878be388e2\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"The django-admin.py entry point is removed.\"}\n{\"item_id\": \"363de8547813\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"The HttpRequest.is_ajax() method is removed.\"}\n{\"item_id\": \"6cfe4fd911f5\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"Support for the pre-Django 3.1 encoding format of cookies values used by django.contrib.messages.storage.cookie.CookieStorage is removed.\"}\n{\"item_id\": \"bfc7148e05b4\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"Support for the pre-Django 3.1 password reset tokens in the admin site (that use the SHA-1 hashing algorithm) is removed.\"}\n{\"item_id\": \"278d148e4f5b\", \"section\": \"Django 4.0 release notes / Features removed in 4.0\", \"text\": \"Support for the pre-Django 3.1 encoding format of sessions is removed.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "2cb7550f5b28",
+    "label": "context",
+    "reason": "GeoModelAdmin and OSMGeoAdmin are deprecated with replacements named, so they still work and need no action at this release."
+   },
+   {
+    "item_id": "b3620f1cecd2",
+    "label": "context",
+    "reason": "The undocumented BaseForm._html_output() is only deprecated, so it still functions and requires no action now."
+   },
+   {
+    "item_id": "9ebc0642c98f",
+    "label": "context",
+    "reason": "Returning a str from ErrorList and ErrorDict is merely deprecated, so existing code keeps working for now."
+   },
+   {
+    "item_id": "2635290ddaf4",
+    "label": "risk",
+    "reason": "Features that finished their deprecation cycle are removed in 4.0, so applications still using them will break and need changes."
+   },
+   {
+    "item_id": "5674b8e96856",
+    "label": "risk",
+    "reason": "The urlquote and urlunquote functions in django.utils.http are removed, so any import or call will fail."
+   },
+   {
+    "item_id": "f1141e461da7",
+    "label": "risk",
+    "reason": "force_text() and smart_text() are removed from django.utils.encoding, which breaks code that imports them."
+   },
+   {
+    "item_id": "25791e29d249",
+    "label": "risk",
+    "reason": "The ugettext family of translation functions is removed, so code calling them will raise errors."
+   },
+   {
+    "item_id": "1db32246ed66",
+    "label": "risk",
+    "reason": "set_language() no longer writes the language to request.session, so code relying on that session key will behave differently."
+   },
+   {
+    "item_id": "48bc388e6e95",
+    "label": "risk",
+    "reason": "Custom Expression.get_group_by_cols() subclasses must accept alias=None in their signature, so existing overrides need updating."
+   },
+   {
+    "item_id": "bf93a3e043c3",
+    "label": "risk",
+    "reason": "django.utils.text.unescape_entities() is removed, so callers will fail."
+   },
+   {
+    "item_id": "454c8617c64d",
+    "label": "risk",
+    "reason": "django.utils.http.is_safe_url() is removed, so code importing or calling it will break."
+   },
+   {
+    "item_id": "6ae7f4fc4282",
+    "label": "context",
+    "reason": "This is only a pointer to the 3.1 deprecation notes and requires no action by itself."
+   },
+   {
+    "item_id": "203b876a2869",
+    "label": "risk",
+    "reason": "The PASSWORD_RESET_TIMEOUT_DAYS setting is removed, so projects using it must migrate to PASSWORD_RESET_TIMEOUT."
+   },
+   {
+    "item_id": "623a6bcb70a9",
+    "label": "risk",
+    "reason": "isnull lookups no longer accept non-boolean values, so queries passing such values will now behave differently or fail."
+   },
+   {
+    "item_id": "9a669338bd2a",
+    "label": "risk",
+    "reason": "The InvalidQuery exception class is removed, so any code importing or catching it will break."
+   },
+   {
+    "item_id": "0b878be388e2",
+    "label": "risk",
+    "reason": "The django-admin.py entry point is removed, so scripts or deployments invoking it must switch to django-admin."
+   },
+   {
+    "item_id": "363de8547813",
+    "label": "risk",
+    "reason": "HttpRequest.is_ajax() is removed, so views and middleware calling it will raise AttributeError."
+   },
+   {
+    "item_id": "6cfe4fd911f5",
+    "label": "risk",
+    "reason": "Support for pre-3.1 CookieStorage cookie formats is removed, so old message cookies will no longer be read."
+   },
+   {
+    "item_id": "bfc7148e05b4",
+    "label": "risk",
+    "reason": "Pre-3.1 SHA-1 admin password reset tokens are no longer accepted, so outstanding reset links will stop working."
+   },
+   {
+    "item_id": "278d148e4f5b",
+    "label": "risk",
+    "reason": "Pre-3.1 session encoding support is removed, so existing sessions in that format will be invalidated or fail to decode."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2358,
+  "output_tokens": 1251,
+  "stop_reason": "end_turn"
+ }
+}

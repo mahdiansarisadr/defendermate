@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_0_which_dr_96d63c\",\n  \"claim\": \"The upgrade crosses release 4.0, which dropped PostgreSQL 9.6 support.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Django 4.0 supports PostgreSQL 10 and higher.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_uses_a_postgresql_server_8d4f42\",\n  \"claim\": \"The deployment uses a PostgreSQL server older than version 10 (for example 9.6) as the Django database backend.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Django 4.0 supports PostgreSQL 10 and higher.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"Upstream support for PostgreSQL 9.6 ends in November 2021.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_0_which_dr_96d63c",
+    "verdict": "partially_supported",
+    "missing": "The quote says 4.0 supports PostgreSQL 10 and higher, which implies but does not explicitly state that PostgreSQL 9.6 support was dropped in 4.0. It does not say that earlier releases supported 9.6 or that the upgrade in question crosses 4.0."
+   },
+   {
+    "condition_id": "the_deployment_uses_a_postgresql_server_8d4f42",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1147,
+  "output_tokens": 203,
+  "stop_reason": "end_turn"
+ }
+}

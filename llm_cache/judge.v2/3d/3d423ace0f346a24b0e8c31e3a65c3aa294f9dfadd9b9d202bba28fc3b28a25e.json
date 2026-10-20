@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_0_where_un_ed3a5e\",\n  \"claim\": \"The upgrade crosses release 4.0, where unsupported sliced-queryset operations raise TypeError instead of AssertionError.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Unsupported operations on a sliced queryset now raise TypeError instead of AssertionError.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_performs_operations_on_s_3668eb\",\n  \"claim\": \"The application performs operations on sliced querysets that are unsupported (e.g. filtering/ordering after slicing) and catches or asserts AssertionError for them.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Unsupported operations on a sliced queryset now raise TypeError instead of AssertionError.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_0_where_un_ed3a5e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_performs_operations_on_s_3668eb",
+    "verdict": "partially_supported",
+    "missing": "The quote establishes that unsupported sliced-queryset operations now raise TypeError instead of AssertionError, so apps catching AssertionError are affected. It does not name examples such as filtering or ordering after slicing, and it does not mention catching or asserting AssertionError in application code."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1113,
+  "output_tokens": 195,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_2_where_ins_5a0c91\",\n  \"claim\": \"The upgrade crosses Django 4.2, where inspectdb switched from internal_size to display_size for CharField.\",\n  \"evidence\": [\n   {\n    \"quote\": \"inspectdb now uses display_size from DatabaseIntrospection.get_table_description() rather than internal_size for CharField.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_uses_a_third_party_database_b0041d\",\n  \"claim\": \"The project uses a third-party database backend that provides its own DatabaseIntrospection.get_table_description().\",\n  \"evidence\": [\n   {\n    \"quote\": \"This section describes changes that may be needed in third-party database backends.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_runs_inspectdb_to_generate_m_0f62db\",\n  \"claim\": \"The project runs inspectdb to generate models, so the CharField sizes it produces are affected.\",\n  \"evidence\": [\n   {\n    \"quote\": \"inspectdb now uses display_size from DatabaseIntrospection.get_table_description()\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_2_where_ins_5a0c91",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_project_uses_a_third_party_database_b0041d",
+    "verdict": "partially_supported",
+    "missing": "The quote only says the section covers changes that may be needed in third-party database backends. It does not say that such backends provide their own DatabaseIntrospection.get_table_description() or that this change affects them."
+   },
+   {
+    "condition_id": "the_project_runs_inspectdb_to_generate_m_0f62db",
+    "verdict": "partially_supported",
+    "missing": "The quote says inspectdb now uses display_size from get_table_description(). It does not say that the resulting CharField sizes change or are affected in the generated models."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1251,
+  "output_tokens": 264,
+  "stop_reason": "end_turn"
+ }
+}

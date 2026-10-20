@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_which_int_9edf5e\",\n  \"claim\": \"The upgrade crosses release 18, which introduces the stricter Strict Mode check.\",\n  \"quotes\": [\n   \"React 18 introduces a new development-only check to Strict Mode\",\n   \"React 18 introduces a new development-only check to Strict Mode\",\n   \"React now always synchronously flushes effect functions if the update was triggered during a discrete user input event\",\n   \"Flush useEffect resulting from discrete events like clicks synchronously.\",\n   \"Make <StrictMode> re-run effects to check for restorable state.\",\n   \"Strict Mode has gotten stricter in React 18\"\n  ]\n },\n {\n  \"condition_id\": \"the_app_uses_strict_mode_e_g_react_stric_3c9090\",\n  \"claim\": \"The app uses Strict Mode (e.g. <React.StrictMode> or <StrictMode>) so the new check runs.\",\n  \"quotes\": [\n   \"introduces a new development-only check to Strict Mode\",\n   \"This new check will automatically unmount and remount every component\",\n   \"With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode\",\n   \"synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event\",\n   \"Flush useEffect resulting from discrete events like clicks synchronously.\",\n   \"Make <StrictMode> re-run effects to check for restorable state.\",\n   \"check whether it's wrapped in <StrictMode>\"\n  ]\n },\n {\n  \"condition_id\": \"components_that_are_not_resilient_to_bei_3b60b4\",\n  \"claim\": \"Components that are not resilient to being unmounted and remounted with existing state (e.g. effects without proper cleanup, or state assumptions on mount) will break.\",\n  \"quotes\": [\n   \"React will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount.\",\n   \"fix the components to be resilient to remounting with existing state\",\n   \"some effects assume they are only mounted or destroyed once\",\n   \"Previously, the behavior wasn't always predictable or consistent.\",\n   \"Flush useEffect resulting from discrete events like clicks synchronously.\",\n   \"re-run effects to check for restorable state\",\n   \"not all your components may be resilient to the new checks it adds in development mode\"\n  ]\n },\n {\n  \"condition_id\": \"the_check_is_development_only_so_product_39eff2\",\n  \"claim\": \"The check is development-only, so production builds are not affected by the extra unmount/remount.\",\n  \"quotes\": [\n   \"a new development-only check to Strict Mode\",\n   \"React 18 introduces a new development-only check to Strict Mode\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_which_int_9edf5e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_app_uses_strict_mode_e_g_react_stric_3c9090",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "components_that_are_not_resilient_to_bei_3b60b4",
+    "verdict": "partially_supported",
+    "missing": "The quotes say components may not be resilient and should be fixed, but do not explicitly state that such components will break, nor give effects without cleanup as a cause of breakage."
+   },
+   {
+    "condition_id": "the_check_is_development_only_so_product_39eff2",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish the check is development-only but do not explicitly state that production builds are unaffected by the extra unmount/remount."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1567,
+  "output_tokens": 289,
+  "stop_reason": "end_turn"
+ }
+}

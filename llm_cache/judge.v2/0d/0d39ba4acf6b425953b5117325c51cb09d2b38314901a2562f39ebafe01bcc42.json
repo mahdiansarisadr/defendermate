@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_0_which_re_3018a5\",\n  \"claim\": \"The upgrade crosses release 4.0, which removes the SECURE_BROWSER_XSS_FILTER setting and stops SecurityMiddleware from setting X-XSS-Protection.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The SecurityMiddleware no longer sets the X-XSS-Protection header if the SECURE_BROWSER_XSS_FILTER setting is True.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_settings_define_secure_brows_d8cc7a\",\n  \"claim\": \"The project settings define SECURE_BROWSER_XSS_FILTER, which is removed in 4.0.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The setting is removed.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_uses_securitymiddleware_whic_def575\",\n  \"claim\": \"The project uses SecurityMiddleware, which previously set the X-XSS-Protection header.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The SecurityMiddleware no longer sets the X-XSS-Protection header\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_must_support_legacy_brows_a7ca8f\",\n  \"claim\": \"The deployment must support legacy browsers that honor the X-XSS-Protection header.\",\n  \"evidence\": [\n   {\n    \"quote\": \"If you want to support legacy browsers and set the header\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_0_which_re_3018a5",
+    "verdict": "partially_supported",
+    "missing": "The quote only says SecurityMiddleware no longer sets X-XSS-Protection (when the setting is True); it does not state that the SECURE_BROWSER_XSS_FILTER setting itself is removed in 4.0."
+   },
+   {
+    "condition_id": "the_project_settings_define_secure_brows_d8cc7a",
+    "verdict": "partially_supported",
+    "missing": "The quote says a setting is removed in 4.0 but does not name SECURE_BROWSER_XSS_FILTER; it also says nothing about the project defining the setting (a deployment hypothesis, though)."
+   },
+   {
+    "condition_id": "the_project_uses_securitymiddleware_whic_def575",
+    "verdict": "partially_supported",
+    "missing": "The quote implies SecurityMiddleware formerly set the header, but does not state the previous behavior explicitly or the conditions (setting True) under which it did so."
+   },
+   {
+    "condition_id": "the_deployment_must_support_legacy_brows_a7ca8f",
+    "verdict": "partially_supported",
+    "missing": "The quote is a truncated conditional and does not establish that the header is honored by legacy browsers, nor does it say anything about what happens or what to do; it only indicates that some deployments may want to support legacy browsers and set the header."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1419,
+  "output_tokens": 465,
+  "stop_reason": "end_turn"
+ }
+}

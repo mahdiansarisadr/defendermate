@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_1_which_de_990eab\",\n  \"claim\": \"The upgrade crosses release 4.1, which deprecates iterator() on prefetching querysets without chunk_size.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_queryset_iterator_82d46c\",\n  \"claim\": \"The application calls QuerySet.iterator().\",\n  \"evidence\": [\n   {\n    \"quote\": \"The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"In older versions, no prefetching was done.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"as long as the chunk_size argument is provided\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_queryset_passed_to_iterator_prefetch_a2e63d\",\n  \"claim\": \"The queryset passed to iterator() prefetches related objects (for example via prefetch_related or Prefetch).\",\n  \"evidence\": [\n   {\n    \"quote\": \"on a queryset that prefetches related objects without providing the chunk_size argument\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_iterator_call_does_not_pass_a_chunk_e409a6\",\n  \"claim\": \"The iterator() call does not pass a chunk_size argument.\",\n  \"evidence\": [\n   {\n    \"quote\": \"without providing the chunk_size argument is deprecated\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"prefetching_is_now_performed_on_iterator_0761f3\",\n  \"claim\": \"Prefetching is now performed on iterator(), with one additional query per chunk, where older versions did none.\",\n  \"evidence\": [\n   {\n    \"quote\": \"In older versions, no prefetching was done.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"the additional query per chunk needed to prefetch\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_1_which_de_990eab",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_calls_queryset_iterator_82d46c",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_queryset_passed_to_iterator_prefetch_a2e63d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_iterator_call_does_not_pass_a_chunk_e409a6",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "prefetching_is_now_performed_on_iterator_0761f3",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not state that prefetching is now performed on iterator() in general, and they give no explicit statement that it adds exactly one query per chunk; the fragment about an 'additional query per chunk' lacks context, and the claim's 'now performed' is inferred from the older-versions quote."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1884,
+  "output_tokens": 332,
+  "stop_reason": "end_turn"
+ }
+}

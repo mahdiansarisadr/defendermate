@@ -1,0 +1,88 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.1. Source: Django 4.1 release notes (official_release_notes). Section: Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.1\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.1\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nThe undocumented LogoutView.get_next_page() method is renamed to get_success_url().\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.1 release notes / Features deprecated in 4.1 / Miscellaneous: The context for sitemap index templates of a flat list of URLs is deprecated. Custom sitemap index templates should be updated for the adjusted context variables, expecting a list of objects with location and optional lastmod attributes. CSRF_COOKIE_MASKED transitional setting is deprecated. The name argument of django.utils.functional.cached_property is deprecated as it's unnecessary as of Python 3.6. The opclasses argument of django.contrib.postgres.constraints.ExclusionConstraint is deprecated in favor of using OpClass() in ExclusionConstraint.expressions. To use it, you need to add 'django.contrib.postgres' in your INSTALLED_APPS. After making this change, makemigrations will generate a new migration with two operations: RemoveConstraint and AddConstraint. Since this change has no effect on the database schema, the SeparateDatabaseAndState operation can be used to only update the migration state without running any SQL. Move the generated operations into the state_operations argument of SeparateDatabaseAndState. For example: class Migration(migrations.Migration): ... operations = [ migrations.SeparateDatabaseAndState( database_operations=[], state_operations=[ migrations.RemoveConstraint(...), migrations.AddConstraint(...), ], ), ] The undocumented ability to pass errors=None to SimpleTestCase.assertFormError and assertFormsetError() is deprecated. Use errors=[] instead. django.contrib.sessions.serializers.PickleSerializer is deprecated due to the risk of remote code execution. The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated. In older versions, no prefetching was done. Providing a value for chunk_size signifies that the additional query per chunk needed to prefetch is desired. Passing unsaved model instances to related filters is deprecated. In Django 5.0, the exception will be raised. created=True is added to the signature of RemoteUserBackend.configure_user. Support for RemoteUserBackend subclasses that do not accept this argument is deprecated. The django.utils.timezone.utc alias to datetime.timezone.utc is deprecated. Use datetime.timezone.utc directly. Passing a response object and a form/formset name to SimpleTestCase.assertFormError() and assertFormsetError() is deprecated. Use: assertFormError(response.context[\"form_name\"], ...) assertFormsetError(response.context[\"formset_name\"], ...) or \n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.1 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "LogoutView.get_next_page() renamed to get_success_url()",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "The undocumented LogoutView.get_next_page() method is renamed to get_success_url() in 4.1. Code that calls or overrides get_next_page() on LogoutView or a subclass must use the new name. The release notes do not say whether the old name keeps working.",
+    "primary_symbol": "LogoutView.get_next_page",
+    "symbols": [
+     "LogoutView.get_next_page",
+     "LogoutView.get_success_url",
+     "get_next_page",
+     "get_success_url"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.1, where LogoutView.get_next_page() is renamed to get_success_url().",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.1",
+      "quotes": [
+       "LogoutView.get_next_page() method is renamed to get_success_url()"
+      ],
+      "relevance": "The rename was introduced in 4.1, so a 3.2 -> 4.2 upgrade crosses it.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application calls or overrides LogoutView.get_next_page(), for example in a LogoutView subclass.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "get_next_page",
+      "quotes": [
+       "The undocumented LogoutView.get_next_page() method is renamed to get_success_url()."
+      ],
+      "relevance": "Only code that uses the old method name is affected by the rename.",
+      "ambiguities": [
+       "The text does not say whether get_next_page() remains as an alias or is removed immediately, or what happens to overrides of the old name.",
+       "The method is described as undocumented, so usage is likely rare."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "get_next_page\\s*\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "class\\s+\\w+\\(.*LogoutView.*\\)"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\bLogoutView\\b"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search the codebase for get_next_page usage on LogoutView or its subclasses.",
+     "Rename overrides and calls of get_next_page() to get_success_url().",
+     "Test the logout flow, including the redirect target after logout."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4285,
+  "output_tokens": 1590,
+  "stop_reason": "end_turn"
+ }
+}

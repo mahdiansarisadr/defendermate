@@ -1,0 +1,81 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release 1.26. Source: Kubernetes v1.26.0 CHANGELOG (official_changelog). Section: v1.26.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade).\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nDeprecated beta APIs scheduled for removal in v1.26 are no longer served. See https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-26 for more information.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nv1.26.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade): Deprecated beta APIs scheduled for removal in v1.26 are no longer served. See https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-26 for more information. The in-tree cloud provider for OpenStack (and the cinder volume provider) has been removed. Please use the external cloud provider and csi driver from cloud-provider-openstack instead. GlusterFS in-tree storage driver which was deprecated in kubernetes 1.25 release is now removed entirely in v1.26. Volumes must be migrated to an alternate storage solution before upgrading to v1.26.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 1.26 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Beta APIs scheduled for removal in v1.26 no longer served",
+    "risk_type": "removed_api",
+    "risk_level": "critical",
+    "affected_surface": "application_code",
+    "description": "Deprecated beta APIs scheduled for removal in v1.26 are no longer served by the API server. Manifests, controllers, clients, or tooling that use those beta API versions will fail against a cluster at 1.26 or later, which includes 1.29. The specific APIs are listed in the linked deprecation guide, not in this item.",
+    "primary_symbol": "Deprecated beta APIs scheduled for removal in v1.26",
+    "symbols": [
+     "Deprecated beta APIs scheduled for removal in v1.26",
+     "deprecation-guide#v1-26"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.26, where the deprecated beta APIs scheduled for removal stop being served.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.26",
+      "quotes": [
+       "Deprecated beta APIs scheduled for removal in v1.26 are no longer served."
+      ],
+      "relevance": "Ties the removal to release 1.26, which is crossed by a 1.23 to 1.29 upgrade.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Manifests, Helm charts, client code, or in-cluster objects use a beta API version that was scheduled for removal in v1.26.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "beta apiVersion listed in the v1.26 section of the deprecation guide",
+      "quotes": [
+       "Deprecated beta APIs scheduled for removal in v1.26 are no longer served."
+      ],
+      "relevance": "Only workloads or tooling that use the removed beta API versions are affected.",
+      "ambiguities": [
+       "The item does not name the specific beta API versions; they are in the linked deprecation guide, which was not provided."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "apiVersion:\\s*\\S+/v\\d+beta\\d+"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get --raw /metrics | grep apiserver_requested_deprecated_apis"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Consult https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-26 for the list of removed beta APIs and their replacements.",
+     "Scan manifests, Helm charts, operators and client code for the removed beta apiVersions and migrate them to the stable replacement versions before upgrading.",
+     "Check the apiserver_requested_deprecated_apis metric on the current cluster to find clients still calling deprecated APIs."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3644,
+  "output_tokens": 972,
+  "stop_reason": "end_turn"
+ }
+}

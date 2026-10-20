@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.2.\nSource: Django 4.2 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"9f7cd4116a20\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of jinja2 is increased from 2.9.2 to 2.11.0.\"}\n{\"item_id\": \"416d240b4b82\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"The minimum supported version of redis-py is increased from 3.0.0 to 3.4.0.\"}\n{\"item_id\": \"82893dde3d39\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"Manually instantiated WSGIRequest objects must be provided a file-like object for wsgi.input. Previously, Django was more lax than the expected behavior as specified by the WSGI specification.\"}\n{\"item_id\": \"eb40b4548dd5\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"Support for PROJ < 5 is removed.\"}\n{\"item_id\": \"00724892fd0d\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Miscellaneous\", \"text\": \"EmailBackend now verifies a hostname and certificates. If you need the previous behavior that is less restrictive and not recommended, subclass EmailBackend and override the ssl_context property.\"}\n{\"item_id\": \"7c850d649782\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / index_together option is deprecated in favor of indexes\", \"text\": \"The Meta.index_together option is deprecated in favor of the indexes option. Migrating existing index_together should be handled as a migration. For example: class Author(models.Model): rank = models.IntegerField() name = models.CharField(max_length=30) class Meta: index_together = [[\\\"rank\\\", \\\"name\\\"]]\"}\n{\"item_id\": \"7acb3c5ef6c3\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / index_together option is deprecated in favor of indexes\", \"text\": \"Should become: class Author(models.Model): rank = models.IntegerField() name = models.CharField(max_length=30) class Meta: indexes = [models.Index(fields=[\\\"rank\\\", \\\"name\\\"])]\"}\n{\"item_id\": \"135190988399\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / index_together option is deprecated in favor of indexes\", \"text\": \"Running the makemigrations command will generate a migration containing a RenameIndex operation which will rename the existing index. Next, consider squashing migrations to remove index_together from historical migrations. The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files. For backward compatibility reasons, it's still part of the public API, and there's no plan to deprecate or remove it, but it should not be used for new migrations. Use AddIndex and RemoveIndex operations instead.\"}\n{\"item_id\": \"593149004d50\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Passing encoded JSON string literals to JSONField is deprecated\", \"text\": \"JSONField and its associated lookups and aggregates used to allow passing JSON encoded string literals which caused ambiguity on whether string literals were already encoded from database backend's perspective. During the deprecation period string literals will be attempted to be JSON decoded and a warning will be emitted on success that points at passing non-encoded forms instead. Code that used to pass JSON encoded string literals: Document.objects.bulk_create( Document(data=Value(\\\"null\\\")), Document(data=Value(\\\"[]\\\")), Document(data=Value('\\\"foo-bar\\\"')), ) Document.objects.annotate( JSONBAgg(\\\"field\\\", default=Value(\\\"[]\\\")), )\"}\n{\"item_id\": \"e7518b33829c\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Passing encoded JSON string literals to JSONField is deprecated\", \"text\": \"Should become: Document.objects.bulk_create( Document(data=Value(None, JSONField())), Document(data=[]), Document(data=\\\"foo-bar\\\"), ) Document.objects.annotate( JSONBAgg(\\\"field\\\", default=[]), )\"}\n{\"item_id\": \"c10518b8519f\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Passing encoded JSON string literals to JSONField is deprecated\", \"text\": \"From Django 5.1+ string literals will be implicitly interpreted as JSON string literals.\"}\n{\"item_id\": \"ccf7efa7fb78\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"The BaseUserManager.make_random_password() method is deprecated. See recipes and best practices for using Python's secrets module to generate passwords.\"}\n{\"item_id\": \"9c07bd8fce11\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"The length_is template filter is deprecated in favor of length and the == operator within an {% if %} tag. For example .. code-block: html+django {% if value|length == 4 %}...{% endif %} {% if value|length == 4 %}True{% else %}False{% endif %} instead of: .. code-block: html+django {% if value|length_is:4 %}...{% endif %} {{ value|length_is:4 }}\"}\n{\"item_id\": \"6fefc45e1c5b\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"django.contrib.auth.hashers.SHA1PasswordHasher, django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher, and django.contrib.auth.hashers.UnsaltedMD5PasswordHasher are deprecated.\"}\n{\"item_id\": \"7aa583d71488\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"django.contrib.postgres.fields.CICharField is deprecated in favor of CharField(db_collation=\\\"...\\\") with a case-insensitive non-deterministic collation.\"}\n{\"item_id\": \"a808aa6859c4\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"django.contrib.postgres.fields.CIEmailField is deprecated in favor of EmailField(db_collation=\\\"...\\\") with a case-insensitive non-deterministic collation.\"}\n{\"item_id\": \"21a99475f55f\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"django.contrib.postgres.fields.CITextField is deprecated in favor of TextField(db_collation=\\\"...\\\") with a case-insensitive non-deterministic collation.\"}\n{\"item_id\": \"1260cdcac17c\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"django.contrib.postgres.fields.CIText mixin is deprecated.\"}\n{\"item_id\": \"caadcd75abce\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"The map_height and map_width attributes of BaseGeometryWidget are deprecated, use CSS to size map widgets instead.\"}\n{\"item_id\": \"f2dabf3d3a62\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"SimpleTestCase.assertFormsetError() is deprecated in favor of assertFormSetError().\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "9f7cd4116a20",
+    "label": "risk",
+    "reason": "The minimum supported jinja2 version is raised from 2.9.2 to 2.11.0, so upgraders with older jinja2 must update the dependency."
+   },
+   {
+    "item_id": "416d240b4b82",
+    "label": "risk",
+    "reason": "The minimum supported redis-py version is raised from 3.0.0 to 3.4.0, requiring a dependency upgrade for some users."
+   },
+   {
+    "item_id": "82893dde3d39",
+    "label": "risk",
+    "reason": "Manually instantiated WSGIRequest objects must now receive a file-like wsgi.input, which can break code that previously relied on Django's leniency."
+   },
+   {
+    "item_id": "eb40b4548dd5",
+    "label": "risk",
+    "reason": "Support for PROJ versions below 5 is removed, so deployments with older PROJ libraries will no longer work with GIS features."
+   },
+   {
+    "item_id": "00724892fd0d",
+    "label": "risk",
+    "reason": "EmailBackend now verifies hostnames and certificates by default, which can break SMTP connections that previously worked, unless the ssl_context override is used."
+   },
+   {
+    "item_id": "7c850d649782",
+    "label": "risk",
+    "reason": "Meta.index_together is deprecated and the text says existing index_together must be migrated, which requires migration work, so it is labeled conservatively as risk."
+   },
+   {
+    "item_id": "7acb3c5ef6c3",
+    "label": "context",
+    "reason": "This is a code example showing the replacement indexes option, serving as a documentation pointer with no required action by itself."
+   },
+   {
+    "item_id": "135190988399",
+    "label": "risk",
+    "reason": "Upgrading requires running makemigrations to generate a RenameIndex migration and optionally squashing migrations, which is migration work."
+   },
+   {
+    "item_id": "593149004d50",
+    "label": "risk",
+    "reason": "Passing JSON-encoded string literals to JSONField is deprecated and code using them must change, and the text indicates future behavior that could break such code, so it is labeled conservatively as risk."
+   },
+   {
+    "item_id": "e7518b33829c",
+    "label": "context",
+    "reason": "This example shows the recommended replacement form for JSONField values and is documentation guidance only."
+   },
+   {
+    "item_id": "c10518b8519f",
+    "label": "risk",
+    "reason": "The text states that from Django 5.1 string literals will be implicitly interpreted as JSON, an upcoming behavior change that users must prepare for, so it is labeled conservatively as risk."
+   },
+   {
+    "item_id": "ccf7efa7fb78",
+    "label": "context",
+    "reason": "BaseUserManager.make_random_password() is only deprecated, so it still works and the item points to a recommended alternative."
+   },
+   {
+    "item_id": "9c07bd8fce11",
+    "label": "context",
+    "reason": "The length_is template filter is deprecated but still functional, and the item gives a replacement pattern with no required action now."
+   },
+   {
+    "item_id": "6fefc45e1c5b",
+    "label": "context",
+    "reason": "The SHA1 and MD5 password hashers are deprecated but remain available, so no immediate action is required."
+   },
+   {
+    "item_id": "7aa583d71488",
+    "label": "context",
+    "reason": "CICharField is deprecated in favor of CharField with a non-deterministic collation, and the deprecated field still works in this release."
+   },
+   {
+    "item_id": "a808aa6859c4",
+    "label": "context",
+    "reason": "CIEmailField is deprecated in favor of EmailField with db_collation, and the old field still functions in this release."
+   },
+   {
+    "item_id": "21a99475f55f",
+    "label": "context",
+    "reason": "CITextField is deprecated in favor of TextField with db_collation, and the old field still functions in this release."
+   },
+   {
+    "item_id": "1260cdcac17c",
+    "label": "context",
+    "reason": "The CIText mixin is deprecated but still available, so it needs no action at this release."
+   },
+   {
+    "item_id": "caadcd75abce",
+    "label": "context",
+    "reason": "The map_height and map_width attributes are deprecated, but they still work and the item recommends CSS sizing as an optional alternative."
+   },
+   {
+    "item_id": "f2dabf3d3a62",
+    "label": "context",
+    "reason": "SimpleTestCase.assertFormsetError() is deprecated in favor of assertFormSetError(), a warning-level deprecation that still works."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3372,
+  "output_tokens": 2244,
+  "stop_reason": "end_turn"
+ }
+}

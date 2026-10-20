@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.1.\nSource: Django 4.1 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"d235b709fae2\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The Django test runner now returns a non-zero error code for unexpected successes from tests marked with unittest.expectedFailure.\"}\n{\"item_id\": \"9ef19212796e\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"CsrfViewMiddleware no longer masks the CSRF cookie like it does the CSRF token in the DOM.\"}\n{\"item_id\": \"811c62acd013\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"CsrfViewMiddleware now uses request.META['CSRF_COOKIE'] for storing the unmasked CSRF secret rather than a masked version. This is an undocumented, private API.\"}\n{\"item_id\": \"d62049d23ad8\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The ModelAdmin.actions and inlines attributes now default to an empty tuple rather than an empty list to discourage unintended mutation.\"}\n{\"item_id\": \"10bcd8c3f75a\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The type=\\\"text/css\\\" attribute is no longer included in <link> tags for CSS form media.\"}\n{\"item_id\": \"a945c6845fc3\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"formset:added and formset:removed JavaScript events are now pure JavaScript events and don't depend on jQuery. See admin-javascript-inline-form-events for more details on the change.\"}\n{\"item_id\": \"347f78e7a2ef\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The exc_info argument of the undocumented django.utils.log.log_response() function is replaced by exception.\"}\n{\"item_id\": \"e943e5b8eb13\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The size argument of the undocumented django.views.static.was_modified_since() function is removed.\"}\n{\"item_id\": \"275590062314\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The admin log out UI now uses POST requests.\"}\n{\"item_id\": \"10c38e88021c\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The undocumented InlineAdminFormSet.non_form_errors property is replaced by the non_form_errors() method. This is consistent with BaseFormSet.\"}\n{\"item_id\": \"c837d4645ffd\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"As per above, the cached template loader is now enabled in development. You may specify OPTIONS['loaders'] to override this, if necessary.\"}\n{\"item_id\": \"e3897c3ce3f3\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The undocumented django.contrib.auth.views.SuccessURLAllowedHostsMixin mixin is replaced by RedirectURLMixin.\"}\n{\"item_id\": \"7c13ed5ddcac\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"BaseConstraint subclasses must implement validate method to allow those constraints to be used for validation.\"}\n{\"item_id\": \"ed9cb67b5fac\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved to django.contrib.admindocs.utils.\"}\n{\"item_id\": \"3a088cfe5903\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The Model.full_clean method now converts an exclude value to a set. It's also preferable to pass an exclude value as a set to the Model.clean_fields, Model.full_clean, Model.validate_unique, and Model.validate_constraints methods.\"}\n{\"item_id\": \"64797d029ea0\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The minimum supported version of asgiref is increased from 3.4.1 to 3.5.2.\"}\n{\"item_id\": \"c88a783f2f23\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"Combined expressions no longer use the error-prone behavior of guessing output_field when argument types match. As a consequence, resolving an output_field for database functions and combined expressions may now crash with mixed types. You will need to explicitly set the output_field in such cases.\"}\n{\"item_id\": \"bac31edda1c1\", \"section\": \"Django 4.1 release notes / Backwards incompatible changes in 4.1 / Miscellaneous\", \"text\": \"The makemessages command no longer changes .po files when up to date. In older versions, POT-Creation-Date was always updated.\"}\n{\"item_id\": \"774669112334\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Log out via GET\", \"text\": \"Logging out via GET requests to the built-in logout view is deprecated. Use POST requests instead. If you want to retain the user experience of an HTML link, you can use a form that is styled to appear as a link: <form id=\\\"logout-form\\\" method=\\\"post\\\" action=\\\"{% url 'admin:logout' %}\\\"> {% csrf_token %} <button type=\\\"submit\\\">{% translate \\\"Log out\\\" %}</button> </form> #logout-form { display: inline; } #logout-form button { background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; }\"}\n{\"item_id\": \"e3287f68a4af\", \"section\": \"Django 4.1 release notes / Features deprecated in 4.1 / Miscellaneous\", \"text\": \"The context for sitemap index templates of a flat list of URLs is deprecated. Custom sitemap index templates should be updated for the adjusted context variables, expecting a list of objects with location and optional lastmod attributes.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "d235b709fae2",
+    "label": "risk",
+    "reason": "The test runner now returns a non-zero exit code for unexpected successes, which can make existing CI pipelines fail."
+   },
+   {
+    "item_id": "9ef19212796e",
+    "label": "risk",
+    "reason": "CsrfViewMiddleware no longer masks the CSRF cookie, a behavior change that can affect code relying on the previous cookie value."
+   },
+   {
+    "item_id": "811c62acd013",
+    "label": "risk",
+    "reason": "The middleware now stores the unmasked secret in request.META['CSRF_COOKIE'], a changed internal value that custom code may depend on."
+   },
+   {
+    "item_id": "d62049d23ad8",
+    "label": "risk",
+    "reason": "ModelAdmin.actions and inlines now default to tuples, so code that mutates these attributes in place will break."
+   },
+   {
+    "item_id": "10bcd8c3f75a",
+    "label": "risk",
+    "reason": "The type=\"text/css\" attribute is removed from CSS form media link tags, changing rendered output that tests or custom code may check."
+   },
+   {
+    "item_id": "a945c6845fc3",
+    "label": "risk",
+    "reason": "formset:added and formset:removed events no longer depend on jQuery, so custom JavaScript relying on jQuery event handling will stop working."
+   },
+   {
+    "item_id": "347f78e7a2ef",
+    "label": "risk",
+    "reason": "The exc_info argument of log_response() is replaced by exception, which breaks any caller using the old argument name."
+   },
+   {
+    "item_id": "e943e5b8eb13",
+    "label": "risk",
+    "reason": "The size argument of was_modified_since() is removed, so callers passing it will fail."
+   },
+   {
+    "item_id": "275590062314",
+    "label": "risk",
+    "reason": "The admin log out UI now uses POST requests, so bookmarked or GET-based logout links will no longer work."
+   },
+   {
+    "item_id": "10c38e88021c",
+    "label": "risk",
+    "reason": "The InlineAdminFormSet.non_form_errors property is replaced by a method, so template or code access to the property will break."
+   },
+   {
+    "item_id": "c837d4645ffd",
+    "label": "risk",
+    "reason": "The cached template loader is now enabled in development, a changed default that can alter template behavior during development."
+   },
+   {
+    "item_id": "e3897c3ce3f3",
+    "label": "risk",
+    "reason": "SuccessURLAllowedHostsMixin is replaced by RedirectURLMixin, so code subclassing the removed mixin will break."
+   },
+   {
+    "item_id": "7c13ed5ddcac",
+    "label": "risk",
+    "reason": "Custom BaseConstraint subclasses must now implement validate(), so existing constraints without it need code changes."
+   },
+   {
+    "item_id": "ed9cb67b5fac",
+    "label": "risk",
+    "reason": "URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved, breaking any code that imports or calls them from their old location."
+   },
+   {
+    "item_id": "3a088cfe5903",
+    "label": "risk",
+    "reason": "Model.full_clean now converts exclude to a set and sets are preferred for exclude arguments, so code passing other types to these methods may be affected."
+   },
+   {
+    "item_id": "64797d029ea0",
+    "label": "risk",
+    "reason": "The minimum supported asgiref version is raised from 3.4.1 to 3.5.2, requiring dependency upgrades where older versions are pinned."
+   },
+   {
+    "item_id": "c88a783f2f23",
+    "label": "risk",
+    "reason": "Combined expressions no longer guess output_field and may crash with mixed types, so affected queries need an explicitly set output_field."
+   },
+   {
+    "item_id": "bac31edda1c1",
+    "label": "risk",
+    "reason": "makemessages no longer updates .po files when they are up to date, a behavior change that can affect workflows checking or diffing translation files."
+   },
+   {
+    "item_id": "774669112334",
+    "label": "context",
+    "reason": "Logging out via GET is deprecated but still works, so it needs no immediate action beyond planning a move to POST."
+   },
+   {
+    "item_id": "e3287f68a4af",
+    "label": "context",
+    "reason": "The flat-list sitemap index context is deprecated with only a warning, so custom templates can be updated later without breaking now."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3008,
+  "output_tokens": 2199,
+  "stop_reason": "end_turn"
+ }
+}

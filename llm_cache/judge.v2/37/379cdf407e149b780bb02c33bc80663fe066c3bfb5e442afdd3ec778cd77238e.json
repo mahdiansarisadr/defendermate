@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_django_4_0_where_the_9e2714\",\n  \"claim\": \"The upgrade crosses Django 4.0, where the second argument of these methods changed from columns to fields.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The second argument of DatabaseSchemaEditor._unique_sql() and _create_unique_sql() methods is now fields instead of columns.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_codebase_for_example_a_custom_or_thi_296ef7\",\n  \"claim\": \"The codebase (for example a custom or third-party database backend) overrides or calls DatabaseSchemaEditor._unique_sql() or _create_unique_sql().\",\n  \"evidence\": [\n   {\n    \"quote\": \"The second argument of DatabaseSchemaEditor._unique_sql() and _create_unique_sql() methods is now fields instead of columns.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_code_is_part_of_a_third_party_databa_afb9ba\",\n  \"claim\": \"The code is part of a third-party database backend, which is the audience the section addresses.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This section describes changes that may be needed in third-party database backends.\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_django_4_0_where_the_9e2714",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_codebase_for_example_a_custom_or_thi_296ef7",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_code_is_part_of_a_third_party_databa_afb9ba",
+    "verdict": "partially_supported",
+    "missing": "The quote says the section describes changes that may be needed in third-party database backends, but it does not state that the code in question is part of such a backend, nor that this is the only audience the section addresses."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1287,
+  "output_tokens": 210,
+  "stop_reason": "end_turn"
+ }
+}

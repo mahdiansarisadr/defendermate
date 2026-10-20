@@ -1,0 +1,50 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: 1.27.\nSource: Kubernetes v1.27.0 CHANGELOG.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"30454fdbd9f9\", \"section\": \"v1.27.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"'The IPv6DualStack feature gate for external cloud providers was removed. (The feature became GA in 1.23 and the gate was removed for all other components several releases ago.) If you were still manually enabling it you must stop now.'\"}\n{\"item_id\": \"a3bd3a9c50d8\", \"section\": \"v1.27.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Give terminal phase correctly to all pods that will not be restarted. In particular, assign Failed phase to pods which are deleted while pending. Also, assign a terminal phase (Succeeded or Failed, depending on the exit statuses of the pod containers) to pods which are deleted while running. This fixes the issue for jobs using pod failure policy (with JobPodFailurePolicy and PodDisruptionConditions feature gates enabled) that their pods could get stuck in the pending phase when deleted. Users who maintain controllers which relied on the fact that pods with RestartPolicy=Always never enter the Succeeded phase may need to adapt their controllers. This is because as a consequence of the change pods which use RestartPolicy=Always may end up in the Succeeded phase in two scenarios: pod deletion and graceful node shutdown.\"}\n{\"item_id\": \"75d8266d3789\", \"section\": \"v1.27.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"The in-tree cloud provider for AWS (and the EBS storage plugin) has now been removed. Please use the external cloud provider and CSI driver from https://github.com/kubernetes/cloud-provider-aws instead.\"}\n{\"item_id\": \"8298885cb8b8\", \"section\": \"v1.27.0 / Changes by Kind / Deprecation\", \"text\": \"Added a warning response when handling requests that set the deprecated spec.externalID field for a Node.\"}\n{\"item_id\": \"30ae4f36ee24\", \"section\": \"v1.27.0 / Changes by Kind / Deprecation\", \"text\": \"Added warnings to the Services API. Kubernetes now warns for Services in the case of: - IPv4 addresses with leading zeros - IPv6 address in non-canonical format (RFC 5952)\"}\n{\"item_id\": \"f40ce2dc469c\", \"section\": \"v1.27.0 / Changes by Kind / Deprecation\", \"text\": \"Support for the alpha seccomp annotations seccomp.security.alpha.kubernetes.io/pod and container.seccomp.security.alpha.kubernetes.io were deprecated since v1.19, now have been completely removed. The seccomp fields are no longer auto-populated when pods with seccomp annotations are created. Pods should use the corresponding pod or container securityContext.seccompProfile field instead.\"}\n{\"item_id\": \"a3f340effdce\", \"section\": \"v1.27.0 / Changes by Kind / Deprecation\", \"text\": \"The SecurityContextDeny admission plugin is going deprecated and will be removed in future versions.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "30454fdbd9f9",
+    "label": "risk",
+    "reason": "The IPv6DualStack feature gate for external cloud providers was removed, and users who still enable it manually must stop, which can break deployments that rely on it."
+   },
+   {
+    "item_id": "a3bd3a9c50d8",
+    "label": "risk",
+    "reason": "Pods with RestartPolicy=Always can now enter the Succeeded phase, so controllers that depended on that behavior may need to be adapted."
+   },
+   {
+    "item_id": "75d8266d3789",
+    "label": "risk",
+    "reason": "The in-tree AWS cloud provider and EBS storage plugin were removed, so users must migrate to the external cloud provider and CSI driver."
+   },
+   {
+    "item_id": "8298885cb8b8",
+    "label": "context",
+    "reason": "Requests setting the deprecated spec.externalID Node field now get a warning, but the field still works, so no action is required at this release."
+   },
+   {
+    "item_id": "30ae4f36ee24",
+    "label": "context",
+    "reason": "Services now produce warnings for leading-zero IPv4 and non-canonical IPv6 addresses, which are warning-only and need no user action."
+   },
+   {
+    "item_id": "f40ce2dc469c",
+    "label": "risk",
+    "reason": "The alpha seccomp annotations were removed and their fields are no longer auto-populated, so workloads must switch to securityContext.seccompProfile."
+   },
+   {
+    "item_id": "a3f340effdce",
+    "label": "context",
+    "reason": "The SecurityContextDeny admission plugin is deprecated and still functions, so it is a future-removal notice with no action needed at this release."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1790,
+  "output_tokens": 758,
+  "stop_reason": "end_turn"
+ }
+}

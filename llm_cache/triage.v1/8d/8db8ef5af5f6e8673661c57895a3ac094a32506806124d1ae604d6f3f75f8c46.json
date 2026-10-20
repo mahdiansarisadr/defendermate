@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: 1.25.\nSource: Kubernetes Deprecated API Migration Guide.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"b1ae46f95284\", \"section\": \"Removed APIs by release / v1.25\", \"text\": \"The v1.25 release stopped serving the following deprecated API versions:\"}\n{\"item_id\": \"9e8e33bb9ae7\", \"section\": \"Removed APIs by release / v1.25 / CronJob\", \"text\": \"The batch/v1beta1 API version of CronJob is no longer served as of v1.25.\"}\n{\"item_id\": \"e2a0afdda958\", \"section\": \"Removed APIs by release / v1.25 / CronJob\", \"text\": \"Migrate manifests and API clients to use the batch/v1 API version, available since v1.21.\"}\n{\"item_id\": \"0ec9117eb896\", \"section\": \"Removed APIs by release / v1.25 / CronJob\", \"text\": \"All existing persisted objects are accessible via the new API\"}\n{\"item_id\": \"2737f607f561\", \"section\": \"Removed APIs by release / v1.25 / CronJob\", \"text\": \"No notable changes\"}\n{\"item_id\": \"cb9ca7b8a913\", \"section\": \"Removed APIs by release / v1.25 / EndpointSlice\", \"text\": \"The discovery.k8s.io/v1beta1 API version of EndpointSlice is no longer served as of v1.25.\"}\n{\"item_id\": \"3810fbdb0d41\", \"section\": \"Removed APIs by release / v1.25 / EndpointSlice\", \"text\": \"Migrate manifests and API clients to use the discovery.k8s.io/v1 API version, available since v1.21.\"}\n{\"item_id\": \"5ced51e4189f\", \"section\": \"Removed APIs by release / v1.25 / EndpointSlice\", \"text\": \"Notable changes in discovery.k8s.io/v1: * use per Endpoint nodeName field instead of deprecated topology[\\\"kubernetes.io/hostname\\\"] field * use per Endpoint zone field instead of deprecated topology[\\\"topology.kubernetes.io/zone\\\"] field * topology is replaced with the deprecatedTopology field which is not writable in v1\"}\n{\"item_id\": \"acfd60d25cb4\", \"section\": \"Removed APIs by release / v1.25 / Event\", \"text\": \"The events.k8s.io/v1beta1 API version of Event is no longer served as of v1.25.\"}\n{\"item_id\": \"e15225c70ea5\", \"section\": \"Removed APIs by release / v1.25 / Event\", \"text\": \"Migrate manifests and API clients to use the events.k8s.io/v1 API version, available since v1.19.\"}\n{\"item_id\": \"00ec1c94d41e\", \"section\": \"Removed APIs by release / v1.25 / Event\", \"text\": \"Notable changes in events.k8s.io/v1: * type is limited to Normal and Warning * involvedObject is renamed to regarding * action, reason, reportingController, and reportingInstance are required when creating new events.k8s.io/v1 Events * use eventTime instead of the deprecated firstTimestamp field (which is renamed to deprecatedFirstTimestamp and not permitted in new events.k8s.io/v1 Events) * use series.lastObservedTime instead of the deprecated lastTimestamp field (which is renamed to deprecatedLastTimestamp and not permitted in new events.k8s.io/v1 Events) * use series.count instead of the deprecated count field (which is renamed to deprecatedCount and not permitted in new events.k8s.io/v1 Events) * use reportingController instead of the deprecated source.component field (which is renamed to deprecatedSource.component and not permitted in new events.k8s.io/v1 Events) * use reportingInstance instead of the deprecated source.host field (which is renamed to deprecatedSource.host and not permitted in new events.k8s.io/v1 Events)\"}\n{\"item_id\": \"03e33fb3a2e3\", \"section\": \"Removed APIs by release / v1.25 / HorizontalPodAutoscaler\", \"text\": \"The autoscaling/v2beta1 API version of HorizontalPodAutoscaler is no longer served as of v1.25.\"}\n{\"item_id\": \"6ec8ca120cf9\", \"section\": \"Removed APIs by release / v1.25 / HorizontalPodAutoscaler\", \"text\": \"Migrate manifests and API clients to use the autoscaling/v2 API version, available since v1.23.\"}\n{\"item_id\": \"2208dd9a3855\", \"section\": \"Removed APIs by release / v1.25 / HorizontalPodAutoscaler\", \"text\": \"Notable changes: * targetAverageUtilization is replaced with target.averageUtilization and target.type: Utilization. See Autoscaling on multiple metrics and custom metrics.\"}\n{\"item_id\": \"b062c728dc6d\", \"section\": \"Removed APIs by release / v1.25 / PodDisruptionBudget\", \"text\": \"The policy/v1beta1 API version of PodDisruptionBudget is no longer served as of v1.25.\"}\n{\"item_id\": \"dbaa589d5265\", \"section\": \"Removed APIs by release / v1.25 / PodDisruptionBudget\", \"text\": \"Migrate manifests and API clients to use the policy/v1 API version, available since v1.21.\"}\n{\"item_id\": \"7bdd5f7b1d14\", \"section\": \"Removed APIs by release / v1.25 / PodDisruptionBudget\", \"text\": \"Notable changes in policy/v1: * an empty spec.selector ({}) written to a policy/v1 PodDisruptionBudget selects all pods in the namespace (in policy/v1beta1 an empty spec.selector selected no pods). An unset spec.selector selects no pods in either API version.\"}\n{\"item_id\": \"c16c6edcb6f6\", \"section\": \"Removed APIs by release / v1.25 / PodSecurityPolicy\", \"text\": \"PodSecurityPolicy in the policy/v1beta1 API version is no longer served as of v1.25, and the PodSecurityPolicy admission controller will be removed. Migrate to Pod Security Admission or a 3rd party admission webhook. For a migration guide, see Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller. For more information on the deprecation, see PodSecurityPolicy Deprecation: Past, Present, and Future.\"}\n{\"item_id\": \"147f778399e5\", \"section\": \"Removed APIs by release / v1.25 / RuntimeClass\", \"text\": \"RuntimeClass in the node.k8s.io/v1beta1 API version is no longer served as of v1.25.\"}\n{\"item_id\": \"4a1b18275a99\", \"section\": \"Removed APIs by release / v1.25 / RuntimeClass\", \"text\": \"Migrate manifests and API clients to use the node.k8s.io/v1 API version, available since v1.20.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "b1ae46f95284",
+    "label": "noise",
+    "reason": "This is only a section lead-in sentence announcing the list of removed API versions, with no actionable content by itself."
+   },
+   {
+    "item_id": "9e8e33bb9ae7",
+    "label": "risk",
+    "reason": "The batch/v1beta1 CronJob API is no longer served as of v1.25, so manifests and clients using it will break on upgrade."
+   },
+   {
+    "item_id": "e2a0afdda958",
+    "label": "risk",
+    "reason": "Users must migrate manifests and API clients to batch/v1 to avoid breakage from the removed v1beta1 version."
+   },
+   {
+    "item_id": "0ec9117eb896",
+    "label": "context",
+    "reason": "It states existing persisted objects remain accessible through the new API, so no data migration is needed, though it is reassuring rather than a required action."
+   },
+   {
+    "item_id": "2737f607f561",
+    "label": "noise",
+    "reason": "The text 'No notable changes' carries no substantive information for upgrade risk."
+   },
+   {
+    "item_id": "cb9ca7b8a913",
+    "label": "risk",
+    "reason": "The discovery.k8s.io/v1beta1 EndpointSlice API is no longer served as of v1.25, breaking clients that still use it."
+   },
+   {
+    "item_id": "3810fbdb0d41",
+    "label": "risk",
+    "reason": "Users must migrate manifests and API clients to discovery.k8s.io/v1 to avoid failures from the removed v1beta1 version."
+   },
+   {
+    "item_id": "5ced51e4189f",
+    "label": "risk",
+    "reason": "The v1 EndpointSlice replaces topology fields with nodeName and zone and makes deprecatedTopology non-writable, requiring manifest and client changes."
+   },
+   {
+    "item_id": "acfd60d25cb4",
+    "label": "risk",
+    "reason": "The events.k8s.io/v1beta1 Event API is no longer served as of v1.25, so clients using it will break."
+   },
+   {
+    "item_id": "e15225c70ea5",
+    "label": "risk",
+    "reason": "Users must migrate manifests and API clients to events.k8s.io/v1 to avoid breakage from the removed v1beta1 version."
+   },
+   {
+    "item_id": "00ec1c94d41e",
+    "label": "risk",
+    "reason": "Event fields are renamed, type is restricted, and required fields are added for events.k8s.io/v1, so existing event producers must be updated."
+   },
+   {
+    "item_id": "03e33fb3a2e3",
+    "label": "risk",
+    "reason": "The autoscaling/v2beta1 HorizontalPodAutoscaler API is no longer served as of v1.25, breaking manifests that use it."
+   },
+   {
+    "item_id": "6ec8ca120cf9",
+    "label": "risk",
+    "reason": "Users must migrate HPA manifests and API clients to autoscaling/v2 to avoid breakage from the removed v2beta1 version."
+   },
+   {
+    "item_id": "2208dd9a3855",
+    "label": "risk",
+    "reason": "targetAverageUtilization is replaced by target.averageUtilization and target.type, requiring manifest changes for HPA definitions."
+   },
+   {
+    "item_id": "b062c728dc6d",
+    "label": "risk",
+    "reason": "The policy/v1beta1 PodDisruptionBudget API is no longer served as of v1.25, breaking manifests that use it."
+   },
+   {
+    "item_id": "dbaa589d5265",
+    "label": "risk",
+    "reason": "Users must migrate PodDisruptionBudget manifests and clients to policy/v1 to avoid breakage from the removed v1beta1 version."
+   },
+   {
+    "item_id": "7bdd5f7b1d14",
+    "label": "risk",
+    "reason": "An empty spec.selector in policy/v1 selects all pods in the namespace instead of none, a behavior change that can alter eviction and disruption behavior."
+   },
+   {
+    "item_id": "c16c6edcb6f6",
+    "label": "risk",
+    "reason": "PodSecurityPolicy is no longer served and its admission controller will be removed, requiring migration to Pod Security Admission or a webhook."
+   },
+   {
+    "item_id": "147f778399e5",
+    "label": "risk",
+    "reason": "The node.k8s.io/v1beta1 RuntimeClass API is no longer served as of v1.25, breaking manifests that use it."
+   },
+   {
+    "item_id": "4a1b18275a99",
+    "label": "risk",
+    "reason": "Users must migrate RuntimeClass manifests and clients to node.k8s.io/v1 to avoid breakage from the removed v1beta1 version."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2975,
+  "output_tokens": 1436,
+  "stop_reason": "end_turn"
+ }
+}

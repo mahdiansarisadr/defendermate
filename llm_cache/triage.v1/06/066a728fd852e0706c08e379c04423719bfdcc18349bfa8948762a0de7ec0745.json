@@ -1,0 +1,80 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: 1.25.\nSource: Kubernetes v1.25.0 CHANGELOG.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"824fbd5199f8\", \"section\": \"v1.25.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Deprecated beta APIs scheduled for removal in 1.25 are no longer served. See https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-25 for more information. - Encrypted data with DEK using AES-GCM instead of AES-CBC for kms data encryption. No user action required. Reads with AES-GCM and AES-CBC will continue to be allowed. - End-to-end testing has been migrated from Ginkgo v1 to v2. When running test/e2e via the Ginkgo CLI, the v2 CLI must be used and -timeout=24h (or some other, suitable value) must be passed because the default timeout was reduced from 24h to 1h. When running it via go test, the corresponding -args parameter is -ginkgo.timeout=24h. To build the CLI in the Kubernetes repo, use make all WHAT=github.com/onsi/ginkgo/v2/ginkgo. Ginkgo V2 doesn't accept go test's -parallel flags to parallelize Ginkgo specs, please switch to use ginkgo -p or ginkgo -procs=N instead. - No action required; No API/CLI changed; Add new Windows Image Support - The intree volume plugin flocker support was completely removed from Kubernetes. - The intree volume plugin quobyte support has been completely removed from Kubernetes. - The intree volume plugin storageos support has been completely removed from Kubernetes. - There is a new OCI image registry (registry.k8s.io) that can be used to pull Kubernetes images. The old registry (k8s.gcr.io) will continue to be supported for the foreseeable future, but the new name should perform better because it frontends equivalent mirr\"}\n{\"item_id\": \"64e244c8f7fc\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"API server's deprecated --service-account-api-audiences flag was removed. Use --api-audiences instead.\"}\n{\"item_id\": \"5e7aa20e4157\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"Ginkgo.Measure has been deprecated in Ginkgo V2, switch to use gomega/gmeasure instead\"}\n{\"item_id\": \"4aad091e4858\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"Kube-controller-manager: Removed flags deleting-pods-qps, deleting-pods-burst, and register-retry-count.\"}\n{\"item_id\": \"9af0aa3fdeea\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"Kubeadm: during \\\"upgrade apply/diff/node\\\", in case the ClusterConfiguration.imageRepository stored in the \\\"kubeadm-config\\\" ConfigMap contains the legacy \\\"k8s.gcr.io\\\" repository, modify it to the new default \\\"registry.k8s.io\\\". Reflect the change in the in-cluster ConfigMap only during \\\"upgrade apply\\\".\"}\n{\"item_id\": \"aa3423a96480\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"Kubeadm: graduated the kubeadm specific feature gate UnversionedKubeletConfigMap to GA and locked it to true by default. The kubelet related ConfigMap and RBAC rules are now locked to have a simplified naming *kubelet-config instead of the legacy naming *kubelet-config-x.yy, where x.yy was the version of the control plane. If you have previously used the old naming format with UnversionedKubeletConfigMap=false, you must manually copy the config map from kube-system/kubelet-config-x.yy to kube-system/kubelet-config before upgrading to v1.25.\"}\n{\"item_id\": \"295b8472738d\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"Kubeadm: stop applying the node-role.kubernetes.io/master:NoSchedule taint to control plane nodes for new clusters. Remove the taint from existing control plane nodes during \\\"kubeadm upgrade apply\\\"\"}\n{\"item_id\": \"79b1f6df49aa\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"Support for the alpha seccomp annotations seccomp.security.alpha.kubernetes.io/pod and container.seccomp.security.alpha.kubernetes.io, deprecated since v1.19, was partially removed. Kubelets no longer support the annotations, use of the annotations in static pods is no longer supported, and the seccomp annotations are no longer auto-populated when pods with seccomp fields are created. Auto-population of the seccomp fields from the annotations is planned to be removed in 1.27. Pods should use the corresponding pod or container securityContext.seccompProfile field instead.\"}\n{\"item_id\": \"db96d7c5924d\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"The gcp and azure auth plugins have been removed from client-go and kubectl. See https://github.com/Azure/kubelogin and https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke\"}\n{\"item_id\": \"b2c46bf67cc5\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"The beta PodSecurityPolicy admission plugin, deprecated since 1.21, is removed. Follow the instructions at https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/ to migrate to the built-in PodSecurity admission plugin (or to another third-party policy webhook) prior to upgrading to v1.25.\"}\n{\"item_id\": \"0bf5aeabe210\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"VSphere releases less than 7.0u2 are not supported for in-tree vSphere volume as of Kubernetes v1.25. Please consider upgrading vSphere (both ESXi and vCenter) to 7.0u2 or above.\"}\n{\"item_id\": \"8027fa233920\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"Windows winkernel kube-proxy no longer supports Windows HNS v1 APIs.\"}\n{\"item_id\": \"e813e13f8cbe\", \"section\": \"v1.25.0 / Changes by Kind / Deprecation\", \"text\": \"GlusterFS provisioner (kubernetes.io/glusterfs) has been deprecated in this release.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "824fbd5199f8",
+    "label": "risk",
+    "reason": "It announces removed beta APIs, removed in-tree volume plugins, and a mandatory Ginkgo timeout change, all of which can break upgrading deployments or test pipelines."
+   },
+   {
+    "item_id": "64e244c8f7fc",
+    "label": "risk",
+    "reason": "The --service-account-api-audiences flag was removed, so configurations using it must switch to --api-audiences."
+   },
+   {
+    "item_id": "5e7aa20e4157",
+    "label": "context",
+    "reason": "Ginkgo.Measure is deprecated only inside the Kubernetes e2e test framework and still works, so it does not affect application or deployment users."
+   },
+   {
+    "item_id": "4aad091e4858",
+    "label": "risk",
+    "reason": "Kube-controller-manager flags deleting-pods-qps, deleting-pods-burst, and register-retry-count were removed, so any configuration using them will fail."
+   },
+   {
+    "item_id": "9af0aa3fdeea",
+    "label": "risk",
+    "reason": "Kubeadm upgrade now rewrites a legacy k8s.gcr.io imageRepository to registry.k8s.io, a behavior change that operators need to know about."
+   },
+   {
+    "item_id": "aa3423a96480",
+    "label": "risk",
+    "reason": "Users who disabled UnversionedKubeletConfigMap must manually copy the kubelet-config ConfigMap before upgrading, which is required migration work."
+   },
+   {
+    "item_id": "295b8472738d",
+    "label": "risk",
+    "reason": "Kubeadm no longer applies the master NoSchedule taint to new control plane nodes, and existing taints must be removed during upgrade, which changes scheduling behavior."
+   },
+   {
+    "item_id": "79b1f6df49aa",
+    "label": "risk",
+    "reason": "Kubelets no longer support the alpha seccomp annotations and static pods can no longer use them, so workloads relying on them must migrate to securityContext.seccompProfile."
+   },
+   {
+    "item_id": "db96d7c5924d",
+    "label": "risk",
+    "reason": "The gcp and azure auth plugins were removed from client-go and kubectl, so clusters relying on them need an external credential plugin."
+   },
+   {
+    "item_id": "b2c46bf67cc5",
+    "label": "risk",
+    "reason": "The PodSecurityPolicy admission plugin is removed, so clusters using it must migrate to PodSecurity admission or another policy webhook before upgrading."
+   },
+   {
+    "item_id": "0bf5aeabe210",
+    "label": "risk",
+    "reason": "In-tree vSphere volumes are unsupported on vSphere releases below 7.0u2, so users on older vSphere must upgrade their environment."
+   },
+   {
+    "item_id": "8027fa233920",
+    "label": "risk",
+    "reason": "Windows winkernel kube-proxy no longer supports HNS v1 APIs, which can affect Windows node deployments on older HNS versions."
+   },
+   {
+    "item_id": "e813e13f8cbe",
+    "label": "context",
+    "reason": "The GlusterFS provisioner is deprecated but still functions in this release, so it is a warning with no required action yet."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3002,
+  "output_tokens": 1494,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,4 @@
+{"release": "4.0", "field": "python", "value": ">=3.8", "source_id": "dj_pypi@4.0", "json_path": "info.requires_python"}
+{"release": "4.1", "field": "python", "value": ">=3.8", "source_id": "dj_pypi@4.1", "json_path": "info.requires_python"}
+{"release": "4.2", "field": "python", "value": ">=3.8", "source_id": "dj_pypi@4.2", "json_path": "info.requires_python"}
+{"release": "3.2", "field": "python", "value": ">=3.6", "source_id": "dj_pypi@3.2", "json_path": "info.requires_python"}

@@ -1,0 +1,195 @@
+{
+ "prompt_id": "extract.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: React CHANGELOG (18.0.0 section) (official_changelog). Section: Notable Changes / React DOM Server.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nrenderToString: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and then retry rendering the same content on the client. It is still recommended that you switch to a streaming API like renderToPipeableStream or renderToReadableStream instead.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nNotable Changes / React DOM Server: renderToString: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and then retry rendering the same content on the client. It is still recommended that you switch to a streaming API like renderToPipeableStream or renderToReadableStream instead. renderToStaticMarkup: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and retry rendering on the client.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. Use derived_by \"inference\" for any condition not directly stated.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "renderToString changes behavior when a component suspends on the server: it previously errored and now emits fallback HTML and retries on the client. Server-rendered output changes for apps that use Suspense with renderToString, so this is a behavior change worth checking.",
+  "paths": [
+   {
+    "path_name": "renderToString suspending behavior change",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "primary_symbol": "renderToString",
+    "symbols": [
+     "renderToString",
+     "Suspense",
+     "renderToPipeableStream",
+     "renderToReadableStream"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React release 18, which changes renderToString so it no longer errors when suspending on the server.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "18",
+      "quotes": [
+       "Will no longer error when suspending on the server."
+      ],
+      "relevance": "Ties the behavior change to the 18.0.0 release, which the upgrade from 17 crosses.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The application calls renderToString for server rendering.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "renderToString",
+      "quotes": [
+       "renderToString: Will no longer error when suspending on the server."
+      ],
+      "relevance": "The changed behavior only applies to code that calls renderToString.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\brenderToString\\b"
+       }
+      ]
+     },
+     {
+      "statement": "Rendered content suspends on the server, inside or outside a Suspense boundary. The text says fallback HTML is emitted for the closest <Suspense> boundary and rendering is retried on the client.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "<Suspense>",
+      "quotes": [
+       "it will emit the fallback HTML for the closest <Suspense> boundary and then retry rendering the same content on the client"
+      ],
+      "relevance": "The server output now contains fallback HTML, and the content is rendered on the client instead of erroring.",
+      "ambiguities": [
+       "The text does not say what happens if there is no enclosing Suspense boundary.",
+       "The text does not say which components or data-loading patterns suspend in the application."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "<Suspense\\b|\\bReact\\.lazy\\b|\\blazy\\("
+       }
+      ]
+     },
+     {
+      "statement": "The application uses a streaming API such as renderToPipeableStream or renderToReadableStream instead of renderToString. This applies to the recommended migration.",
+      "category": "api_usage",
+      "role": "optional",
+      "operator": "absent",
+      "expected_value": "renderToPipeableStream|renderToReadableStream",
+      "quotes": [
+       "It is still recommended that you switch to a streaming API like renderToPipeableStream or renderToReadableStream instead."
+      ],
+      "relevance": "Apps already on a streaming API follow the recommended path. The text does not say whether they are affected by this change.",
+      "ambiguities": [
+       "The text does not state that streaming API users are unaffected by this renderToString change."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "renderToPipeableStream|renderToReadableStream"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Find renderToString calls whose rendered tree can suspend on the server and check how the fallback HTML and client-side retry behave.",
+     "Switch to a streaming API such as renderToPipeableStream or renderToReadableStream, as the changelog recommends."
+    ]
+   },
+   {
+    "path_name": "renderToStaticMarkup suspending behavior change",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "primary_symbol": "renderToStaticMarkup",
+    "symbols": [
+     "renderToStaticMarkup",
+     "Suspense"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React release 18, which changes renderToStaticMarkup so it no longer errors when suspending on the server.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "18",
+      "quotes": [
+       "Will no longer error when suspending on the server."
+      ],
+      "relevance": "Ties the behavior change to the 18.0.0 release, which the upgrade from 17 crosses.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The application calls renderToStaticMarkup.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "renderToStaticMarkup",
+      "quotes": [
+       "renderToStaticMarkup: Will no longer error when suspending on the server."
+      ],
+      "relevance": "The changed behavior only applies to code that calls renderToStaticMarkup.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\brenderToStaticMarkup\\b"
+       }
+      ]
+     },
+     {
+      "statement": "Rendered content suspends on the server, so fallback HTML is emitted for the closest <Suspense> boundary and rendering is retried on the client.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "<Suspense>",
+      "quotes": [
+       "it will emit the fallback HTML for the closest <Suspense> boundary and retry rendering on the client"
+      ],
+      "relevance": "The static markup now contains fallback HTML, and the content is rendered on the client instead of erroring.",
+      "ambiguities": [
+       "The text does not say what happens when no Suspense boundary encloses the suspending content.",
+       "The text does not describe how a client retry applies to static markup that is not hydrated."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "<Suspense\\b|\\bReact\\.lazy\\b|\\blazy\\("
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Find renderToStaticMarkup calls whose rendered tree can suspend on the server and check the output now contains Suspense fallback HTML."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3437,
+  "output_tokens": 2068,
+  "stop_reason": "end_turn"
+ }
+}

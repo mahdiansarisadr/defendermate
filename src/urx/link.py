@@ -6,7 +6,6 @@ import math
 import re
 from collections import Counter
 
-from .extract import norm_symbol
 from .models import LEVEL_ORDER, RiskPath
 
 _TOKEN = re.compile(r"[A-Za-z0-9_./-]+")
@@ -48,21 +47,32 @@ def path_text(p: RiskPath) -> str:
                     + [c.statement for c in p.conditions])
 
 
-def _symset(p: RiskPath) -> set[str]:
-    return {norm_symbol(s) for s in [p.primary_symbol, *p.symbols] if s}
+def full_symbol(s: str) -> str:
+    s = s.strip().strip("`").replace("()", "").strip().lower()
+    s = re.sub(r"[\s-]+", "", s)
+    return s[:-3] if s.endswith(".js") else s
+
+
+def symbols_equal(a: str, b: str) -> bool:
+    """Exact match, or a bare name against a full module path (django.utils.encoding.force_text ~ force_text).
+
+    Short dotted names (ReactDOM.render vs root.render) are NOT equal: the last component alone is ambiguous.
+    """
+    fa, fb = full_symbol(a), full_symbol(b)
+    if not fa or not fb:
+        return False
+    if fa == fb:
+        return True
+    short, long_ = sorted((fa, fb), key=len)
+    return "." not in short and long_.count(".") >= 2 and long_.endswith("." + short)
 
 
 def _same_risk(a: RiskPath, b: RiskPath) -> bool:
     if a.introduced_in != b.introduced_in:
         return False
-    pa, pb = norm_symbol(a.primary_symbol), norm_symbol(b.primary_symbol)
-    if pa and pa == pb and (a.risk_type == b.risk_type or a.affected_surface == b.affected_surface):
+    if re.sub(r"\W+", " ", a.path_name.lower()).strip() == re.sub(r"\W+", " ", b.path_name.lower()).strip():
         return True
-    sa, sb = _symset(a), _symset(b)
-    if a.risk_type == b.risk_type and sa and sb:
-        inter = len(sa & sb)
-        return inter >= 1 and inter / len(sa | sb) >= 0.5
-    return False
+    return a.risk_type == b.risk_type and symbols_equal(a.primary_symbol, b.primary_symbol)
 
 
 def merge_into(base: RiskPath, other: RiskPath) -> None:

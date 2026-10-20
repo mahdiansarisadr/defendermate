@@ -1,0 +1,222 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release 1.28. Source: Kubernetes v1.28.0 CHANGELOG (official_changelog). Section: v1.28.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade).\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nAction required for the custom scheduler plugin developers. Here's the breaking change in EnqueueExtension in the scheduling framework. The EventsToRegister in EnqueueExtension changed the return value from ClusterEvent to ClusterEventWithHint. ClusterEventWithHint allows each plugin to filter out more useless events via the callback function named QueueingHintFn. When the scheduling queue receives a cluster event, before moving each Pod from unschedulable pod pool to activeQ/backoffQ, it will call QueueingHintFn of plugins that rejected each Pod in the previous scheduling cycle. Depending on the value returned from QueueingHintFn, the scheduling queue changes how it queues each Pod: - if more than one QueueingHintFn returns QueueImmediately, it queues Pod to activeQ. - If no QueueingHintFn returns QueueImmediately and more than one plugin returns QueueAfterBackoff, it queues Pod to backoffQ if Pod is backing off, or to activeQ if Pod's backoff has already finished. - If all QueueingHintFn return QueueSkip, it puts this pod back to the unschedulable pod pool Having appropriate QueueingHintFn contributes to reducing useless retries and thus improves the overall scheduler's performance. How can I migrate? For backward compatibility, nil QueueingHintFn is treated as always returning QueueAfterBackoff. So, if you want to just keep the existing behavior, you can register ClusterEventWithHint with no QueueingHintFn in it. But, registering appropriate QueueingHintFn is, of course, better from a scheduling performance perspective. - CephFS volume plugin (kubernetes.io/cephfs) has been deprecated in this release and will be removed in a subsequent release. The alternative is to use the CephFS CSI driver (https://github.com/ceph/ceph-csi/) in your Kubernetes cluster. - Deprecated support for CSI migration of Ceph RBD volumes. Users who were relying on Kubernetes' ability to migrate to an out-of-tree storage driver should complete that migration before the support for it is removed. - RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release and will be removed in a subsequent release. Alternative is to use RBD CSI driver (https://github.com/ceph/ceph-csi/) in your Kubernetes Cluster.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\n(none)\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 1.28 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "EnqueueExtension EventsToRegister return type changed to ClusterEventWithHint",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "application_code",
+    "description": "For custom scheduler plugins, EnqueueExtension.EventsToRegister now returns ClusterEventWithHint instead of ClusterEvent. This is a breaking change in the scheduling framework, and plugin code written against the old signature must be updated.",
+    "primary_symbol": "EventsToRegister",
+    "symbols": [
+     "EnqueueExtension",
+     "EventsToRegister",
+     "ClusterEvent",
+     "ClusterEventWithHint",
+     "QueueingHintFn"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.28, where EventsToRegister changed its return value from ClusterEvent to ClusterEventWithHint.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "from <1.28 to >=1.28",
+      "quotes": [
+       "The EventsToRegister in EnqueueExtension changed the return value from ClusterEvent to ClusterEventWithHint."
+      ],
+      "relevance": "Ties the breaking change to release 1.28, which is crossed by the 1.23 -> 1.29 upgrade.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "A custom scheduler plugin implements the EnqueueExtension interface and its EventsToRegister method, returning ClusterEvent.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "EventsToRegister",
+      "quotes": [
+       "Action required for the custom scheduler plugin developers.",
+       "The EventsToRegister in EnqueueExtension changed the return value from ClusterEvent to ClusterEventWithHint."
+      ],
+      "relevance": "Only custom scheduler plugins that implement EnqueueExtension.EventsToRegister are affected by the signature change.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "EventsToRegister\\s*\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "framework\\.EnqueueExtension|EnqueueExtension"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\[\\]framework\\.ClusterEvent\\b"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Change EventsToRegister in each custom scheduler plugin to return ClusterEventWithHint instead of ClusterEvent.",
+     "To keep the existing behavior, register ClusterEventWithHint with no QueueingHintFn; a nil QueueingHintFn is treated as always returning QueueAfterBackoff.",
+     "Optionally implement an appropriate QueueingHintFn to reduce useless retries and improve scheduling performance."
+    ]
+   },
+   {
+    "path_name": "CephFS in-tree volume plugin deprecated",
+    "risk_type": "removed_api",
+    "risk_level": "low",
+    "affected_surface": "configuration",
+    "description": "The in-tree CephFS volume plugin (kubernetes.io/cephfs) is deprecated in 1.28 and will be removed in a subsequent release. The alternative is the CephFS CSI driver.",
+    "primary_symbol": "kubernetes.io/cephfs",
+    "symbols": [
+     "kubernetes.io/cephfs",
+     "CephFS CSI driver"
+    ],
+    "fires_at": "future_removal",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.28, in which the CephFS volume plugin was deprecated.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "from <1.28 to >=1.28",
+      "quotes": [
+       "CephFS volume plugin (kubernetes.io/cephfs) has been deprecated in this release"
+      ],
+      "relevance": "Ties the deprecation to release 1.28, which is crossed by the upgrade.",
+      "ambiguities": [
+       "The text does not state in which release the plugin will be removed."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster uses the in-tree CephFS volume plugin kubernetes.io/cephfs (for example in PVs, inline pod volumes, or StorageClass provisioners).",
+      "category": "configuration",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "kubernetes.io/cephfs",
+      "quotes": [
+       "CephFS volume plugin (kubernetes.io/cephfs) has been deprecated in this release and will be removed in a subsequent release."
+      ],
+      "relevance": "Only workloads using the in-tree CephFS plugin are affected by the future removal.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pv,storageclass -A -o yaml | grep -E 'cephfs'"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pods -A -o yaml | grep -E '^\\s+cephfs:'"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "kubernetes\\.io/cephfs|^\\s*cephfs:"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Plan migration to the CephFS CSI driver (https://github.com/ceph/ceph-csi/) before the in-tree plugin is removed."
+    ]
+   },
+   {
+    "path_name": "RBD in-tree volume plugin and Ceph RBD CSI migration deprecated",
+    "risk_type": "removed_api",
+    "risk_level": "low",
+    "affected_surface": "configuration",
+    "description": "The in-tree RBD volume plugin (kubernetes.io/rbd) is deprecated in 1.28 and will be removed in a subsequent release. CSI migration support for Ceph RBD volumes is also deprecated, so users relying on migration to an out-of-tree driver should complete it before that support is removed.",
+    "primary_symbol": "kubernetes.io/rbd",
+    "symbols": [
+     "kubernetes.io/rbd",
+     "RBD CSI driver",
+     "CSI migration of Ceph RBD volumes"
+    ],
+    "fires_at": "future_removal",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.28, in which the RBD volume plugin was deprecated.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "from <1.28 to >=1.28",
+      "quotes": [
+       "RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release"
+      ],
+      "relevance": "Ties the deprecation to release 1.28, which is crossed by the upgrade.",
+      "ambiguities": [
+       "The text does not state in which release the plugin or the CSI migration support will be removed."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster uses the in-tree RBD volume plugin kubernetes.io/rbd or relies on CSI migration of Ceph RBD volumes.",
+      "category": "configuration",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "kubernetes.io/rbd",
+      "quotes": [
+       "RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release and will be removed in a subsequent release.",
+       "Users who were relying on Kubernetes' ability to migrate to an out-of-tree storage driver should complete that migration before the support for it is removed."
+      ],
+      "relevance": "Only workloads using the in-tree RBD plugin or relying on Ceph RBD CSI migration are affected by the future removal.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pv,storageclass -A -o yaml | grep -E 'kubernetes.io/rbd|^\\s+rbd:'"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pods -A -o yaml | grep -E '^\\s+rbd:'"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "kubernetes\\.io/rbd|^\\s*rbd:"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Migrate to the RBD CSI driver (https://github.com/ceph/ceph-csi/) before the in-tree plugin is removed.",
+     "Complete migration to the out-of-tree Ceph RBD driver before CSI migration support for Ceph RBD volumes is removed."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4146,
+  "output_tokens": 4019,
+  "stop_reason": "end_turn"
+ }
+}

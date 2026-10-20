@@ -1,0 +1,104 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release *. Source: Kubernetes Version Skew Policy (official_api_docs). Section: Supported version skew / kube-proxy.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nkube-proxy must not be newer than kube-apiserver.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nSupported version skew / kube-proxy: kube-proxy must not be newer than kube-apiserver. kube-proxy may be up to three minor versions older than kube-apiserver (kube-proxy < 1.25 may only be up to two minor versions older than kube-apiserver). kube-proxy may be up to three minor versions older or newer than the kubelet instance it runs alongside (kube-proxy < 1.25 may only be up to two minor versions older or newer than the kubelet instance it runs alongside). Example: kube-apiserver is at {{< skew currentVersion >}} kube-proxy is supported at {{< skew currentVersion >}}, {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} {{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the allowed kube-proxy versions. {{</ note >}} Example: kube-apiserver instances are at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}} kube-proxy is supported at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release * (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "kube-proxy newer than kube-apiserver during upgrade",
+    "risk_type": "operational_risk",
+    "risk_level": "medium",
+    "affected_surface": "deployment",
+    "description": "kube-proxy must not be newer than kube-apiserver. If kube-proxy is upgraded to a newer minor version than any kube-apiserver instance while moving from 1.23 to 1.29, for example by upgrading nodes before the control plane, the deployment is outside the supported version skew.",
+    "primary_symbol": "kube-proxy",
+    "symbols": [
+     "kube-proxy",
+     "kube-apiserver"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 1.23 to 1.29 is subject to the skew rule that kube-proxy must not be newer than kube-apiserver.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "1.23 to 1.29",
+      "quotes": [
+       "kube-proxy must not be newer than kube-apiserver."
+      ],
+      "relevance": "The skew rule applies to every release, including the versions crossed by this upgrade.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The deployment runs kube-proxy at a minor version newer than at least one kube-apiserver instance, at any point during or after the upgrade.",
+      "category": "deployment",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "kube-proxy minor version > kube-apiserver minor version",
+      "quotes": [
+       "kube-proxy must not be newer than kube-apiserver."
+      ],
+      "relevance": "If the kube-proxy version exceeds the kube-apiserver version, the supported skew is violated.",
+      "ambiguities": [
+       "The text does not state what failure occurs when kube-proxy is newer than kube-apiserver, only that it is not allowed."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get nodes -o wide"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl -n kube-system get daemonset kube-proxy -o jsonpath='{.spec.template.spec.containers[*].image}'"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl version"
+       }
+      ]
+     },
+     {
+      "statement": "The cluster is an HA cluster with kube-apiserver instances at different versions, which narrows the allowed kube-proxy versions to those not newer than the oldest kube-apiserver instance.",
+      "category": "deployment",
+      "role": "optional",
+      "operator": "present",
+      "expected_value": "multiple kube-apiserver instances at different versions",
+      "quotes": [
+       "If version skew exists between kube-apiserver instances in an HA cluster, this narrows the allowed kube-proxy versions."
+      ],
+      "relevance": "During a rolling control-plane upgrade the kube-apiserver instances differ in version, so kube-proxy must not be newer than the oldest instance.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl -n kube-system get pods -l component=kube-apiserver -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.containers[0].image}{\"\\n\"}{end}'"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Upgrade kube-apiserver (control plane) to the target minor version before upgrading kube-proxy.",
+     "Before upgrading kube-proxy, verify that no kube-apiserver instance, including those in an HA control plane, is at an older minor version than the target kube-proxy version.",
+     "Compare kube-proxy and kube-apiserver versions after each minor step of the 1.23 to 1.29 upgrade."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3837,
+  "output_tokens": 1960,
+  "stop_reason": "end_turn"
+ }
+}

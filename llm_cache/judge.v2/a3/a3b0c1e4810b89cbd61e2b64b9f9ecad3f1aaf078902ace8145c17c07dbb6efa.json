@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_1_where_su_765dfe\",\n  \"claim\": \"The upgrade crosses release 4.1, where support for non-deepcopy-able objects in setUpTestData() is removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support for assigning objects which don't support creating deep copies with copy.deepcopy() to class attributes in TestCase.setUpTestData() will be removed.\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"Support for assigning objects which don't support creating deep copies with copy.deepcopy() to class attributes in TestCase.setUpTestData() is removed.\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"test_code_defines_testcase_setuptestdata_43d912\",\n  \"claim\": \"Test code defines TestCase.setUpTestData() and assigns objects to class attributes in it.\",\n  \"evidence\": [\n   {\n    \"quote\": \"class attributes in TestCase.setUpTestData()\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"objects_assigned_to_class_attributes_in_4d7814\",\n  \"claim\": \"Objects assigned to class attributes in setUpTestData() do not support copy.deepcopy().\",\n  \"evidence\": [\n   {\n    \"quote\": \"objects which don't support creating deep copies with copy.deepcopy()\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.1\"\n   },\n   {\n    \"quote\": \"objects which don't support creating deep copies with copy.deepcopy()\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"test_code_defines_testcase_setuptestdata_43d912\",\n  \"claim\": \"Test code defines TestCase.setUpTestData() and assigns objects to class attributes in it.\",\n  \"evidence\": [\n   {\n    \"quote\": \"class attributes in TestCase.setUpTestData()\",\n    \"source\": \"Django 4.1 release notes\",\n    \"release_of_change\": \"4.1\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_1_where_su_765dfe",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish that support is removed in 4.1, but not that the user's upgrade crosses 4.1. That is a deployment-specific fact for the downstream checker to test."
+   },
+   {
+    "condition_id": "test_code_defines_testcase_setuptestdata_43d912",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "objects_assigned_to_class_attributes_in_4d7814",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "test_code_defines_testcase_setuptestdata_43d912",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1561,
+  "output_tokens": 247,
+  "stop_reason": "end_turn"
+ }
+}

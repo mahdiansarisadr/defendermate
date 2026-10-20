@@ -1,0 +1,55 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: 1.28.\nSource: Kubernetes v1.28.0 CHANGELOG.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"beaa9c4cb97a\", \"section\": \"v1.28.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade)\", \"text\": \"Action required for the custom scheduler plugin developers. Here's the breaking change in EnqueueExtension in the scheduling framework. The EventsToRegister in EnqueueExtension changed the return value from ClusterEvent to ClusterEventWithHint. ClusterEventWithHint allows each plugin to filter out more useless events via the callback function named QueueingHintFn. When the scheduling queue receives a cluster event, before moving each Pod from unschedulable pod pool to activeQ/backoffQ, it will call QueueingHintFn of plugins that rejected each Pod in the previous scheduling cycle. Depending on the value returned from QueueingHintFn, the scheduling queue changes how it queues each Pod: - if more than one QueueingHintFn returns QueueImmediately, it queues Pod to activeQ. - If no QueueingHintFn returns QueueImmediately and more than one plugin returns QueueAfterBackoff, it queues Pod to backoffQ if Pod is backing off, or to activeQ if Pod's backoff has already finished. - If all QueueingHintFn return QueueSkip, it puts this pod back to the unschedulable pod pool Having appropriate QueueingHintFn contributes to reducing useless retries and thus improves the overall scheduler's performance. How can I migrate? For backward compatibility, nil QueueingHintFn is treated as always returning QueueAfterBackoff. So, if you want to just keep the existing behavior, you can register ClusterEventWithHint with no QueueingHintFn in it. But, registering appropriate QueueingHintFn is, of course, b\"}\n{\"item_id\": \"87d69520e12a\", \"section\": \"v1.28.0 / Changes by Kind / Deprecation\", \"text\": \"Changed kubectl version default output to be identical to what kubectl version --short printed, and removed --short flag entirely.\"}\n{\"item_id\": \"cce7bc46c13e\", \"section\": \"v1.28.0 / Changes by Kind / Deprecation\", \"text\": \"Kube-controller-manager deprecate --volume-host-cidr-denylist and --volume-host-allow-local-loopback flags.\"}\n{\"item_id\": \"5236f2b2218f\", \"section\": \"v1.28.0 / Changes by Kind / Deprecation\", \"text\": \"Kubelet: The --azure-container-registry-config flag has been deprecated and will be removed in a future release, please use --image-credential-provider-config and --image-credential-provider-bin-dir to setup acr credential provider instead.\"}\n{\"item_id\": \"0859d7f68da2\", \"section\": \"v1.28.0 / Changes by Kind / Deprecation\", \"text\": \"Removed tracking annotation from validation and defaulting.\"}\n{\"item_id\": \"8c4bc02167b7\", \"section\": \"v1.28.0 / Changes by Kind / Deprecation\", \"text\": \"Removed withdrawn feature NetworkPolicyStatus.\"}\n{\"item_id\": \"64d7d088f5f1\", \"section\": \"v1.28.0 / Changes by Kind / Deprecation\", \"text\": \"The deprecated flag --lock-object-namespace and --lock-object-name have been removed from kube-scheduler. Please use --leader-elect-resource-namespace and --leader-elect-resource-name or ComponentConfig instead to configure those parameters.\"}\n{\"item_id\": \"73f25eeda4cd\", \"section\": \"v1.28.0 / Changes by Kind / Deprecation\", \"text\": \"KMSv1 is deprecated and will only receive security updates going forward. Use KMSv2 instead. In a future release, Set --feature-gates=KMSv1=true to use the deprecated KMSv1 feature.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "beaa9c4cb97a",
+    "label": "risk",
+    "reason": "Custom scheduler plugin developers must act on a breaking change to EnqueueExtension, which now returns ClusterEventWithHint and needs QueueingHintFn handling to keep or improve existing behavior."
+   },
+   {
+    "item_id": "87d69520e12a",
+    "label": "risk",
+    "reason": "kubectl version default output changed to match the old --short output and the --short flag was removed, which can break scripts that depend on them."
+   },
+   {
+    "item_id": "cce7bc46c13e",
+    "label": "context",
+    "reason": "The kube-controller-manager flags are only deprecated in this release, so they still work and require no immediate user action."
+   },
+   {
+    "item_id": "5236f2b2218f",
+    "label": "context",
+    "reason": "The kubelet --azure-container-registry-config flag is deprecated with removal planned for a future release, but it still works now."
+   },
+   {
+    "item_id": "0859d7f68da2",
+    "label": "risk",
+    "reason": "Removing the tracking annotation from validation and defaulting changes object handling, and users relying on that annotation could be affected, so this is treated conservatively as risk."
+   },
+   {
+    "item_id": "8c4bc02167b7",
+    "label": "risk",
+    "reason": "The NetworkPolicyStatus feature is removed, so any configuration or tooling depending on it would break."
+   },
+   {
+    "item_id": "64d7d088f5f1",
+    "label": "risk",
+    "reason": "The kube-scheduler flags --lock-object-namespace and --lock-object-name are removed, so deployments using them must switch to the leader-elect resource flags or ComponentConfig."
+   },
+   {
+    "item_id": "73f25eeda4cd",
+    "label": "context",
+    "reason": "KMSv1 is deprecated and receives only security updates, but it remains usable now and the feature-gate instruction applies only to a future release."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2010,
+  "output_tokens": 1286,
+  "stop_reason": "end_turn"
+ }
+}

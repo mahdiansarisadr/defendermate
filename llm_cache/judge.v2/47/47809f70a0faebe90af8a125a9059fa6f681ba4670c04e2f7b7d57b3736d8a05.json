@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_autom_97d2f3\",\n  \"claim\": \"The upgrade crosses React 18, where automatic batching is introduced and described as a breaking change.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This is a breaking change, but we expect this to result in less work rendering\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"This release introduces a performance improvement that changes to the way React batches updates to do more batching automatically.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_with_createroot_56d081\",\n  \"claim\": \"The application renders with createRoot, which is what enables automatic batching in React 18.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"In the rare case that you need to opt out, wrap the state update in flushSync.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_performs_state_updates_i_f15443\",\n  \"claim\": \"The application performs state updates inside promises, setTimeout, native event handlers or other non-React events, which were previously not batched.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"changes to the way React batches updates to do more batching automatically\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_relies_on_the_dom_or_ren_647a60\",\n  \"claim\": \"The application relies on the DOM or render being updated between consecutive state updates outside React events, which would need flushSync to preserve the previous behavior.\",\n  \"evidence\": [\n   {\n    \"quote\": \"To opt-out of automatic batching, you can use flushSync\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_autom_97d2f3",
+    "verdict": "partially_supported",
+    "missing": "The quote says 'This is a breaking change' but the quote itself does not explicitly tie it to automatic batching (the antecedent of 'this' is not shown); the changelog quote supports that React 18 introduces more automatic batching, but does not call it breaking. The claim that the batching change is described as breaking is inferred."
+   },
+   {
+    "condition_id": "the_application_renders_with_createroot_56d081",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_performs_state_updates_i_f15443",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_relies_on_the_dom_or_ren_647a60",
+    "verdict": "partially_supported",
+    "missing": "The quote only says flushSync can opt out of automatic batching; it does not state that apps relying on DOM/render being updated between consecutive updates outside React events need it, nor the scope of 'outside React events'."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1610,
+  "output_tokens": 355,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django 4.0 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"5f228083c6d4\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.gis\", \"text\": \"Added support for SpatiaLite 5.\"}\n{\"item_id\": \"4145706b9cfc\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.gis\", \"text\": \"GDALRaster now allows creating rasters in any GDAL virtual filesystem.\"}\n{\"item_id\": \"bd70e4b5b3e9\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.gis\", \"text\": \"The new GISModelAdmin class allows customizing the widget used for GeometryField. This is encouraged instead of deprecated GeoModelAdmin and OSMGeoAdmin.\"}\n{\"item_id\": \"d009435c5616\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.postgres\", \"text\": \"The PostgreSQL backend now supports connecting by a service name. See postgresql-connection-settings for more details.\"}\n{\"item_id\": \"ffdccb4536d4\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.postgres\", \"text\": \"The new AddConstraintNotValid operation allows creating check constraints on PostgreSQL without verifying that all existing rows satisfy the new constraint.\"}\n{\"item_id\": \"02ed17f5128d\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.postgres\", \"text\": \"The new ValidateConstraint operation allows validating check constraints which were created using AddConstraintNotValid on PostgreSQL.\"}\n{\"item_id\": \"7418aa16aa66\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.postgres\", \"text\": \"The new ArraySubquery() expression allows using subqueries to construct lists of values on PostgreSQL.\"}\n{\"item_id\": \"16ca3bddc6f4\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.postgres\", \"text\": \"The new trigram_word_similar lookup, and the TrigramWordDistance() and TrigramWordSimilarity() expressions allow using trigram word similarity.\"}\n{\"item_id\": \"78fdb5d1263d\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.staticfiles\", \"text\": \"ManifestStaticFilesStorage now replaces paths to JavaScript source map references with their hashed counterparts.\"}\n{\"item_id\": \"cba58d40bc99\", \"section\": \"What's new in Django 4.0 / Minor features / django.contrib.staticfiles\", \"text\": \"The new manifest_storage argument of ManifestFilesMixin and ManifestStaticFilesStorage allows customizing the manifest file storage.\"}\n{\"item_id\": \"da4b970c4af9\", \"section\": \"What's new in Django 4.0 / Minor features / Cache\", \"text\": \"The new async API for django.core.cache.backends.base.BaseCache begins the process of making cache backends async-compatible. The new async methods all have a prefixed names, e.g. aadd(), aget(), aset(), aget_or_set(), or adelete_many(). Going forward, the a prefix will be used for async variants of methods generally.\"}\n{\"item_id\": \"a74c86e31c55\", \"section\": \"What's new in Django 4.0 / Minor features / CSRF\", \"text\": \"CSRF protection now consults the Origin header, if present. To facilitate this, some changes to the CSRF_TRUSTED_ORIGINS setting are required.\"}\n{\"item_id\": \"746f811b09bd\", \"section\": \"What's new in Django 4.0 / Minor features / Forms\", \"text\": \"ModelChoiceField now includes the provided value in the params argument of a raised ValidationError for the invalid_choice error message. This allows custom error messages to use the %(value)s placeholder.\"}\n{\"item_id\": \"7043b47ce6cd\", \"section\": \"What's new in Django 4.0 / Minor features / Forms\", \"text\": \"BaseFormSet now renders non-form errors with an additional class of nonform to help distinguish them from form-specific errors.\"}\n{\"item_id\": \"2e1cc39a11aa\", \"section\": \"What's new in Django 4.0 / Minor features / Forms\", \"text\": \"BaseFormSet now allows customizing the widget used when deleting forms via can_delete by setting the deletion_widget attribute or overriding get_deletion_widget method.\"}\n{\"item_id\": \"bb08a0b5e7e7\", \"section\": \"What's new in Django 4.0 / Minor features / Internationalization\", \"text\": \"Added support and translations for the Malay language.\"}\n{\"item_id\": \"cc7d5129b958\", \"section\": \"What's new in Django 4.0 / Minor features / Generic Views\", \"text\": \"DeleteView now uses FormMixin, allowing you to provide a Form subclass, with a checkbox for example, to confirm deletion. In addition, this allows DeleteView to function with django.contrib.messages.views.SuccessMessageMixin. In accordance with FormMixin, object deletion for POST requests is handled in form_valid(). Custom delete logic in delete() handlers should be moved to form_valid(), or a shared helper method, as needed.\"}\n{\"item_id\": \"5d4fd50e8c14\", \"section\": \"What's new in Django 4.0 / Minor features / Logging\", \"text\": \"The alias of the database used in an SQL call is now passed as extra context along with each message to the django-db-logger logger.\"}\n{\"item_id\": \"25892f373a84\", \"section\": \"What's new in Django 4.0 / Minor features / Management Commands\", \"text\": \"The runserver management command now supports the --skip-checks option.\"}\n{\"item_id\": \"4c02e8d27910\", \"section\": \"What's new in Django 4.0 / Minor features / Management Commands\", \"text\": \"On PostgreSQL, dbshell now supports specifying a password file.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "5f228083c6d4",
+    "label": "context",
+    "reason": "Adding support for SpatiaLite 5 is an additive compatibility improvement that needs no user action."
+   },
+   {
+    "item_id": "4145706b9cfc",
+    "label": "context",
+    "reason": "Allowing GDALRaster to create rasters in any GDAL virtual filesystem is a purely additive capability."
+   },
+   {
+    "item_id": "bd70e4b5b3e9",
+    "label": "context",
+    "reason": "GISModelAdmin is a new class and GeoModelAdmin/OSMGeoAdmin are only deprecated, which still works with a warning."
+   },
+   {
+    "item_id": "d009435c5616",
+    "label": "context",
+    "reason": "Connecting by PostgreSQL service name is a new optional connection method with no required changes."
+   },
+   {
+    "item_id": "ffdccb4536d4",
+    "label": "context",
+    "reason": "AddConstraintNotValid is a new optional operation that existing projects do not need to use."
+   },
+   {
+    "item_id": "02ed17f5128d",
+    "label": "context",
+    "reason": "ValidateConstraint is a new operation for validating constraints and requires no action from existing users."
+   },
+   {
+    "item_id": "7418aa16aa66",
+    "label": "context",
+    "reason": "ArraySubquery() is a new expression that is purely additive."
+   },
+   {
+    "item_id": "16ca3bddc6f4",
+    "label": "context",
+    "reason": "The trigram word similarity lookup and expressions are new additive features."
+   },
+   {
+    "item_id": "78fdb5d1263d",
+    "label": "risk",
+    "reason": "ManifestStaticFilesStorage now rewrites source map references in output, which changes the generated static files and could affect deployments that rely on the previous output."
+   },
+   {
+    "item_id": "cba58d40bc99",
+    "label": "context",
+    "reason": "The new manifest_storage argument is optional and additive."
+   },
+   {
+    "item_id": "da4b970c4af9",
+    "label": "context",
+    "reason": "The new async cache methods are additive and existing synchronous APIs remain available."
+   },
+   {
+    "item_id": "a74c86e31c55",
+    "label": "risk",
+    "reason": "CSRF now consults the Origin header and requires changes to CSRF_TRUSTED_ORIGINS, which may need configuration updates for deployments."
+   },
+   {
+    "item_id": "746f811b09bd",
+    "label": "context",
+    "reason": "Including the value in ValidationError params is additive and only enables new placeholder usage in custom messages."
+   },
+   {
+    "item_id": "7043b47ce6cd",
+    "label": "risk",
+    "reason": "Non-form errors now get an extra nonform CSS class, which changes rendered markup and could affect styling or tests that depend on the output."
+   },
+   {
+    "item_id": "2e1cc39a11aa",
+    "label": "context",
+    "reason": "The deletion_widget attribute and get_deletion_widget method are new optional customization hooks."
+   },
+   {
+    "item_id": "bb08a0b5e7e7",
+    "label": "context",
+    "reason": "Malay language support and translations are additive with no user action required."
+   },
+   {
+    "item_id": "cc7d5129b958",
+    "label": "risk",
+    "reason": "DeleteView now uses FormMixin and handles deletion in form_valid(), so custom delete() logic must be moved, which can break existing views."
+   },
+   {
+    "item_id": "5d4fd50e8c14",
+    "label": "context",
+    "reason": "Passing the database alias as extra logging context is additive and does not change existing behavior."
+   },
+   {
+    "item_id": "25892f373a84",
+    "label": "context",
+    "reason": "The new --skip-checks option for runserver is optional and additive."
+   },
+   {
+    "item_id": "4c02e8d27910",
+    "label": "context",
+    "reason": "Support for a password file in PostgreSQL dbshell is a new optional feature."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2680,
+  "output_tokens": 1788,
+  "stop_reason": "end_turn"
+ }
+}

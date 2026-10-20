@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.1.\nSource: Django 4.1 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"c00f64b80487\", \"section\": \"Django 4.1 release notes\", \"text\": \"*August 3, 2022* Welcome to Django 4.1! These release notes cover the new features, as well as some backwards incompatible changes you'll want to be aware of when upgrading from Django 4.0 or earlier. We've begun the deprecation process for some features. See the /howto/upgrade-version guide if you're updating an existing project.\"}\n{\"item_id\": \"238a66ad559a\", \"section\": \"Django 4.1 release notes / Python compatibility\", \"text\": \"Django 4.1 supports Python 3.8, 3.9, 3.10, and 3.11 (as of 4.1.3). We highly recommend and only officially support the latest release of each series.\"}\n{\"item_id\": \"5b53e8ba7c9f\", \"section\": \"Django 4.1 release notes / What's new in Django 4.1 / Asynchronous handlers for class-based views\", \"text\": \"View subclasses may now define async HTTP method handlers: import asyncio from django.http import HttpResponse from django.views import View class AsyncView(View): async def get(self, request, *args, kwargs): # Perform view logic using await. await asyncio.sleep(1) return HttpResponse(\\\"Hello async world!\\\")\"}\n{\"item_id\": \"f3df2cb994c5\", \"section\": \"Django 4.1 release notes / What's new in Django 4.1 / Asynchronous handlers for class-based views\", \"text\": \"See async-class-based-views for more details.\"}\n{\"item_id\": \"ad9371acb94e\", \"section\": \"Django 4.1 release notes / What's new in Django 4.1 / Asynchronous ORM interface\", \"text\": \"QuerySet now provides an asynchronous interface for all data access operations. These are named as-per the existing synchronous operations but with an a prefix, for example acreate(), aget(), and so on. The new interface allows you to write asynchronous code without needing to wrap ORM operations in sync_to_async(): async for author in Author.objects.filter(namestartswith=\\\"A\\\"): book = await author.books.afirst()\"}\n{\"item_id\": \"494d39915bba\", \"section\": \"Django 4.1 release notes / What's new in Django 4.1 / Asynchronous ORM interface\", \"text\": \"Note that, at this stage, the underlying database operations remain synchronous, with contributions ongoing to push asynchronous support down into the SQL compiler, and integrate asynchronous database drivers. The new asynchronous queryset interface currently encapsulates the necessary sync_to_async() operations for you, and will allow your code to take advantage of developments in the ORM's asynchronous support as it evolves. See async-queries for details and limitations.\"}\n{\"item_id\": \"ba6d1ee8c627\", \"section\": \"Django 4.1 release notes / What's new in Django 4.1 / Validation of Constraints\", \"text\": \"Check, unique, and exclusion constraints defined in the Meta.constraints option are now checked during model validation.\"}\n{\"item_id\": \"43aff940aa60\", \"section\": \"Django 4.1 release notes / What's new in Django 4.1 / Form rendering accessibility\", \"text\": \"In order to aid users with screen readers, and other assistive technology, new <div> based form templates are available from this release. These provide more accessible navigation than the older templates, and are able to correctly group related controls, such as radio-lists, into fieldsets. The new templates are recommended, and will become the default form rendering style when outputting a form, like {{ form }} in a template, from Django 5.0. In order to ease adopting the new output style, the default form and formset templates are now configurable at the project level via the FORM_RENDERER setting. See the Forms section (below) for full details.\"}\n{\"item_id\": \"57dc2c3085f0\", \"section\": \"Django 4.1 release notes / What's new in Django 4.1 / CSRF_COOKIE_MASKED setting\", \"text\": \"The new CSRF_COOKIE_MASKED transitional setting allows specifying whether to mask the CSRF cookie. CsrfViewMiddleware no longer masks the CSRF cookie like it does the CSRF token in the DOM. If you are upgrading multiple instances of the same project to Django 4.1, you should set CSRF_COOKIE_MASKED to True during the transition, in order to allow compatibility with the older versions of Django. Once the transition to 4.1 is complete you can stop overriding CSRF_COOKIE_MASKED. This setting is deprecated as of this release and will be removed in Django 5.0.\"}\n{\"item_id\": \"25362d873437\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.admin\", \"text\": \"The admin dark mode CSS variables are now applied in a separate stylesheet and template block.\"}\n{\"item_id\": \"10eeb39bef9f\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.admin\", \"text\": \"modeladmin-list-filters providing custom FieldListFilter subclasses can now control the query string value separator when filtering for multiple values using the in lookup.\"}\n{\"item_id\": \"4ec37c33913a\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.admin\", \"text\": \"The admin history view is now paginated.\"}\n{\"item_id\": \"f9c3d4e08629\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.admin\", \"text\": \"Related widget wrappers now have a link to object's change form.\"}\n{\"item_id\": \"69d014559367\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.admin\", \"text\": \"The AdminSite.get_app_list method now allows changing the order of apps and models on the admin index page.\"}\n{\"item_id\": \"eb08131ad90f\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.auth\", \"text\": \"The default iteration count for the PBKDF2 password hasher is increased from 320,000 to 390,000.\"}\n{\"item_id\": \"cb72533592f5\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.auth\", \"text\": \"The RemoteUserBackend.configure_user method now allows synchronizing user attributes with attributes in a remote system such as an LDAP directory.\"}\n{\"item_id\": \"21951f9f8c89\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.gis\", \"text\": \"The new GEOSGeometry.make_valid() method allows converting invalid geometries to valid ones.\"}\n{\"item_id\": \"4fd5d5dfaa47\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.gis\", \"text\": \"The new clone argument for GEOSGeometry.normalize allows creating a normalized clone of the geometry.\"}\n{\"item_id\": \"989aa9673150\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.postgres\", \"text\": \"The new BitXor() aggregate function returns an int of the bitwise XOR of all non-null input values.\"}\n{\"item_id\": \"6ee3238d4f74\", \"section\": \"What's new in Django 4.1 / Minor features / django.contrib.postgres\", \"text\": \"SpGistIndex now supports covering indexes on PostgreSQL 14+.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "c00f64b80487",
+    "label": "noise",
+    "reason": "The opening paragraph is introductory marketing-style text that names no specific change."
+   },
+   {
+    "item_id": "238a66ad559a",
+    "label": "risk",
+    "reason": "Supporting only Python 3.8 to 3.11 means users on older Python runtimes must upgrade their interpreter, which is a raised minimum runtime requirement."
+   },
+   {
+    "item_id": "5b53e8ba7c9f",
+    "label": "context",
+    "reason": "Async HTTP method handlers on class-based views are a purely additive feature that requires no change to existing code."
+   },
+   {
+    "item_id": "f3df2cb994c5",
+    "label": "context",
+    "reason": "This is a documentation pointer to more details on async class-based views."
+   },
+   {
+    "item_id": "ad9371acb94e",
+    "label": "context",
+    "reason": "The asynchronous QuerySet interface is a new additive API and existing synchronous code keeps working."
+   },
+   {
+    "item_id": "494d39915bba",
+    "label": "context",
+    "reason": "The text explains that database operations remain synchronous and that the new interface wraps them, so no user action is needed."
+   },
+   {
+    "item_id": "ba6d1ee8c627",
+    "label": "risk",
+    "reason": "Check, unique, and exclusion constraints are now checked during model validation, which can make existing forms or full_clean() calls fail on data that previously passed."
+   },
+   {
+    "item_id": "43aff940aa60",
+    "label": "context",
+    "reason": "The new div-based form templates are opt-in via FORM_RENDERER, and the default change is deferred to Django 5.0, so no action is needed now."
+   },
+   {
+    "item_id": "57dc2c3085f0",
+    "label": "risk",
+    "reason": "Multi-instance upgrades must set CSRF_COOKIE_MASKED to True during the transition, and this deprecated setting is removed in Django 5.0, so it is a required config change."
+   },
+   {
+    "item_id": "25362d873437",
+    "label": "risk",
+    "reason": "Dark mode CSS variables moved to a separate stylesheet and template block, which can affect projects that override admin templates or stylesheets."
+   },
+   {
+    "item_id": "10eeb39bef9f",
+    "label": "context",
+    "reason": "Custom FieldListFilter subclasses gain an optional separator control, which is additive and does not change existing behavior."
+   },
+   {
+    "item_id": "4ec37c33913a",
+    "label": "context",
+    "reason": "Pagination of the admin history view is a visible improvement but needs no action from users."
+   },
+   {
+    "item_id": "f9c3d4e08629",
+    "label": "context",
+    "reason": "Related widget wrappers gaining a link to the change form is an additive UI enhancement."
+   },
+   {
+    "item_id": "69d014559367",
+    "label": "context",
+    "reason": "AdminSite.get_app_list gaining the ability to reorder apps and models is an additive option."
+   },
+   {
+    "item_id": "eb08131ad90f",
+    "label": "risk",
+    "reason": "The increased PBKDF2 iteration count changes the default for newly hashed passwords, which affects login and hashing performance and deployment capacity."
+   },
+   {
+    "item_id": "cb72533592f5",
+    "label": "context",
+    "reason": "RemoteUserBackend.configure_user can optionally synchronize attributes, which is a new additive hook."
+   },
+   {
+    "item_id": "21951f9f8c89",
+    "label": "context",
+    "reason": "GEOSGeometry.make_valid() is a new additive method."
+   },
+   {
+    "item_id": "4fd5d5dfaa47",
+    "label": "context",
+    "reason": "The new clone argument for GEOSGeometry.normalize is an optional additive parameter."
+   },
+   {
+    "item_id": "989aa9673150",
+    "label": "context",
+    "reason": "BitXor() is a new additive aggregate function."
+   },
+   {
+    "item_id": "6ee3238d4f74",
+    "label": "context",
+    "reason": "Covering index support for SpGistIndex on PostgreSQL 14+ is a new additive option."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3123,
+  "output_tokens": 2306,
+  "stop_reason": "end_turn"
+ }
+}

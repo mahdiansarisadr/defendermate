@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_from_3_2_to_4_2_crosses_rele_e2b4c0\",\n  \"claim\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where this behavior was removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"django.views.i18n.set_language() will no longer set the user language in request.session\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_the_django_views_i1_9a376c\",\n  \"claim\": \"The application uses the django.views.i18n.set_language view (e.g. in URL configuration).\",\n  \"evidence\": [\n   {\n    \"quote\": \"django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"django.views.i18n.set_language() will no longer set the user language in request.session\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   },\n   {\n    \"quote\": \"key django.utils.translation.LANGUAGE_SESSION_KEY\",\n    \"source\": \"Django deprecation timeline\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_code_reads_the_language_7a23e1\",\n  \"claim\": \"The application code reads the _language key from request.session to get the user language.\",\n  \"evidence\": [\n   {\n    \"quote\": \"doesn't set the user language in request.session (key _language)\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_from_3_2_to_4_2_crosses_rele_e2b4c0",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_the_django_views_i1_9a376c",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_code_reads_the_language_7a23e1",
+    "verdict": "partially_supported",
+    "missing": "The quotes only say set_language no longer sets the language in request.session['_language']; they do not state that application code reads that key, though apps that do so would be affected."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1426,
+  "output_tokens": 199,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_which_intro_9b927c\",\n  \"claim\": \"The upgrade crosses React 18, which introduces automatic batching of all updates as a breaking change.\",\n  \"evidence\": [\n   {\n    \"quote\": \"React 18 adds out-of-the-box performance improvements by doing more batching by default.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"This is a breaking change, but we expect this to result in less work rendering\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_with_createroot_7f9c6e\",\n  \"claim\": \"The application renders with createRoot, which is where the text says all updates are automatically batched.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"To opt-out of automatic batching, you can use flushSync\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_performs_state_updates_i_7942eb\",\n  \"claim\": \"The application performs state updates inside setTimeout, promises, native event handlers or other non-React events, which were previously not batched.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"updates inside of timeouts, promises, native event handlers or any other event will batch the same way as updates inside of React events\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_depends_on_a_re_render_o_4bd404\",\n  \"claim\": \"The application depends on a re-render or DOM update occurring between consecutive state updates outside React events.\",\n  \"evidence\": [\n   {\n    \"quote\": \"React will render twice, once for each state update (no batching)\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_already_wraps_updates_in_d64357\",\n  \"claim\": \"The application already wraps updates in flushSync, which opts out of automatic batching.\",\n  \"evidence\": [\n   {\n    \"quote\": \"To opt-out of automatic batching, you can use flushSync\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_which_intro_9b927c",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_renders_with_createroot_7f9c6e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_performs_state_updates_i_7942eb",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_depends_on_a_re_render_o_4bd404",
+    "verdict": "partially_supported",
+    "missing": "The quote only says React renders twice without batching (once per update). It does not state that an application may depend on an intermediate re-render or DOM update between updates, nor that this dependence breaks under batching."
+   },
+   {
+    "condition_id": "the_application_already_wraps_updates_in_d64357",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1884,
+  "output_tokens": 286,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,105 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.1. Source: Django 4.1 release notes (official_release_notes). Section: Django 4.1 release notes / What's new in Django 4.1 / Minor features / Utilities.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.1\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.1\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nmark_safe now preserves lazy objects.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.1 release notes / What's new in Django 4.1 / Minor features / Utilities: SimpleLazyObject now supports addition operations. mark_safe now preserves lazy objects.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.1 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "mark_safe now preserves lazy objects, which is a changed behavior in 4.1. The text does not say the change is additive or harmless, so an app that passes lazy objects to mark_safe may see different behavior after the upgrade.",
+  "paths": [
+   {
+    "path_name": "mark_safe lazy object preservation",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "Starting in Django 4.1, mark_safe preserves lazy objects. Code that passes lazy objects (for example lazy strings) to mark_safe may now get a lazy object back instead of the previous result. The text does not describe the previous behavior or the practical impact.",
+    "primary_symbol": "mark_safe",
+    "symbols": [
+     "mark_safe",
+     "SimpleLazyObject"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.1, where mark_safe began preserving lazy objects.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.1",
+      "quotes": [
+       "mark_safe now preserves lazy objects."
+      ],
+      "relevance": "The release notes tie the changed mark_safe behavior to Django 4.1, and the upgrade goes from 3.2 to 4.2.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application calls mark_safe, possibly with lazy objects as input.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "mark_safe",
+      "quotes": [
+       "mark_safe now preserves lazy objects."
+      ],
+      "relevance": "The text names mark_safe as the function whose behavior changed for lazy objects.",
+      "ambiguities": [
+       "The text does not say what mark_safe returned for lazy objects before 4.1, so the exact behavioral difference is unknown."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\bmark_safe\\b"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "from django\\.utils\\.safestring import .*mark_safe"
+       }
+      ]
+     },
+     {
+      "statement": "The application passes lazy objects, such as lazy translation strings or SimpleLazyObject instances, to mark_safe.",
+      "category": "behavior",
+      "role": "uncertain",
+      "operator": "present",
+      "expected_value": "lazy objects passed to mark_safe",
+      "quotes": [
+       "mark_safe now preserves lazy objects."
+      ],
+      "relevance": "The change applies only when the input to mark_safe is a lazy object.",
+      "ambiguities": [
+       "The text does not specify which kinds of lazy objects are affected."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "mark_safe\\(\\s*(gettext_lazy|ugettext_lazy|_\\(|lazy\\()"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\b(gettext_lazy|SimpleLazyObject|lazy)\\b"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Find all mark_safe calls and identify those that receive lazy objects such as lazy translation strings or SimpleLazyObject.",
+     "Test the code paths that mark lazy values as safe, and confirm that rendered output and any type or isinstance checks on the result still behave as expected on 4.2."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3467,
+  "output_tokens": 1130,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whe_495e91\",\n  \"claim\": \"The upgrade crosses React release 18, where Suspense layout effect remounting was introduced.\",\n  \"quotes\": [\n   \"Make Suspense remount layout effects when content reappears.\",\n   \"Will no longer error when suspending on the server.\",\n   \"Will no longer error when suspending on the server.\",\n   \"When a tree re-suspends and reverts to a fallback, React will now clean up layout effects\",\n   \"Suspense trees are always consistent: If a component suspends before it's fully added to the tree\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_components_insid_1e95be\",\n  \"claim\": \"The application renders components inside a Suspense boundary.\",\n  \"quotes\": [\n   \"Make Suspense remount layout effects when content reappears.\",\n   \"renderToStaticMarkup: Will no longer error when suspending on the server.\",\n   \"renderToStaticMarkup: Will no longer error when suspending on the server.\",\n   \"React will now clean up layout effects\",\n   \"If a component suspends before it's fully added to the tree, React will not add it to the tree in an incomplete state or fire its effects.\"\n  ]\n },\n {\n  \"condition_id\": \"components_under_suspense_use_layout_eff_74df6b\",\n  \"claim\": \"Components under Suspense use layout effects (e.g. useLayoutEffect or class componentDidMount/componentWillUnmount) whose setup/cleanup is sensitive to being re-run.\",\n  \"quotes\": [\n   \"Make Suspense remount layout effects when content reappears.\"\n  ]\n },\n {\n  \"condition_id\": \"suspense_content_actually_suspends_and_r_25b787\",\n  \"claim\": \"Suspense content actually suspends and reappears (hidden then shown again) at runtime.\",\n  \"quotes\": [\n   \"Make Suspense remount layout effects when content reappears.\",\n   \"it will emit the fallback HTML for the closest <Suspense> boundary and retry rendering on the client\",\n   \"Will no longer error when suspending on the server.\",\n   \"it will emit the fallback HTML for the closest <Suspense> boundary.\",\n   \"Will no longer error when suspending on the server.\",\n   \"When a tree re-suspends and reverts to a fallback\",\n   \"and then re-create them when the content inside the boundary is shown again\",\n   \"React will throw away the new tree completely, wait for the asynchronous operation to finish, and then retry rendering again from scratch.\",\n   \"emit the fallback HTML for the closest <Suspense> boundary and retry rendering on the client.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whe_495e91",
+    "verdict": "partially_supported",
+    "missing": "The quotes state the Suspense layout effect remounting behavior but do not identify React 18 as the release that introduced it, nor that the upgrade crosses that release."
+   },
+   {
+    "condition_id": "the_application_renders_components_insid_1e95be",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "components_under_suspense_use_layout_eff_74df6b",
+    "verdict": "partially_supported",
+    "missing": "The quote only says Suspense remounts layout effects when content reappears. It does not state that the application's components use layout effects, name useLayoutEffect/componentDidMount/componentWillUnmount, or say their setup/cleanup is sensitive to re-running."
+   },
+   {
+    "condition_id": "suspense_content_actually_suspends_and_r_25b787",
+    "verdict": "partially_supported",
+    "missing": "The quotes describe what happens when content re-suspends and reappears, but do not establish that the application's Suspense content actually suspends and reappears at runtime."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1512,
+  "output_tokens": 372,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,120 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.0. Source: Django 4.0 release notes (official_release_notes). Section: Django 4.0 release notes / Features deprecated in 4.0 / Localization.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.0\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.0\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nIn order to follow good practice, the default value of the USE_L10N setting is changed from False to True. Moreover USE_L10N is deprecated as of this release. Starting with Django 5.0, by default, any date or number displayed by Django will be localized. The {% localize %} tag and the localize/ unlocalize filters will still be honored by Django.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.0 release notes / Features deprecated in 4.0 / Localization: In order to follow good practice, the default value of the USE_L10N setting is changed from False to True. Moreover USE_L10N is deprecated as of this release. Starting with Django 5.0, by default, any date or number displayed by Django will be localized. The {% localize %} tag and the localize/ unlocalize filters will still be honored by Django.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.0 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "The default of USE_L10N changes from False to True in 4.0, so dates and numbers rendered by Django are localized by default after the upgrade unless the setting is set explicitly. This is a behavior change that can alter rendered output.",
+  "paths": [
+   {
+    "path_name": "USE_L10N default changed from False to True",
+    "risk_type": "changed_default",
+    "risk_level": "medium",
+    "affected_surface": "configuration",
+    "description": "The default value of USE_L10N changes from False to True in 4.0. Projects that do not set USE_L10N explicitly will begin localizing dates and numbers displayed by Django after upgrading. USE_L10N is also deprecated as of 4.0, and from Django 5.0 localization is on by default.",
+    "primary_symbol": "USE_L10N",
+    "symbols": [
+     "USE_L10N",
+     "{% localize %}",
+     "localize",
+     "unlocalize"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 3.2 to 4.2 crosses release 4.0, where the USE_L10N default changed.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.0",
+      "quotes": [
+       "the default value of the USE_L10N setting is changed from False to True"
+      ],
+      "relevance": "Ties the default change to release 4.0, which is crossed when upgrading from 3.2 to 4.2.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The project does not set USE_L10N explicitly in its settings, so it relies on the old default of False.",
+      "category": "configuration",
+      "role": "required",
+      "operator": "absent",
+      "expected_value": "USE_L10N",
+      "quotes": [
+       "the default value of the USE_L10N setting is changed from False to True"
+      ],
+      "relevance": "Only projects relying on the default are affected, because the default changed from False to True. A project that explicitly sets USE_L10N = False keeps its current behavior at 4.2.",
+      "ambiguities": [
+       "The text does not say outright what happens when USE_L10N is explicitly set; the conclusion that explicit settings are unaffected is inferred from the fact that the default changed."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "USE_L10N"
+       }
+      ]
+     },
+     {
+      "statement": "The application displays dates or numbers through Django, for example in templates or forms, so that localization changes the rendered output.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "date or number rendering by Django",
+      "quotes": [
+       "any date or number displayed by Django will be localized"
+      ],
+      "relevance": "Localization changes how dates and numbers are displayed, which can alter the output the application produces.",
+      "ambiguities": [
+       "The text states this behavior for Django 5.0 by default and says the default changes in 4.0; it does not describe in detail what formatting differences appear at 4.2."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "USE_L10N|USE_THOUSAND_SEPARATOR|DATE_FORMAT|NUMBER_GROUPING"
+       }
+      ]
+     },
+     {
+      "statement": "The templates use the {% localize %} tag or the localize/unlocalize filters, which Django will still honor.",
+      "category": "api_usage",
+      "role": "optional",
+      "operator": "present",
+      "expected_value": "{% localize %}",
+      "quotes": [
+       "The {% localize %} tag and the localize/ unlocalize filters will still be honored by Django."
+      ],
+      "relevance": "These template controls continue to work, so templates using them can still control localization explicitly.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\{%\\s*localize|\\|\\s*(un)?localize"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search the settings for USE_L10N and, if the project does not set it, check whether localized dates and numbers are acceptable.",
+     "If the previous non-localized output must be kept at 4.2, set USE_L10N = False explicitly, noting that the setting is deprecated as of 4.0.",
+     "Plan for Django 5.0, where localization is on by default, by reviewing templates, forms and tests that depend on date or number formatting.",
+     "Use the {% localize %} tag or the localize/unlocalize filters in templates to control localization where needed."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3630,
+  "output_tokens": 1442,
+  "stop_reason": "end_turn"
+ }
+}

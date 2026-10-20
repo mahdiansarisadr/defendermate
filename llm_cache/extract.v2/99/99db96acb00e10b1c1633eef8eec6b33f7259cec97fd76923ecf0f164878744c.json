@@ -1,0 +1,104 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.0. Source: Django 4.0 release notes (official_release_notes). Section: Django 4.0 release notes / Features removed in 4.0.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.0\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.0\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nThe get_response argument for django.utils.deprecation.MiddlewareMixin.init() is required and doesn't accept None.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.0 release notes / Features removed in 4.0: These features have reached the end of their deprecation cycle and are removed in Django 4.0. See deprecated-features-3.0 for details on these changes, including how to remove usage of these features. django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() are removed. django.utils.encoding.force_text() and smart_text() are removed. django.utils.translation.ugettext(), ugettext_lazy(), ugettext_noop(), ungettext(), and ungettext_lazy() are removed. django.views.i18n.set_language() doesn't set the user language in request.session (key _language). alias=None is required in the signature of django.db.models.Expression.get_group_by_cols() subclasses. django.utils.text.unescape_entities() is removed. django.utils.http.is_safe_url() is removed. See deprecated-features-3.1 for details on these changes, including how to remove usage of these features. The PASSWORD_RESET_TIMEOUT_DAYS setting is removed. The isnull lookup no longer allows using non-boolean values as the right-hand side. The django.db.models.query_utils.InvalidQuery exception class is removed. The django-admin.py entry point is removed. The HttpRequest.is_ajax() method is removed. Support for the pre-Django 3.1 encoding format of cookies values used by django.contrib.messages.storage.cookie.CookieStorage is removed. Support for the pre-Django 3.1 password reset tokens in the admin site (that use the SHA-1 hashing algorithm) is removed. Support for the pre-Django 3.1 encoding format of sessions is removed. Support for the pre-Django 3.1 django.core.signing.Signer signatures (encoded with the SHA-1 algorithm) is removed. Support for the pre-Django 3.1 django.core.signing.dumps() signatures (encoded with the SHA-1 algorithm) in django.core.signing.loads() is removed. Support for the pre-Django 3.1 user sessions (that use the SHA-1 algorithm) is removed. The get_response argument for django.utils.deprecation.MiddlewareMixin.init() is required and doesn't accept None. The providing_args argument for django.dispatch.Signal is removed. The length argument for django.utils.crypto.get_random_string() is required. The list message for ModelMultipleChoiceField is removed. Support for passing raw column aliases to QuerySet.order_by() is removed. The NullBooleanField model field is removed, except for support in historical migrations. django.conf.urls.url() is removed. The django.contrib.postgres.fields.JSONField model field is removed\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.0 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "MiddlewareMixin.__init__ get_response now required and non-None",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "application_code",
+    "description": "As of Django 4.0, the get_response argument for django.utils.deprecation.MiddlewareMixin.__init__() is required and no longer accepts None. Custom middleware subclassing MiddlewareMixin that is instantiated without get_response, or with get_response=None, will break after the upgrade.",
+    "primary_symbol": "django.utils.deprecation.MiddlewareMixin.__init__",
+    "symbols": [
+     "django.utils.deprecation.MiddlewareMixin",
+     "MiddlewareMixin.__init__",
+     "get_response"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 3.2 to 4.2 crosses release 4.0, where this behavior change was made as the end of a deprecation cycle.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.0",
+      "quotes": [
+       "The get_response argument for django.utils.deprecation.MiddlewareMixin.init() is required and doesn't accept None."
+      ],
+      "relevance": "Ties the change to the Features removed in 4.0 section, so it applies when upgrading from a version below 4.0.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application uses django.utils.deprecation.MiddlewareMixin, e.g. by subclassing it for custom middleware.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "MiddlewareMixin",
+      "quotes": [
+       "django.utils.deprecation.MiddlewareMixin.init()"
+      ],
+      "relevance": "The text names MiddlewareMixin.__init__() as the affected API, so only code using this class is affected.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "MiddlewareMixin"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "django\\.utils\\.deprecation"
+       }
+      ]
+     },
+     {
+      "statement": "The application instantiates a MiddlewareMixin subclass without get_response or with get_response=None.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "get_response=None or missing get_response",
+      "quotes": [
+       "is required and doesn't accept None."
+      ],
+      "relevance": "Only calls that omit get_response or pass None break, since the argument is now required and rejects None.",
+      "ambiguities": [
+       "The text does not state the exact exception raised when get_response is omitted or None."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "get_response\\s*=\\s*None"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\w+Middleware\\(\\s*(None)?\\s*\\)"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search for MiddlewareMixin subclasses and any direct instantiations of them, including in tests.",
+     "Pass a valid get_response callable when instantiating MiddlewareMixin subclasses, and remove any get_response=None usage."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4320,
+  "output_tokens": 1087,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.2.\nSource: Django 4.2 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"1a859feb7a7c\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"TransactionTestCase.assertQuerysetEqual() is deprecated in favor of assertQuerySetEqual().\"}\n{\"item_id\": \"da15f943632d\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"Passing positional arguments to Signer and TimestampSigner is deprecated in favor of keyword-only arguments.\"}\n{\"item_id\": \"cfbc93d580e3\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"The DEFAULT_FILE_STORAGE setting is deprecated in favor of STORAGES[\\\"default\\\"].\"}\n{\"item_id\": \"a9f76b0b610b\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"The STATICFILES_STORAGE setting is deprecated in favor of STORAGES[\\\"staticfiles\\\"].\"}\n{\"item_id\": \"eff8496f6b99\", \"section\": \"Django 4.2 release notes / Features deprecated in 4.2 / Miscellaneous\", \"text\": \"The django.core.files.storage.get_storage_class() function is deprecated.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "1a859feb7a7c",
+    "label": "context",
+    "reason": "The item says assertQuerysetEqual() is deprecated in favor of assertQuerySetEqual(), which is a warning-only deprecation with no required change at this release."
+   },
+   {
+    "item_id": "da15f943632d",
+    "label": "context",
+    "reason": "Passing positional arguments to Signer and TimestampSigner is deprecated in favor of keyword-only arguments, so existing code keeps working for now."
+   },
+   {
+    "item_id": "cfbc93d580e3",
+    "label": "context",
+    "reason": "The DEFAULT_FILE_STORAGE setting is deprecated in favor of STORAGES[\"default\"], and the old setting still functions at this release."
+   },
+   {
+    "item_id": "a9f76b0b610b",
+    "label": "context",
+    "reason": "The STATICFILES_STORAGE setting is deprecated in favor of STORAGES[\"staticfiles\"], and the deprecated setting still works at this release."
+   },
+   {
+    "item_id": "eff8496f6b99",
+    "label": "context",
+    "reason": "The get_storage_class() function is deprecated, which is a warning-only change that does not require action in this release."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1175,
+  "output_tokens": 690,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: 1.29.\nSource: Kubernetes Deprecated API Migration Guide.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"364b15d5b978\", \"section\": \"Removed APIs by release / v1.29\", \"text\": \"The v1.29 release stopped serving the following deprecated API versions:\"}\n{\"item_id\": \"6a5bd5d98a53\", \"section\": \"Removed APIs by release / v1.29 / Flow control resources\", \"text\": \"The flowcontrol.apiserver.k8s.io/v1beta2 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.29.\"}\n{\"item_id\": \"b4aeee0f0093\", \"section\": \"Removed APIs by release / v1.29 / Flow control resources\", \"text\": \"Migrate manifests and API clients to use the flowcontrol.apiserver.k8s.io/v1 API version, available since v1.29, or the flowcontrol.apiserver.k8s.io/v1beta3 API version, available since v1.26.\"}\n{\"item_id\": \"3ec2db54cbdc\", \"section\": \"Removed APIs by release / v1.29 / Flow control resources\", \"text\": \"All existing persisted objects are accessible via the new API\"}\n{\"item_id\": \"f293b4842541\", \"section\": \"Removed APIs by release / v1.29 / Flow control resources\", \"text\": \"Notable changes in flowcontrol.apiserver.k8s.io/v1: * The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares and only defaults to 30 when unspecified, and an explicit value of 0 is not changed to 30.\"}\n{\"item_id\": \"94293a503a4b\", \"section\": \"Removed APIs by release / v1.29 / Flow control resources\", \"text\": \"Notable changes in flowcontrol.apiserver.k8s.io/v1beta3: * The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "364b15d5b978",
+    "label": "risk",
+    "reason": "It announces that v1.29 stops serving several deprecated API versions, so users of those versions must act."
+   },
+   {
+    "item_id": "6a5bd5d98a53",
+    "label": "risk",
+    "reason": "The flowcontrol v1beta2 API version of FlowSchema and PriorityLevelConfiguration is no longer served, which breaks clients still using it."
+   },
+   {
+    "item_id": "b4aeee0f0093",
+    "label": "risk",
+    "reason": "It directs users to migrate manifests and API clients to v1 or v1beta3, which requires migration work."
+   },
+   {
+    "item_id": "3ec2db54cbdc",
+    "label": "context",
+    "reason": "It states that existing persisted objects remain accessible through the new API, which indicates no data migration is needed."
+   },
+   {
+    "item_id": "f293b4842541",
+    "label": "risk",
+    "reason": "The assuredConcurrencyShares field is renamed to nominalConcurrencyShares and an explicit 0 is no longer changed to 30, a behavior change that can affect configs."
+   },
+   {
+    "item_id": "94293a503a4b",
+    "label": "risk",
+    "reason": "The v1beta3 PriorityLevelConfiguration field assuredConcurrencyShares is renamed to nominalConcurrencyShares, which requires manifest changes."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1371,
+  "output_tokens": 892,
+  "stop_reason": "end_turn"
+ }
+}

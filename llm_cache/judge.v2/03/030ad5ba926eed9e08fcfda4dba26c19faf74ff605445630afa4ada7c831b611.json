@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_from_3_2_to_4_2_crosses_rele_f55bcc\",\n  \"claim\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, which introduced the exception type change.\",\n  \"evidence\": [\n   {\n    \"quote\": \"now raise ValueError instead of AssertionError\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_emailmessage_attac_a19fcd\",\n  \"claim\": \"The application calls EmailMessage.attach() or EmailMultiAlternatives.attach_alternative().\",\n  \"evidence\": [\n   {\n    \"quote\": \"Calling EmailMultiAlternatives.attach_alternative() or EmailMessage.attach()\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_its_tests_catch_or_as_9ad5ef\",\n  \"claim\": \"The application or its tests catch or assert AssertionError around these attach calls, and invalid content or mimetype arguments can be passed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"with an invalid content or mimetype arguments now raise ValueError instead of AssertionError\",\n    \"source\": \"Django 4.0 release notes\",\n    \"release_of_change\": \"4.0\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_from_3_2_to_4_2_crosses_rele_f55bcc",
+    "verdict": "partially_supported",
+    "missing": "The quote only shows that the change to ValueError is in the 4.0 release notes, which implies 4.0 introduced it. It does not state that 3.2 to 4.2 crosses 4.0, though that follows from the version numbers, and it does not name which calls are affected."
+   },
+   {
+    "condition_id": "the_application_calls_emailmessage_attac_a19fcd",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_its_tests_catch_or_as_9ad5ef",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1257,
+  "output_tokens": 243,
+  "stop_reason": "end_turn"
+ }
+}

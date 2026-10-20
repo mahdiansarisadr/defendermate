@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django 4.0 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"01ced70c389c\", \"section\": \"What's new in Django 4.0 / Minor features / Tests\", \"text\": \"The test --parallel option now supports the value auto to run one test process for each processor core.\"}\n{\"item_id\": \"6e15254fdcf0\", \"section\": \"What's new in Django 4.0 / Minor features / Tests\", \"text\": \"TestCase.captureOnCommitCallbacks now captures new callbacks added while executing transaction.on_commit callbacks.\"}\n{\"item_id\": \"d96625116e96\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Database backend API\", \"text\": \"This section describes changes that may be needed in third-party database backends.\"}\n{\"item_id\": \"d82af4e3c847\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Database backend API\", \"text\": \"DatabaseOperations.year_lookup_bounds_for_date_field() and year_lookup_bounds_for_datetime_field() methods now take the optional iso_year argument in order to support bounds for ISO-8601 week-numbering years.\"}\n{\"item_id\": \"a344975cc491\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Database backend API\", \"text\": \"The second argument of DatabaseSchemaEditor._unique_sql() and _create_unique_sql() methods is now fields instead of columns.\"}\n{\"item_id\": \"3b393a0bcf8d\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / django.contrib.gis\", \"text\": \"Support for PostGIS 2.3 is removed.\"}\n{\"item_id\": \"9b95ae21c41f\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / django.contrib.gis\", \"text\": \"Support for GDAL 2.0 and GEOS 3.5 is removed.\"}\n{\"item_id\": \"954d4be5adb3\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Dropped support for PostgreSQL 9.6\", \"text\": \"Upstream support for PostgreSQL 9.6 ends in November 2021. Django 4.0 supports PostgreSQL 10 and higher. Also, the minimum supported version of psycopg2 is increased from 2.5.4 to 2.8.4, as psycopg2 2.8.4 is the first release to support Python 3.8.\"}\n{\"item_id\": \"180b6dc87be4\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Dropped support for Oracle 12.2 and 18c\", \"text\": \"Upstream support for Oracle 12.2 ends in March 2022 and for Oracle 18c it ends in June 2021. Django 3.2 will be supported until April 2024. Django 4.0 officially supports Oracle 19c.\"}\n{\"item_id\": \"4e9aa14e976b\", \"section\": \"Backwards incompatible changes in 4.0 / CSRF_TRUSTED_ORIGINS changes / Format change\", \"text\": \"Values in the CSRF_TRUSTED_ORIGINS setting must include the scheme (e.g. 'http://' or 'https://') instead of only the hostname. Also, values that started with a dot, must now also include an asterisk before the dot. For example, change '.example.com' to 'https://*.example.com'. A system check detects any required changes.\"}\n{\"item_id\": \"2808b6b0cd8f\", \"section\": \"Backwards incompatible changes in 4.0 / CSRF_TRUSTED_ORIGINS changes / Configuring it may now be required\", \"text\": \"As CSRF protection now consults the Origin header, you may need to set CSRF_TRUSTED_ORIGINS, particularly if you allow requests from subdomains by setting CSRF_COOKIE_DOMAIN (or SESSION_COOKIE_DOMAIN if CSRF_USE_SESSIONS is enabled) to a value starting with a dot.\"}\n{\"item_id\": \"fd2373690a83\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / SecurityMiddleware no longer sets the X-XSS-Protection header\", \"text\": \"The SecurityMiddleware no longer sets the X-XSS-Protection header if the SECURE_BROWSER_XSS_FILTER setting is True. The setting is removed. Most modern browsers don't honor the X-XSS-Protection HTTP header. You can use Content-Security-Policy_ without allowing 'unsafe-inline' scripts instead. If you want to support legacy browsers and set the header, use this line in a custom middleware: response.headers.setdefault(\\\"X-XSS-Protection\\\", \\\"1; mode=block\\\")\"}\n{\"item_id\": \"619ff7f40b0a\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Migrations autodetector changes\", \"text\": \"The migrations autodetector now uses model states instead of model classes. Also, migration operations for ForeignKey and ManyToManyField fields no longer specify attributes which were not passed to the fields during initialization. As a side-effect, running makemigrations might generate no-op AlterField operations for ManyToManyField and ForeignKey fields in some cases.\"}\n{\"item_id\": \"be1adc54b6e0\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / DeleteView changes\", \"text\": \"DeleteView now uses FormMixin to handle POST requests. As a consequence, any custom deletion logic in delete() handlers should be moved to form_valid(), or a shared helper method, if required.\"}\n{\"item_id\": \"a560c1d93108\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Table and column naming scheme changes on Oracle\", \"text\": \"Django 4.0 inadvertently changed the table and column naming scheme on Oracle. This causes errors for models and fields with names longer than 30 characters. Unfortunately, renaming some Oracle tables and columns is required. Use the upgrade script in #33789 to generate RENAME statements to change naming scheme.\"}\n{\"item_id\": \"a91f7d73b3fe\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"Support for cx_Oracle < 7.0 is removed.\"}\n{\"item_id\": \"8bdce39513d6\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"To allow serving a Django site on a subpath without changing the value of STATIC_URL, the leading slash is removed from that setting (now 'static/') in the default startproject template.\"}\n{\"item_id\": \"48124bb77b73\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The AdminSite method for the admin index view is no longer decorated with never_cache when accessed directly, rather than via the recommended AdminSite.urls property, or AdminSite.get_urls() method.\"}\n{\"item_id\": \"5734d3967f73\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"Unsupported operations on a sliced queryset now raise TypeError instead of AssertionError.\"}\n{\"item_id\": \"bfc5a83b99f4\", \"section\": \"Django 4.0 release notes / Backwards incompatible changes in 4.0 / Miscellaneous\", \"text\": \"The undocumented django.test.runner.reorder_suite() function is renamed to reorder_tests(). It now accepts an iterable of tests rather than a test suite, and returns an iterator of tests.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "01ced70c389c",
+    "label": "context",
+    "reason": "The new --parallel auto value is a purely additive option that requires no user action."
+   },
+   {
+    "item_id": "6e15254fdcf0",
+    "label": "context",
+    "reason": "captureOnCommitCallbacks now capturing nested callbacks is an additive testing enhancement needing no action from users."
+   },
+   {
+    "item_id": "d96625116e96",
+    "label": "context",
+    "reason": "This is only an introductory pointer stating that the following section concerns third-party database backends, with no change itself."
+   },
+   {
+    "item_id": "d82af4e3c847",
+    "label": "risk",
+    "reason": "Custom database backends overriding year_lookup_bounds methods must accept the new iso_year argument, so third-party backends may break."
+   },
+   {
+    "item_id": "a344975cc491",
+    "label": "risk",
+    "reason": "Changing the second argument of _unique_sql() and _create_unique_sql() from columns to fields can break custom schema editor subclasses that rely on the old signature."
+   },
+   {
+    "item_id": "3b393a0bcf8d",
+    "label": "risk",
+    "reason": "Removal of PostGIS 2.3 support means deployments on that version must upgrade PostGIS before upgrading Django."
+   },
+   {
+    "item_id": "9b95ae21c41f",
+    "label": "risk",
+    "reason": "Removal of GDAL 2.0 and GEOS 3.5 support means deployments using those libraries must upgrade them."
+   },
+   {
+    "item_id": "954d4be5adb3",
+    "label": "risk",
+    "reason": "Dropping PostgreSQL 9.6 and raising the minimum psycopg2 to 2.8.4 requires infrastructure and dependency upgrades."
+   },
+   {
+    "item_id": "180b6dc87be4",
+    "label": "risk",
+    "reason": "Dropping Oracle 12.2 and 18c support means deployments on those database versions must upgrade to 19c before upgrading Django."
+   },
+   {
+    "item_id": "4e9aa14e976b",
+    "label": "risk",
+    "reason": "CSRF_TRUSTED_ORIGINS values must now include a scheme and wildcard syntax, so existing settings need changes."
+   },
+   {
+    "item_id": "2808b6b0cd8f",
+    "label": "risk",
+    "reason": "Because CSRF now checks the Origin header, sites using dotted cookie domains may need to configure CSRF_TRUSTED_ORIGINS or requests will fail."
+   },
+   {
+    "item_id": "fd2373690a83",
+    "label": "risk",
+    "reason": "The SECURE_BROWSER_XSS_FILTER setting is removed and the X-XSS-Protection header is no longer set, changing response headers and breaking code referencing the setting."
+   },
+   {
+    "item_id": "619ff7f40b0a",
+    "label": "risk",
+    "reason": "The autodetector change can cause makemigrations to generate new no-op AlterField migrations for ForeignKey and ManyToManyField, requiring review of generated migrations."
+   },
+   {
+    "item_id": "be1adc54b6e0",
+    "label": "risk",
+    "reason": "DeleteView now handles POST via FormMixin, so custom deletion logic in delete() must be moved to form_valid() or the view will behave differently."
+   },
+   {
+    "item_id": "a560c1d93108",
+    "label": "risk",
+    "reason": "The inadvertent Oracle naming change breaks models with long names and requires renaming existing tables and columns via migration work."
+   },
+   {
+    "item_id": "a91f7d73b3fe",
+    "label": "risk",
+    "reason": "Removing support for cx_Oracle below 7.0 requires upgrading the driver for deployments on Oracle."
+   },
+   {
+    "item_id": "8bdce39513d6",
+    "label": "risk",
+    "reason": "The default startproject template now uses STATIC_URL 'static/' without a leading slash, a changed default that can affect existing projects and generated templates."
+   },
+   {
+    "item_id": "48124bb77b73",
+    "label": "risk",
+    "reason": "Calling the admin index view method directly no longer applies never_cache, a behavior change that can affect caching of custom code paths."
+   },
+   {
+    "item_id": "5734d3967f73",
+    "label": "risk",
+    "reason": "Unsupported sliced queryset operations now raise TypeError instead of AssertionError, which breaks code that catches AssertionError."
+   },
+   {
+    "item_id": "bfc5a83b99f4",
+    "label": "risk",
+    "reason": "The reorder_suite() function is renamed and its signature and return type changed, breaking any custom test runners that call it."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3351,
+  "output_tokens": 1417,
+  "stop_reason": "end_turn"
+ }
+}

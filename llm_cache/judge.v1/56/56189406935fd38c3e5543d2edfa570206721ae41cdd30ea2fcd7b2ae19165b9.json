@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_serve_da2c14\",\n  \"claim\": \"The upgrade crosses React 18, where server rendering now ignores function and symbol values inside custom elements.\",\n  \"quotes\": [\n   \"Ignore function and symbol values inside custom elements on the server.\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_server_renders_custom_el_b18f35\",\n  \"claim\": \"The application server-renders custom elements (web components) with React DOM Server.\",\n  \"quotes\": [\n   \"Ignore function and symbol values inside custom elements on the server.\"\n  ]\n },\n {\n  \"condition_id\": \"function_or_symbol_values_are_passed_as_428615\",\n  \"claim\": \"Function or symbol values are passed as props/attributes to those custom elements.\",\n  \"quotes\": [\n   \"Ignore function and symbol values inside custom elements on the server.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_serve_da2c14",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention React 18 or any version, nor that the upgrade crosses it; it only states the behavior of ignoring function and symbol values inside custom elements on the server."
+   },
+   {
+    "condition_id": "the_application_server_renders_custom_el_b18f35",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "function_or_symbol_values_are_passed_as_428615",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 940,
+  "output_tokens": 198,
+  "stop_reason": "end_turn"
+ }
+}

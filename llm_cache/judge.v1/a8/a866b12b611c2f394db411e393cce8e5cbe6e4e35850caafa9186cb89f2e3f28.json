@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whi_2477f4\",\n  \"claim\": \"The upgrade crosses React release 18, which is the release this change is tied to.\",\n  \"quotes\": [\n   \"React 18 relies on the New React Native Architecture to benefit from the new capabilities presented in this blogpost.\"\n  ]\n },\n {\n  \"condition_id\": \"the_project_is_a_react_native_applicatio_2ae759\",\n  \"claim\": \"The project is a React Native application.\",\n  \"quotes\": [\n   \"For React Native users, React 18 will ship in a future version of React Native.\"\n  ]\n },\n {\n  \"condition_id\": \"the_app_has_not_adopted_the_new_react_na_f293ea\",\n  \"claim\": \"The app has not adopted the New React Native Architecture.\",\n  \"quotes\": [\n   \"React 18 relies on the New React Native Architecture to benefit from the new capabilities presented in this blogpost.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whi_2477f4",
+    "verdict": "partially_supported",
+    "missing": "The quote says React 18 relies on the New React Native Architecture for its new capabilities, but it does not say that the upgrade crosses React 18 or that this change is tied to that release."
+   },
+   {
+    "condition_id": "the_project_is_a_react_native_applicatio_2ae759",
+    "verdict": "not_supported",
+    "missing": "The quote is about React Native users in general. It does not establish that the project is a React Native application."
+   },
+   {
+    "condition_id": "the_app_has_not_adopted_the_new_react_na_f293ea",
+    "verdict": "not_supported",
+    "missing": "The quote says React 18 relies on the New Architecture, but it says nothing about whether the app has adopted it."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 953,
+  "output_tokens": 273,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,146 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.2. Source: Django 4.2 release notes (official_release_notes). Section: Django 4.2 release notes / Features deprecated in 4.2 / Passing encoded JSON string literals to JSONField is deprecated.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.2\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.2\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nJSONField and its associated lookups and aggregates used to allow passing JSON encoded string literals which caused ambiguity on whether string literals were already encoded from database backend's perspective. During the deprecation period string literals will be attempted to be JSON decoded and a warning will be emitted on success that points at passing non-encoded forms instead. Code that used to pass JSON encoded string literals: Document.objects.bulk_create( Document(data=Value(\"null\")), Document(data=Value(\"[]\")), Document(data=Value('\"foo-bar\"')), ) Document.objects.annotate( JSONBAgg(\"field\", default=Value(\"[]\")), )\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango 4.2 release notes / Features deprecated in 4.2 / Passing encoded JSON string literals to JSONField is deprecated: JSONField and its associated lookups and aggregates used to allow passing JSON encoded string literals which caused ambiguity on whether string literals were already encoded from database backend's perspective. During the deprecation period string literals will be attempted to be JSON decoded and a warning will be emitted on success that points at passing non-encoded forms instead. Code that used to pass JSON encoded string literals: Document.objects.bulk_create( Document(data=Value(\"null\")), Document(data=Value(\"[]\")), Document(data=Value('\"foo-bar\"')), ) Document.objects.annotate( JSONBAgg(\"field\", default=Value(\"[]\")), ) Should become: Document.objects.bulk_create( Document(data=Value(None, JSONField())), Document(data=[]), Document(data=\"foo-bar\"), ) Document.objects.annotate( JSONBAgg(\"field\", default=[]), ) From Django 5.1+ string literals will be implicitly interpreted as JSON string literals.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.2 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "JSON-encoded string literals passed via Value() to JSONField",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "JSONField and its lookups used to accept JSON-encoded string literals such as Value(\"null\"), Value(\"[]\") or Value('\"foo-bar\"'). During the 4.2 deprecation period Django tries to JSON-decode such string literals and emits a warning if decoding succeeds. From Django 5.1 string literals will be implicitly interpreted as JSON string literals, which changes their meaning.",
+    "primary_symbol": "JSONField",
+    "symbols": [
+     "JSONField",
+     "Value",
+     "bulk_create"
+    ],
+    "fires_at": "future_removal",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.2, where passing encoded JSON string literals is deprecated (current version below 4.2).",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.2",
+      "quotes": [
+       "During the deprecation period string literals will be attempted to be JSON decoded"
+      ],
+      "relevance": "Ties the deprecation and warning behavior to the 4.2 release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application passes JSON-encoded string literals wrapped in Value() to a JSONField, for example in bulk_create, create or update.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Value(\"<JSON-encoded string>\") assigned to a JSONField",
+      "quotes": [
+       "Document.objects.bulk_create( Document(data=Value(\"null\")), Document(data=Value(\"[]\")),",
+       "JSONField and its associated lookups and aggregates used to allow passing JSON encoded string literals"
+      ],
+      "relevance": "Only code that passes encoded string literals triggers the warning and the later change in meaning.",
+      "ambiguities": [
+       "The text shows bulk_create examples but does not say which other operations are affected beyond 'lookups and aggregates'."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "Value\\(\\s*[\"'](null|\\[.*\\]|\\{.*\\}|\\\\?\".*)[\"']\\s*\\)"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "JSONField"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Replace Value(\"null\") with Value(None, JSONField()).",
+     "Replace Value(\"[]\") with the plain Python value [].",
+     "Replace Value('\"foo-bar\"') with the plain Python string \"foo-bar\".",
+     "Run tests with deprecation warnings enabled to find remaining encoded string literals."
+    ]
+   },
+   {
+    "path_name": "JSON-encoded string default passed to JSONBAgg",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "Aggregates such as JSONBAgg used to accept JSON-encoded string literals as defaults, for example default=Value(\"[]\"). During the 4.2 deprecation period these are JSON-decoded with a warning. From Django 5.1 string literals will be implicitly interpreted as JSON string literals.",
+    "primary_symbol": "JSONBAgg",
+    "symbols": [
+     "JSONBAgg",
+     "Value",
+     "annotate"
+    ],
+    "fires_at": "future_removal",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 4.2, where passing encoded JSON string literals is deprecated (current version below 4.2).",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.2",
+      "quotes": [
+       "During the deprecation period string literals will be attempted to be JSON decoded"
+      ],
+      "relevance": "Ties the deprecation and warning behavior to the 4.2 release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application passes a JSON-encoded string literal in Value() as the default of JSONBAgg or another JSON aggregate.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "JSONBAgg(..., default=Value(\"<JSON-encoded string>\"))",
+      "quotes": [
+       "Document.objects.annotate( JSONBAgg(\"field\", default=Value(\"[]\")), )"
+      ],
+      "relevance": "This is the aggregate form named as affected by the deprecation.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "JSONBAgg\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "default\\s*=\\s*Value\\(\\s*[\"']"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Replace default=Value(\"[]\") with default=[] in JSONBAgg calls.",
+     "Run tests with deprecation warnings enabled to find remaining encoded string defaults."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3978,
+  "output_tokens": 2829,
+  "stop_reason": "end_turn"
+ }
+}

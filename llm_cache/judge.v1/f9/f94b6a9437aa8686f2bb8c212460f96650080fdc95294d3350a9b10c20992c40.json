@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whe_fe862e\",\n  \"claim\": \"The upgrade crosses React release 18, where hydration mismatches for text content became errors.\",\n  \"quotes\": [\n   \"Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings.\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_hydrates_server_rendered_d6de29\",\n  \"claim\": \"The application hydrates server-rendered markup on the client (server-side rendering with hydration).\",\n  \"quotes\": [\n   \"in an attempt to match the server markup\"\n  ]\n },\n {\n  \"condition_id\": \"the_server_rendered_markup_differs_from_3d20f0\",\n  \"claim\": \"The server-rendered markup differs from the client render in text content (missing or extra text).\",\n  \"quotes\": [\n   \"Hydration mismatches due to missing or extra text content\"\n  ]\n },\n {\n  \"condition_id\": \"the_app_has_suspense_boundaries_which_de_d2a6f2\",\n  \"claim\": \"The app has <Suspense> boundaries, which determine how far React reverts to client rendering on mismatch.\",\n  \"quotes\": [\n   \"will revert to client rendering up to the closest <Suspense> boundary in the tree\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whe_fe862e",
+    "verdict": "partially_supported",
+    "missing": "The quote says mismatches from text content are now treated as errors rather than warnings, but it does not mention React 18 or that the upgrade crosses that release."
+   },
+   {
+    "condition_id": "the_application_hydrates_server_rendered_d6de29",
+    "verdict": "partially_supported",
+    "missing": "The quote only mentions attempting to match server markup, implying hydration, but does not state that the application uses server-side rendering with hydration on the client."
+   },
+   {
+    "condition_id": "the_server_rendered_markup_differs_from_3d20f0",
+    "verdict": "partially_supported",
+    "missing": "The quote names hydration mismatches from missing or extra text content as a category, but does not establish that this application's server markup actually differs from the client render in text content."
+   },
+   {
+    "condition_id": "the_app_has_suspense_boundaries_which_de_d2a6f2",
+    "verdict": "partially_supported",
+    "missing": "The quote shows React reverts to client rendering up to the closest <Suspense> boundary, but does not establish that the app has Suspense boundaries; it also does not say a boundary is required or what happens without one."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1071,
+  "output_tokens": 406,
+  "stop_reason": "end_turn"
+ }
+}

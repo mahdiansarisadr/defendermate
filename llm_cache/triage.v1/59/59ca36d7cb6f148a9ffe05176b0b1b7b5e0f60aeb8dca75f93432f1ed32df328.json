@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade: 1.23 -> 1.29. Release of these items: *.\nSource: Kubernetes Version Skew Policy.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"08d3b766be67\", \"section\": \"Supported version skew / kube-controller-manager, kube-scheduler, and cloud-controller-manager\", \"text\": \"kube-controller-manager, kube-scheduler, and cloud-controller-manager are supported at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}}\"}\n{\"item_id\": \"ea2a2cd65ad3\", \"section\": \"Supported version skew / kube-controller-manager, kube-scheduler, and cloud-controller-manager\", \"text\": \"{{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, and these components can communicate with any kube-apiserver instance in the cluster (for example, via a load balancer), this narrows the allowed versions of these components. {{< /note >}} Example:\"}\n{\"item_id\": \"83f4ccf608a2\", \"section\": \"Supported version skew / kube-controller-manager, kube-scheduler, and cloud-controller-manager\", \"text\": \"kube-controller-manager, kube-scheduler, and cloud-controller-manager communicate with a load balancer that can route to any kube-apiserver instance\"}\n{\"item_id\": \"a3d979821d24\", \"section\": \"Supported version skew / kube-controller-manager, kube-scheduler, and cloud-controller-manager\", \"text\": \"kube-controller-manager, kube-scheduler, and cloud-controller-manager are supported at {{< skew currentVersionAddMinor -1 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\"}\n{\"item_id\": \"18a1320eb801\", \"section\": \"Supported version skew / kubectl\", \"text\": \"kubectl is supported within one minor version (older or newer) of kube-apiserver. Example:\"}\n{\"item_id\": \"0ba153e11d59\", \"section\": \"Supported version skew / kubectl\", \"text\": \"kubectl is supported at {{< skew currentVersionAddMinor 1 >}}, {{< skew currentVersion >}}, and {{< skew currentVersionAddMinor -1 >}}\"}\n{\"item_id\": \"aa802bb1ebb1\", \"section\": \"Supported version skew / kubectl\", \"text\": \"{{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the supported kubectl versions. {{< /note >}} Example:\"}\n{\"item_id\": \"ddf779bcfc42\", \"section\": \"Supported version skew / kubectl\", \"text\": \"kubectl is supported at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}} (other versions would be more than one minor version skewed from one of the kube-apiserver components)\"}\n{\"item_id\": \"d4136e254ede\", \"section\": \"Supported component upgrade order\", \"text\": \"The supported version skew between components has implications on the order in which components must be upgraded. This section describes the order in which components must be upgraded to transition an existing cluster from version {{< skew currentVersionAddMinor -1 >}} to version {{< skew currentVersion >}}. Optionally, when preparing to upgrade, the Kubernetes project recommends that you do the following to benefit from as many regression and bug fixes as possible during your upgrade:\"}\n{\"item_id\": \"210578ff066e\", \"section\": \"Supported component upgrade order\", \"text\": \"Ensure that components are on the most recent patch version of your current minor version.\"}\n{\"item_id\": \"5f5d22d9b30f\", \"section\": \"Supported component upgrade order\", \"text\": \"Upgrade components to the most recent patch version of the target minor version.\"}\n{\"item_id\": \"f741700194bc\", \"section\": \"Supported component upgrade order\", \"text\": \"For example, if you're running version {{}}, ensure that you're on the most recent patch version. Then, upgrade to the most recent patch version of {{}}.\"}\n{\"item_id\": \"ed0ca62b6628\", \"section\": \"Supported component upgrade order / kube-apiserver\", \"text\": \"Pre-requisites:\"}\n{\"item_id\": \"ba28dc2cf72e\", \"section\": \"Supported component upgrade order / kube-apiserver\", \"text\": \"In a single-instance cluster, the existing kube-apiserver instance is {{< skew currentVersionAddMinor -1 >}}\"}\n{\"item_id\": \"8645d683675b\", \"section\": \"Supported component upgrade order / kube-apiserver\", \"text\": \"In an HA cluster, all kube-apiserver instances are at {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersion >}} (this ensures maximum skew of 1 minor version between the oldest and newest kube-apiserver instance)\"}\n{\"item_id\": \"e87291eeef9c\", \"section\": \"Supported component upgrade order / kube-apiserver\", \"text\": \"The kube-controller-manager, kube-scheduler, and cloud-controller-manager instances that communicate with this server are at version {{< skew currentVersionAddMinor -1 >}} (this ensures they are not newer than the existing API server version, and are within 1 minor version of the new API server version)\"}\n{\"item_id\": \"0eec223a2dd0\", \"section\": \"Supported component upgrade order / kube-apiserver\", \"text\": \"kubelet instances on all nodes are at version {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersionAddMinor -2 >}} (this ensures they are not newer than the existing API server version, and are within 2 minor versions of the new API server version)\"}\n{\"item_id\": \"7dd0e9307e78\", \"section\": \"Supported component upgrade order / kube-apiserver\", \"text\": \"Registered admission webhooks are able to handle the data the new kube-apiserver instance will send them: * ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include any new versions of REST resources added in {{< skew currentVersion >}} (or use the matchPolicy: Equivalent option available in v1.15+) * The webhooks are able to handle any new versions of REST resources that will be sent to them, and any new fields added to existing versions in {{< skew currentVersion >}}\"}\n{\"item_id\": \"628d251b16a5\", \"section\": \"Supported component upgrade order / kube-apiserver\", \"text\": \"Upgrade kube-apiserver to {{< skew currentVersion >}} {{< note >}} Project policies for API deprecation and API change guidelines require kube-apiserver to not skip minor versions when upgrading, even in single-instance clusters. {{< /note >}}\"}\n{\"item_id\": \"e69fb4f27737\", \"section\": \"Supported component upgrade order / kube-controller-manager, kube-scheduler, and cloud-controller-manager\", \"text\": \"The kube-apiserver instances these components communicate with are at {{< skew currentVersion >}} (in HA clusters in which these control plane components can communicate with any kube-apiserver instance in the cluster, all kube-apiserver instances must be upgraded before upgrading these components)\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "08d3b766be67",
+    "label": "context",
+    "reason": "States which control plane component versions are supported with the target kube-apiserver, which is accurate reference information that needs no action by itself."
+   },
+   {
+    "item_id": "ea2a2cd65ad3",
+    "label": "context",
+    "reason": "The note explains that HA kube-apiserver version skew narrows the allowed versions of other components, which is informational guidance."
+   },
+   {
+    "item_id": "83f4ccf608a2",
+    "label": "context",
+    "reason": "Describes how controller-manager, scheduler, and cloud-controller-manager reach kube-apiserver through a load balancer, which is a descriptive statement."
+   },
+   {
+    "item_id": "a3d979821d24",
+    "label": "context",
+    "reason": "Gives the supported version range for control plane components, explaining why the target version is excluded, with no action required."
+   },
+   {
+    "item_id": "18a1320eb801",
+    "label": "context",
+    "reason": "States the kubectl version skew policy of one minor version either way, which is reference information."
+   },
+   {
+    "item_id": "0ba153e11d59",
+    "label": "context",
+    "reason": "Lists the kubectl versions supported against the kube-apiserver, which is reference information."
+   },
+   {
+    "item_id": "aa802bb1ebb1",
+    "label": "context",
+    "reason": "The note says HA apiserver version skew narrows supported kubectl versions, which is informational."
+   },
+   {
+    "item_id": "ddf779bcfc42",
+    "label": "context",
+    "reason": "Lists the supported kubectl versions and explains why others are excluded, which is reference information."
+   },
+   {
+    "item_id": "d4136e254ede",
+    "label": "context",
+    "reason": "Introduces the required upgrade order and recommended pre-upgrade steps without itself changing behavior."
+   },
+   {
+    "item_id": "210578ff066e",
+    "label": "context",
+    "reason": "Recommends moving to the latest patch of the current minor version before upgrading, which is advisory and changes nothing by itself."
+   },
+   {
+    "item_id": "5f5d22d9b30f",
+    "label": "context",
+    "reason": "Recommends upgrading to the latest patch of the target minor version, which is advisory guidance."
+   },
+   {
+    "item_id": "f741700194bc",
+    "label": "context",
+    "reason": "Gives an example of patch-version sequencing, though the version placeholders are empty, and the text is advisory."
+   },
+   {
+    "item_id": "ed0ca62b6628",
+    "label": "noise",
+    "reason": "The text is only a heading, \"Pre-requisites:\", with no content."
+   },
+   {
+    "item_id": "ba28dc2cf72e",
+    "label": "risk",
+    "reason": "In a single-instance cluster the existing kube-apiserver must already be at the prior minor version, a precondition the user must satisfy before upgrading."
+   },
+   {
+    "item_id": "8645d683675b",
+    "label": "risk",
+    "reason": "In HA clusters every kube-apiserver must be at N-1 or N before upgrading, which requires a coordinated upgrade of the control plane."
+   },
+   {
+    "item_id": "e87291eeef9c",
+    "label": "risk",
+    "reason": "Controller-manager, scheduler, and cloud-controller-manager must be at N-1 before the upgrade, which requires the user to verify and possibly change their versions."
+   },
+   {
+    "item_id": "0eec223a2dd0",
+    "label": "risk",
+    "reason": "All kubelets must be at N-1 or N-2 before the control plane is upgraded, which can require node upgrades as migration work."
+   },
+   {
+    "item_id": "7dd0e9307e78",
+    "label": "risk",
+    "reason": "Admission webhooks must be updated to handle new REST resource versions and fields, which can break deployments that are not ready for them."
+   },
+   {
+    "item_id": "628d251b16a5",
+    "label": "risk",
+    "reason": "The instruction to upgrade kube-apiserver to the target version without skipping minor versions is a required upgrade step that affects every cluster."
+   },
+   {
+    "item_id": "e69fb4f27737",
+    "label": "risk",
+    "reason": "Requires kube-apiserver instances to be upgraded to the target version before the other control plane components, which imposes a required ordering on the upgrade."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3088,
+  "output_tokens": 2020,
+  "stop_reason": "end_turn"
+ }
+}

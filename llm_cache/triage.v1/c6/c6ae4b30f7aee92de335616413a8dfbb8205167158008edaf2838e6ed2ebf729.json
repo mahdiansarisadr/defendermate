@@ -1,0 +1,70 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.0.\nSource: Django deprecation timeline.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"9ac0382d088c\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The get_response argument for django.utils.deprecation.MiddlewareMixin.init() will be required and won't accept None.\"}\n{\"item_id\": \"9c88f0b69f90\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The providing_args argument for django.dispatch.Signal will be removed.\"}\n{\"item_id\": \"e0dadc01c3bc\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The length argument for django.utils.crypto.get_random_string() will be required.\"}\n{\"item_id\": \"d32aa9d8ff4c\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The list message for ModelMultipleChoiceField will be removed.\"}\n{\"item_id\": \"3ad4abcaed6f\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"Support for passing raw column aliases to QuerySet.order_by() will be removed.\"}\n{\"item_id\": \"53a53343cf9c\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The model NullBooleanField will be removed. A stub field will remain for compatibility with historical migrations.\"}\n{\"item_id\": \"2bd634349d9d\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.conf.urls.url() will be removed.\"}\n{\"item_id\": \"bdc251c02a7e\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The model django.contrib.postgres.fields.JSONField will be removed. A stub field will remain for compatibility with historical migrations.\"}\n{\"item_id\": \"884073716424\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"django.contrib.postgres.forms.JSONField, django.contrib.postgres.fields.jsonb.KeyTransform, and django.contrib.postgres.fields.jsonb.KeyTextTransform will be removed.\"}\n{\"item_id\": \"021f8f7ccfbb\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The {% ifequal %} and {% ifnotequal %} template tags will be removed.\"}\n{\"item_id\": \"69838bd2911a\", \"section\": \"Django Deprecation Timeline / 4.0\", \"text\": \"The DEFAULT_HASHING_ALGORITHM transitional setting will be removed.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "9ac0382d088c",
+    "label": "risk",
+    "reason": "The get_response argument of MiddlewareMixin.__init__() becomes required and will no longer accept None, which breaks code that relied on passing None."
+   },
+   {
+    "item_id": "9c88f0b69f90",
+    "label": "risk",
+    "reason": "The providing_args argument of django.dispatch.Signal will be removed, so code passing it will fail."
+   },
+   {
+    "item_id": "e0dadc01c3bc",
+    "label": "risk",
+    "reason": "The length argument of get_random_string() becomes required, so calls that omit it will break."
+   },
+   {
+    "item_id": "d32aa9d8ff4c",
+    "label": "risk",
+    "reason": "The list message for ModelMultipleChoiceField will be removed, so custom code or error message overrides that use it will stop working."
+   },
+   {
+    "item_id": "3ad4abcaed6f",
+    "label": "risk",
+    "reason": "Passing raw column aliases to QuerySet.order_by() will be removed, so queries relying on that behavior will break."
+   },
+   {
+    "item_id": "53a53343cf9c",
+    "label": "risk",
+    "reason": "The NullBooleanField model is removed (leaving only a stub for migrations), so code using it directly must be migrated to BooleanField(null=True)."
+   },
+   {
+    "item_id": "2bd634349d9d",
+    "label": "risk",
+    "reason": "django.conf.urls.url() will be removed, so URL configurations using it must be changed to re_path() or path()."
+   },
+   {
+    "item_id": "bdc251c02a7e",
+    "label": "risk",
+    "reason": "The postgres JSONField model is removed (leaving a stub for migrations), so models using it must switch to the builtin models.JSONField."
+   },
+   {
+    "item_id": "884073716424",
+    "label": "risk",
+    "reason": "The postgres forms JSONField, jsonb KeyTransform, and KeyTextTransform will be removed, so code importing them will fail and needs replacement."
+   },
+   {
+    "item_id": "021f8f7ccfbb",
+    "label": "risk",
+    "reason": "The {% ifequal %} and {% ifnotequal %} template tags will be removed, so templates using them must be rewritten with {% if %}."
+   },
+   {
+    "item_id": "69838bd2911a",
+    "label": "risk",
+    "reason": "The DEFAULT_HASHING_ALGORITHM transitional setting will be removed, so projects relying on it must migrate to the newer hashing configuration."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1535,
+  "output_tokens": 1183,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,142 @@
+{
+ "prompt_id": "extract.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: How to Upgrade to React 18 (official_migration_guide). Section: New APIs for Libraries.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nIn the React 18 Working Group we worked with library maintainers to create new APIs needed to support concurrent rendering for use cases specific to their use case in areas like styles, and external stores. To support React 18, some libraries may need to switch to one of the following APIs:\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nNew APIs for Libraries: In the React 18 Working Group we worked with library maintainers to create new APIs needed to support concurrent rendering for use cases specific to their use case in areas like styles, and external stores. To support React 18, some libraries may need to switch to one of the following APIs: useSyncExternalStore is a new Hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. This new API is recommended for any library that integrates with state external to React. For more information, see the useSyncExternalStore overview post and useSyncExternalStore API details. useInsertionEffect is a new Hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you've already built a CSS-in-JS library we don't expect you to ever use this. This Hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout. For more information, see the Library Upgrade Guide for <style>. React 18 also introduces new APIs for concurrent rendering such as startTransition, useDeferredValue and useId, which we share more about in the release post.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. Use derived_by \"inference\" for any condition not directly stated.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "Libraries that integrate with external state or inject styles may need to switch to new React 18 APIs to support concurrent rendering; apps using such libraries may be affected.",
+  "paths": [
+   {
+    "path_name": "Libraries with external stores may need useSyncExternalStore",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "dependencies",
+    "primary_symbol": "useSyncExternalStore",
+    "symbols": [
+     "useSyncExternalStore"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, where new library APIs are needed to support concurrent rendering.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "17",
+      "quotes": [
+       "To support React 18, some libraries may need to switch to one of the following APIs:"
+      ],
+      "relevance": "Ties the change to the React 18 release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The app depends on a library that integrates with state external to React (an external store) and has not been updated to use useSyncExternalStore.",
+      "category": "dependency",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "third-party library integrating with external state",
+      "quotes": [
+       "created new APIs needed to support concurrent rendering",
+       "external stores"
+      ],
+      "relevance": "Only libraries with external stores are said to need the switch.",
+      "ambiguities": [
+       "The item text does not say which specific libraries are affected or what breaks if they do not switch.",
+       "Whether a given library has already adopted the API must be checked against that library's own release notes."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "useSyncExternalStore"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "from ['\"](redux|react-redux|mobx|zustand|valtio|recoil)['\"]"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Identify dependencies that integrate with state external to React and confirm they support React 18.",
+     "Upgrade such libraries to versions that adopt useSyncExternalStore, or switch to it in your own library code."
+    ]
+   },
+   {
+    "path_name": "CSS-in-JS libraries may need useInsertionEffect",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "dependencies",
+    "primary_symbol": "useInsertionEffect",
+    "symbols": [
+     "useInsertionEffect"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, where new library APIs are needed to support concurrent rendering in areas like styles.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "17",
+      "quotes": [
+       "To support React 18, some libraries may need to switch to one of the following APIs:"
+      ],
+      "relevance": "Ties the change to the React 18 release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The app depends on, or is itself, a CSS-in-JS library that injects styles during render and has not adopted useInsertionEffect.",
+      "category": "dependency",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "CSS-in-JS library injecting styles in render",
+      "quotes": [
+       "use cases specific to their use case in areas like styles, and external stores"
+      ],
+      "relevance": "Styles are named as an area where libraries may need to switch to new APIs.",
+      "ambiguities": [
+       "The item text does not name specific libraries or describe the failure mode.",
+       "Whether the library already supports React 18 must be verified with the library."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "useInsertionEffect"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "from ['\"](styled-components|@emotion/[a-z-]+|aphrodite|glamor)['\"]"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Check CSS-in-JS dependencies for React 18 support and upgrade them if needed.",
+     "If you maintain a CSS-in-JS library, move style injection to useInsertionEffect."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3653,
+  "output_tokens": 1393,
+  "stop_reason": "end_turn"
+ }
+}

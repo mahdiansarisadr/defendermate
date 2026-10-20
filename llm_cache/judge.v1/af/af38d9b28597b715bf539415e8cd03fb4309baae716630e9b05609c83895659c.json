@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_where_the_67aa47\",\n  \"claim\": \"The upgrade crosses release 18, where the unstable scheduler/tracing API was removed.\",\n  \"quotes\": [\n   \"Remove unstable scheduler/tracing API\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_its_dependencies_use_61e853\",\n  \"claim\": \"The application or its dependencies use the unstable scheduler/tracing API.\",\n  \"quotes\": [\n   \"Remove unstable scheduler/tracing API\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_where_the_67aa47",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention release 18 or that the upgrade crosses it; it only states that the unstable scheduler/tracing API was removed."
+   },
+   {
+    "condition_id": "the_application_or_its_dependencies_use_61e853",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 827,
+  "output_tokens": 144,
+  "stop_reason": "end_turn"
+ }
+}

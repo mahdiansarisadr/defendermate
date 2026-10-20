@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_where_rea_2b2737\",\n  \"claim\": \"The upgrade crosses release 18, where ReactDOM.hydrate is deprecated.\",\n  \"quotes\": [\n   \"ReactDOM.hydrate has been deprecated.\",\n   \"upgrade hydrate to hydrateRoot\"\n  ]\n },\n {\n  \"condition_id\": \"application_code_calls_reactdom_hydrate_4b3ca4\",\n  \"claim\": \"Application code calls ReactDOM.hydrate.\",\n  \"quotes\": [\n   \"ReactDOM.hydrate has been deprecated. Using it will warn and run your app in React 17 mode.\",\n   \"if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot\"\n  ]\n },\n {\n  \"condition_id\": \"application_does_not_call_reactdom_hydra_0fa176\",\n  \"claim\": \"Application does not call ReactDOM.hydrate.\",\n  \"quotes\": [\n   \"Using it will warn and run your app in React 17 mode.\"\n  ]\n },\n {\n  \"condition_id\": \"hydrateroot_does_not_need_a_separate_roo_d78d59\",\n  \"claim\": \"hydrateRoot does not need a separate root.render() call, unlike createRoot.\",\n  \"quotes\": [\n   \"Unlike with createRoot, you don't need a separate root.render() call here.\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_where_rea_2b2737",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not mention release 18 or that the upgrade crosses it; they only state that ReactDOM.hydrate is deprecated and to upgrade to hydrateRoot."
+   },
+   {
+    "condition_id": "application_code_calls_reactdom_hydrate_4b3ca4",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "application_does_not_call_reactdom_hydra_0fa176",
+    "verdict": "not_supported",
+    "missing": "The quote only describes what happens when ReactDOM.hydrate is used; it says nothing establishing that the application does not call it, and the claim is not supported by it."
+   },
+   {
+    "condition_id": "hydrateroot_does_not_need_a_separate_roo_d78d59",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1117,
+  "output_tokens": 308,
+  "stop_reason": "end_turn"
+ }
+}

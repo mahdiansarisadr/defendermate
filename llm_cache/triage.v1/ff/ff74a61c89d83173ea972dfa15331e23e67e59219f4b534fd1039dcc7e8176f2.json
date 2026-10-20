@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Django. Upgrade: 3.2 -> 4.2. Release of these items: 4.2.\nSource: Django 4.2 release notes.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"f51080de07d5\", \"section\": \"What's new in Django 4.2 / Minor features / Migrations\", \"text\": \"Migrations now support serialization of enum.Flag objects.\"}\n{\"item_id\": \"11e268d77f8d\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"QuerySet now extensively supports filtering against window-functions with the exception of disjunctive filter lookups against window functions when performing aggregation.\"}\n{\"item_id\": \"7852de4fc5f3\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"prefetch_related now supports Prefetch objects with sliced querysets.\"}\n{\"item_id\": \"aa0d9a47efd0\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"Registering lookups on Field instances is now supported.\"}\n{\"item_id\": \"3fe16843a88d\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"The new robust argument for on_commit allows performing actions that can fail after a database transaction is successfully committed.\"}\n{\"item_id\": \"7a46763b4a24\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"The new KT() expression represents the text value of a key, index, or path transform of JSONField.\"}\n{\"item_id\": \"a0c030f195fd\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"Now now supports microsecond precision on MySQL and millisecond precision on SQLite.\"}\n{\"item_id\": \"3529b05cf5e6\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"F() expressions that output BooleanField can now be negated using ~F() (inversion operator).\"}\n{\"item_id\": \"800b44404f9a\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"Model now provides asynchronous versions of some methods that use the database, using an a prefix: adelete, arefresh_from_db, and asave.\"}\n{\"item_id\": \"c37c5b66a44f\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"Related managers now provide asynchronous versions of methods that change a set of related objects, using an a prefix: aadd, aclear, aremove, and aset.\"}\n{\"item_id\": \"038b61cc4773\", \"section\": \"What's new in Django 4.2 / Minor features / Models\", \"text\": \"CharField.max_length is no longer required to be set on PostgreSQL, which supports unlimited VARCHAR columns.\"}\n{\"item_id\": \"b45308bdfb3a\", \"section\": \"What's new in Django 4.2 / Minor features / Requests and Responses\", \"text\": \"StreamingHttpResponse now supports async iterators when Django is served via ASGI.\"}\n{\"item_id\": \"dfab6be30a14\", \"section\": \"What's new in Django 4.2 / Minor features / Tests\", \"text\": \"The test --debug-sql option now formats SQL queries with sqlparse.\"}\n{\"item_id\": \"3c644e41de5f\", \"section\": \"What's new in Django 4.2 / Minor features / Tests\", \"text\": \"The RequestFactory, AsyncRequestFactory, Client, and AsyncClient classes now support the headers parameter, which accepts a dictionary of header names and values. This allows a more natural syntax for declaring headers. .. code-block: python # Before: self.client.get(\\\"/home/\\\", HTTP_ACCEPT_LANGUAGE=\\\"fr\\\") await self.async_client.get(\\\"/home/\\\", ACCEPT_LANGUAGE=\\\"fr\\\") # After: self.client.get(\\\"/home/\\\", headers={\\\"accept-language\\\": \\\"fr\\\"}) await self.async_client.get(\\\"/home/\\\", headers={\\\"accept-language\\\": \\\"fr\\\"})\"}\n{\"item_id\": \"b324d4a103c9\", \"section\": \"What's new in Django 4.2 / Minor features / Utilities\", \"text\": \"The new encoder parameter for django.utils.html.json_script function allows customizing a JSON encoder class.\"}\n{\"item_id\": \"36c565f333bf\", \"section\": \"What's new in Django 4.2 / Minor features / Utilities\", \"text\": \"The private internal vendored copy of urllib.parse.urlsplit() now strips '\\\\r', ' ', and '\\\\t' (see 2022-0391 and 43882). This is to protect projects that may be incorrectly using the internal url_has_allowed_host_and_scheme() function, instead of using one of the documented functions for handling URL redirects. The Django functions were not affected.\"}\n{\"item_id\": \"474657f2d67d\", \"section\": \"What's new in Django 4.2 / Minor features / Utilities\", \"text\": \"The new django.utils.http.content_disposition_header function returns a Content-Disposition HTTP header value as specified by 6266.\"}\n{\"item_id\": \"4f6961bfad6c\", \"section\": \"What's new in Django 4.2 / Minor features / Validators\", \"text\": \"The list of common passwords used by CommonPasswordValidator is updated to the most recent version.\"}\n{\"item_id\": \"d9bbd9ce6057\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Database backend API\", \"text\": \"This section describes changes that may be needed in third-party database backends.\"}\n{\"item_id\": \"bc68c49e0cc9\", \"section\": \"Django 4.2 release notes / Backwards incompatible changes in 4.2 / Database backend API\", \"text\": \"DatabaseFeatures.allows_group_by_pk is removed as it only remained to accommodate a MySQL extension that has been supplanted by proper functional dependency detection in MySQL 5.7.15. Note that DatabaseFeatures.allows_group_by_selected_pks is still supported and should be enabled if your backend supports functional dependency detection in GROUP BY clauses as specified by the SQL:1999 standard.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "f51080de07d5",
+    "label": "context",
+    "reason": "Migrations gaining serialization support for enum.Flag is a purely additive capability that needs no user action."
+   },
+   {
+    "item_id": "11e268d77f8d",
+    "label": "context",
+    "reason": "Expanded window-function filtering is a new capability, and the stated exception needs no action from existing code."
+   },
+   {
+    "item_id": "7852de4fc5f3",
+    "label": "context",
+    "reason": "Support for Prefetch objects with sliced querysets is a new additive option."
+   },
+   {
+    "item_id": "aa0d9a47efd0",
+    "label": "context",
+    "reason": "Registering lookups on Field instances is a new additive feature."
+   },
+   {
+    "item_id": "3fe16843a88d",
+    "label": "context",
+    "reason": "The new robust argument for on_commit is an optional additive parameter."
+   },
+   {
+    "item_id": "7a46763b4a24",
+    "label": "context",
+    "reason": "The new KT() expression is an additive API for JSONField transforms."
+   },
+   {
+    "item_id": "a0c030f195fd",
+    "label": "risk",
+    "reason": "Changing Now() to microsecond precision on MySQL and millisecond precision on SQLite alters returned timestamp values, which could affect stored data or comparisons in existing code."
+   },
+   {
+    "item_id": "3529b05cf5e6",
+    "label": "context",
+    "reason": "Negating BooleanField F() expressions with ~F() is a new additive capability."
+   },
+   {
+    "item_id": "800b44404f9a",
+    "label": "context",
+    "reason": "Asynchronous adelete, arefresh_from_db, and asave methods are new additive APIs."
+   },
+   {
+    "item_id": "c37c5b66a44f",
+    "label": "context",
+    "reason": "Asynchronous related manager methods such as aadd and aset are new additive APIs."
+   },
+   {
+    "item_id": "038b61cc4773",
+    "label": "context",
+    "reason": "CharField.max_length no longer being required on PostgreSQL is a relaxation that needs no user action."
+   },
+   {
+    "item_id": "b45308bdfb3a",
+    "label": "context",
+    "reason": "Async iterator support in StreamingHttpResponse under ASGI is a new additive feature."
+   },
+   {
+    "item_id": "dfab6be30a14",
+    "label": "context",
+    "reason": "The test --debug-sql option now formats SQL output, a cosmetic additive change that needs no user action."
+   },
+   {
+    "item_id": "3c644e41de5f",
+    "label": "context",
+    "reason": "The new headers parameter on test clients is an additive convenience option; the old syntax still works."
+   },
+   {
+    "item_id": "b324d4a103c9",
+    "label": "context",
+    "reason": "The new encoder parameter for json_script is an optional additive argument."
+   },
+   {
+    "item_id": "36c565f333bf",
+    "label": "risk",
+    "reason": "The vendored urlsplit now strips additional characters, which can change results for projects that incorrectly use the internal url_has_allowed_host_and_scheme function."
+   },
+   {
+    "item_id": "474657f2d67d",
+    "label": "context",
+    "reason": "The new content_disposition_header function is an additive utility."
+   },
+   {
+    "item_id": "4f6961bfad6c",
+    "label": "risk",
+    "reason": "The updated common passwords list can cause passwords that previously validated to be rejected, which changes application behavior."
+   },
+   {
+    "item_id": "d9bbd9ce6057",
+    "label": "noise",
+    "reason": "This is a section heading that only describes scope and contains no actionable change."
+   },
+   {
+    "item_id": "bc68c49e0cc9",
+    "label": "risk",
+    "reason": "Removing DatabaseFeatures.allows_group_by_pk breaks third-party database backends that still reference it."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2696,
+  "output_tokens": 1998,
+  "stop_reason": "end_turn"
+ }
+}

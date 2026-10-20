@@ -1,0 +1,1295 @@
+{
+ "per_upgrade": {
+  "django_3.2_to_4.2": {
+   "project": "Django",
+   "paths": 151,
+   "context_facts": 126,
+   "disqualified": 1,
+   "overall_confidence": "medium",
+   "validator_errors": 0,
+   "validator_warnings": 7,
+   "grounding": [
+    645,
+    645
+   ],
+   "grounding_failures": [],
+   "field_consistency": [
+    407,
+    408
+   ],
+   "field_failures": [
+    "django_a0a165bd4b/requests_reaching_the_application_includ_817a84: behavior present Origin"
+   ],
+   "structural": [
+    151,
+    151
+   ],
+   "usage": {
+    "triage": {
+     "calls": 24,
+     "cache_hits": 24,
+     "input_tokens": 61176,
+     "output_tokens": 41749,
+     "usd_estimate": 0.0,
+     "usd_full": 0.269921
+    },
+    "triage_sweep": {
+     "calls": 2,
+     "cache_hits": 2,
+     "input_tokens": 1689,
+     "output_tokens": 180,
+     "usd_estimate": 0.0,
+     "usd_full": 0.007767
+    },
+    "extract": {
+     "calls": 223,
+     "cache_hits": 223,
+     "input_tokens": 895107,
+     "output_tokens": 220825,
+     "usd_estimate": 0.0,
+     "usd_full": 5.997696
+    },
+    "extract_repair": {
+     "calls": 1,
+     "cache_hits": 1,
+     "input_tokens": 3588,
+     "output_tokens": 1042,
+     "usd_estimate": 0.0,
+     "usd_full": 0.026394
+    },
+    "reconcile": {
+     "calls": 1,
+     "cache_hits": 1,
+     "input_tokens": 1247,
+     "output_tokens": 199,
+     "usd_estimate": 0.0,
+     "usd_full": 0.006726
+    },
+    "judge": {
+     "calls": 151,
+     "cache_hits": 151,
+     "input_tokens": 189322,
+     "output_tokens": 30361,
+     "usd_estimate": 0.0,
+     "usd_full": 1.0233810000000003
+    }
+   },
+   "timings_s": {
+    "plan": 0.0,
+    "fetch": 0.01,
+    "parse": 0.04,
+    "triage": 0.02,
+    "extract": 0.26,
+    "link": 0.03,
+    "compose": 0.01,
+    "judge": 0.06,
+    "rubric": 0.0,
+    "assemble": 0.02
+   },
+   "funnel": {
+    "items_total": 758,
+    "items_on_path": 422,
+    "items_future": 46,
+    "items_dropped_r4": 290,
+    "revert_candidates": 1,
+    "patch_notes_scanned": 53,
+    "triage_risk": 223,
+    "triage_context": 196,
+    "triage_noise": 3,
+    "sweep_flipped": 2,
+    "extracted_items": 223,
+    "extracted_paths": 207,
+    "extractor_context": 22,
+    "extraction_failures": 0,
+    "fact_paths": 1,
+    "linked_paths": 163,
+    "merged": 45,
+    "composed_paths": 151,
+    "disqualified": 1,
+    "superseded": 8,
+    "final_paths": 151,
+    "context_facts": 126
+   },
+   "gold_items": [
+    {
+     "gold_id": "dj_python",
+     "kind": "risk",
+     "min_level": "critical",
+     "hits": {
+      "risk": [
+       "django_11d22d1a94"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "critical"
+    },
+    {
+     "gold_id": "dj_pg12",
+     "kind": "risk",
+     "min_level": "critical",
+     "hits": {
+      "risk": [
+       "django_66bc7c0863"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "critical"
+    },
+    {
+     "gold_id": "dj_mysql8",
+     "kind": "risk",
+     "min_level": "critical",
+     "hits": {
+      "risk": [
+       "django_bd48e50291",
+       "django_f9cd53a9aa"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "critical"
+    },
+    {
+     "gold_id": "dj_mariadb104",
+     "kind": "risk",
+     "min_level": "critical",
+     "hits": {
+      "risk": [
+       "django_da674827bd"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "critical"
+    },
+    {
+     "gold_id": "dj_oracle19",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_4fb042cc41"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_sqlite321",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_6f48543a64"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "critical"
+    },
+    {
+     "gold_id": "dj_psycopg2",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_c8a5898132"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_asgiref",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_38a3f575e2"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_csrf_scheme",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_1e0a921fcb"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_csrf_origin",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_1e0a921fcb",
+       "django_a0a165bd4b"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_csrf_masked",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_19d2656132",
+       "django_51841a4bc3"
+      ],
+      "context": [
+       "ctx_b71418e1cb40"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_xss_header",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "django_b236d7b436"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_sha1",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_8683c043db"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_removed_text",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_bda96f577c"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_ugettext",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_0509683299"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_url",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_373bc7ec5b"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_is_ajax",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_0757526eed"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_nullbool",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_122b44b57e"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_ifequal",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_07eb37a61f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_is_safe_url",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_b4c063edf8"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_pg_jsonfield",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_48bd5222f5",
+       "django_48bd5222f5_486f",
+       "django_c3e27d1cef",
+       "django_dfc647ada4"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_removed_reset_days",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_bcd84f8d7d"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_memcachedcache",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_44c2815817"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_default_app_config",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_48c3fd8caa"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_emailvalidator_whitelist",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "django_ffce931536"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_requires_system_checks",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "django_7a421fde8d"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_zoneinfo",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_fc188b2194",
+       "django_f019e59923"
+      ],
+      "context": [
+       "ctx_fbfb8889913f",
+       "ctx_9daf549457c4"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_use_l10n",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_80d51ec58c",
+       "django_ff4e75de71"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_deleteview",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_18e8b24987"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_update_fields",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "django_00ef9fd5ad"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_reverse_fk",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_ab55437a82"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_smtp_tls",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_8f4e0280c3"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_group_by_alias",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "django_0bf0a41371",
+       "django_bddad2ae28"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_admin_search",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "django_21e9ff39c5"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_mysql_rawsql",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "django_f9cd53a9aa"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "dj_usercreationform",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "django_d8509a5a51"
+      ],
+      "context": [
+       "ctx_066cdf6e86f1"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_ctx_storages",
+     "kind": "context",
+     "min_level": null,
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_cfbc93d580e3",
+       "ctx_a9f76b0b610b"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": null
+    },
+    {
+     "gold_id": "dj_ctx_index_together",
+     "kind": "context",
+     "min_level": null,
+     "hits": {
+      "risk": [
+       "django_aeb030463f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": false,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "dj_disq_manager_cache",
+     "kind": "disqualified",
+     "min_level": null,
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_1ae1565b067f"
+      ],
+      "disqualified": [
+       "revert_4bb3da777ac8"
+      ]
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": null
+    }
+   ],
+   "recall": [
+    36,
+    36
+   ],
+   "classification": [
+    38,
+    39
+   ],
+   "level_agreement": [
+    36,
+    36
+   ],
+   "strict_precision": [
+    43,
+    151
+   ],
+   "matched_path_ids": [
+    "django_00ef9fd5ad",
+    "django_0509683299",
+    "django_0757526eed",
+    "django_07eb37a61f",
+    "django_0bf0a41371",
+    "django_11d22d1a94",
+    "django_122b44b57e",
+    "django_18e8b24987",
+    "django_19d2656132",
+    "django_1e0a921fcb",
+    "django_21e9ff39c5",
+    "django_373bc7ec5b",
+    "django_38a3f575e2",
+    "django_44c2815817",
+    "django_48bd5222f5",
+    "django_48bd5222f5_486f",
+    "django_48c3fd8caa",
+    "django_4fb042cc41",
+    "django_51841a4bc3",
+    "django_66bc7c0863",
+    "django_6f48543a64",
+    "django_7a421fde8d",
+    "django_80d51ec58c",
+    "django_8683c043db",
+    "django_8f4e0280c3",
+    "django_a0a165bd4b",
+    "django_ab55437a82",
+    "django_b236d7b436",
+    "django_b4c063edf8",
+    "django_bcd84f8d7d",
+    "django_bd48e50291",
+    "django_bda96f577c",
+    "django_bddad2ae28",
+    "django_c3e27d1cef",
+    "django_c8a5898132",
+    "django_d8509a5a51",
+    "django_da674827bd",
+    "django_dfc647ada4",
+    "django_f019e59923",
+    "django_f9cd53a9aa",
+    "django_fc188b2194",
+    "django_ff4e75de71",
+    "django_ffce931536"
+   ]
+  },
+  "react_17_to_18": {
+   "project": "React",
+   "paths": 25,
+   "context_facts": 39,
+   "disqualified": 0,
+   "overall_confidence": "medium",
+   "validator_errors": 0,
+   "validator_warnings": 3,
+   "grounding": [
+    157,
+    157
+   ],
+   "grounding_failures": [],
+   "field_consistency": [
+    79,
+    79
+   ],
+   "field_failures": [],
+   "structural": [
+    25,
+    25
+   ],
+   "usage": {
+    "triage": {
+     "calls": 7,
+     "cache_hits": 7,
+     "input_tokens": 17818,
+     "output_tokens": 14682,
+     "usd_estimate": 0.0,
+     "usd_full": 0.091228
+    },
+    "extract": {
+     "calls": 57,
+     "cache_hits": 57,
+     "input_tokens": 224298,
+     "output_tokens": 49426,
+     "usd_estimate": 0.0,
+     "usd_full": 1.4142839999999999
+    },
+    "judge": {
+     "calls": 25,
+     "cache_hits": 25,
+     "input_tokens": 33830,
+     "output_tokens": 5939,
+     "usd_estimate": 0.0,
+     "usd_full": 0.190575
+    }
+   },
+   "timings_s": {
+    "plan": 0.0,
+    "fetch": 0.01,
+    "parse": 0.04,
+    "triage": 0.01,
+    "extract": 0.1,
+    "link": 0.0,
+    "compose": 0.0,
+    "judge": 0.01,
+    "rubric": 0.0,
+    "assemble": 0.03
+   },
+   "funnel": {
+    "items_total": 130,
+    "items_on_path": 130,
+    "items_future": 0,
+    "items_dropped_r4": 0,
+    "revert_candidates": 0,
+    "patch_notes_scanned": 0,
+    "triage_risk": 57,
+    "triage_context": 58,
+    "triage_noise": 15,
+    "sweep_flipped": 0,
+    "extracted_items": 57,
+    "extracted_paths": 40,
+    "extractor_context": 18,
+    "extraction_failures": 0,
+    "fact_paths": 0,
+    "linked_paths": 25,
+    "merged": 15,
+    "composed_paths": 25,
+    "disqualified": 0,
+    "superseded": 0,
+    "final_paths": 25,
+    "context_facts": 39
+   },
+   "gold_items": [
+    {
+     "gold_id": "re_render_deprecated",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "react_362d1d0639",
+       "react_4a4e72c4eb",
+       "react_5245677ce9",
+       "react_e56a0f9df4",
+       "react_7123c14ec9"
+      ],
+      "context": [
+       "ctx_54925641c9a8",
+       "ctx_8ef99b065fe8"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_hydrate_deprecated",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "react_385fe7836e",
+       "react_d1fa9e779a"
+      ],
+      "context": [
+       "ctx_28e58ea8654c"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_unmount",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_7123c14ec9"
+      ],
+      "context": [
+       "ctx_7486a812fc1b"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "low"
+    },
+    {
+     "gold_id": "re_render_callback",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_5245677ce9"
+      ],
+      "context": [
+       "ctx_115a79ae0770"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_auto_batching",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_362d1d0639",
+       "react_e56a0f9df4"
+      ],
+      "context": [
+       "ctx_29715db5a815"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_strict_mode",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_71acd3a7ef"
+      ],
+      "context": [
+       "ctx_44cb2172052c"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_effect_timing",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_4aaaf16b0e"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_hydration_errors",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_d1fa9e779a"
+      ],
+      "context": [
+       "ctx_99550d07bcd5"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_js_env",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "react_38bf30f056",
+       "react_77c14b0b1f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "re_render_to_node_stream",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_58846cb08a52",
+       "ctx_cc4d31a38274"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": false,
+     "extracted_level": null
+    },
+    {
+     "gold_id": "re_server_suspense",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_479331dfb5",
+       "react_6c336940af"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_types",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_0cdcfd833f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_test_env",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_0cdcfd833f",
+       "react_1174c2e1c2",
+       "react_bf8746ac22",
+       "react_dc5cc879a8"
+      ],
+      "context": [
+       "ctx_778b40bf29d9"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_scheduler_tracing",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_66adbc474f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "re_layout_effects_suspense",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_44cfb7b19d",
+       "react_a6a01d8772"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_ctx_render_undefined",
+     "kind": "context",
+     "min_level": null,
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_b754050dc453",
+       "ctx_ab03f7fcd920",
+       "ctx_2834ff584bc2"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": null
+    },
+    {
+     "gold_id": "re_ctx_setstate_unmounted",
+     "kind": "context",
+     "min_level": null,
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_e7224b12d15e"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": null
+    }
+   ],
+   "recall": [
+    14,
+    15
+   ],
+   "classification": [
+    16,
+    17
+   ],
+   "level_agreement": [
+    14,
+    14
+   ],
+   "strict_precision": [
+    20,
+    25
+   ],
+   "matched_path_ids": [
+    "react_0cdcfd833f",
+    "react_1174c2e1c2",
+    "react_362d1d0639",
+    "react_385fe7836e",
+    "react_38bf30f056",
+    "react_44cfb7b19d",
+    "react_479331dfb5",
+    "react_4a4e72c4eb",
+    "react_4aaaf16b0e",
+    "react_5245677ce9",
+    "react_66adbc474f",
+    "react_6c336940af",
+    "react_7123c14ec9",
+    "react_71acd3a7ef",
+    "react_77c14b0b1f",
+    "react_a6a01d8772",
+    "react_bf8746ac22",
+    "react_d1fa9e779a",
+    "react_dc5cc879a8",
+    "react_e56a0f9df4"
+   ]
+  }
+ },
+ "extra": {
+  "drift": {
+   "n": 132,
+   "exact_false_accept": 0.0,
+   "fuzzy_false_accept": 1.0
+  }
+ },
+ "metrics": [
+  {
+   "name": "grounding_rate",
+   "value": 1.0,
+   "display": "802/802 = 1.000",
+   "target": 1.0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "validator_errors",
+   "value": 0,
+   "display": "0",
+   "target": 0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "structural_completeness",
+   "value": 1.0,
+   "display": "176/176 = 1.000",
+   "target": 1.0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "recall_per_upgrade (min)",
+   "value": 0.9333333333333333,
+   "display": "Django 1.00, React 0.93",
+   "target": 0.8,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "recall_overall",
+   "value": 0.9803921568627451,
+   "display": "50/51 = 0.980",
+   "target": 0.85,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "strict_precision (lower bound)",
+   "value": 0.35795454545454547,
+   "display": "63/176 = 0.358",
+   "target": null,
+   "pass": null,
+   "gate": "report"
+  },
+  {
+   "name": "classification_accuracy",
+   "value": 0.9642857142857143,
+   "display": "54/56 = 0.964",
+   "target": 0.85,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "level_agreement",
+   "value": 1.0,
+   "display": "50/50 = 1.000",
+   "target": 0.8,
+   "pass": true,
+   "gate": "soft"
+  },
+  {
+   "name": "field_consistency",
+   "value": 0.997946611909651,
+   "display": "486/487 = 0.998",
+   "target": 0.95,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "drift_false_accept_exact",
+   "value": 0.0,
+   "display": "exact 0.000 vs fuzzy(0.9) 1.000 on 132 drifted quotes",
+   "target": 0.0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "cost_latency",
+   "value": {
+    "usd_full": 9.027972,
+    "llm_calls": 491,
+    "seconds": 0.65
+   },
+   "display": "~$9.03 for 491 LLM calls to produce 2 models; 1s stage time on the last (possibly cached) run",
+   "target": null,
+   "pass": null,
+   "gate": "report"
+  }
+ ]
+}

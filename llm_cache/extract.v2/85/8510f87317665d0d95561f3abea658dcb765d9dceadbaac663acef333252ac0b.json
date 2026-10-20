@@ -1,0 +1,92 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Django. Upgrade being assessed: 3.2 -> 4.2.\nThis change was introduced in release 4.0. Source: Django deprecation timeline (official_deprecation_notice). Section: Django Deprecation Timeline / 4.0.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"4.0\",\n  \"field\": \"python\",\n  \"value\": \">=3.8\",\n  \"source_id\": \"dj_pypi@4.0\",\n  \"json_path\": \"info.requires_python\"\n }\n]\n\nITEM:\n<<<\nSupport for the pre-Django 3.1 encoding format of sessions will be removed.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nDjango Deprecation Timeline / 4.0: See the Django 3.0 release notes for more details on these changes. django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() will be removed. django.utils.encoding.force_text() and smart_text() will be removed. django.utils.translation.ugettext(), ugettext_lazy(), ugettext_noop(), ungettext(), and ungettext_lazy() will be removed. django.views.i18n.set_language() will no longer set the user language in request.session (key django.utils.translation.LANGUAGE_SESSION_KEY). alias=None will be required in the signature of django.db.models.Expression.get_group_by_cols() subclasses. django.utils.text.unescape_entities() will be removed. django.utils.http.is_safe_url() will be removed. See the Django 3.1 release notes for more details on these changes. The PASSWORD_RESET_TIMEOUT_DAYS setting will be removed. The undocumented usage of the isnull lookup with non-boolean values as the right-hand side will no longer be allowed. The django.db.models.query_utils.InvalidQuery exception class will be removed. The django-admin.py entry point will be removed. The HttpRequest.is_ajax() method will be removed. Support for the pre-Django 3.1 encoding format of cookies values used by django.contrib.messages.storage.cookie.CookieStorage will be removed. Support for the pre-Django 3.1 password reset tokens in the admin site (that use the SHA-1 hashing algorithm) will be removed. Support for the pre-Django 3.1 encoding format of sessions will be removed. Support for the pre-Django 3.1 django.core.signing.Signer signatures (encoded with the SHA-1 algorithm) will be removed. Support for the pre-Django 3.1 django.core.signing.dumps() signatures (encoded with the SHA-1 algorithm) in django.core.signing.loads() will be removed. Support for the pre-Django 3.1 user sessions (that use the SHA-1 algorithm) will be removed. The get_response argument for django.utils.deprecation.MiddlewareMixin.init() will be required and won't accept None. The providing_args argument for django.dispatch.Signal will be removed. The length argument for django.utils.crypto.get_random_string() will be required. The list message for ModelMultipleChoiceField will be removed. Support for passing raw column aliases to QuerySet.order_by() will be removed. The model NullBooleanField will be removed. A stub field will remain for compatibility with historical migrations. django.conf.urls.url() will be removed. The model django.contrib.postgres.fields.JSONFiel\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 4.2 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 4.0 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Pre-Django 3.1 session encoding format support removed in 4.0",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "runtime",
+    "description": "Support for the pre-Django 3.1 encoding format of sessions is removed in Django 4.0. Sessions still stored in the old encoding format may no longer be decoded after upgrading from 3.2 to 4.2. The text does not state what happens to such sessions.",
+    "primary_symbol": "pre-Django 3.1 encoding format of sessions",
+    "symbols": [
+     "pre-Django 3.1 encoding format of sessions"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 3.2 to 4.2 crosses release 4.0, where support for the pre-Django 3.1 session encoding format is removed.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "4.0",
+      "quotes": [
+       "Support for the pre-Django 3.1 encoding format of sessions will be removed."
+      ],
+      "relevance": "Ties the removal to the 4.0 timeline section crossed by the 3.2 -> 4.2 upgrade.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application or deployment has sessions stored or encoded in the pre-Django 3.1 session encoding format.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "pre-Django 3.1 encoding format of sessions",
+      "quotes": [
+       "Support for the pre-Django 3.1 encoding format of sessions will be removed."
+      ],
+      "relevance": "Only sessions still in the old encoding format are affected by the removed support.",
+      "ambiguities": [
+       "The text does not state how to detect old-format sessions or what happens when they are read after removal."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "SESSION_ENGINE|django\\.contrib\\.sessions"
+       }
+      ]
+     },
+     {
+      "statement": "Sessions in the old format are all expired or were re-created under Django 3.1 or later before the upgrade, so none remain in the pre-3.1 format.",
+      "category": "behavior",
+      "role": "disqualifying",
+      "operator": "absent",
+      "expected_value": "sessions in pre-Django 3.1 encoding format",
+      "quotes": [
+       "Support for the pre-Django 3.1 encoding format of sessions will be removed."
+      ],
+      "relevance": "If no pre-3.1-encoded sessions remain, the removed support has no effect.",
+      "ambiguities": [
+       "The text does not explicitly describe this mitigation; it follows from the removed support being specific to the pre-3.1 format."
+      ],
+      "derived_by": "inference",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Check whether any stored sessions were created under a Django version before 3.1 and are still in use.",
+     "Ensure sessions in the old encoding format have expired or been re-created under Django 3.1 or later before upgrading to 4.x.",
+     "Expect users with old-format sessions to possibly need to log in again after the upgrade."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4313,
+  "output_tokens": 1060,
+  "stop_reason": "end_turn"
+ }
+}

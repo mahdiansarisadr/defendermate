@@ -52,7 +52,8 @@ def strict_schema(model: type[BaseModel]) -> dict:
         if isinstance(node, dict):
             if "$ref" in node:
                 return fix(defs[node["$ref"].split("/")[-1]])
-            node = {k: fix(v) for k, v in node.items() if k not in ("title", "default", "description")}
+            node = {k: (({pk: fix(pv) for pk, pv in v.items()}) if k == "properties" else fix(v))
+                    for k, v in node.items() if k not in ("title", "default", "description")}
             if node.get("type") == "object" and "properties" in node:
                 node["required"] = list(node["properties"].keys())
                 node["additionalProperties"] = False
@@ -73,13 +74,15 @@ class Usage:
         pin, pout = config.PRICES.get(model, (0.0, 0.0))
         with self.lock:
             s = self.by_stage.setdefault(stage, {"calls": 0, "cache_hits": 0, "input_tokens": 0,
-                                                 "output_tokens": 0, "usd_estimate": 0.0})
+                                                 "output_tokens": 0, "usd_estimate": 0.0, "usd_full": 0.0})
             s["calls"] += 1
             s["cache_hits"] += int(cached)
             s["input_tokens"] += usage.get("input_tokens", 0)
             s["output_tokens"] += usage.get("output_tokens", 0)
+            usd = (usage.get("input_tokens", 0) * pin + usage.get("output_tokens", 0) * pout) / 1e6
+            s["usd_full"] += usd
             if not cached:
-                s["usd_estimate"] += (usage.get("input_tokens", 0) * pin + usage.get("output_tokens", 0) * pout) / 1e6
+                s["usd_estimate"] += usd
 
 
 class LLMClient:

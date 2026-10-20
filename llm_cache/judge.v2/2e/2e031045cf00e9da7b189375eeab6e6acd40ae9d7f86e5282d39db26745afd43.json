@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_4_2_which_in_c5964e\",\n  \"claim\": \"The upgrade crosses release 4.2, which introduced the stricter UserCreationForm username validation.\",\n  \"evidence\": [\n   {\n    \"quote\": \"UserCreationForm now rejects usernames that differ only in case.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_usercreationform_di_20745d\",\n  \"claim\": \"The application uses UserCreationForm (directly or via subclass) to create user accounts.\",\n  \"evidence\": [\n   {\n    \"quote\": \"UserCreationForm now rejects usernames that differ only in case.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_relies_on_being_able_to_a83a2d\",\n  \"claim\": \"The application relies on being able to register usernames that differ only in case (previous behavior).\",\n  \"evidence\": [\n   {\n    \"quote\": \"If you need the previous behavior, use BaseUserCreationForm instead.\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_already_uses_baseusercre_e71a75\",\n  \"claim\": \"The application already uses BaseUserCreationForm instead of UserCreationForm for the previous behavior.\",\n  \"evidence\": [\n   {\n    \"quote\": \"use BaseUserCreationForm instead\",\n    \"source\": \"Django 4.2 release notes\",\n    \"release_of_change\": \"4.2\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_4_2_which_in_c5964e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_usercreationform_di_20745d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_relies_on_being_able_to_a83a2d",
+    "verdict": "partially_supported",
+    "missing": "The quote only says BaseUserCreationForm gives the previous behavior; it does not state that the application depends on registering case-differing usernames. That is a hypothesis for a downstream check, and the quote establishes that apps relying on it are affected."
+   },
+   {
+    "condition_id": "the_application_already_uses_baseusercre_e71a75",
+    "verdict": "partially_supported",
+    "missing": "The quote recommends BaseUserCreationForm to keep the previous behavior, but it does not say the application already uses it. It also does not state that using it avoids the change in the release."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1353,
+  "output_tokens": 320,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nClaims about the application (e.g. \"The application uses X\") are supported when the quotes establish that X is affected by the change; the judge does not need evidence that a specific app uses X.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_autom_b0a330\",\n  \"claim\": \"The upgrade crosses React 18, where automatic batching of all updates is introduced\",\n  \"quotes\": [\n   \"React 18 adds out-of-the-box performance improvements by doing more batching by default.\",\n   \"This is a breaking change, but we expect this to result in less work rendering\",\n   \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n   \"This release introduces a performance improvement that changes to the way React batches updates to do more batching automatically.\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_with_createroot_d825a3\",\n  \"claim\": \"The application renders with createRoot, since the guide says the new batching applies starting in React 18 with createRoot\",\n  \"quotes\": [\n   \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n   \"Starting in React 18 with createRoot, all updates will be automatically batched\",\n   \"To opt-out of automatic batching, you can use flushSync:\",\n   \"wrap the state update in flushSync\"\n  ]\n },\n {\n  \"condition_id\": \"state_updates_e_g_setstate_or_hook_sette_fa8040\",\n  \"claim\": \"State updates (e.g., setState or hook setters) are made inside promises, setTimeout, native event handlers, or other non-React events\",\n  \"quotes\": [\n   \"Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default\"\n  ]\n },\n {\n  \"condition_id\": \"code_depends_on_a_re_render_or_dom_updat_db7f0d\",\n  \"claim\": \"Code depends on a re-render or DOM update occurring between consecutive state updates outside React event handlers\",\n  \"quotes\": [\n   \"React will render twice, once for each state update (no batching)\",\n   \"Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default\",\n   \"React has updated the DOM by now\",\n   \"updates inside of timeouts, promises, native event handlers or any other event will batch the same way as updates inside of React events\",\n   \"In the rare case that you need to opt out, wrap the state update in flushSync.\"\n  ]\n },\n {\n  \"condition_id\": \"the_application_already_uses_flushsync_t_e91f57\",\n  \"claim\": \"The application already uses flushSync to opt out of batching for the affected updates, in which case the batching change does not alter them\",\n  \"quotes\": [\n   \"To opt-out of automatic batching, you can use flushSync:\"\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_autom_b0a330",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_renders_with_createroot_d825a3",
+    "verdict": "not_supported",
+    "missing": "The quotes only say batching applies with createRoot in React 18; they do not establish that the application uses createRoot. The claim's reasoning is also backwards (inferring app usage from the guide's statement)."
+   },
+   {
+    "condition_id": "state_updates_e_g_setstate_or_hook_sette_fa8040",
+    "verdict": "partially_supported",
+    "missing": "The quote only says updates in those contexts were not batched by default; it does not state that the application makes state updates there (though the app-claim leniency applies, the setState/hook setter specifics are not stated)."
+   },
+   {
+    "condition_id": "code_depends_on_a_re_render_or_dom_updat_db7f0d",
+    "verdict": "partially_supported",
+    "missing": "The quotes show that unbatched updates caused a render per update and that the DOM was updated by then, and mention flushSync opt-out, but they do not state that code depends on such intermediate re-renders/DOM updates; that dependency is the claim's premise."
+   },
+   {
+    "condition_id": "the_application_already_uses_flushsync_t_e91f57",
+    "verdict": "partially_supported",
+    "missing": "The quote only says flushSync can be used to opt out of automatic batching; it does not state that the application already uses it, nor that the batching change then does not alter those updates."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1515,
+  "output_tokens": 502,
+  "stop_reason": "end_turn"
+ }
+}
