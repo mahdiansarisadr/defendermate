@@ -7,7 +7,43 @@ URX reads public release notes, migration guides, changelogs, deprecation guides
 
 Upgrades covered: Django 3.2→4.2, React 17→18, Kubernetes 1.23→1.29, PostgreSQL 13→16, Next.js 12→14.
 
-The design is in [`TDD.md`](TDD.md); section 17 lists the gaps found while building it. The ten design questions are answered in [`DESIGN_NOTE.md`](DESIGN_NOTE.md). Eval results are in [`eval/results.md`](eval/results.md).
+The required design note, answering the ten questions, is [`DESIGN_NOTE.md`](DESIGN_NOTE.md). The full design is in [`TDD.md`](TDD.md); section 17 lists the gaps found while building it. Eval results are in [`eval/results.md`](eval/results.md).
+
+## Design overview
+
+```mermaid
+flowchart LR
+  R[Registry YAML<br/>official sources] --> F[Fetch, pin, hash]
+  F --> P[Parse into atomic<br/>change items + dedup]
+  P --> T[Triage<br/>LLM cheap]
+  T --> S[Recall sweep<br/>LLM strong]
+  S --> X[Extract paths<br/>LLM strong + quote check]
+  X --> L[Link duplicates<br/>BM25]
+  L --> C[Compose rules R1–R7<br/>reverts, supersession, ranges]
+  C --> J[Judge each condition<br/>LLM strong]
+  J --> Q[Confidence rubric]
+  Q --> V[Validator<br/>repair or block]
+  V --> O[risk_model.json<br/>inventory, report, graph]
+```
+
+| Stage | LLM? | What it does |
+|---|---|---|
+| Source gathering | no | The per-project registry lists official sources by type and authority tier. The fetcher pins each to a tag or commit, records a SHA-256 hash, rejects stubs and caches it. |
+| Document processing | no | Adapters (RST, Markdown/MDX, DocBook, JSON) split documents into release-tagged change items (one bullet each) with heading path and section type. Exact duplicates across sources are merged. Package metadata becomes version facts. |
+| Triage | cheap | Labels each item risk, context or noise. A strong-model sweep re-checks noise items that contain signal words. |
+| Extraction | strong | Builds risk paths with typed conditions, roles, verbatim quotes and search queries under a JSON schema. Unverifiable quotes get one repair round. |
+| Composition | no | Links duplicates across sources, then applies rules for reverts, supersession, Kubernetes remediation, release filtering, applicability and cross-project requirements. Separates risks, context facts and disqualified candidates. |
+| Checking | strong + no | The LLM judge checks each condition against its quotes and demotes unsupported ones to `uncertain`. A deterministic rubric sets confidence, and the validator (E1–E11, W1–W4) repairs the model or blocks the write. |
+
+Key choices:
+
+- **The LLM never does the following:**
+  - parse documents
+  - do version math
+  - set confidence
+  - validate output
+- **Every quote is re-verified** against the pinned cached file.
+- **Risk versus context:** a risk needs both a version-side change and a checkable app- or deployment-side condition. Everything else true becomes context.
 
 ## Results
 
@@ -98,14 +134,17 @@ cd ui && npm install && npm run build && cd ..
 urx serve                          # http://127.0.0.1:8765
 ```
 
-- **Overview**: one card per upgrade, showing risk counts by level, overall confidence, gold recall, validator errors, sources and cost.
-- **Upgrade**: risk paths with level, type, release, confidence and flag filters. The path drawer shows:
+A left sidebar links to every upgrade and page.
+
+- **Overview**: headline numbers, then one row per upgrade with its risk mix, path count, gold recall, estimated precision and confidence, followed by a legend of the risk levels.
+- **Upgrade**: risk paths with search and level filters; confidence, type, release and flag filters sit under "More filters". The path drawer shows:
   - conditions grouped by role (required, alternative, uncertain), with operator, expected value, confidence, judge verdict and ripgrep search queries
   - verbatim evidence with a **show in source** view that highlights the quote inside the cached document
   - suggested actions, a Mermaid condition graph, and Accept/Reject review buttons, which write to `review/overrides.yaml`
 
   Other tabs cover sources (used or rejected, pinned ref, hash), the evidence summary with disagreements and open questions, context facts and disqualified candidates, the pipeline (funnel, judge stats, LLM usage per stage, timings, rejected drafts, run log) and the Markdown report.
-- **Evals**: every TDD 17.4 metric with its target and gate type, plus the per-gold-item hit and miss list linking to the matched paths.
+- **Evals**: every metric grouped into hard gates, soft targets and informational, plus the per-gold-item hit and miss list for each upgrade.
+- **Experiments**: quality versus cost for each model pair, with the Pareto frontier, the trade-off, and summary, all-metric and per-upgrade tables.
 - **Runs**: start an online or offline run and follow its stage events live.
 
 For UI development, run `cd ui && npm run dev`, which proxies `/api` to port 8765.
@@ -117,8 +156,8 @@ Add `ANTHROPIC_API_KEY=...` to `.env` (gitignored) and drop `--offline`. Network
 | Variable | Default | Purpose |
 |---|---|---|
 | `URX_PROVIDER` | `anthropic` | `anthropic` or `openai` (`pip install -e '.[openai]'`, `OPENAI_API_KEY`) |
-| `URX_CHEAP_MODEL` | `claude-haiku-5-5` | triage, precision judge |
-| `URX_STRONG_MODEL` | `claude-sonnet-5-5` | extraction, revert reconcile, grounding judge |
+| `URX_CHEAP_MODEL` | `claude-haiku-5-5` | triage |
+| `URX_STRONG_MODEL` | `claude-sonnet-5-5` | recall sweep, extraction, revert reconcile, grounding judge; in eval, the precision judge and baseline |
 
 `urx eval` with no flags also runs the LLM-based metrics (precision judge and judge calibration). Add `--ablations` for the single-prompt baseline and the filter ablations, and `--stability` for a cold React rerun.
 
@@ -144,9 +183,12 @@ urx export-schema                  # schemas/risk_model.schema.json
 | `run_log.jsonl` | Stage events, timings, token usage and cost estimates |
 | `intermediate/` | `items` (parsed change items), `triage`, `triage_disagreements`, `extractions`, `release_risks` (linked), `revert_candidates`, `version_facts`, `rejected` (every dropped draft or evidence item with a reason), `compose_log.json`, `validation.json` |
 
-## Pipeline in one paragraph
+## Caching and reuse
 
-A per-project registry YAML lists the official sources, their formats, the sections to mine and the known release list. The fetcher pins each source to a tag or commit, hashes it and detects transclusion stubs. Format adapters (RST, Markdown/MDX, DocBook, JSON) turn documents into blocks, and blocks into atomic change items (one bullet is one item), each tagged with its release. The cheap model triages every item into risk, context or noise, and a strong-model recall sweep re-checks noise items that contain signal words. The strong model extracts paths from risk items under a JSON schema, and quotes are verified immediately, with one repair round. A BM25 linker merges duplicates across sources. Deterministic composition rules then handle reverts, supersession, the Kubernetes remediation chain, release filtering, start-version applicability, future-removal context, and cross-project requirements. Rule-derived paths come from package metadata (Python, Node and React peer ranges). An LLM judge checks entailment for each condition: a claim it finds unsupported is demoted to `uncertain`. A deterministic rubric sets confidence. Finally, a deterministic validator (E1–E11 and W1–W4) repairs the model or blocks it from being written.
+- **Docs:** each fetched doc is stored in `cache/` with its ID (for example `dj_notes@4.0`), its URL, its pinned ref and a SHA-256 `content_hash`. Later runs read from the cache, and `--refresh` re-downloads.
+- **Change items:** each has a content-derived ID, so unchanged text keeps the same ID across runs.
+- **LLM calls:** cached under a SHA-256 of the model, prompt version, rendered input and schema, so replays cost nothing.
+- **Limitation:** the triage and extraction prompts include the upgrade pair. A new pair, such as Django 4.0→5.0, therefore re-pays for releases already processed (see the design note, question 7).
 
 ## What I trusted, what I did not
 
@@ -165,6 +207,7 @@ A per-project registry YAML lists the official sources, their formats, the secti
 - **Coverage gaps** (also listed as `open_questions` in each model):
   - Kubernetes "API Change" and "Feature" sections are not mined.
   - Next.js minor-release notes and GitHub issues are not mined.
+  - PostgreSQL uses one source type, its release notes. Each major release's "Migration to Version N" section is the official upgrade guidance, and it lives inside those notes; there is no separate migration guide.
   - Ecosystem risks are out of scope: `@types/react`, PostgreSQL extensions, drivers, managed-service behavior, and third-party packages pinned to old versions.
 - **Strict precision is a lower bound:** gold sets are small and not exhaustive. Estimated precision adds an LLM precision judge. Both are reported.
 - **Determinism:** current models reject `temperature`, so replays are deterministic only through the cache. Cold-run stability is measured, not assumed (TDD G27).

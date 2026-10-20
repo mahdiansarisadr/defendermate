@@ -1,86 +1,107 @@
 # Design note
 
-**1. Decomposition.** The work runs as three pipelines with narrow contracts, and each stage writes its own artifact.
+URX turns public upgrade documentation into a structured risk model in which every condition is backed by a verbatim, re-verified quote. The full design is in [`TDD.md`](TDD.md); this note answers the ten required questions.
 
-- **Ingestion** is deterministic. The registry lists sources, then come fetch and pin, format adapters, release-tagged atomic change items, and version facts from package metadata.
-- **Per-release extraction** uses the LLM. Every item is triaged, and a recall sweep re-checks items labeled noise that contain signal words. Paths are extracted under a JSON schema, then the linker merges duplicates across sources.
-- **Composition and serving** is mostly deterministic. A planner picks the releases crossed. Rules R1–R7 handle reverts, supersession, the Kubernetes remediation chain, release filtering, start-version applicability, future-removal context and cross-project requirements. After that come the LLM judge, the rubric, the validator and the reports.
+### 1. How did you decompose the extraction problem into workflow stages or agents?
 
-Extraction runs once per release, not once per upgrade pair. Any (current, target) pair is composed from the per-release risks.
+There are three pipelines with narrow contracts. Each stage writes its own artifact to `outputs/<upgrade>/intermediate/`.
 
-**2. Role of the LLM.**
+1. **Ingestion (deterministic).** A per-project registry lists the official sources. They are fetched, pinned to a tag or commit, and hashed, and stubs are rejected. Format adapters (RST, Markdown/MDX, DocBook, JSON) split each document into release-tagged *atomic change items*, one bullet per item, with their heading path and parent section. Exact duplicates across sources are merged. Package metadata becomes version facts.
+2. **Per-release extraction (LLM).** The cheap model triages every item as risk, context or noise. A strong-model recall sweep re-checks noise items that contain signal words. The strong model extracts risk paths from risk items under a JSON schema, and each quote is verified immediately, with one repair round. A BM25 linker merges the same risk reported by several sources.
+3. **Composition and checking (mostly deterministic).** A planner picks the releases crossed. Rules R1–R7 handle reverts, supersession, the Kubernetes remediation chain, release filtering, start-version applicability, future-removal context and cross-project requirements. Then an LLM judge checks each condition, a rubric sets confidence, and a validator repairs or blocks the model. Reports, the graph and the evidence summary are generated last.
 
-- Triage (cheap model, batches of 20).
-- Path extraction (strong model, schema-constrained, prompted to quote verbatim).
-- Linking a revert note to the change it reverts (reconcile).
-- Entailment judging of each condition against its quotes.
-- In eval only: a precision judge and a single-prompt baseline.
+### 2. What role did the LLM play?
 
-The LLM never parses documents, does version math, sets confidence or validates output.
+Five bounded jobs, each with a versioned prompt in `prompts/` and a strict output schema:
 
-**3. Deterministic parts.** Fetching, pinning and hashing, stub detection, parsing, normalization, item splitting, symbol extraction, release assignment, planning, version-condition canonicalization, rule-derived metadata paths, composition rules, the confidence rubric, the validator and repair, summary, evidence summary, open questions, overall confidence, reports and the scan demo.
+- triage (cheap tier, batches of 20)
+- the recall sweep
+- path extraction
+- linking a revert note to the change it undoes
+- an entailment judge for each condition
 
-**4. Preventing hallucinated risks.**
+The eval adds a precision judge and a single-prompt baseline. The LLM never parses documents, does version math, assigns confidence, or validates output. Models are set by tier (`URX_CHEAP_MODEL`, `URX_STRONG_MODEL`), and both Anthropic and OpenAI providers are supported.
 
-- Every condition needs evidence. A quote must match the pinned cached source exactly after Unicode normalization. It is checked at extraction (one repair round) and again by the final validator.
-- Version facts use JSON-path evidence with the expected value, re-read from the registry JSON.
-- The judge demotes unsupported claims to `uncertain`.
-- A path is dropped unless it has both a version condition and an app-side condition.
-- Confidence comes from a rubric, never from the model: authority tier, independent corroboration, metadata agreement, penalties for inference and ambiguity, and a cap so inferred conditions are never high.
-- Every drop is logged in `intermediate/rejected.jsonl`.
-- In the drift test, exact matching accepted 0% of quotes with one injected number change; fuzzy matching at a 0.9 ratio accepted 100%.
+### 3. What parts of the pipeline are deterministic?
 
-**5. Risk versus context.** A risk needs a version-side change *and* a checkable condition on the application or deployment under which it matters. Examples: the app imports `force_text`, a manifest uses `flowcontrol.apiserver.k8s.io/v1beta2`, or the database relies on implicit `public` schema CREATE. Other true statements become `context_facts` with a `why_not_risk` reason. That covers deprecations that still work, background, and removals that land after the target. Reverted changes, and removals superseded before the target, become `disqualified_candidates` with the quote that disqualifies them.
+Everything else is deterministic:
 
-**6. Conflicting or incomplete documentation.**
+- fetching, pinning, hashing, parsing, item splitting, release tagging and deduplication
+- version-range canonicalization, and paths derived from package metadata
+- composition rules R1–R7
+- the confidence rubric and the validator (E1–E11 errors, W1–W4 warnings)
+- summaries, open questions, overall confidence and reports
 
-- **Trust order:** registry metadata > deprecation and migration guides > release notes. A prose version that contradicts metadata goes to `sources_with_disagreements` with a resolution. Example: Next.js Node minimums of 14.6, 16.8 and 16.14 across 13.0, 13.4 and 13.5.
-- **Reverts** (R1) are found by scanning patch notes. **Supersession** (R2) keeps the last state.
-- **Kubernetes remediation** (R3) is recomputed against the target, because per-release guidance can name APIs that are themselves removed later.
-- **Undocumented areas, rejected sources and unresolved reconciles** become `open_questions`. These include registry coverage gaps such as unmined Kubernetes sections and ecosystem packages.
-- **Implied-only gates** are marked `uncertain` with the ambiguity spelled out.
+### 4. How did you prevent hallucinated upgrade risks?
 
-**7. Scaling to thousands of projects.**
+- **Quotes must exist.** Each condition needs evidence whose quote matches the pinned cached source exactly after Unicode and whitespace normalization. This is checked at extraction and again by the final validator, which blocks the write on failure. In the drift test, fuzzy matching at a 0.9 ratio accepted 100% of quotes with one number changed; exact matching accepted 0%.
+- **Numbers come from metadata.** Version minimums use JSON-path evidence re-read from registry metadata.
+- **Structure is enforced.** A path is dropped unless it has a version condition and an app- or deployment-side condition.
+- **Unsupported claims are demoted.** The judge marks unsupported conditions `uncertain`, and the extractor is told to use `uncertain` with an explicit ambiguity rather than guess.
+- **Confidence comes from the rubric, not the model.** It uses authority tier, corroboration, metadata agreement and judge verdict, with penalties for inference and ambiguity. Inferred conditions are capped below `high`.
+- **Every drop is logged** with a reason in `rejected.jsonl`.
 
-- **Configuration:** the registry is configuration, and most projects fit the four adapters.
-- **Cost:** extraction is per release and cached, so cost grows with the number of releases, not with the number of upgrade pairs. A new release triggers one batch job. Composing any pair is deterministic and cheap.
-- **Registries:** generating registries is the next step. A bounded discovery agent would propose sources, and a human would approve them.
-- **Throughput:** batching, worker pools, the response cache and per-stage cost logs keep spend visible. At this scale I would add a queue, a blob store for the caches, and per-ecosystem adapters (PyPI, npm, Go modules).
+### 5. How did you decide whether something is a real risk condition versus useful context?
 
-**8. Evaluating precision and recall.** Small gold sets were written for all five upgrades *before* the first extraction and committed separately. Gold items use term-group (DNF) matching with a release filter. Metrics are split into hard gates and soft targets.
+A **risk** needs a version-side change *and* a checkable condition on the application or deployment. For example, the app imports `force_text`, a manifest uses `flowcontrol.apiserver.k8s.io/v1beta2`, or the database relies on implicit `CREATE` on `public`.
 
-- **Hard gates, asserted in pytest:**
+True statements that need no action at the target become `context_facts` with a `why_not_risk`. These include deprecated-but-working APIs, additive features, background, and removals scheduled after the target.
+
+Changes that were reverted, or superseded before the target, become `disqualified_candidates` with the quote that disqualifies them. The eval checks this three-way split against gold, with 0.97 classification accuracy.
+
+### 6. How did you handle conflicting or incomplete public documentation?
+
+- **Authority order:** registry metadata > deprecation and migration guides > release notes and changelogs. Third-party sources are not used as evidence.
+- **Disagreements are recorded, not resolved silently.** A prose version that disagrees with metadata, or with another release's note, goes to `sources_with_disagreements` with a resolution. Example: Next.js Node minimums of 14.6, 16.8 and 16.14 across 13.0, 13.4 and 13.5.
+- **Changes over time:** reverts found in patch notes (R1), supersession that keeps the last state (R2), and Kubernetes remediation recomputed against the target (R3), because per-release advice can point to APIs removed later.
+- **Gaps are surfaced.** Missing coverage, rejected sources and unresolved reverts become `open_questions`. Conditions implied but not stated are kept as `uncertain` with the ambiguity spelled out.
+
+### 7. How would you scale this from these upgrades to thousands of projects and versions?
+
+- **Registries are configuration,** and most projects fit the four adapters. The next step is a bounded discovery agent that proposes registry entries for a human to approve.
+- **Extraction is organized per release** and composition is deterministic, so any (current, target) pair is assembled from per-release risks. To make the *cost* per-release as well, two changes are needed:
+  - drop the upgrade pair from the triage and extraction prompts, which today makes the LLM cache key pair-specific
+  - store per-release results keyed by content hash, so unchanged docs skip parsing and LLM work entirely
+- **Model tier is a dial.** In the experiment, Haiku for both tiers cost 1/12 as much as Haiku plus Sonnet, for one fewer gold risk out of 55.
+- **Infrastructure:** a work queue, a blob store for caches, and per-ecosystem adapters (PyPI, npm, Go).
+
+### 8. How would you evaluate precision and recall of extracted risks?
+
+Small gold sets for all five upgrades were committed *before* the first extraction. They are matched with term groups and a release filter.
+
+- **Hard gates (pytest):**
   - grounding 1.00
-  - validator errors 0
+  - 0 validator errors
   - structural completeness 1.00
-  - recall ≥ 0.80 per upgrade and ≥ 0.85 overall
+  - recall ≥ 0.80 per upgrade and ≥ 0.85 overall (actual: 0.93 and 0.98)
   - classification ≥ 0.85
   - field consistency ≥ 0.95
-  - drift false-accept 0
+  - 0 drift false-accepts
 - **Soft targets:**
-  - estimated precision (gold match or precision judge) ≥ 0.85
-  - level agreement ≥ 0.80
-  - calibration monotone
-  - judge accuracy ≥ 0.90 and κ ≥ 0.8 on a synthetic supported-versus-mutated set
-  - cold-rerun stability ≥ 0.80
-- **Reported only:** strict precision, which is a lower bound because gold sets are not exhaustive.
-- **Ablations:** compare against a single-prompt baseline, and against heading or keyword pre-filters instead of LLM triage.
+  - estimated precision ≥ 0.85, using a gold match or an LLM precision judge (actual 0.97)
+  - level agreement and calibration
+  - judge accuracy
+  - cold-rerun stability ≥ 0.80. This was missed at 0.70, because path IDs depend on the symbol the model picks.
+- **Reported:** strict precision, a lower bound because gold isn't exhaustive. Also ablations against a single-prompt baseline, and a cost/quality experiment across model pairs.
 
-Results are in `eval/results.md` and on the UI's Evals page.
+### 9. What would you improve with more time?
 
-**9. With more time.**
-
-- Mine Kubernetes "API Change" and "Feature" sections, Next.js minor releases, and issue trackers, the last as tier-2 evidence for known incompatibilities.
+- Make prompts independent of the upgrade pair, and add the per-release, content-hash-keyed store (see 7).
+- Derive path IDs from source items, so stability measures real drift.
+- Mine Kubernetes "API Change" sections, Next.js minor releases and issue trackers (as tier-2 evidence for known incompatibilities).
 - Add ecosystem sources: type packages, PostgreSQL extensions, drivers.
-- Build a human-labeled judge set and feed review overrides back into the gold.
-- Use dense retrieval for the linker and add more adapters.
-- Make cold runs reproducible by seeding the response cache from a reviewed baseline.
+- Build a human-labeled judge set, and feed UI review decisions back into gold.
+- Add dense retrieval for the linker, and a discovery agent.
 
-**10. Downstream consumption.** Each condition carries:
+### 10. How would this output be consumed by a downstream upgrade assessment engine?
 
-- a category and an operator (`present`, `absent`, `in_range` and others)
-- an expected value: a canonical version range such as `{"current_version": "< 4.0", "target_version": ">= 4.0"}`, a symbol, or a JSON-path fact
-- a role (`required`, `alternative`, `disqualifying`, `uncertain`)
-- ripgrep search queries
+Each condition is machine-checkable:
 
-An assessment engine first evaluates the version conditions against the planned upgrade. It then evaluates app-side conditions against a repo or cluster, honors `applies_to.from_versions`, and reports the paths that fire, using `risk_level` and `confidence` for triage. `urx scan` demonstrates this on a synthetic app. Paths whose disqualifiers also match are marked `needs_review` rather than suppressed, because LLM-written disqualifier queries are sometimes inverted.
+- **category and operator,** for example `present`, `absent`, `in_range`
+- **expected value:** a canonical version range such as `{"current_version": "< 4.0", "target_version": ">= 4.0"}`, a symbol, or a JSON-path fact
+- **role:** `required`, `alternative`, `optional`, `disqualifying` or `uncertain`
+- **search queries** for ripgrep, `kubectl` or SQL
+
+An engine first evaluates the version conditions against the planned upgrade, honoring `applies_to.from_versions`. It then runs the app-side queries against a repo or cluster and reports the paths that fire, ranked by `risk_level` and `confidence`. `urx scan` demonstrates this on a synthetic app, where all planted usages fire and the control does not. Paths whose disqualifiers also match are marked `needs_review`, not suppressed. The output is evidence for an assessment, not a migration plan.
+
+*What I trusted, what I did not, and where the workflow can fail are listed in the README.*
