@@ -461,7 +461,7 @@ Uses: corroborate a risk with other sources (adds evidence and raises the rubric
 
 ## 9. Prompts (`prompts/*.md`, versioned)
 
-Prompt files carry a version suffix; the version is part of the LLM cache key. All calls use temperature 0.
+Prompt files carry a version suffix; the version is part of the LLM cache key. All calls are cached; see G27 for why temperature is not set.
 
 **triage.v1.md**
 ```
@@ -807,6 +807,11 @@ Every registry URL in section 5.2 was fetched on 2026-10-20 and returned HTTP 20
 | G24 | Cost control is undefined. | Thread pool (8 workers); triage batches of 20; the judge is batched per path; per-stage token and cost estimates go to `run_log.jsonl`; LLM cache in `llm_cache/`. |
 | G25 | Some TDD features exceed the 4-hour assignment budget. | Cut and listed as future work: discovery agent (A6), Ollama provider, dense retrieval, tier-2 Trac/GitHub issue mining, gold export from overrides. Anthropic (default) and OpenAI providers are implemented. |
 | G26 | `required` vs `role` mapping is unstated. | `required = (role == "required")`. `disqualifying` means "if this holds, the path does not apply"; `alternative` means at least one alternative must hold. |
+| G27 | "Temperature 0" (section 9, Appendix C) cannot be set: the current Anthropic SDK and models reject `temperature`. | Determinism comes from the LLM cache. A cached run replays byte-identically; a cold rerun is measured by the stability metric instead of being assumed. Sonnet also rejects forced `tool_choice`, so structured output uses `output_config.format = json_schema`. |
+| G28 | `risk_key` uses the last dotted symbol component (G9), so distinct paths can collide (`postgres.fields.JSONField` vs `postgres.forms.JSONField`), and one statement can be emitted under two categories. | After linking, colliding path IDs get a suffix hashed from the full symbol and path name. After judging (the judge cache key includes condition IDs), duplicate condition IDs get a `_<category>` suffix. Deterministic, so offline replay reproduces the same IDs. |
+| G29 | A revert that R1 cannot link to an extracted path (the reverted change was triaged as context) is lost. | If the reconcile step returns a verified quote and the patch is at or before the target, emit a `disqualified_candidate` quoting the revert note itself, and keep the open question. Disqualified candidates have no release field, so gold matching skips the release filter for that bucket. |
+| G30 | LLM-written `disqualifying` search queries are sometimes inverted (e.g. "usage only in migrations" written as `NullBooleanField --glob '!**/migrations/**'`). | `urx scan` never lets a disqualifier suppress a path silently: it reports the path as firing and marks it `needs_review`. Queries that need lookaround are retried with `rg -P`; Markdown files are excluded. |
+| G31 | Budget exhaustion mid-run. | `URX_STRONG_MODEL` switches the strong tier (extraction, reconcile, judge) to another model; the model used is recorded in `pipeline.models` and the README states which upgrades used it. Completed calls stay cached, so nothing is paid twice. |
 
 ### 17.3 User interface and run tracking (new)
 

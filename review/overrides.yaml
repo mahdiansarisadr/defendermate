@@ -1,0 +1,7 @@
+# Reviewer decisions, applied on the next run (TDD C7). Written by the UI or by hand.
+# - id: django_0757526eed            # path_id, or path_id/condition_id
+#   decision: accept | reject | edit
+#   edits: {risk_level: high}        # edit only: statement, risk_level, confidence_floor
+#   reviewer: name
+#   note: why
+[]
