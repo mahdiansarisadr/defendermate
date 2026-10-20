@@ -1,0 +1,58 @@
+project: Django
+version_scheme: pep440
+traversal: {mode: walk_minors}
+known_releases: ["3.0", "3.1", "3.2", "4.0", "4.1", "4.2", "5.0", "5.1", "5.2"]
+future_removal_horizon: 2
+coverage_gaps:
+  - "Third-party packages (django-rest-framework, celery, database drivers other than psycopg2) pin Django versions; compatibility is not covered by Django's docs."
+  - "Patch releases are scanned only for reverts, not for new incompatibilities."
+  - "Tier-2 sources (Django Trac tickets, forum threads) were not mined; real-world triggers such as CSRF failures behind TLS-terminating proxies may be under-represented."
+sources:
+  - id: dj_notes
+    title: "Django {release} release notes"
+    type: official_release_notes
+    tier: 1
+    url_template: "https://docs.djangoproject.com/en/{target}/releases/{release}/"
+    raw_template: "https://raw.githubusercontent.com/django/django/stable/{target}.x/docs/releases/{release}.txt"
+    format: rst
+    per_release: true
+    pin: branch
+    why_relevant: "Official per-release notes; contain 'Backwards incompatible changes', 'Features removed' and Python/database support changes for {release}."
+  - id: dj_deprecation
+    title: "Django deprecation timeline"
+    type: official_deprecation_notice
+    tier: 1
+    url_template: "https://docs.djangoproject.com/en/{target}/internals/deprecation/"
+    raw_template: "https://raw.githubusercontent.com/django/django/stable/{target}.x/docs/internals/deprecation.txt"
+    format: rst
+    per_release: false
+    release_from_heading: '^(\d+\.\d+)$'
+    pin: branch
+    why_relevant: "Authoritative list of what is removed in each release; also gives future removals after the target."
+  - id: dj_patch
+    title: "Django {release} patch release notes"
+    type: official_release_notes
+    tier: 1
+    url_template: "https://docs.djangoproject.com/en/{target}/releases/{release}/"
+    raw_template: "https://raw.githubusercontent.com/django/django/stable/{target}.x/docs/releases/{release}.txt"
+    format: rst
+    per_release: true
+    revert_scan: true
+    patch_max: 30
+    pin: branch
+    why_relevant: "Patch notes are scanned only for reverts of changes made in a release on the path (rule R1)."
+  - id: dj_pypi
+    title: "PyPI metadata for Django {release}"
+    type: package_registry_metadata
+    tier: 1
+    url_template: "https://pypi.org/project/Django/{release}/"
+    raw_template: "https://pypi.org/pypi/Django/{release}/json"
+    format: json
+    per_release: true
+    include_current: true
+    pin: tag
+    why_relevant: "Machine-readable Python requirement for each release; outranks prose for version facts."
+version_facts:
+  - source_id: dj_pypi
+    fields: {python: "info.requires_python"}
+    labels: {python: "Python"}

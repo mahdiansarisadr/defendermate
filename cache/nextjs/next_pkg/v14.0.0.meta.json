@@ -1,0 +1,10 @@
+{
+  "inventory_id": "next_pkg@v14.0.0",
+  "url": "https://github.com/vercel/next.js/blob/v14.0.0/packages/next/package.json",
+  "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v14.0.0/packages/next/package.json",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:46Z",
+  "content_hash": "sha256:2a80c1ddb74bdff71b8e3c2f390ebe84cba966c63e4e63d118dc34c02e68908b",
+  "pinned_ref": "tag:v14.0.0",
+  "bytes": 9463
+}

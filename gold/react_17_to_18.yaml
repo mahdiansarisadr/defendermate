@@ -1,0 +1,22 @@
+# Hand-written from the React 18.0.0 CHANGELOG and the official React 18 upgrade guide,
+# committed before the first extraction run (2026-10-20). Not exhaustive.
+upgrade: react_17_to_18
+project: React
+items:
+  - {gold_id: re_render_deprecated, release: "18", kind: risk, min_level: high, match: [["reactdom.render"], ["createroot", "render"]]}
+  - {gold_id: re_hydrate_deprecated, release: "18", kind: risk, min_level: high, match: [["hydrate", "hydrateroot"], ["reactdom.hydrate"]]}
+  - {gold_id: re_unmount, release: "18", kind: risk, min_level: medium, match: [["unmountcomponentatnode"]]}
+  - {gold_id: re_render_callback, release: "18", kind: risk, min_level: medium, match: [["callback", "render"]]}
+  - {gold_id: re_auto_batching, release: "18", kind: risk, min_level: medium, match: [["batching"], ["flushsync"]]}
+  - {gold_id: re_strict_mode, release: "18", kind: risk, min_level: medium, match: [["strict mode"], ["strictmode"]]}
+  - {gold_id: re_effect_timing, release: "18", kind: risk, min_level: low, match: [["useeffect", "synchronously"], ["effect", "discrete"]]}
+  - {gold_id: re_hydration_errors, release: "18", kind: risk, min_level: medium, match: [["hydration", "mismatch"], ["hydration", "error"]]}
+  - {gold_id: re_js_env, release: "18", kind: risk, min_level: high, match: [["promise", "symbol"], ["internet explorer"], ["object.assign"]]}
+  - {gold_id: re_render_to_node_stream, release: "18", kind: risk, min_level: medium, match: [["rendertonodestream"]]}
+  - {gold_id: re_server_suspense, release: "18", kind: risk, min_level: low, match: [["rendertostring", "suspend"], ["rendertostaticmarkup", "suspend"], ["rendertostring", "fallback"]]}
+  - {gold_id: re_types, release: "18", kind: risk, min_level: medium, match: [["@types/react"]]}
+  - {gold_id: re_test_env, release: "18", kind: risk, min_level: low, match: [["is_react_act_environment"], ["act", "test"]]}
+  - {gold_id: re_scheduler_tracing, release: "18", kind: risk, min_level: low, match: [["scheduler/tracing"]]}
+  - {gold_id: re_layout_effects_suspense, release: "18", kind: risk, min_level: low, match: [["layout effect", "suspen"]]}
+  - {gold_id: re_ctx_render_undefined, release: "18", kind: context, match: [["render undefined"], ["return undefined"]]}
+  - {gold_id: re_ctx_setstate_unmounted, release: "18", kind: context, match: [["setstate", "unmounted"]]}

@@ -1,0 +1,10 @@
+{
+  "inventory_id": "next_guide_13_tag",
+  "url": "https://github.com/vercel/next.js/blob/v13.0.0/docs/upgrading.md",
+  "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v13.0.0/docs/upgrading.md",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:44Z",
+  "content_hash": "sha256:cd3a7d579dc1f2b6c0bf89a7e8ffba4c8ee153583ee4c35e5815910928f0f799",
+  "pinned_ref": "tag:v13.0.0",
+  "bytes": 19954
+}

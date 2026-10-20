@@ -1,0 +1,22 @@
+project: PostgreSQL
+version_scheme: pg
+traversal: {mode: jump_majors}
+known_releases: ["12", "13", "14", "15", "16", "17"]
+future_removal_horizon: 0
+coverage_gaps:
+  - "Extensions (PostGIS, TimescaleDB, pg_partman, etc.) must have builds for the target major; their compatibility is not in core release notes."
+  - "Backup and HA tooling (pgBackRest, Barman, Patroni, logical replication tools) and client drivers have their own version support."
+  - "Managed services (RDS, Cloud SQL, Azure) control the upgrade method and some defaults."
+  - "Minor-release notes (14.x, 15.x, 16.x) were intentionally excluded; they can contain post-release behavior fixes."
+sources:
+  - id: pg_release_notes
+    title: "PostgreSQL {release} release notes: Migration to Version {release}"
+    type: official_release_notes
+    tier: 1
+    url_template: "https://www.postgresql.org/docs/release/{release}.0/"
+    raw_template: "https://raw.githubusercontent.com/postgres/postgres/REL_{release}_STABLE/doc/src/sgml/release-{release}.sgml"
+    format: docbook
+    per_release: true
+    select: [{start: '^Migration to Version {release_re}$', end: null}]
+    pin: branch
+    why_relevant: "The 'Migration to Version {release}' section lists every incompatibility of the {release}.0 major; minor-release sections are excluded by exact title match."

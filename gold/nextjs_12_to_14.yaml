@@ -1,0 +1,17 @@
+# Hand-written from the Next.js v13.0.0 and v14.2.0 upgrade guides and next package.json metadata,
+# committed before the first extraction run (2026-10-20).
+upgrade: nextjs_12_to_14
+project: Next.js
+items:
+  - {gold_id: nx_node_floor, release: ["13", "14"], kind: risk, min_level: critical, match: [["node", "18.17"], ["node", "14.6"], ["node", "16.14"]]}
+  - {gold_id: nx_react18, release: ["13", "14"], kind: risk, min_level: critical, match: [["react", "18.2"], ["react", "17.0.2"]]}
+  - {gold_id: nx_browsers_ie, release: "13", kind: risk, min_level: medium, match: [["internet explorer"]]}
+  - {gold_id: nx_swcminify, release: "13", kind: risk, min_level: medium, match: [["swcminify"]]}
+  - {gold_id: nx_image_rename, release: "13", kind: risk, min_level: high, match: [["next/legacy/image"], ["next/future/image"]]}
+  - {gold_id: nx_link_child, release: "13", kind: risk, min_level: high, match: [["next/link", "<a>"], ["legacybehavior"], ["link", "<a>"]]}
+  - {gold_id: nx_target_removed, release: "13", kind: risk, min_level: high, match: [["target", "output file tracing"], ["target", "configuration"]]}
+  - {gold_id: nx_font, release: ["13", "14"], kind: risk, min_level: medium, match: [["@next/font"], ["next/font"]]}
+  - {gold_id: nx_next_export, release: "14", kind: risk, min_level: high, match: [["next export"]]}
+  - {gold_id: nx_imageresponse, release: "14", kind: risk, min_level: medium, match: [["imageresponse"], ["next/og"]]}
+  - {gold_id: nx_wasm, release: "14", kind: risk, min_level: low, match: [["wasm"]]}
+  - {gold_id: nx_types_react, release: ["13", "14"], kind: risk, min_level: low, match: [["@types/react"]]}

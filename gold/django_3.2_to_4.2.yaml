@@ -1,0 +1,45 @@
+# Hand-written from the official Django 4.0/4.1/4.2 release notes and TDD Appendix A,
+# committed before the first extraction run (2026-10-20). Not exhaustive: strict precision is a lower bound.
+# match: list of term groups; a path matches if ALL terms of ANY group appear (case-insensitive) in its text.
+upgrade: django_3.2_to_4.2
+project: Django
+items:
+  - {gold_id: dj_python, release: ["4.0", "4.2"], kind: risk, min_level: critical, match: [["python", "3.6"], ["python", "3.7"], ["python", "3.8"]]}
+  - {gold_id: dj_pg12, release: "4.2", kind: risk, min_level: critical, match: [["postgresql", "12"], ["postgresql", "11"]]}
+  - {gold_id: dj_mysql8, release: "4.2", kind: risk, min_level: critical, match: [["mysql", "8"], ["mysql", "5.7"]]}
+  - {gold_id: dj_mariadb104, release: "4.2", kind: risk, min_level: critical, match: [["mariadb", "10.4"], ["mariadb", "10.3"]]}
+  - {gold_id: dj_oracle19, release: "4.0", kind: risk, min_level: high, match: [["oracle", "19"], ["oracle", "12.2"], ["oracle", "18c"]]}
+  - {gold_id: dj_sqlite321, release: "4.2", kind: risk, min_level: high, match: [["sqlite", "3.21"]]}
+  - {gold_id: dj_psycopg2, release: "4.0", kind: risk, min_level: medium, match: [["psycopg2", "2.8.4"]]}
+  - {gold_id: dj_asgiref, release: "4.2", kind: risk, min_level: medium, match: [["asgiref", "3.6"]]}
+  - {gold_id: dj_csrf_scheme, release: "4.0", kind: risk, min_level: high, match: [["csrf_trusted_origins", "scheme"], ["csrf_trusted_origins", "https://"], ["csrf_trusted_origins", "http://"]]}
+  - {gold_id: dj_csrf_origin, release: "4.0", kind: risk, min_level: high, match: [["origin", "csrf"]]}
+  - {gold_id: dj_csrf_masked, release: "4.1", kind: risk, min_level: medium, match: [["csrf_cookie_masked"], ["csrf", "mask"]]}
+  - {gold_id: dj_xss_header, release: "4.0", kind: risk, min_level: low, match: [["x-xss-protection"], ["secure_browser_xss_filter"]]}
+  - {gold_id: dj_sha1, release: "4.0", kind: risk, min_level: high, match: [["default_hashing_algorithm"]]}
+  - {gold_id: dj_removed_text, release: "4.0", kind: risk, min_level: high, match: [["force_text"], ["smart_text"]]}
+  - {gold_id: dj_removed_ugettext, release: "4.0", kind: risk, min_level: high, match: [["ugettext"], ["ungettext"]]}
+  - {gold_id: dj_removed_url, release: "4.0", kind: risk, min_level: high, match: [["django.conf.urls.url"], ["conf.urls", "url"], ["url()", "re_path"]]}
+  - {gold_id: dj_removed_is_ajax, release: "4.0", kind: risk, min_level: high, match: [["is_ajax"]]}
+  - {gold_id: dj_removed_nullbool, release: "4.0", kind: risk, min_level: high, match: [["nullbooleanfield"]]}
+  - {gold_id: dj_removed_ifequal, release: "4.0", kind: risk, min_level: high, match: [["ifequal"], ["ifnotequal"]]}
+  - {gold_id: dj_removed_is_safe_url, release: "4.0", kind: risk, min_level: medium, match: [["is_safe_url"]]}
+  - {gold_id: dj_removed_pg_jsonfield, release: "4.0", kind: risk, min_level: high, match: [["contrib.postgres", "jsonfield"], ["postgres.fields", "jsonfield"]]}
+  - {gold_id: dj_removed_reset_days, release: "4.0", kind: risk, min_level: medium, match: [["password_reset_timeout_days"]]}
+  - {gold_id: dj_memcachedcache, release: "4.1", kind: risk, min_level: high, match: [["memcachedcache"]]}
+  - {gold_id: dj_default_app_config, release: "4.1", kind: risk, min_level: medium, match: [["default_app_config"]]}
+  - {gold_id: dj_emailvalidator_whitelist, release: "4.1", kind: risk, min_level: low, match: [["whitelist"]]}
+  - {gold_id: dj_requires_system_checks, release: "4.1", kind: risk, min_level: low, match: [["requires_system_checks"]]}
+  - {gold_id: dj_zoneinfo, release: "4.0", kind: risk, min_level: medium, match: [["zoneinfo"], ["pytz"], ["use_deprecated_pytz"]]}
+  - {gold_id: dj_use_l10n, release: "4.0", kind: risk, min_level: medium, match: [["use_l10n"]]}
+  - {gold_id: dj_deleteview, release: "4.0", kind: risk, min_level: high, match: [["deleteview"]]}
+  - {gold_id: dj_update_fields, release: "4.2", kind: risk, min_level: high, match: [["update_or_create", "update_fields"]]}
+  - {gold_id: dj_reverse_fk, release: "4.1", kind: risk, min_level: medium, match: [["valueerror", "unsaved"], ["related manager", "unsaved"]]}
+  - {gold_id: dj_smtp_tls, release: "4.2", kind: risk, min_level: medium, match: [["emailbackend", "ssl"], ["smtp", "ssl_context"], ["smtp", "certificate"]]}
+  - {gold_id: dj_group_by_alias, release: ["4.0", "4.2"], kind: risk, min_level: low, match: [["get_group_by_cols"]]}
+  - {gold_id: dj_admin_search, release: "4.1", kind: risk, min_level: low, match: [["search_fields"]]}
+  - {gold_id: dj_mysql_rawsql, release: "4.2", kind: risk, min_level: medium, match: [["rawsql"]]}
+  - {gold_id: dj_usercreationform, release: "4.2", kind: risk, min_level: low, match: [["usercreationform"]]}
+  - {gold_id: dj_ctx_storages, release: "4.2", kind: context, match: [["default_file_storage"], ["storages"]]}
+  - {gold_id: dj_ctx_index_together, release: "4.2", kind: context, match: [["index_together"]]}
+  - {gold_id: dj_disq_manager_cache, release: "4.1", kind: disqualified, match: [["related manager", "cach"], ["revert", "cach"]]}

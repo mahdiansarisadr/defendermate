@@ -1,0 +1,10 @@
+{
+  "inventory_id": "pg_release_notes@15",
+  "url": "https://www.postgresql.org/docs/release/15.0/",
+  "raw_url": "https://raw.githubusercontent.com/postgres/postgres/REL_15_STABLE/doc/src/sgml/release-15.sgml",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:44Z",
+  "content_hash": "sha256:ba1aff4b791c8cc5045591c254356d1a214f648e59a78a407d85936a2d7d64f8",
+  "pinned_ref": "branch:REL_15_STABLE",
+  "bytes": 983573
+}

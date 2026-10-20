@@ -1,0 +1,10 @@
+{
+  "inventory_id": "k8s_skew",
+  "url": "https://kubernetes.io/releases/version-skew-policy/",
+  "raw_url": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/releases/version-skew-policy.md",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:43Z",
+  "content_hash": "sha256:ab10c2fdfefd106fa5eb0d3d21c059bc7d3747696dd0ae458cafc24000eca594",
+  "pinned_ref": "main@03c191bcc446",
+  "bytes": 11976
+}

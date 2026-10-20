@@ -1,0 +1,38 @@
+# API removals from the official Deprecated API Migration Guide; urgent-note items by hand (TDD Appendix B).
+# Committed before the first extraction run (2026-10-20). Not exhaustive.
+upgrade: kubernetes_1.23_to_1.29
+project: Kubernetes
+items:
+  - {gold_id: k8s_skew_cp, release: "*", kind: risk, min_level: critical, match: [["kube-apiserver", "minor"], ["control plane", "one minor"], ["skew", "kube-apiserver"]]}
+  - {gold_id: k8s_skew_kubelet, release: "*", kind: risk, min_level: high, match: [["kubelet", "skew"], ["kubelet", "older than kube-apiserver"], ["kubelet", "minor version"]]}
+  - {gold_id: k8s_dockershim, release: "1.24", kind: risk, min_level: critical, match: [["dockershim"]]}
+  - {gold_id: k8s_sa_tokens, release: "1.24", kind: risk, min_level: high, match: [["legacyserviceaccounttokennoautogeneration"], ["service account", "token", "secret"]]}
+  - {gold_id: k8s_topology_spread, release: "1.24", kind: risk, min_level: medium, match: [["topology spread"], ["topologyspreadconstraints"]]}
+  - {gold_id: k8s_master_label, release: "1.24", kind: risk, min_level: medium, match: [["node-role.kubernetes.io/master"]]}
+  - {gold_id: k8s_flag_capabilities, release: "1.24", kind: risk, min_level: low, match: [["experimental-check-node-capabilities-before-mount"]]}
+  - {gold_id: k8s_gate_rbd_rename, release: "1.24", kind: risk, min_level: low, match: [["csimigrationrbd"]]}
+  - {gold_id: k8s_cronjob, release: "1.25", kind: risk, min_level: critical, match: [["batch/v1beta1"]]}
+  - {gold_id: k8s_endpointslice, release: "1.25", kind: risk, min_level: high, match: [["discovery.k8s.io/v1beta1"]]}
+  - {gold_id: k8s_events, release: "1.25", kind: risk, min_level: high, match: [["events.k8s.io/v1beta1"]]}
+  - {gold_id: k8s_hpa_v2beta1, release: "1.25", kind: risk, min_level: high, match: [["autoscaling/v2beta1"]]}
+  - {gold_id: k8s_pdb, release: "1.25", kind: risk, min_level: high, match: [["policy/v1beta1", "poddisruptionbudget"]]}
+  - {gold_id: k8s_pdb_selector, release: "1.25", kind: risk, min_level: high, match: [["poddisruptionbudget", "selector"], ["policy/v1", "empty", "selector"]]}
+  - {gold_id: k8s_psp, release: "1.25", kind: risk, min_level: critical, match: [["podsecuritypolicy"]]}
+  - {gold_id: k8s_runtimeclass, release: "1.25", kind: risk, min_level: medium, match: [["node.k8s.io/v1beta1"]]}
+  - {gold_id: k8s_intree_vol_125, release: "1.25", kind: risk, min_level: high, match: [["flocker"], ["quobyte"], ["storageos"]]}
+  - {gold_id: k8s_registry, release: "1.25", kind: risk, min_level: medium, match: [["registry.k8s.io"], ["k8s.gcr.io"]]}
+  - {gold_id: k8s_flowcontrol_b1, release: "1.26", kind: risk, min_level: high, match: [["flowcontrol.apiserver.k8s.io/v1beta1"]]}
+  - {gold_id: k8s_hpa_v2beta2, release: "1.26", kind: risk, min_level: high, match: [["autoscaling/v2beta2"]]}
+  - {gold_id: k8s_openstack, release: "1.26", kind: risk, min_level: critical, match: [["openstack"], ["cinder"]]}
+  - {gold_id: k8s_glusterfs, release: ["1.25", "1.26"], kind: risk, min_level: critical, match: [["glusterfs"]]}
+  - {gold_id: k8s_csistoragecap, release: "1.27", kind: risk, min_level: medium, match: [["csistoragecapacity"]]}
+  - {gold_id: k8s_aws_intree, release: "1.27", kind: risk, min_level: critical, match: [["aws", "in-tree"], ["awselasticblockstore"], ["ebs"]]}
+  - {gold_id: k8s_ipv6_gate, release: "1.27", kind: risk, min_level: low, match: [["ipv6dualstack"]]}
+  - {gold_id: k8s_restart_always, release: "1.27", kind: risk, min_level: medium, match: [["restartpolicy"]]}
+  - {gold_id: k8s_scheduler_plugin, release: "1.28", kind: risk, min_level: high, match: [["eventstoregister"], ["clustereventwithhint"]]}
+  - {gold_id: k8s_flowcontrol_b2, release: "1.29", kind: risk, min_level: high, match: [["flowcontrol.apiserver.k8s.io/v1beta2"]]}
+  - {gold_id: k8s_super_admin, release: "1.29", kind: risk, min_level: medium, match: [["super-admin"], ["kubeadm:cluster-admins"]]}
+  - {gold_id: k8s_kubeadm_plan_config, release: "1.29", kind: risk, min_level: low, match: [["kubeadm upgrade plan"], ["upgrade plan", "--config"]]}
+  - {gold_id: k8s_ctx_kms_gcm, release: "1.25", kind: context, match: [["aes-gcm"], ["aesgcm"]]}
+  - {gold_id: k8s_ctx_ginkgo, release: "1.25", kind: context, match: [["ginkgo"]]}
+  - {gold_id: k8s_ctx_ceph, release: "1.28", kind: context, match: [["cephfs"]]}

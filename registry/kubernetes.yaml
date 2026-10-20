@@ -1,0 +1,47 @@
+project: Kubernetes
+version_scheme: k8s
+traversal: {mode: walk_minors}
+known_releases: ["1.16", "1.22", "1.23", "1.24", "1.25", "1.26", "1.27", "1.28", "1.29", "1.30", "1.31", "1.32"]
+future_removal_horizon: 3
+coverage_gaps:
+  - "Only 'Urgent Upgrade Notes' and 'Changes by Kind / Deprecation' of each CHANGELOG were mined; 'API Change' and 'Feature' entries may hide further behavior changes."
+  - "Managed distributions (EKS, GKE, AKS, OpenShift) add their own upgrade constraints that are not in upstream docs."
+  - "Third-party controllers, CNI/CSI drivers, Helm charts and admission webhooks may use removed APIs; compatibility depends on their own releases."
+sources:
+  - id: k8s_deprecation_guide
+    title: "Kubernetes Deprecated API Migration Guide"
+    type: official_deprecation_notice
+    tier: 1
+    url_template: "https://kubernetes.io/docs/reference/using-api/deprecation-guide/"
+    raw_template: "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/reference/using-api/deprecation-guide.md"
+    format: markdown
+    per_release: false
+    select: [{start: '^Removed APIs by release$', end: '^What to do$'}]
+    release_from_heading: '^v(\d+\.\d+)$'
+    pin: commit
+    why_relevant: "Structured list of API versions removed per release and their replacements."
+  - id: k8s_changelog
+    title: "Kubernetes v{release}.0 CHANGELOG"
+    type: official_changelog
+    tier: 1
+    url_template: "https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-{release}.md"
+    raw_template: "https://raw.githubusercontent.com/kubernetes/kubernetes/master/CHANGELOG/CHANGELOG-{release}.md"
+    format: markdown
+    per_release: true
+    within: {start: '^v{release_re}\.0$', end: '^v{release_re}\.0-'}
+    select:
+      - {start: '^Urgent Upgrade Notes$', end: '^Changes by Kind$'}
+      - {start: '^Deprecation$', end: null}
+    pin: commit
+    why_relevant: "Official release changelog; 'Urgent Upgrade Notes' must be read before upgrading to {release}."
+  - id: k8s_skew
+    title: "Kubernetes Version Skew Policy"
+    type: official_api_docs
+    tier: 1
+    url_template: "https://kubernetes.io/releases/version-skew-policy/"
+    raw_template: "https://raw.githubusercontent.com/kubernetes/website/main/content/en/releases/version-skew-policy.md"
+    format: markdown
+    per_release: false
+    release: "*"
+    pin: commit
+    why_relevant: "Defines component skew and the one-minor-at-a-time control plane upgrade order; applies to the whole path."

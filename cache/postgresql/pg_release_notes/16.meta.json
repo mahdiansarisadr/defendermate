@@ -1,0 +1,10 @@
+{
+  "inventory_id": "pg_release_notes@16",
+  "url": "https://www.postgresql.org/docs/release/16.0/",
+  "raw_url": "https://raw.githubusercontent.com/postgres/postgres/REL_16_STABLE/doc/src/sgml/release-16.sgml",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:44Z",
+  "content_hash": "sha256:af871f37a826a254b1ae9d4bd259a73e7a79a5d5a1ae95bcded5bab36830f52d",
+  "pinned_ref": "branch:REL_16_STABLE",
+  "bytes": 863158
+}

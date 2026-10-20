@@ -1,0 +1,10 @@
+{
+  "inventory_id": "pg_release_notes@14",
+  "url": "https://www.postgresql.org/docs/release/14.0/",
+  "raw_url": "https://raw.githubusercontent.com/postgres/postgres/REL_14_STABLE/doc/src/sgml/release-14.sgml",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:44Z",
+  "content_hash": "sha256:44fc42e50b54edcc8dbd77536104aa1cb2fa15cf9e753ceb06dfc7f1de27ce94",
+  "pinned_ref": "branch:REL_14_STABLE",
+  "bytes": 1146483
+}

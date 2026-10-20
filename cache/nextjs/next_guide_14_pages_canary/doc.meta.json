@@ -1,0 +1,10 @@
+{
+  "inventory_id": "next_guide_14_pages_canary",
+  "url": "https://nextjs.org/docs/pages/guides/upgrading/version-14",
+  "raw_url": "https://raw.githubusercontent.com/vercel/next.js/canary/docs/02-pages/02-guides/upgrading/version-14.mdx",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:45Z",
+  "content_hash": "sha256:9fe190312b8854487f277f66d3750480f3461d57f037c0daa19cfb6168b5c571",
+  "pinned_ref": "canary@ae1cad07dd32",
+  "bytes": 504
+}

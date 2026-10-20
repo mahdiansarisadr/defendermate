@@ -1,0 +1,10 @@
+{
+  "inventory_id": "dj_patch@4.2.12",
+  "url": "https://docs.djangoproject.com/en/4.2/releases/4.2.12/",
+  "raw_url": "https://raw.githubusercontent.com/django/django/stable/4.2.x/docs/releases/4.2.12.txt",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:36Z",
+  "content_hash": "sha256:60a4399c1a41f71d172f3a73e7d9acb66406380de4bbbb14590c1e5942115cb1",
+  "pinned_ref": "branch:stable/4.2.x",
+  "bytes": 360
+}

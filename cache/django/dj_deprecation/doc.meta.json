@@ -1,0 +1,10 @@
+{
+  "inventory_id": "dj_deprecation",
+  "url": "https://docs.djangoproject.com/en/4.2/internals/deprecation/",
+  "raw_url": "https://raw.githubusercontent.com/django/django/stable/4.2.x/docs/internals/deprecation.txt",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:32Z",
+  "content_hash": "sha256:da1790e3f21900a4d4c3c572010d52b9ae4cc37f2b28fb1d2acd77311a8161f7",
+  "pinned_ref": "branch:stable/4.2.x",
+  "bytes": 49661
+}

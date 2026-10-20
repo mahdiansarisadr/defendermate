@@ -1,0 +1,32 @@
+project: React
+version_scheme: semver
+traversal: {mode: single}
+known_releases: ["16", "17", "18", "19"]
+future_removal_horizon: 1
+coverage_gaps:
+  - "Ecosystem packages (@types/react, react-test-renderer users, Enzyme, React Native, state libraries) have their own React 18 support timelines that are not in React's docs."
+  - "React 18.x minor release notes after 18.0.0 were not mined."
+sources:
+  - id: react_changelog
+    title: "React CHANGELOG (18.0.0 section)"
+    type: official_changelog
+    tier: 1
+    url_template: "https://github.com/facebook/react/blob/main/CHANGELOG.md#1800-march-29-2022"
+    raw_template: "https://raw.githubusercontent.com/facebook/react/main/CHANGELOG.md"
+    format: markdown
+    per_release: false
+    release: "18"
+    select: [{start: '^18\.0\.0 ', end: '^17\.0\.2 '}]
+    pin: commit
+    why_relevant: "Official list of breaking changes, deprecations and notable changes in 18.0.0. Anchors are used because the file uses the same heading depth for versions and subsections."
+  - id: react_upgrade_guide
+    title: "How to Upgrade to React 18"
+    type: official_migration_guide
+    tier: 1
+    url_template: "https://react.dev/blog/2022/03/08/react-18-upgrade-guide"
+    raw_template: "https://raw.githubusercontent.com/reactjs/react.dev/main/src/content/blog/2022/03/08/react-18-upgrade-guide.md"
+    format: markdown
+    per_release: false
+    release: "18"
+    pin: commit
+    why_relevant: "Official upgrade guide; explains createRoot gating, automatic batching, Strict Mode and test environment changes."

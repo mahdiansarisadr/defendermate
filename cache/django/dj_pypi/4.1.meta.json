@@ -1,0 +1,10 @@
+{
+  "inventory_id": "dj_pypi@4.1",
+  "url": "https://pypi.org/project/Django/4.1/",
+  "raw_url": "https://pypi.org/pypi/Django/4.1/json",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:38Z",
+  "content_hash": "sha256:d9845272739bea3c7fcdc3bd3dcb94e891b496ec48db1acf2651a1cf68deae17",
+  "pinned_ref": "pypi:4.1",
+  "bytes": 28241
+}

@@ -1,0 +1,10 @@
+{
+  "inventory_id": "react_changelog",
+  "url": "https://github.com/facebook/react/blob/main/CHANGELOG.md#1800-march-29-2022",
+  "raw_url": "https://raw.githubusercontent.com/facebook/react/main/CHANGELOG.md",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:39Z",
+  "content_hash": "sha256:c621d72d57d51d053053089c5e3ed4d6f3ed9a5773506110cefb9da0eda685ea",
+  "pinned_ref": "main@e8738f0c628b",
+  "bytes": 293193
+}

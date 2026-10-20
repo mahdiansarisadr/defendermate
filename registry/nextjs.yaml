@@ -1,0 +1,67 @@
+project: Next.js
+version_scheme: semver
+traversal: {mode: walk_majors}
+known_releases: ["11", "12", "13", "14", "15"]
+future_removal_horizon: 0
+coverage_gaps:
+  - "Next.js 13.x and 14.x minor release notes (blog posts, GitHub releases) were not mined; deprecations introduced in minors (for example in 13.3/13.4) may be missing."
+  - "Hosting platforms (Vercel, Netlify, self-hosted Node, Docker) and third-party Next.js plugins have their own compatibility windows."
+  - "App Router adoption is optional; risks specific to migrating pages/ to app/ are out of scope unless the guides state them."
+sources:
+  - id: next_guide_13_tag
+    title: "Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13)"
+    type: official_migration_guide
+    tier: 1
+    url_template: "https://github.com/vercel/next.js/blob/v13.0.0/docs/upgrading.md"
+    raw_template: "https://raw.githubusercontent.com/vercel/next.js/v13.0.0/docs/upgrading.md"
+    format: markdown
+    release: "13"
+    select: [{start: '^Upgrading from 12 to 13$', end: '^Upgrading to 12\.2$'}]
+    pin: tag
+    why_relevant: "Upgrade guide pinned to the 13.0.0 release tag, so later doc edits cannot change it."
+  - id: next_guide_13_current
+    title: "Next.js 'How to upgrade to version 13' (current docs)"
+    type: official_migration_guide
+    tier: 1
+    url_template: "https://nextjs.org/docs/pages/guides/upgrading/version-13"
+    raw_template: "https://raw.githubusercontent.com/vercel/next.js/canary/docs/02-pages/02-guides/upgrading/version-13.mdx"
+    format: mdx
+    release: "13"
+    pin: commit
+    why_relevant: "Current version of the v13 guide; covers Pages Router specifics but was edited after release, so tag-pinned and package metadata outrank it."
+  - id: next_guide_14_tag
+    title: "Next.js 'Version 14' upgrade guide at v14.2.0"
+    type: official_migration_guide
+    tier: 1
+    url_template: "https://github.com/vercel/next.js/blob/v14.2.0/docs/02-app/01-building-your-application/11-upgrading/03-version-14.mdx"
+    raw_template: "https://raw.githubusercontent.com/vercel/next.js/v14.2.0/docs/02-app/01-building-your-application/11-upgrading/03-version-14.mdx"
+    format: mdx
+    release: "14"
+    pin: tag
+    why_relevant: "Official 13→14 guide pinned to a 14.x tag."
+  - id: next_guide_14_pages_canary
+    title: "Next.js 'How to upgrade to version 14' (Pages Router page, current docs)"
+    type: official_migration_guide
+    tier: 1
+    url_template: "https://nextjs.org/docs/pages/guides/upgrading/version-14"
+    raw_template: "https://raw.githubusercontent.com/vercel/next.js/canary/docs/02-pages/02-guides/upgrading/version-14.mdx"
+    format: mdx
+    release: "14"
+    pin: commit
+    why_relevant: "Candidate source; expected to be a transclusion stub pointing at the App Router page."
+  - id: next_pkg
+    title: "next package.json at {tag}"
+    type: package_registry_metadata
+    tier: 1
+    url_template: "https://github.com/vercel/next.js/blob/{tag}/packages/next/package.json"
+    raw_template: "https://raw.githubusercontent.com/vercel/next.js/{tag}/packages/next/package.json"
+    format: json
+    tags: {v12.3.4: "12", v13.0.0: "13", v13.4.0: "13", v13.5.0: "13", v14.0.0: "14"}
+    pin: tag
+    why_relevant: "Machine-readable Node.js engine floor and React peer range per release; settles prose conflicts."
+version_facts:
+  - source_id: next_pkg
+    fields: {node: "engines.node", react_peer: "peerDependencies.react"}
+    labels: {node: "Node.js", react_peer: "React (peer dependency)"}
+    cross_project:
+      react_peer: {project: React, current_version: "17", target_version: "18"}

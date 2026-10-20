@@ -1,0 +1,33 @@
+# Hand-written from the official "Migration to Version 14/15/16" sections,
+# committed before the first extraction run (2026-10-20). Selected high-impact items; not exhaustive.
+upgrade: postgresql_13_to_16
+project: PostgreSQL
+items:
+  - {gold_id: pg_dump_restore, release: ["14", "15", "16"], kind: risk, min_level: critical, match: [["pg_upgrade"], ["dump/restore"], ["pg_dumpall"]]}
+  - {gold_id: pg14_array_functions, release: "14", kind: risk, min_level: high, match: [["array_append"], ["anycompatiblearray"]]}
+  - {gold_id: pg14_containment_ops, release: "14", kind: risk, min_level: medium, match: [["containment operator"], ["@", "~", "geometric"]]}
+  - {gold_id: pg14_extract_numeric, release: "14", kind: risk, min_level: medium, match: [["extract", "numeric"]]}
+  - {gold_id: pg14_factorial, release: "14", kind: risk, min_level: low, match: [["factorial"], ["numeric_fac"]]}
+  - {gold_id: pg14_postfix, release: "14", kind: risk, min_level: medium, match: [["postfix"]]}
+  - {gold_id: pg14_scram, release: "14", kind: risk, min_level: high, match: [["password_encryption"], ["scram-sha-256"]]}
+  - {gold_id: pg14_clientcert, release: "14", kind: risk, min_level: high, match: [["clientcert"]]}
+  - {gold_id: pg14_ssl_compression, release: "14", kind: risk, min_level: low, match: [["ssl compression"]]}
+  - {gold_id: pg14_v2_protocol, release: "14", kind: risk, min_level: medium, match: [["version 2", "protocol"]]}
+  - {gold_id: pg14_removed_params, release: "14", kind: risk, min_level: low, match: [["vacuum_cleanup_index_scale_factor"], ["operator_precedence_warning"]]}
+  - {gold_id: pg14_pg_standby, release: "14", kind: risk, min_level: medium, match: [["pg_standby"]]}
+  - {gold_id: pg15_public_schema, release: "15", kind: risk, min_level: high, match: [["public schema"]]}
+  - {gold_id: pg15_exclusive_backup, release: "15", kind: risk, min_level: high, match: [["exclusive backup"], ["pg_start_backup"], ["pg_backup_start"]]}
+  - {gold_id: pg15_plpython2, release: "15", kind: risk, min_level: high, match: [["plpython2u"], ["plpythonu"]]}
+  - {gold_id: pg15_hash_mem, release: "15", kind: risk, min_level: low, match: [["hash_mem_multiplier"]]}
+  - {gold_id: pg15_stats_temp_directory, release: "15", kind: risk, min_level: low, match: [["stats_temp_directory"]]}
+  - {gold_id: pg15_pqsendquery, release: "15", kind: risk, min_level: medium, match: [["pqsendquery"]]}
+  - {gold_id: pg15_admin_option, release: "15", kind: risk, min_level: medium, match: [["admin option"]]}
+  - {gold_id: pg15_numeric_literals, release: "15", kind: risk, min_level: low, match: [["numeric literal"], ["trailing characters"]]}
+  - {gold_id: pg16_force_parallel_mode, release: "16", kind: risk, min_level: low, match: [["force_parallel_mode"], ["debug_parallel_query"]]}
+  - {gold_id: pg16_on_select_rules, release: "16", kind: risk, min_level: medium, match: [["on select"]]}
+  - {gold_id: pg16_vacuum_defer, release: "16", kind: risk, min_level: low, match: [["vacuum_defer_cleanup_age"]]}
+  - {gold_id: pg16_promote_trigger_file, release: "16", kind: risk, min_level: medium, match: [["promote_trigger_file"]]}
+  - {gold_id: pg16_lc_collate, release: "16", kind: risk, min_level: low, match: [["lc_collate"], ["lc_ctype"]]}
+  - {gold_id: pg16_createrole, release: "16", kind: risk, min_level: high, match: [["createrole"]]}
+  - {gold_id: pg16_role_inheritance, release: "16", kind: risk, min_level: medium, match: [["inherit"]]}
+  - {gold_id: pg16_postmaster_symlink, release: "16", kind: risk, min_level: low, match: [["postmaster"]]}

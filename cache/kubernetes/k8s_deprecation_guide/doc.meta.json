@@ -1,0 +1,10 @@
+{
+  "inventory_id": "k8s_deprecation_guide",
+  "url": "https://kubernetes.io/docs/reference/using-api/deprecation-guide/",
+  "raw_url": "https://raw.githubusercontent.com/kubernetes/website/main/content/en/docs/reference/using-api/deprecation-guide.md",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:40Z",
+  "content_hash": "sha256:96f34a49cbdd7bd53008cc7b7cc8aff58c373ad323e64eef0155cbbc44494f61",
+  "pinned_ref": "main@9f1af2971c32",
+  "bytes": 21486
+}

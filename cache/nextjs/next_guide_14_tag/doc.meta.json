@@ -1,0 +1,10 @@
+{
+  "inventory_id": "next_guide_14_tag",
+  "url": "https://github.com/vercel/next.js/blob/v14.2.0/docs/02-app/01-building-your-application/11-upgrading/03-version-14.mdx",
+  "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v14.2.0/docs/02-app/01-building-your-application/11-upgrading/03-version-14.mdx",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:45Z",
+  "content_hash": "sha256:c17acfa3fe0e4bfd14520d26a07c744b545ed6081c8d471e1920b646317e5b4e",
+  "pinned_ref": "tag:v14.2.0",
+  "bytes": 1856
+}

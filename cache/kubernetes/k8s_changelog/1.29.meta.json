@@ -1,0 +1,10 @@
+{
+  "inventory_id": "k8s_changelog@1.29",
+  "url": "https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.29.md",
+  "raw_url": "https://raw.githubusercontent.com/kubernetes/kubernetes/master/CHANGELOG/CHANGELOG-1.29.md",
+  "status_code": 200,
+  "retrieved_at": "2026-10-20T14:02:43Z",
+  "content_hash": "sha256:4f76db493839abe8973fa6a973199cb9b46bcea53e24ea5c9324dcf07c7e0bb9",
+  "pinned_ref": "master@3eaa04785092",
+  "bytes": 439923
+}
