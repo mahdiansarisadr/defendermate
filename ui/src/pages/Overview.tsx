@@ -86,6 +86,21 @@ export default function Overview() {
           </tbody>
         </table>
       </div>
+      <ul className="legend">
+        {LEVEL_DEFS.map(([l, d]) => (
+          <li key={l}>
+            <span className={`seg s-${l}`} />
+            <b className={`lv-${l}`}>{l}</b> {d}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
+
+const LEVEL_DEFS: [string, string][] = [
+  ['critical', 'The upgrade fails or data is at risk for most users who meet the conditions (e.g. unsupported runtime or database version, an API version that stops being served).'],
+  ['high', 'Code or config that meets the conditions breaks at upgrade time.'],
+  ['medium', 'Behavior change or migration with a clear workaround.'],
+  ['low', 'Edge case, cosmetic, or warning-only.'],
+]
