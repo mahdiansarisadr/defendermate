@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, type Run } from '../api'
-import { Badge, ErrorBox } from '../components/ui'
+import { Badge, ErrorBox, PageHeader } from '../components/ui'
 
 const STAGES = ['plan', 'fetch', 'parse', 'triage', 'extract', 'link', 'compose', 'judge', 'rubric', 'assemble', 'validate']
 
@@ -44,15 +44,10 @@ export default function Runs() {
 
   return (
     <div>
-      <section className="hero compact">
-        <div>
-          <h1>Runs</h1>
-          <p className="muted">
-            Start an extraction from the UI. Offline mode replays the pinned source cache and LLM cache (no network, no cost);
-            online mode fetches and calls the model for anything not cached.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        title="Runs"
+        subtitle="Offline replays the pinned source and LLM caches at no cost; online fetches and calls the model for anything not cached."
+      />
       <div className="card run-form">
         <select value={form.project} onChange={(e) => setForm({ ...form, project: e.target.value })}>
           {reg.map((r) => (

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { api, type Override, type RiskModel, type RunEvent } from '../api'
 import PathDetail from '../components/PathDetail'
-import { Badge, ErrorBox, LEVELS, Loading, Stat, Tabs } from '../components/ui'
+import { Badge, ErrorBox, LEVELS, Loading, PageHeader, Tabs } from '../components/ui'
 
 type Tab = 'paths' | 'sources' | 'evidence' | 'context' | 'pipeline' | 'report'
 
@@ -43,24 +43,27 @@ export default function UpgradePage() {
 
   return (
     <div>
-      <div className="crumbs">
-        <Link to="/">Overview</Link> / {model.project} {model.current_version} → {model.target_version}
-      </div>
-      <section className="hero compact">
-        <div>
-          <h1>
-            {model.project} {model.current_version} → {model.target_version}
-          </h1>
-          <p className="muted">{model.summary}</p>
-          <p className="disclaimer">{model.disclaimer}</p>
-        </div>
-        <div className="stats">
-          <Stat label="paths" value={model.risk_paths.length} />
-          <Stat label="overall confidence" value={model.overall_confidence} />
-          <Stat label="releases walked" value={model.plan.releases.join(', ')} />
-          <Stat label="validator" value={`${model.pipeline.validation.errors}E / ${model.pipeline.validation.warnings}W`} />
-        </div>
-      </section>
+      <PageHeader
+        title={
+          <>
+            {model.project} <span className="muted">{model.current_version} → {model.target_version}</span>
+          </>
+        }
+        subtitle={
+          <span className="meta">
+            <Badge kind={model.overall_confidence}>{model.overall_confidence} confidence</Badge>
+            <span>releases {model.plan.releases.join(', ')}</span>
+            <span>
+              {model.pipeline.validation.errors} errors · {model.pipeline.validation.warnings} warnings
+            </span>
+          </span>
+        }
+      />
+      <details className="summary">
+        <summary>Summary</summary>
+        <p>{model.summary}</p>
+        <p className="disclaimer">{model.disclaimer}</p>
+      </details>
       {model.requires_upgrades.length > 0 && (
         <div className="callout">
           {model.requires_upgrades.map((r) => (
@@ -75,10 +78,10 @@ export default function UpgradePage() {
         value={tab}
         onChange={(t) => set('tab', t)}
         tabs={[
-          ['paths', `Risk paths (${model.risk_paths.length})`],
-          ['evidence', `Evidence summary & questions (${model.open_questions.length})`],
-          ['context', `Context & disqualified (${model.context_facts.length + model.disqualified_candidates.length})`],
-          ['sources', `Sources (${model.source_inventory.length})`],
+          ['paths', 'Risk paths', model.risk_paths.length],
+          ['evidence', 'Evidence', model.open_questions.length],
+          ['context', 'Context', model.context_facts.length + model.disqualified_candidates.length],
+          ['sources', 'Sources', model.source_inventory.length],
           ['pipeline', 'Pipeline'],
           ['report', 'Report'],
         ]}
@@ -120,6 +123,7 @@ function PathsTab({
   const [type, setType] = useState('')
   const [release, setRelease] = useState('')
   const [flagged, setFlagged] = useState(false)
+  const [more, setMore] = useState(false)
   const types = useMemo(() => [...new Set(model.risk_paths.map((p) => p.risk_type))].sort(), [model])
   const releases = useMemo(() => [...new Set(model.risk_paths.map((p) => p.introduced_in))].sort(), [model])
   const rows = model.risk_paths
@@ -139,12 +143,19 @@ function PathsTab({
   return (
     <div>
       <div className="filters">
-        <input placeholder="search paths, symbols, quotes…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input placeholder="Search paths, symbols, quotes…" value={q} onChange={(e) => setQ(e.target.value)} />
         {LEVELS.map((l) => (
           <button key={l} className={`chip ${levels.has(l) ? `on lv-bg-${l}` : ''}`} onClick={() => toggle(l)}>
             {l}
           </button>
         ))}
+        <button className={`chip ${more || conf || type || release || flagged ? 'chip-active' : ''}`} onClick={() => setMore(!more)}>
+          More filters
+        </button>
+        <span className="muted small push">{rows.length} shown</span>
+      </div>
+      {more && (
+      <div className="filters sub">
         <select value={conf} onChange={(e) => setConf(e.target.value)}>
           <option value="">any confidence</option>
           <option>high</option>
@@ -166,18 +177,17 @@ function PathsTab({
         <label className="small">
           <input type="checkbox" checked={flagged} onChange={(e) => setFlagged(e.target.checked)} /> flagged only
         </label>
-        <span className="muted small">{rows.length} shown</span>
       </div>
-      <table className="table">
+      )}
+      <div className="card flush">
+      <table className="table plain">
         <thead>
           <tr>
             <th>Level</th>
             <th>Path</th>
-            <th>Type</th>
             <th>Release</th>
-            <th>Conf.</th>
-            <th>Conditions</th>
-            <th>Review</th>
+            <th>Confidence</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -191,23 +201,12 @@ function PathsTab({
                 <td>
                   <div className="pname">{p.path_name}</div>
                   <div className="muted small">
-                    <code>{p.primary_symbol}</code> · {p.affected_surface}
+                    <code>{p.primary_symbol}</code> · {p.risk_type.replace(/_/g, ' ')}
                   </div>
                 </td>
-                <td className="small">{p.risk_type}</td>
                 <td>{p.introduced_in}</td>
-                <td>
-                  <Badge kind={p.confidence}>{p.confidence}</Badge>
-                </td>
-                <td className="small">
-                  {p.conditions.filter((c) => c.role === 'required').length} req
-                  {p.conditions.some((c) => c.role === 'alternative') &&
-                    ` · ${p.conditions.filter((c) => c.role === 'alternative').length} alt`}
-                  {p.conditions.some((c) => c.role === 'uncertain') && (
-                    <span className="warn-t"> · {p.conditions.filter((c) => c.role === 'uncertain').length} uncertain</span>
-                  )}
-                </td>
-                <td>
+                <td className="small">{p.confidence}</td>
+                <td className="right">
                   {o ? <Badge kind={o.decision === 'accept' ? 'ok' : 'bad'}>{o.decision}</Badge> : null}
                   {p.review_flags.length > 0 && <Badge kind="flag" title={p.review_flags.join(', ')}>⚑ {p.review_flags.length}</Badge>}
                 </td>
@@ -216,6 +215,7 @@ function PathsTab({
           })}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, type EvalResults } from '../api'
-import { Badge, ErrorBox, Loading, ratio } from '../components/ui'
+import { Badge, ErrorBox, Loading, PageHeader, Stat, Tabs, ratio } from '../components/ui'
 
 const DESCRIPTIONS: Record<string, string> = {
   grounding_rate: 'Share of quotes in final outputs found verbatim (after normalization) in the pinned cached source.',
@@ -24,6 +24,7 @@ export default function Evals() {
   const [res, setRes] = useState<EvalResults | null>(null)
   const [err, setErr] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [slug, setSlug] = useState('')
   useEffect(() => {
     api.evalResults().then(setRes).catch((e) => setErr(String(e)))
   }, [])
@@ -41,68 +42,78 @@ export default function Evals() {
   if (!res) return <Loading what="eval results" />
   if (!res.metrics) return <div className="card">No eval results yet. Run <code>urx eval</code>.</div>
   const per = Object.entries(res.per_upgrade)
+  const gate = (g: string) => res.metrics.filter((m) => m.gate === g)
+  const passed = (g: string) => gate(g).filter((m) => m.pass).length
+  const groups: [string, string][] = [
+    ['hard', 'Hard gates'],
+    ['soft', 'Soft targets'],
+    ['info', 'Informational'],
+  ]
+  const sel = per.find(([s]) => s === slug) ?? per[0]
   return (
     <div>
-      <section className="hero compact">
-        <div>
-          <h1>Evaluation</h1>
-          <p className="muted">
-            Metrics from TDD §17.4. Hard gates must pass (asserted in <code>tests/test_eval_gates.py</code>); soft gates are
-            targets reported here. Gold sets were committed before the first extraction.
-          </p>
-        </div>
-        <button className="btn" onClick={rerun} disabled={busy} title="Deterministic metrics only (no LLM calls)">
-          {busy ? 'Recomputing…' : 'Recompute deterministic metrics'}
-        </button>
-      </section>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th>Result</th>
-            <th>Target</th>
-            <th>Gate</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {res.metrics.map((m) => (
-            <tr key={m.name}>
-              <td>
-                <b>{m.name}</b>
-                <div className="small muted">{DESCRIPTIONS[m.name] ?? ''}</div>
-              </td>
-              <td className="small">{m.display}</td>
-              <td className="small">{m.target === null || m.target === undefined ? '–' : String(m.target)}</td>
-              <td>
-                <Badge kind={m.gate === 'hard' ? 'bad' : m.gate === 'soft' ? 'warn' : 'info'}>{m.gate}</Badge>
-              </td>
-              <td>{m.pass === true ? <Badge kind="ok">pass</Badge> : m.pass === false ? <Badge kind="bad">fail</Badge> : '–'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <PageHeader
+        title="Evals"
+        subtitle={
+          <span className="meta">
+            <Badge kind={passed('hard') === gate('hard').length ? 'ok' : 'bad'}>
+              {passed('hard')}/{gate('hard').length} hard gates pass
+            </Badge>
+            <span>
+              {passed('soft')}/{gate('soft').length} soft targets met
+            </span>
+            <span>Gold sets committed before the first extraction</span>
+          </span>
+        }
+        actions={
+          <button className="btn" onClick={rerun} disabled={busy} title="Deterministic metrics only (no LLM calls)">
+            {busy ? 'Recomputing…' : 'Recompute'}
+          </button>
+        }
+      />
+      <div className="card flush">
+        <table className="table plain">
+          <tbody>
+            {groups.map(([g, label]) =>
+              gate(g).length ? (
+                <Fragment key={g}>
+                  <tr className="group">
+                    <td colSpan={3}>{label}</td>
+                  </tr>
+                  {gate(g).map((m) => (
+                    <tr key={m.name} className="static">
+                      <td>
+                        <span className={`dot ${m.pass === true ? 'dot-ok' : m.pass === false ? 'dot-bad' : 'dot-info'}`} />
+                        <b>{m.name.replace(/_/g, ' ')}</b>
+                        <div className="small muted indent">{DESCRIPTIONS[m.name] ?? ''}</div>
+                      </td>
+                      <td className="small">{m.display}</td>
+                      <td className="small muted right">
+                        {m.target === null || m.target === undefined ? '' : `target ${String(m.target)}`}
+                      </td>
+                    </tr>
+                  ))}
+                </Fragment>
+              ) : null,
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      <h2>Per upgrade</h2>
-      <div className="grid">
-        {per.map(([slug, r]) => {
+      <h2>Gold items by upgrade</h2>
+      <Tabs<string> value={sel?.[0] ?? ''} onChange={setSlug} tabs={per.map(([s]) => [s, s.replace(/_/g, ' ')] as [string, string])} />
+      {sel && [sel].map(([slug, r]) => {
           const items = r.gold_items ?? []
           return (
-            <div className="card" key={slug}>
-              <div className="card-head">
-                <h3>
-                  <Link to={`/upgrade/${slug}`}>{slug}</Link>
-                </h3>
+            <div key={slug}>
+              <div className="stats">
+                <Stat label="Recall" value={ratio(r.recall as [number, number])} />
+                <Stat label="Est. precision" value={ratio(r.estimated_precision as [number, number])} />
+                <Stat label="Classification" value={ratio(r.classification as [number, number])} />
+                <Stat label="Grounding" value={ratio(r.grounding as [number, number])} />
               </div>
-              <div className="mini-stats">
-                <div><b>{ratio(r.recall as [number, number])}</b><small>recall</small></div>
-                <div><b>{ratio(r.strict_precision as [number, number])}</b><small>strict prec.</small></div>
-                <div><b>{ratio(r.estimated_precision as [number, number])}</b><small>est. prec.</small></div>
-                <div><b>{ratio(r.classification as [number, number])}</b><small>classification</small></div>
-                <div><b>{ratio(r.grounding as [number, number])}</b><small>grounding</small></div>
-                <div><b>{String(r.validator_errors)}</b><small>errors</small></div>
-              </div>
-              <table className="table compact">
+              <div className="card flush">
+              <table className="table plain">
                 <thead>
                   <tr>
                     <th>Gold item</th>
@@ -139,15 +150,16 @@ export default function Evals() {
                   })}
                 </tbody>
               </table>
+              </div>
+              <Link to={`/upgrade/${slug}`} className="small">Open {slug} →</Link>
             </div>
           )
         })}
-      </div>
       {res.extra?.ablations ? (
-        <>
-          <h2>Ablations</h2>
+        <details className="more">
+          <summary>Ablations</summary>
           <pre className="code">{JSON.stringify(res.extra.ablations, null, 1)}</pre>
-        </>
+        </details>
       ) : null}
     </div>
   )

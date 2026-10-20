@@ -43,14 +43,35 @@ export function ErrorBox({ error }: { error: string }) {
   return <div className="error-box">{error}</div>
 }
 
-export function Tabs<T extends string>({ tabs, value, onChange }: { tabs: [T, string][]; value: T; onChange: (t: T) => void }) {
+export function Tabs<T extends string>({
+  tabs,
+  value,
+  onChange,
+}: {
+  tabs: [T, string, number?][]
+  value: T
+  onChange: (t: T) => void
+}) {
   return (
     <div className="tabs">
-      {tabs.map(([k, label]) => (
+      {tabs.map(([k, label, count]) => (
         <button key={k} className={k === value ? 'tab active' : 'tab'} onClick={() => onChange(k)}>
           {label}
+          {count !== undefined && <span className="tab-count">{count}</span>}
         </button>
       ))}
     </div>
+  )
+}
+
+export function PageHeader({ title, subtitle, actions }: { title: ReactNode; subtitle?: ReactNode; actions?: ReactNode }) {
+  return (
+    <header className="page-head">
+      <div>
+        <h1>{title}</h1>
+        {subtitle && <p className="page-sub">{subtitle}</p>}
+      </div>
+      {actions && <div className="page-actions">{actions}</div>}
+    </header>
   )
 }

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, type ExperimentRow, type Experiments as Exp } from '../api'
-import { Badge, ErrorBox, Loading } from '../components/ui'
+import { Badge, ErrorBox, Loading, PageHeader, Tabs } from '../components/ui'
 
+type View = 'summary' | 'all' | 'upgrade'
 type MetricKey = 'f1' | 'recall' | 'estimated_precision' | 'strict_precision' | 'classification' | 'level_agreement' | 'stability' | 'judge_accuracy'
 
 const METRICS: [MetricKey, string][] = [
@@ -106,24 +107,21 @@ export default function Experiments() {
   const [data, setData] = useState<Exp | null>(null)
   const [err, setErr] = useState<string | null>(null)
   const [metric, setMetric] = useState<MetricKey>('f1')
+  const [view, setView] = useState<View>('summary')
+  const [upg, setUpg] = useState('')
   useEffect(() => {
     api.experiments().then(setData).catch((e) => setErr(String(e)))
   }, [])
   if (err) return <ErrorBox error={err} />
   if (!data) return <Loading what="experiments" />
   const rows = data.rows
+  const slug = data.subset.includes(upg) ? upg : data.subset[0]
   return (
     <div>
-      <section className="hero compact">
-        <div>
-          <h1>Model configuration experiment</h1>
-          <p className="muted">
-            The same pipeline run under different cheap / strong model pairs on {data.subset.join(', ') || '–'}. The cheap tier
-            triages every item; the strong tier extracts paths, re-checks noise, reconciles reverts and judges grounding. Every
-            config is scored against the same gold sets with the same Sonnet 5.5 precision judge.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        title="Experiments"
+        subtitle={`Cheap / strong model pairs on ${data.subset.length} upgrades, scored on the same gold sets by the same Sonnet 5.5 precision judge.`}
+      />
       {data.pending.length > 0 && (
         <div className="callout">
           Not run yet: {data.pending.map((p) => p.label).join(', ')}. Run <code>urx experiment --config &lt;name&gt;</code>.
@@ -145,7 +143,7 @@ export default function Experiments() {
         <div className="card">
           <h3>Trade-off</h3>
           <Takeaways rows={rows} />
-          <h3>Cost breakdown</h3>
+          <h3>Cost</h3>
           {rows.map((r) => (
             <div key={r.name} className="costbar-row">
               <span className="small">{r.label}</span>
@@ -153,83 +151,124 @@ export default function Experiments() {
               <b>${r.cost_usd.toFixed(2)}</b>
             </div>
           ))}
-          <div className="small muted">
-            List-price estimates from recorded token counts. Tokens: {rows.map((r) => `${r.label} ${(r.input_tokens / 1e6).toFixed(2)}M in / ${(r.output_tokens / 1e6).toFixed(2)}M out`).join(' · ')}
-          </div>
+          <div className="small muted">List-price estimates from recorded token counts.</div>
         </div>
       </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Config</th>
-            <th>Models</th>
-            <th>Cost</th>
-            <th>Paths</th>
-            <th>Recall</th>
-            <th>Est. prec.</th>
-            <th>F1</th>
-            <th>Strict prec.</th>
-            <th>Classif.</th>
-            <th>Level</th>
-            <th>Judge acc / κ</th>
-            <th>Stability</th>
-            <th>$ / gold risk</th>
-            <th>Hard gates</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.name}>
-              <td>
-                <b>{r.label}</b> {r.pareto ? <Badge kind="ok">frontier</Badge> : <Badge kind="bad">dominated</Badge>}
-              </td>
-              <td className="small mono">{r.models.cheap} / {r.models.strong}</td>
-              <td>${r.cost_usd.toFixed(2)} <span className="muted small">({r.cost_multiple}×)</span></td>
-              <td>{r.paths}</td>
-              <td>{frac(r.recall_hits)}</td>
-              <td>{pct(r.estimated_precision)}</td>
-              <td><b>{r.f1?.toFixed(3) ?? '–'}</b></td>
-              <td>{pct(r.strict_precision)}</td>
-              <td>{pct(r.classification)}</td>
-              <td>{pct(r.level_agreement)}</td>
-              <td>{r.judge_accuracy?.toFixed(2) ?? '–'} / {r.judge_kappa?.toFixed(2) ?? '–'}</td>
-              <td>{r.stability?.toFixed(2) ?? '–'}{r.stability_reused ? <span className="muted small"> (reused)</span> : null}</td>
-              <td>{r.usd_per_gold_risk_found !== null ? `$${r.usd_per_gold_risk_found.toFixed(3)}` : '–'}</td>
-              <td>
-                {r.validator_errors === 0 && r.grounding === 1 ? <Badge kind="ok">pass</Badge> : <Badge kind="bad">{r.validator_errors} err, {pct(r.grounding)} grounded</Badge>}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2>Per upgrade</h2>
-      <div className="grid">
-        {data.subset.map((slug) => (
-          <div className="card" key={slug}>
-            <h3><Link to={`/upgrade/${slug}`}>{slug}</Link></h3>
-            <table className="table compact">
+      <Tabs<View>
+        value={view}
+        onChange={setView}
+        tabs={[
+          ['summary', 'Summary'],
+          ['all', 'All metrics'],
+          ['upgrade', 'Per upgrade'],
+        ]}
+      />
+      {view === 'summary' && (
+        <div className="card flush">
+          <table className="table plain">
+            <thead>
+              <tr>
+                <th>Config</th>
+                <th className="num">Cost</th>
+                <th className="num">Recall</th>
+                <th className="num">Est. precision</th>
+                <th className="num">F1</th>
+                <th>Hard gates</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.name} className="static">
+                  <td>
+                    <span className="dot" style={{ background: COLORS[r.name] }} />
+                    <b>{r.label}</b>
+                    {!r.pareto && <Badge kind="bad">dominated</Badge>}
+                  </td>
+                  <td className="num">
+                    ${r.cost_usd.toFixed(2)} <span className="muted small">{r.cost_multiple}×</span>
+                  </td>
+                  <td className="num">{frac(r.recall_hits)}</td>
+                  <td className="num">{pct(r.estimated_precision)}</td>
+                  <td className="num"><b>{r.f1?.toFixed(3) ?? '–'}</b></td>
+                  <td>
+                    {r.validator_errors === 0 && r.grounding === 1 ? <Badge kind="ok">pass</Badge> : <Badge kind="bad">{r.validator_errors} err, {pct(r.grounding)} grounded</Badge>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {view === 'all' && (
+        <div className="card flush scroll-x">
+          <table className="table plain">
+            <thead>
+              <tr>
+                <th>Config</th>
+                <th>Models (cheap / strong)</th>
+                <th className="num">Paths</th>
+                <th className="num">Strict prec.</th>
+                <th className="num">Classification</th>
+                <th className="num">Level</th>
+                <th className="num">Judge acc / κ</th>
+                <th className="num">Stability</th>
+                <th className="num">$ / gold risk</th>
+                <th className="num">Tokens in / out</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.name} className="static">
+                  <td><b>{r.label}</b></td>
+                  <td className="small mono">{r.models.cheap} / {r.models.strong}</td>
+                  <td className="num">{r.paths}</td>
+                  <td className="num">{pct(r.strict_precision)}</td>
+                  <td className="num">{pct(r.classification)}</td>
+                  <td className="num">{pct(r.level_agreement)}</td>
+                  <td className="num">{r.judge_accuracy?.toFixed(2) ?? '–'} / {r.judge_kappa?.toFixed(2) ?? '–'}</td>
+                  <td className="num">{r.stability?.toFixed(2) ?? '–'}{r.stability_reused ? <span className="muted small"> reused</span> : null}</td>
+                  <td className="num">{r.usd_per_gold_risk_found !== null ? `$${r.usd_per_gold_risk_found.toFixed(3)}` : '–'}</td>
+                  <td className="num small">{(r.input_tokens / 1e6).toFixed(2)}M / {(r.output_tokens / 1e6).toFixed(2)}M</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {view === 'upgrade' && (
+        <>
+          <div className="filters">
+            {data.subset.map((s) => (
+              <button key={s} className={`chip ${s === slug ? 'chip-active' : ''}`} onClick={() => setUpg(s)}>
+                {s.replace(/_/g, ' ')}
+              </button>
+            ))}
+            <Link to={`/upgrade/${slug}`} className="small push">Open {slug} →</Link>
+          </div>
+          <div className="card flush">
+            <table className="table plain">
               <thead>
-                <tr><th>Config</th><th>Paths</th><th>Recall</th><th>Est. prec.</th><th>Cost</th><th>Missed gold</th></tr>
+                <tr><th>Config</th><th className="num">Paths</th><th className="num">Recall</th><th className="num">Est. prec.</th><th className="num">Cost</th><th>Missed gold</th></tr>
               </thead>
               <tbody>
                 {rows.map((r) => {
                   const u = r.per_upgrade[slug]
                   return u ? (
-                    <tr key={r.name}>
+                    <tr key={r.name} className="static">
                       <td>{r.label}</td>
-                      <td>{u.paths}</td>
-                      <td>{frac(u.recall)}</td>
-                      <td>{frac(u.estimated_precision)}</td>
-                      <td>${u.cost_usd.toFixed(2)}</td>
-                      <td className="small mono">{u.missed.join(', ') || '–'}</td>
+                      <td className="num">{u.paths}</td>
+                      <td className="num">{frac(u.recall)}</td>
+                      <td className="num">{frac(u.estimated_precision)}</td>
+                      <td className="num">${u.cost_usd.toFixed(2)}</td>
+                      <td className="small mono">{u.missed.join(', ') || <span className="muted">none</span>}</td>
                     </tr>
                   ) : null
                 })}
               </tbody>
             </table>
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   )
 }
