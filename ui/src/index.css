@@ -70,7 +70,7 @@ details.more { margin-top: 20px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 14px; }
 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
-.card.flush { padding: 0; overflow: hidden; }
+.card.flush { padding: 0; overflow-x: auto; }
 .scroll-x { overflow-x: auto; }
 .card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .card-head h2, .card-head h3 { margin: 0; }
@@ -200,11 +200,13 @@ mark { background: #fff3bf; padding: 0 1px; }
 .costbar { height: 12px; border-radius: 3px; }
 
 @media (max-width: 1100px) { .cols { grid-template-columns: 1fr; } }
-@media (max-width: 760px) {
-  .shell { flex-direction: column; }
-  .sidebar { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
-  .sidebar nav { flex-direction: row; flex-wrap: wrap; }
-  .nav-section, .nav-sub, .sidebar-foot { display: none; }
-  main { padding: 20px 16px; }
+@media (max-width: 900px) {
+  .sidebar { width: 190px; padding: 14px 8px; }
+  .nav-ver { display: none; }
+  main { padding: 20px 18px 40px; }
   .page-head { flex-direction: column; }
+}
+@media (max-width: 520px) {
+  .sidebar { width: 150px; }
+  .brand-sub, .sidebar-foot { display: none; }
 }
