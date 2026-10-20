@@ -1,0 +1,240 @@
+{
+ "prompt_id": "baseline.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Read the documentation below for React and list the upgrade risks for upgrading from 17 to 18. For each risk, give a path_name, risk_type, risk_level, the release it was introduced in, the main symbol, a description, and one verbatim evidence quote.\n\nDOCUMENTATION:\n[18] Below is a list of all new features, APIs, deprecations, and breaking changes. Read React 18 release post and React 18 upgrade guide for more information.\n[18] useId is a new hook for generating unique IDs on both the client and server, while avoiding hydration mismatches. It is primarily useful for component libraries integrating with accessibility APIs that require unique IDs. This solves an issue that already exists in React 17 and below, but it's even more important in React 18 because of how the new streaming server renderer delivers HTML out-of-order.\n[18] startTransition and useTransition let you mark some state updates as not urgent. Other state updates are considered urgent by default. React will allow urgent state updates (for example, updating a text input) to interrupt non-urgent state updates (for example, rendering a list of search results).\n[18] useDeferredValue lets you defer re-rendering a non-urgent part of the tree. It is similar to debouncing, but has a few advantages compared to it. There is no fixed time delay, so React will attempt the deferred render right after the first render is reflected on the screen. The deferred render is interruptible and doesn't block user input.\n[18] useSyncExternalStore is a new hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. It removes the need for useEffect when implementing subscriptions to external data sources, and is recommended for any library that integrates with state external to React.\n[18] useInsertionEffect is a new hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you've already built a CSS-in-JS library we don't expect you to ever use this. This hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout.\n[18] These new APIs are now exported from react-dom/client:\n[18] createRoot: New method to create a root to render or unmount. Use it instead of ReactDOM.render. New features in React 18 don't work without it.\n[18] hydrateRoot: New method to hydrate a server rendered application. Use it instead of ReactDOM.hydrate in conjunction with the new React DOM Server APIs. New features in React 18 don't work without it.\n[18] Both createRoot and hydrateRoot accept a new option called onRecoverableError in case you want to be notified when React recovers from errors during rendering or hydration for logging. By default, React will use reportError, or console.error in the older browsers.\n[18] These new APIs are now exported from react-dom/server and have full support for streaming Suspense on the server:\n[18] renderToPipeableStream: for streaming in Node environments.\n[18] renderToReadableStream: for modern edge runtime environments, such as Deno and Cloudflare workers.\n[18] The existing renderToString method keeps working but is discouraged.\n[18] react-dom: ReactDOM.render has been deprecated. Using it will warn and run your app in React 17 mode.\n[18] react-dom: ReactDOM.hydrate has been deprecated. Using it will warn and run your app in React 17 mode.\n[18] react-dom: ReactDOM.unmountComponentAtNode has been deprecated.\n[18] react-dom: ReactDOM.renderSubtreeIntoContainer has been deprecated.\n[18] react-dom/server: ReactDOMServer.renderToNodeStream has been deprecated.\n[18] Automatic batching: This release introduces a performance improvement that changes to the way React batches updates to do more batching automatically. See Automatic batching for fewer renders in React 18 for more info. In the rare case that you need to opt out, wrap the state update in flushSync.\n[18] Stricter Strict Mode: In the future, React will provide a feature that lets components preserve state between unmounts. To prepare for it, React 18 introduces a new development-only check to Strict Mode. React will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. If this breaks your app, consider removing Strict Mode until you can fix the components to be resilient to remounting with existing state.\n[18] Consistent useEffect timing: React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event. Previously, the behavior wasn't always predictable or consistent.\n[18] Stricter hydration errors: Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings. React will no longer attempt to \"patch up\" individual nodes by inserting or deleting a node on the client in an attempt to match the server markup, and will revert to client rendering up to the closest <Suspense> boundary in the tree. This ensures the hydrated tree is consistent and avoids potential privacy and security holes that can be caused by hydration mismatches.\n[18] Suspense trees are always consistent: If a component suspends before it's fully added to the tree, React will not add it to the tree in an incomplete state or fire its effects. Instead, React will throw away the new tree completely, wait for the asynchronous operation to finish, and then retry rendering again from scratch. React will render the retry attempt concurrently, and without blocking the browser.\n[18] Layout Effects with Suspense: When a tree re-suspends and reverts to a fallback, React will now clean up layout effects, and then re-create them when the content inside the boundary is shown again. This fixes an issue which prevented component libraries from correctly measuring layout when used with Suspense.\n[18] New JS Environment Requirements: React now depends on modern browsers features including Promise, Symbol, and Object.assign. If you support older browsers and devices such as Internet Explorer which do not provide modern browser features natively or have non-compliant implementations, consider including a global polyfill in your bundled application.\n[18] Remove unstable scheduler/tracing API\n[18] Components can now render undefined: React no longer throws if you return undefined from a component. This makes the allowed component return values consistent with values that are allowed in the middle of a component tree. We suggest to use a linter to prevent mistakes like forgetting a return statement before JSX.\n[18] In tests, act warnings are now opt-in: If you're running end-to-end tests, the act warnings are unnecessary. We've introduced an opt-in mechanism so you can enable them only for unit tests where they are useful and beneficial.\n[18] No warning about setState on unmounted components: Previously, React warned about memory leaks when you call setState on an unmounted component. This warning was added for subscriptions, but people primarily run into it in scenarios where setting state is fine, and workarounds make the code worse. We've removed this warning.\n[18] No suppression of console logs: When you use Strict Mode, React renders each component twice to help you find unexpected side effects. In React 17, we've suppressed console logs for one of the two renders to make the logs easier to read. In response to community feedback about this being confusing, we've removed the suppression. Instead, if you have React DevTools installed, the second log's renders will be displayed in grey, and there will be an option (off by default) to suppress them completely.\n[18] Improved memory usage: React now cleans up more internal fields on unmount, making the impact from unfixed memory leaks that may exist in your application code less severe.\n[18] renderToString: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and then retry rendering the same content on the client. It is still recommended that you switch to a streaming API like renderToPipeableStream or renderToReadableStream instead.\n[18] renderToStaticMarkup: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and retry rendering on the client.\n[18] Add useTransition and useDeferredValue to separate urgent updates from transitions. (#10426, #10715, #15593, #15272, #15578, #15769, #17058, #18796, #19121, #19703, #19719, #19724, #20672, #20976 by @acdlite, @lunaruan, @rickhanlonii, and @sebmarkbage)\n[18] Add useId for generating unique IDs. (#17322, #18576, #22644, #22672, #21260 by @acdlite, @lunaruan, and @sebmarkbage)\n[18] Add useSyncExternalStore to help external store libraries integrate with React. (#15022, #18000, #18771, #22211, #22292, #22239, #22347, #23150 by @acdlite, @bvaughn, and @drarmstr)\n[18] Add startTransition as a version of useTransition without pending feedback. (#19696 by @rickhanlonii)\n[18] Add useInsertionEffect for CSS-in-JS libraries. (#21913 by @rickhanlonii)\n[18] Make Suspense remount layout effects when content reappears. (#19322, #19374, #19523, #20625, #21079 by @acdlite, @bvaughn, and @lunaruan)\n[18] Make <StrictMode> re-run effects to check for restorable state. (#19523 , #21418 by @bvaughn and @lunaruan)\n[18] Assume Symbols are always available. (#23348 by @sebmarkbage)\n[18] Remove object-assign polyfill. (#23351 by @sebmarkbage)\n[18] Remove unsupported unstable_changedBits API. (#20953 by @acdlite)\n[18] Allow components to render undefined. (#21869 by @rickhanlonii)\n[18] Flush useEffect resulting from discrete events like clicks synchronously. (#21150 by @acdlite)\n[18] Suspense fallback={undefined} now behaves the same as null and isn't ignored. (#21854 by @rickhanlonii)\n[18] Consider all lazy() resolving to the same component equivalent. (#20357 by @sebmarkbage)\n[18] Don't patch console during first render. (#22308 by @lunaruan)\n[18] Improve memory usage. (#21039 by @bgirard)\n[18] Improve messages if string coercion throws (Temporal.*, Symbol, etc.) (#22064 by @justingrant)\n[18] Use setImmediate when available over MessageChannel. (#20834 by @gaearon)\n[18] Fix context failing to propagate inside suspended trees. (#23095 by @gaearon)\n[18] Fix useReducer observing incorrect props by removing the eager bailout mechanism. (#22445 by @josephsavona)\n[18] Fix setState being ignored in Safari when appending iframes. (#23111 by @gaearon)\n[18] Fix a crash when rendering ZonedDateTime in the tree. (#20617 by @dimaqq)\n[18] Fix a crash when document is set to null in tests. (#22695 by @SimenB)\n[18] Fix onLoad not triggering when concurrent features are on. (#23316 by @gnoff)\n[18] Fix a warning when a selector returns NaN. (#23333 by @hachibeeDI)\n[18] Fix the generated license header. (#23004 by @vitaliemiron)\n[18] Add package.json as one of the entry points. (#22954 by @Jack)\n[18] Allow suspending outside a Suspense boundary. (#23267 by @acdlite)\n[18] Log a recoverable error whenever hydration fails. (#23319 by @acdlite)\n[18] Add createRoot and hydrateRoot. (#10239, #11225, #12117, #13732, #15502, #15532, #17035, #17165, #20669, #20748, #20888, #21072, #21417, #21652, #21687, #23207, #23385 by @acdlite, @bvaughn, @gaearon, @lunaruan, @rickhanlonii, @trueadm, and @sebmarkbage)\n[18] Add selective hydration. (#14717, #14884, #16725, #16880, #17004, #22416, #22629, #22448, #22856, #23176 by @acdlite, @gaearon, @salazarm, and @sebmarkbage)\n[18] Add aria-description to the list of known ARIA attributes. (#22142 by @mahyareb)\n[18] Add onResize event to video elements. (#21973 by @rileyjshaw)\n[18] Add imageSizes and imageSrcSet to known props. (#22550 by @eps1lon)\n[18] Allow non-string <option> children if value is provided. (#21431 by @sebmarkbage)\n[18] Fix aspectRatio style not being applied. (#21100 by @gaearon)\n[18] Warn if renderSubtreeIntoContainer is called. (#23355 by @acdlite)\n[18] Add the new streaming renderer. (#14144, #20970, #21056, #21255, #21200, #21257, #21276, #22443, #22450, #23247, #24025, #24030 by @sebmarkbage)\n[18] Fix context providers in SSR when handling multiple requests. (#23171 by @frandiox)\n[18] Revert to client render on text mismatch. (#23354 by @acdlite)\n[18] Deprecate renderToNodeStream. (#23359 by @sebmarkbage)\n[18] Fix a spurious error log in the new server renderer. (#24043 by @eps1lon)\n[18] Fix a bug in the new server renderer. (#22617 by @shuding)\n[18] Ignore function and symbol values inside custom elements on the server. (#21157 by @sebmarkbage)\n[18] Throw when act is used in production. (#21686 by @acdlite)\n[18] Support disabling spurious act warnings with global.IS_REACT_ACT_ENVIRONMENT. (#22561 by @acdlite)\n[18] Expand act warning to cover all APIs that might schedule React work. (#22607 by @acdlite)\n[18] Make act batch updates. (#21797 by @acdlite)\n[18] Remove warning for dangling passive effects. (#22609 by @acdlite)\n[18] Track late-mounted roots in Fast Refresh. (#22740 by @anc95)\n[18] Add exports field to package.json. (#23087 by @otakustay)\n[18] Add Server Context support. (#23244 by @salazarm)\n[18] Add lazy support. (#24068 by @gnoff)\n[18] Update webpack plugin for webpack 5 (#22739 by @michenly)\n[18] Fix a mistake in the Node loader. (#22537 by @btea)\n[18] Use globalThis instead of window for edge environments. (#22777 by @huozhi)\n[18] Remove unstable scheduler/tracing API (#20037 by @bvaughn)\n[18] March 08, 2022 by Rick Hanlon --- As we shared in the release post, React 18 introduces features powered by our new concurrent renderer, with a gradual adoption strategy for existing applications. In this post, we will guide you through the steps for upgrading to React 18. Please report any issues you encounter while upgrading to React 18. For React Native users, React 18 will ship in a future version of React Native. This is because React 18 relies on the New React Native Architecture to benefit from the new capabilities presented in this blogpost. For more information, see the React Conf keynote here. ---\n[18] To install the latest version of React: npm install react react-dom\n[18] Or if you're using yarn: yarn add react react-dom\n[18] When you first install React 18, you will see a warning in the console: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features. // Before import { render } from 'react-dom'; const container = document.getElementById('app'); render(<App tab=\"home\" />, container); // After import { createRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = createRoot(container); // createRoot(container!) if you use TypeScript root.render(<App tab=\"home\" />);\n[18] We've also changed unmountComponentAtNode to root.unmount: // Before unmountComponentAtNode(container); // After root.unmount();\n[18] We've also removed the callback from render, since it usually does not have the expected result when using Suspense: // Before const container = document.getElementById('app'); render(<App tab=\"home\" />, container, () => { console.log('rendered'); }); // After function AppWithCallbackAfterRender() { useEffect(() => { console.log('rendered'); }); return <App tab=\"home\" /> } const container = document.getElementById('app'); const root = createRoot(container); root.render(<AppWithCallbackAfterRender />);\n[18] There is no one-to-one replacement for the old render callback API — it depends on your use case. See the working group post for Replacing render with createRoot for more information. Finally, if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot: // Before import { hydrate } from 'react-dom'; const container = document.getElementById('app'); hydrate(<App tab=\"home\" />, container); // After import { hydrateRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = hydrateRoot(container, <App tab=\"home\" />); // Unlike with createRoot, you don't need a separate root.render() call here.\n[18] For more information, see the working group discussion here. If your app doesn't work after upgrading, check whether it's wrapped in <StrictMode>. Strict Mode has gotten stricter in React 18, and not all your components may be resilient to the new checks it adds in development mode. If removing Strict Mode fixes your app, you can remove it during the upgrade, and then add it back (either at the top or for a part of the tree) after you fix the issues that it's pointing out.\n[18] In this release, we're revamping our react-dom/server APIs to fully support Suspense on the server and Streaming SSR. As part of these changes, we're deprecating the old Node streaming API, which does not support incremental Suspense streaming on the server. Using this API will now warn:\n[18] renderToNodeStream: Deprecated ⛔️️\n[18] Instead, for streaming in Node environments, use:\n[18] renderToPipeableStream: New ✨\n[18] We're also introducing a new API to support streaming SSR with Suspense for modern edge runtime environments, such as Deno and Cloudflare workers:\n[18] renderToReadableStream: New ✨\n[18] The following APIs will continue working, but with limited support for Suspense:\n[18] renderToString: Limited ⚠️\n[18] renderToStaticMarkup: Limited ⚠️\n[18] Finally, this API will continue to work for rendering e-mails:\n[18] renderToStaticNodeStream\n[18] For more information on the changes to server rendering APIs, see the working group post on Upgrading to React 18 on the server, a deep dive on the new Suspense SSR Architecture, and Shaundai Person's talk on Streaming Server Rendering with Suspense at React Conf 2021.\n[18] If your project uses TypeScript, you will need to update your @types/react and @types/react-dom dependencies to the latest versions. The new types are safer and catch issues that used to be ignored by the type checker. The most notable change is that the children prop now needs to be listed explicitly when defining props, for example: interface MyButtonProps { color: string; children?: React.ReactNode; }\n[18] See the React 18 typings pull request for a full list of type-only changes. It links to example fixes in library types so you can see how to adjust your code. You can use the automated migration script to help port your application code to the new and safer typings faster. If you find a bug in the typings, please file an issue in the DefinitelyTyped repo.\n[18] React 18 adds out-of-the-box performance improvements by doing more batching by default. Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default: // Before React 18 only React events were batched function handleClick() { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) } setTimeout(() => { setCount(c => c + 1); setFlag(f => !f); // React will render twice, once for each state update (no batching) }, 1000);\n[18] Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from. This means that updates inside of timeouts, promises, native event handlers or any other event will batch the same way as updates inside of React events: // After React 18 updates inside of timeouts, promises, // native event handlers or any other event are batched. function handleClick() { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) } setTimeout(() => { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) }, 1000);\n[18] This is a breaking change, but we expect this to result in less work rendering, and therefore better performance in your applications. To opt-out of automatic batching, you can use flushSync: import { flushSync } from 'react-dom'; function handleClick() { flushSync(() => { setCounter(c => c + 1); }); // React has updated the DOM by now flushSync(() => { setFlag(f => !f); }); // React has updated the DOM by now }\n[18] For more information, see the Automatic batching deep dive.\n[18] In the React 18 Working Group we worked with library maintainers to create new APIs needed to support concurrent rendering for use cases specific to their use case in areas like styles, and external stores. To support React 18, some libraries may need to switch to one of the following APIs:\n[18] useSyncExternalStore is a new Hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. This new API is recommended for any library that integrates with state external to React. For more information, see the useSyncExternalStore overview post and useSyncExternalStore API details.\n[18] useInsertionEffect is a new Hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you've already built a CSS-in-JS library we don't expect you to ever use this. This Hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout. For more information, see the Library Upgrade Guide for <style>.\n[18] React 18 also introduces new APIs for concurrent rendering such as startTransition, useDeferredValue and useId, which we share more about in the release post.\n[18] In the future, we'd like to add a feature that allows React to add and remove sections of the UI while preserving state. For example, when a user tabs away from a screen and back, React should be able to immediately show the previous screen. To do this, React would unmount and remount trees using the same component state as before. This feature will give React better performance out-of-the-box, but requires components to be resilient to effects being mounted and destroyed multiple times. Most effects will work without any changes, but some effects assume they are only mounted or destroyed once. To help surface these issues, React 18 introduces a new development-only check to Strict Mode. This new check will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. Before this change, React would mount the component and create the effects: * React mounts the component. * Layout effects are created. * Effect effects are created.\n[18] With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode: * React mounts the component. * Layout effects are created. * Effect effects are created. * React simulates unmounting the component. * Layout effects are destroyed. * Effects are destroyed. * React simulates mounting the component with the previous state. * Layout effect setup code runs * Effect setup code runs\n[18] For more information, see the Working Group posts for Adding Reusable State to StrictMode and How to support Reusable State in Effects.\n[18] When you first update your tests to use createRoot, you may see this warning in your test console: The current testing environment is not configured to support act(...) To fix this, set globalThis.IS_REACT_ACT_ENVIRONMENT to true before running your test: // In your test setup file globalThis.IS_REACT_ACT_ENVIRONMENT = true;\n[18] The purpose of the flag is to tell React that it's running in a unit test-like environment. React will log helpful warnings if you forget to wrap an update with act. You can also set the flag to false to tell React that act isn't needed. This can be useful for end-to-end tests that simulate a full browser environment. Eventually, we expect testing libraries will configure this for you automatically. For example, the next version of React Testing Library has built-in support for React 18 without any additional configuration. More background on the act testing API and related changes is available in the working group.\n[18] In this release, React is dropping support for Internet Explorer, which is going out of support on June 15, 2022. We're making this change now because new features introduced in React 18 are built using modern browser features such as microtasks which cannot be adequately polyfilled in IE. If you need to support Internet Explorer we recommend you stay with React 17.\n[18] Components can now render undefined: React no longer warns if you return undefined from a component. This makes the allowed component return values consistent with values that are allowed in the middle of a component tree. We suggest to use a linter to prevent mistakes like forgetting a return statement before JSX.\n[18] renderToStaticMarkup: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary.\n[18] You can view the full changelog here.",
+ "response": {
+  "risks": [
+   {
+    "path_name": "react-dom/render",
+    "risk_type": "deprecation",
+    "risk_level": "high",
+    "introduced_in": "18",
+    "primary_symbol": "ReactDOM.render",
+    "description": "ReactDOM.render is deprecated; using it warns and runs the app in React 17 mode, so new React 18 features (concurrent rendering, automatic batching) are unavailable until migrating to createRoot. The render callback was also removed.",
+    "quote": "react-dom: ReactDOM.render has been deprecated. Using it will warn and run your app in React 17 mode."
+   },
+   {
+    "path_name": "react-dom/hydrate",
+    "risk_type": "deprecation",
+    "risk_level": "high",
+    "introduced_in": "18",
+    "primary_symbol": "ReactDOM.hydrate",
+    "description": "ReactDOM.hydrate is deprecated; it warns and runs the app in React 17 mode. SSR apps must migrate to hydrateRoot from react-dom/client to use React 18 features.",
+    "quote": "react-dom: ReactDOM.hydrate has been deprecated. Using it will warn and run your app in React 17 mode."
+   },
+   {
+    "path_name": "react-dom/unmountComponentAtNode",
+    "risk_type": "deprecation",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "unmountComponentAtNode",
+    "description": "unmountComponentAtNode is deprecated and replaced by root.unmount() on the root returned by createRoot.",
+    "quote": "react-dom: ReactDOM.unmountComponentAtNode has been deprecated."
+   },
+   {
+    "path_name": "react-dom/renderSubtreeIntoContainer",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "renderSubtreeIntoContainer",
+    "description": "renderSubtreeIntoContainer is deprecated and now warns when called.",
+    "quote": "react-dom: ReactDOM.renderSubtreeIntoContainer has been deprecated."
+   },
+   {
+    "path_name": "react-dom/render-callback",
+    "risk_type": "breaking change",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "render callback",
+    "description": "The callback argument to render was removed because it doesn't work as expected with Suspense. There is no one-to-one replacement; code relying on it must be rewritten (e.g., using useEffect).",
+    "quote": "We've also removed the callback from render, since it usually does not have the expected result when using Suspense"
+   },
+   {
+    "path_name": "react-dom/server",
+    "risk_type": "deprecation",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "renderToNodeStream",
+    "description": "renderToNodeStream is deprecated and warns when used; it lacks incremental Suspense streaming. Use renderToPipeableStream instead.",
+    "quote": "react-dom/server: ReactDOMServer.renderToNodeStream has been deprecated."
+   },
+   {
+    "path_name": "react-dom/server",
+    "risk_type": "behavior change",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "renderToString",
+    "description": "renderToString and renderToStaticMarkup have limited Suspense support: they no longer error when suspending, instead emitting fallback HTML for the closest Suspense boundary and retrying on the client. Streaming APIs are recommended.",
+    "quote": "renderToString: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary and then retry rendering the same content on the client."
+   },
+   {
+    "path_name": "react-dom/batching",
+    "risk_type": "breaking change",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "Automatic batching",
+    "description": "With createRoot, state updates in timeouts, promises, and native event handlers are now batched, which can change render counts and timing. Opt out with flushSync.",
+    "quote": "This is a breaking change, but we expect this to result in less work rendering, and therefore better performance in your applications."
+   },
+   {
+    "path_name": "react/StrictMode",
+    "risk_type": "behavior change",
+    "risk_level": "high",
+    "introduced_in": "18",
+    "primary_symbol": "StrictMode",
+    "description": "In development, Strict Mode now unmounts and remounts every component on first mount, reusing previous state. Effects that assume a single mount/unmount may break.",
+    "quote": "React will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount."
+   },
+   {
+    "path_name": "react/useEffect",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "useEffect",
+    "description": "Effects resulting from discrete user input events like clicks are now flushed synchronously, altering timing relative to previous behavior.",
+    "quote": "React now always synchronously flushes effect functions if the update was triggered during a discrete user input event such as a click or a keydown event."
+   },
+   {
+    "path_name": "react-dom/hydration",
+    "risk_type": "behavior change",
+    "risk_level": "high",
+    "introduced_in": "18",
+    "primary_symbol": "hydrateRoot",
+    "description": "Hydration mismatches in text content are now errors; React reverts to client rendering up to the closest Suspense boundary instead of patching nodes.",
+    "quote": "Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings."
+   },
+   {
+    "path_name": "react/Suspense",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "Suspense",
+    "description": "Suspended components are never added to the tree in an incomplete state; React discards the new tree and retries from scratch, with effects not firing until complete.",
+    "quote": "If a component suspends before it's fully added to the tree, React will not add it to the tree in an incomplete state or fire its effects."
+   },
+   {
+    "path_name": "react/Suspense",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "Suspense layout effects",
+    "description": "When a tree re-suspends and reverts to a fallback, layout effects are cleaned up and recreated when content reappears, which may affect effects that assumed a single run.",
+    "quote": "When a tree re-suspends and reverts to a fallback, React will now clean up layout effects, and then re-create them when the content inside the boundary is shown again."
+   },
+   {
+    "path_name": "react/Suspense",
+    "risk_type": "behavior change",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "Suspense fallback",
+    "description": "Suspense fallback={undefined} now behaves the same as null and is no longer ignored.",
+    "quote": "Suspense fallback={undefined} now behaves the same as null and isn't ignored."
+   },
+   {
+    "path_name": "browser-support",
+    "risk_type": "breaking change",
+    "risk_level": "high",
+    "introduced_in": "18",
+    "primary_symbol": "Internet Explorer support",
+    "description": "React 18 drops support for Internet Explorer and requires modern features like Promise, Symbol, and Object.assign; older browsers need polyfills or should stay on React 17.",
+    "quote": "In this release, React is dropping support for Internet Explorer, which is going out of support on June 15, 2022."
+   },
+   {
+    "path_name": "browser-support",
+    "risk_type": "breaking change",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "Promise/Symbol/Object.assign",
+    "description": "React no longer includes the object-assign polyfill and assumes Symbols are available, so environments lacking these need a global polyfill.",
+    "quote": "React now depends on modern browsers features including Promise, Symbol, and Object.assign."
+   },
+   {
+    "path_name": "scheduler/tracing",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "scheduler/tracing",
+    "description": "The unstable scheduler/tracing API was removed; code or tooling depending on it will break.",
+    "quote": "Remove unstable scheduler/tracing API"
+   },
+   {
+    "path_name": "react/context",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "unstable_changedBits",
+    "description": "The unsupported unstable_changedBits API was removed.",
+    "quote": "Remove unsupported unstable_changedBits API. (#20953 by @acdlite)"
+   },
+   {
+    "path_name": "typescript/types",
+    "risk_type": "breaking change",
+    "risk_level": "high",
+    "introduced_in": "18",
+    "primary_symbol": "children prop typing",
+    "description": "Updating @types/react and @types/react-dom is required; the children prop must now be declared explicitly in props types, and stricter types may surface new type errors.",
+    "quote": "The most notable change is that the children prop now needs to be listed explicitly when defining props"
+   },
+   {
+    "path_name": "react/testing",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "IS_REACT_ACT_ENVIRONMENT",
+    "description": "After switching tests to createRoot, a warning appears unless globalThis.IS_REACT_ACT_ENVIRONMENT is set to true; act warnings are now opt-in. act also throws in production.",
+    "quote": "The current testing environment is not configured to support act(...)"
+   },
+   {
+    "path_name": "react/useReducer",
+    "risk_type": "behavior change",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "useReducer",
+    "description": "The eager bailout mechanism was removed to fix useReducer observing incorrect props, which may change render behavior.",
+    "quote": "Fix useReducer observing incorrect props by removing the eager bailout mechanism."
+   },
+   {
+    "path_name": "react/StrictMode",
+    "risk_type": "behavior change",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "console logs",
+    "description": "React no longer suppresses console logs during the second Strict Mode render, so duplicate logs now appear in development.",
+    "quote": "No suppression of console logs: When you use Strict Mode, React renders each component twice to help you find unexpected side effects."
+   },
+   {
+    "path_name": "react/lazy",
+    "risk_type": "behavior change",
+    "risk_level": "low",
+    "introduced_in": "18",
+    "primary_symbol": "lazy",
+    "description": "All lazy() calls resolving to the same component are now considered equivalent.",
+    "quote": "Consider all lazy() resolving to the same component equivalent."
+   },
+   {
+    "path_name": "libraries/external-stores",
+    "risk_type": "compatibility",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "useSyncExternalStore",
+    "description": "Third-party libraries integrating with external state or injecting CSS-in-JS styles may need to adopt useSyncExternalStore or useInsertionEffect to work correctly with concurrent rendering.",
+    "quote": "To support React 18, some libraries may need to switch to one of the following APIs:"
+   },
+   {
+    "path_name": "react-native",
+    "risk_type": "compatibility",
+    "risk_level": "medium",
+    "introduced_in": "18",
+    "primary_symbol": "React Native",
+    "description": "React 18 relies on the New React Native Architecture and will ship in a future React Native version, so React Native users cannot upgrade yet.",
+    "quote": "For React Native users, React 18 will ship in a future version of React Native."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 9252,
+  "output_tokens": 3690,
+  "stop_reason": "end_turn"
+ }
+}

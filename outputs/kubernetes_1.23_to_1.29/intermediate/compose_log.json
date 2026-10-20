@@ -1,0 +1,228 @@
+{
+ "r5": [],
+ "r1": [],
+ "r1_unresolved": [],
+ "r2": [
+  {
+   "superseded": "kubernetes_dd3df7a015",
+   "by": "kubernetes_71ae8992a8",
+   "symbol": "targetaverageutilization"
+  },
+  {
+   "superseded": "kubernetes_7d591279bc",
+   "by": "kubernetes_965870d781",
+   "symbol": "unversionedkubeletconfigmap"
+  },
+  {
+   "superseded": "kubernetes_8d6a382298",
+   "by": "kubernetes_e6d21bce2d",
+   "symbol": "deprecated beta apis"
+  },
+  {
+   "superseded": "kubernetes_03ac7e7a3c",
+   "by": "kubernetes_fea98e9bba",
+   "symbol": "seccomp.security.alpha.kubernetes.io/pod"
+  },
+  {
+   "superseded": "kubernetes_fbe9d5f615",
+   "by": "kubernetes_471b45948b",
+   "symbol": "gcp and azure auth plugins"
+  }
+ ],
+ "r3": [
+  {
+   "path_id": "kubernetes_b84274af9e",
+   "api": "flowcontrol.apiserver.k8s.io/v1beta3",
+   "removed_in": "1.32",
+   "note": "R3: the replacement flowcontrol.apiserver.k8s.io/v1beta3 is removed later, in v1.32 (after target 1.29); prefer flowcontrol.apiserver.k8s.io/v1 to avoid a second migration."
+  },
+  {
+   "path_id": "kubernetes_3cf225fc10",
+   "api": "flowcontrol.apiserver.k8s.io/v1beta3",
+   "removed_in": "1.32",
+   "note": "R3: the replacement flowcontrol.apiserver.k8s.io/v1beta3 is removed later, in v1.32 (after target 1.29); prefer flowcontrol.apiserver.k8s.io/v1 to avoid a second migration."
+  },
+  {
+   "path_id": "kubernetes_997b64cd86",
+   "api": "flowcontrol.apiserver.k8s.io/v1beta2",
+   "removed_in": "1.29",
+   "note": "R3: the remediation names flowcontrol.apiserver.k8s.io/v1beta2, which is itself removed in v1.29 (at or before the target 1.29); migrate to flowcontrol.apiserver.k8s.io/v1 instead."
+  }
+ ],
+ "merge": [
+  {
+   "kept": "kubernetes_b84274af9e",
+   "merged": "kubernetes_b84274af9e",
+   "release": "1.29",
+   "symbol": "flowcontrol.apiserver.k8s.io/v1beta2"
+  },
+  {
+   "kept": "kubernetes_3cf225fc10",
+   "merged": "kubernetes_3cf225fc10",
+   "release": "1.29",
+   "symbol": "spec.limited.assuredConcurrencyShares"
+  },
+  {
+   "kept": "kubernetes_50b8d8e0fd",
+   "merged": "kubernetes_50b8d8e0fd",
+   "release": "1.27",
+   "symbol": "storage.k8s.io/v1beta1"
+  },
+  {
+   "kept": "kubernetes_997b64cd86",
+   "merged": "kubernetes_997b64cd86",
+   "release": "1.26",
+   "symbol": "flowcontrol.apiserver.k8s.io/v1beta1"
+  },
+  {
+   "kept": "kubernetes_7b8a1ea444",
+   "merged": "kubernetes_7b8a1ea444",
+   "release": "1.26",
+   "symbol": "autoscaling/v2beta2"
+  },
+  {
+   "kept": "kubernetes_02214acf74",
+   "merged": "kubernetes_02214acf74",
+   "release": "1.25",
+   "symbol": "batch/v1beta1"
+  },
+  {
+   "kept": "kubernetes_28e51fa8fe",
+   "merged": "kubernetes_28e51fa8fe",
+   "release": "1.25",
+   "symbol": "discovery.k8s.io/v1beta1"
+  },
+  {
+   "kept": "kubernetes_fc16f3bccf",
+   "merged": "kubernetes_fc16f3bccf",
+   "release": "1.25",
+   "symbol": "events.k8s.io/v1beta1"
+  },
+  {
+   "kept": "kubernetes_fc16f3bccf",
+   "merged": "kubernetes_fc16f3bccf",
+   "release": "1.25",
+   "symbol": "events.k8s.io/v1beta1"
+  },
+  {
+   "kept": "kubernetes_6689115982",
+   "merged": "kubernetes_6689115982",
+   "release": "1.25",
+   "symbol": "autoscaling/v2beta1"
+  },
+  {
+   "kept": "kubernetes_6689115982",
+   "merged": "kubernetes_6689115982",
+   "release": "1.25",
+   "symbol": "autoscaling/v2beta1"
+  },
+  {
+   "kept": "kubernetes_7861414339",
+   "merged": "kubernetes_7861414339",
+   "release": "1.25",
+   "symbol": "policy/v1beta1"
+  },
+  {
+   "kept": "kubernetes_7861414339",
+   "merged": "kubernetes_7861414339",
+   "release": "1.25",
+   "symbol": "policy/v1beta1"
+  },
+  {
+   "kept": "kubernetes_f51a904d3d",
+   "merged": "kubernetes_f51a904d3d",
+   "release": "1.25",
+   "symbol": "node.k8s.io/v1beta1"
+  },
+  {
+   "kept": "kubernetes_03ac7e7a3c",
+   "merged": "kubernetes_03ac7e7a3c_2",
+   "release": "1.25",
+   "symbol": "seccomp.security.alpha.kubernetes.io/pod"
+  },
+  {
+   "kept": "kubernetes_43d8c248a4",
+   "merged": "kubernetes_43d8c248a4",
+   "release": "*",
+   "symbol": "kube-apiserver"
+  },
+  {
+   "kept": "kubernetes_43d8c248a4",
+   "merged": "kubernetes_43d8c248a4",
+   "release": "*",
+   "symbol": "kube-apiserver"
+  },
+  {
+   "kept": "kubernetes_43d8c248a4",
+   "merged": "kubernetes_43d8c248a4",
+   "release": "*",
+   "symbol": "kube-apiserver"
+  },
+  {
+   "kept": "kubernetes_43d8c248a4",
+   "merged": "kubernetes_43d8c248a4",
+   "release": "*",
+   "symbol": "kube-apiserver"
+  },
+  {
+   "kept": "kubernetes_43d8c248a4",
+   "merged": "kubernetes_43d8c248a4",
+   "release": "*",
+   "symbol": "kube-apiserver"
+  },
+  {
+   "kept": "kubernetes_43d8c248a4",
+   "merged": "kubernetes_43d8c248a4",
+   "release": "*",
+   "symbol": "kube-apiserver"
+  },
+  {
+   "kept": "kubernetes_ec1ed44946",
+   "merged": "kubernetes_ec1ed44946",
+   "release": "*",
+   "symbol": "kubelet"
+  },
+  {
+   "kept": "kubernetes_ec1ed44946",
+   "merged": "kubernetes_ec1ed44946",
+   "release": "*",
+   "symbol": "kubelet"
+  },
+  {
+   "kept": "kubernetes_ec1ed44946",
+   "merged": "kubernetes_ec1ed44946_2",
+   "release": "*",
+   "symbol": "kubelet"
+  },
+  {
+   "kept": "kubernetes_9e61fc9ebd",
+   "merged": "kubernetes_9e61fc9ebd",
+   "release": "*",
+   "symbol": "kube-proxy"
+  },
+  {
+   "kept": "kubernetes_9e61fc9ebd",
+   "merged": "kubernetes_9e61fc9ebd",
+   "release": "*",
+   "symbol": "kube-proxy"
+  },
+  {
+   "kept": "kubernetes_9e61fc9ebd",
+   "merged": "kubernetes_9e61fc9ebd",
+   "release": "*",
+   "symbol": "kube-proxy"
+  },
+  {
+   "kept": "kubernetes_9e61fc9ebd",
+   "merged": "kubernetes_9e61fc9ebd_2",
+   "release": "*",
+   "symbol": "kube-proxy"
+  },
+  {
+   "kept": "kubernetes_9b35c15a85",
+   "merged": "kubernetes_9b35c15a85",
+   "release": "*",
+   "symbol": "kube-controller-manager"
+  }
+ ]
+}

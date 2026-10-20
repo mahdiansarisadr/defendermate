@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_into_release_16_wher_131d51\",\n  \"claim\": \"The upgrade crosses into release 16, where the role inheritance default for GRANT membership changed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 16 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_deployment_adds_membe_2d61e8\",\n  \"claim\": \"The application or deployment adds member roles using GRANT.\",\n  \"evidence\": [\n   {\n    \"quote\": \"members' inheritance status is set at GRANT time\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_deployment_depends_on_d36fe4\",\n  \"claim\": \"The application or deployment depends on member roles inheriting privileges according to the role's own inheritance status.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously the inheritance status of member roles was controlled only by the role's inheritance status\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"every_grant_of_role_membership_explicitl_ba5c5d\",\n  \"claim\": \"Every GRANT of role membership explicitly sets the inheritance status using the WITH INHERIT clause.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The role's default inheritance behavior can be overridden with the new\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_into_release_16_wher_131d51",
+    "verdict": "partially_supported",
+    "missing": "The quote only says release 16 has compatibility-affecting changes; it does not state that the role inheritance default for GRANT membership changed."
+   },
+   {
+    "condition_id": "the_application_or_deployment_adds_membe_2d61e8",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_deployment_depends_on_d36fe4",
+    "verdict": "partially_supported",
+    "missing": "The quote describes only the previous (pre-16) behavior and does not state the current behavior or that deployments depend on it."
+   },
+   {
+    "condition_id": "every_grant_of_role_membership_explicitl_ba5c5d",
+    "verdict": "not_supported",
+    "missing": "The quote says the default can be overridden with a new clause, which implies the clause is optional rather than required on every GRANT; nothing states that every GRANT explicitly sets WITH INHERIT."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1402,
+  "output_tokens": 1181,
+  "stop_reason": "end_turn"
+ }
+}

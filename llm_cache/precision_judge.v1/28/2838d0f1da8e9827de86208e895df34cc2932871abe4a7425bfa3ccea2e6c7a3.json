@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"RadioSelect and CheckboxSelectMultiple now render in <div> tags\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in Django 4.0, RadioSelect and CheckboxSelectMultiple widgets render in <div> tags instead of the previous markup. Custom CSS, JavaScript, or tests that depend on the old HTML structure may break. The previous behavior can be restored by overriding the widget template with the appropriate template from Django 3.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where the widget rendering changed (3.2 -> 4.2).\",\n   \"quotes\": [\n    \"RadioSelect and CheckboxSelectMultiple widgets are now rendered in <div> tags\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"The application uses the RadioSelect or CheckboxSelectMultiple widgets in forms.\",\n   \"quotes\": [\n    \"RadioSelect and CheckboxSelectMultiple widgets are now rendered in <div> tags\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application relies on the previous rendered HTML structure of these widgets, for example in CSS, JavaScript, or HTML assertions in tests.\",\n   \"quotes\": [\n    \"If you need the previous behavior, override the widget template with the appropriate template from Django 3.2.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application already overrides the widget templates for these widgets, so it may not see the new rendering.\",\n   \"quotes\": [\n    \"override the widget template with the appropriate template from Django 3.2\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete widgets (RadioSelect, CheckboxSelectMultiple) and a concrete markup change that can break CSS, JS, or tests, and the quotes support the change and the template-override workaround, though the 'alternative' and 'optional' condition roles are somewhat mislabeled."
+ },
+ "usage": {
+  "input_tokens": 1046,
+  "output_tokens": 120,
+  "stop_reason": "end_turn"
+ }
+}

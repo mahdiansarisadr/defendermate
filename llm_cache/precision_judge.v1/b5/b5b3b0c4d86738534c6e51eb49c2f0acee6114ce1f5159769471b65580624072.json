@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ModelMultipleChoiceField list message removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The 'list' error message for ModelMultipleChoiceField is removed in Django 4.0. Code or tests that reference this message key (for example in custom error_messages or when asserting on error messages) will be affected when upgrading from 3.2 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, in which the list message for ModelMultipleChoiceField is removed.\",\n   \"quotes\": [\n    \"The list message for ModelMultipleChoiceField will be removed.\",\n    \"The list message for ModelMultipleChoiceField is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses ModelMultipleChoiceField.\",\n   \"quotes\": [\n    \"The list message for ModelMultipleChoiceField will be removed.\",\n    \"The list message for ModelMultipleChoiceField is removed.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application overrides or references the 'list' error message key for ModelMultipleChoiceField (e.g. in error_messages or in tests/templates).\",\n   \"quotes\": [\n    \"The list message for ModelMultipleChoiceField will be removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that the 'list' message for ModelMultipleChoiceField is removed (4.0, within 3.2->4.2), and the risk names a concrete API and error_messages key that a checker can search for, with the override/reference condition correctly marked uncertain."
+ },
+ "usage": {
+  "input_tokens": 916,
+  "output_tokens": 106,
+  "stop_reason": "end_turn"
+ }
+}

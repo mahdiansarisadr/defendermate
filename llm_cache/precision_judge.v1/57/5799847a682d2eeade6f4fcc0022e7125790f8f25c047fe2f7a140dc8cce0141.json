@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"django-db-logger logger now logs transaction queries at DEBUG\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in Django 4.2, the django-db-logger logger logs transaction management queries (BEGIN, COMMIT, and ROLLBACK) at the DEBUG level. Deployments that capture DEBUG output from this logger may see additional log entries, which can increase log volume or affect log-based assertions or monitoring.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, where the logger started logging transaction management queries.\",\n   \"quotes\": [\n    \"now logs transaction management queries (BEGIN, COMMIT, and ROLLBACK) at the DEBUG level\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment configures or consumes the django-db-logger logger, for example in LOGGING handlers or loggers with DEBUG level enabled.\",\n   \"quotes\": [\n    \"The django-db-logger logger now logs transaction management queries\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The logger or handler level is set to DEBUG or lower so the new DEBUG-level messages are emitted, increasing log output.\",\n   \"quotes\": [\n    \"at the DEBUG level\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in Django 4.2 (transaction management queries BEGIN/COMMIT/ROLLBACK now logged at DEBUG by the named logger), which is checkable via LOGGING config and could raise log volume or affect log-based monitoring."
+ },
+ "usage": {
+  "input_tokens": 921,
+  "output_tokens": 113,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Tests that fail to load now always match test --tag\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in Django 4.0, tests that fail to load (for example due to syntax errors) always match when running the test command with --tag. Tag-filtered test runs will therefore include and surface these load failures rather than excluding them.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where tests that fail to load now always match when using test --tag.\",\n   \"quotes\": [\n    \"Tests that fail to load, for example due to syntax errors, now always match when using test --tag.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project or its CI runs the Django test command with the --tag option to select tests.\",\n   \"quotes\": [\n    \"now always match when using test --tag\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Some tests in the project fail to load (for example due to syntax or import errors), which will now be matched by --tag filters and surface as failures.\",\n   \"quotes\": [\n    \"Tests that fail to load, for example due to syntax errors\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support a concrete behavior change in the Django 4.0 test command (load-failing tests always match --tag), which can cause previously hidden load failures to surface in tag-filtered CI runs, and a checker can look for use of test --tag."
+ },
+ "usage": {
+  "input_tokens": 850,
+  "output_tokens": 101,
+  "stop_reason": "end_turn"
+ }
+}

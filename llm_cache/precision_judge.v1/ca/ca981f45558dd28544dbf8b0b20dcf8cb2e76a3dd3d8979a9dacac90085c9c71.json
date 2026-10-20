@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed insecure serving configuration in cloud-provider package\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The cloud-provider package, consumed by cloud-controller-managers, had its insecure serving configuration removed. Code or builds that depend on that configuration may be affected at upgrade. The text does not state the exact symbols removed or the replacement.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.24, the release that introduced the removal.\",\n   \"quotes\": [\n    \"Remove insecure serving configuration from cloud-provider package, which is consumed by cloud-controller-managers\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment runs a cloud-controller-manager or build that uses the cloud-provider package's insecure serving configuration.\",\n   \"quotes\": [\n    \"Remove insecure serving configuration from cloud-provider package, which is consumed by cloud-controller-managers\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The quote supports removal of insecure serving configuration from the cloud-provider package, but it never mentions release 1.24, so the required condition that the removal was introduced in 1.24 is unsupported by the evidence."
+ },
+ "usage": {
+  "input_tokens": 803,
+  "output_tokens": 568,
+  "stop_reason": "end_turn"
+ }
+}

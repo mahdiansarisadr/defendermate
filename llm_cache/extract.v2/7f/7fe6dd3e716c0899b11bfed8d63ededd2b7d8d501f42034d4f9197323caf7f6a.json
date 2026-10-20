@@ -1,0 +1,126 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release *. Source: Kubernetes Version Skew Policy (official_api_docs). Section: Supported component upgrade order / kube-apiserver.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nRegistered admission webhooks are able to handle the data the new kube-apiserver instance will send them: * ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include any new versions of REST resources added in {{< skew currentVersion >}} (or use the matchPolicy: Equivalent option available in v1.15+) * The webhooks are able to handle any new versions of REST resources that will be sent to them, and any new fields added to existing versions in {{< skew currentVersion >}}\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nSupported component upgrade order / kube-apiserver: Pre-requisites: In a single-instance cluster, the existing kube-apiserver instance is {{< skew currentVersionAddMinor -1 >}} In an HA cluster, all kube-apiserver instances are at {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersion >}} (this ensures maximum skew of 1 minor version between the oldest and newest kube-apiserver instance) The kube-controller-manager, kube-scheduler, and cloud-controller-manager instances that communicate with this server are at version {{< skew currentVersionAddMinor -1 >}} (this ensures they are not newer than the existing API server version, and are within 1 minor version of the new API server version) kubelet instances on all nodes are at version {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersionAddMinor -2 >}} (this ensures they are not newer than the existing API server version, and are within 2 minor versions of the new API server version) Registered admission webhooks are able to handle the data the new kube-apiserver instance will send them: * ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include any new versions of REST resources added in {{< skew currentVersion >}} (or use the matchPolicy: Equivalent option available in v1.15+) * The webhooks are able to handle any new versions of REST resources that will be sent to them, and any new fields added to existing versions in {{< skew currentVersion >}} Upgrade kube-apiserver to {{< skew currentVersion >}} {{< note >}} Project policies for API deprecation and API change guidelines require kube-apiserver to not skip minor versions when upgrading, even in single-instance clusters. {{< /note >}}\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release * (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Admission webhooks not updated for new REST resource versions and fields before kube-apiserver upgrade",
+    "risk_type": "operational_risk",
+    "risk_level": "high",
+    "affected_surface": "configuration",
+    "description": "Registered admission webhooks must be able to handle the data the new kube-apiserver sends. Webhook configuration objects must include new REST resource versions added in the target release, unless matchPolicy: Equivalent is used, and the webhooks must handle new resource versions and new fields added to existing versions.",
+    "primary_symbol": "ValidatingWebhookConfiguration",
+    "symbols": [
+     "ValidatingWebhookConfiguration",
+     "MutatingWebhookConfiguration",
+     "matchPolicy",
+     "kube-apiserver"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses to the target release of this item.",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "1.29",
+      "quotes": [
+       "Upgrade kube-apiserver to {{< skew currentVersion >}}"
+      ],
+      "relevance": "Ties the admission webhook requirement to upgrading kube-apiserver to the target release.",
+      "ambiguities": [
+       "The text uses the placeholder {{< skew currentVersion >}} and does not state the number; 1.29 comes from the assessment request."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include new REST resource versions added in the target release.",
+      "category": "configuration",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects updated to include new REST resource versions",
+      "quotes": [
+       "ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include any new versions of REST resources added in"
+      ],
+      "relevance": "Webhook configurations that do not include new resource versions may not receive the data the new kube-apiserver sends.",
+      "ambiguities": [
+       "The text does not name the specific new REST resource versions added in the target release."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get validatingwebhookconfigurations,mutatingwebhookconfigurations -o yaml"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "kind: (Validating|Mutating)WebhookConfiguration"
+       }
+      ]
+     },
+     {
+      "statement": "Webhook configurations use matchPolicy: Equivalent, which avoids the need to update them for new resource versions.",
+      "category": "configuration",
+      "role": "disqualifying",
+      "operator": "equals",
+      "expected_value": "matchPolicy: Equivalent",
+      "quotes": [
+       "or use the matchPolicy: Equivalent option available in v1.15+"
+      ],
+      "relevance": "The text offers matchPolicy: Equivalent as an alternative to updating the configuration objects for new resource versions.",
+      "ambiguities": [
+       "The text does not state how matchPolicy: Equivalent behaves for every webhook, so its sufficiency for a given webhook is not confirmed."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "matchPolicy:\\s*Equivalent"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get validatingwebhookconfigurations,mutatingwebhookconfigurations -o jsonpath='{range .items[*]}{.metadata.name}{\" \"}{.webhooks[*].matchPolicy}{\"\\n\"}{end}'"
+       }
+      ]
+     },
+     {
+      "statement": "The registered webhooks handle new REST resource versions and new fields added to existing versions in the target release.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "webhooks handle new REST resource versions and new fields added to existing versions",
+      "quotes": [
+       "The webhooks are able to handle any new versions of REST resources that will be sent to them",
+       "and any new fields added to existing versions in"
+      ],
+      "relevance": "Webhooks that cannot process new resource versions or new fields may fail on requests from the upgraded kube-apiserver.",
+      "ambiguities": [
+       "The text does not name the specific new resource versions or fields, so the affected webhook logic cannot be identified from the text."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Update ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects to include the new REST resource versions added in the target release, or use matchPolicy: Equivalent (available in v1.15+).",
+     "Verify that each registered webhook can handle new REST resource versions and new fields added to existing versions before upgrading kube-apiserver."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4076,
+  "output_tokens": 3712,
+  "stop_reason": "end_turn"
+ }
+}

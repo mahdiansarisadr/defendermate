@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Manually instantiated WSGIRequest requires file-like wsgi.input\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In Django 4.2, manually instantiated WSGIRequest objects must be given a file-like object for wsgi.input, as the WSGI specification expects. Previously Django was more lax, so code or tests that pass a non-file-like value for wsgi.input may break.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which introduced the stricter wsgi.input requirement for WSGIRequest.\",\n   \"quotes\": [\n    \"Manually instantiated WSGIRequest objects must be provided a file-like object for wsgi.input.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or its tests manually instantiate WSGIRequest objects.\",\n   \"quotes\": [\n    \"Manually instantiated WSGIRequest objects must be provided a file-like object for wsgi.input.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The environ passed to WSGIRequest sets wsgi.input to something that is not a file-like object, for example a string, bytes or None.\",\n   \"quotes\": [\n    \"Previously, Django was more lax than the expected behavior as specified by the WSGI specification.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (WSGIRequest and wsgi.input) and a version change to 4.2, and the first quote directly supports the stricter file-like requirement, though the third condition's specific non-file-like examples (string, bytes, None) are not directly quoted."
+ },
+ "usage": {
+  "input_tokens": 917,
+  "output_tokens": 517,
+  "stop_reason": "end_turn"
+ }
+}

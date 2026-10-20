@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"char_type_non_ascii_output_format\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The I/O output format of type \\\"char\\\" changed for non-ASCII characters: bytes with the high bit set are now output as a backslash and three octal digits. Applications that read or parse text output of type \\\"char\\\" containing such bytes may see different values.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15, where the type \\\"char\\\" I/O format change was introduced.\",\n   \"quotes\": [\n    \"Change the I/O format of type \\\"char\\\" for non-ASCII characters (Tom Lane)\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses type \\\"char\\\" values that include non-ASCII bytes and relies on their text output.\",\n   \"quotes\": [\n    \"Bytes with the high bit set are now output as a backslash and three octal digits\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes show the \"char\" I/O format changed for non-ASCII bytes (now backslash plus three octal digits), which is a concrete behavior change that can break applications parsing such output, and the 13->16 range crosses the release where it was introduced."
+ },
+ "usage": {
+  "input_tokens": 784,
+  "output_tokens": 102,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"CephFS in-tree volume plugin deprecation\",\n \"risk_type\": \"operational_risk\",\n \"description\": \"The kubernetes.io/cephfs volume plugin is deprecated in this release and will be removed in a later release; workloads using it should move to the CephFS CSI driver.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"Upgrade crosses release 1.28, in which the CephFS volume plugin was deprecated\",\n   \"quotes\": [\n    \"CephFS volume plugin (kubernetes.io/cephfs) has been deprecated in this release\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Cluster uses the in-tree kubernetes.io/cephfs volume plugin\",\n   \"quotes\": [\n    \"CephFS volume plugin (kubernetes.io/cephfs) has been deprecated in this release\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names the concrete kubernetes.io/cephfs in-tree plugin and its deprecation in 1.28 (within the 1.23->1.29 range), the quote supports both conditions, and workloads using it face a real migration need to the CephFS CSI driver."
+ },
+ "usage": {
+  "input_tokens": 769,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

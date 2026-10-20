@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Query.add_filter() signature change (filter_clause replaced by filter_lhs and filter_rhs)\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The filter_clause argument of the undocumented Query.add_filter() method is replaced by two positional arguments filter_lhs and filter_rhs. Code that calls Query.add_filter() with filter_clause will break after the upgrade to 4.0 or later.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where the add_filter() signature changed.\",\n   \"quotes\": [\n    \"The filter_clause argument of the undocumented Query.add_filter() method is replaced by two positional arguments filter_lhs and filter_rhs.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls Query.add_filter() (for example on a Query object) passing filter_clause.\",\n   \"quotes\": [\n    \"The filter_clause argument of the undocumented Query.add_filter() method is replaced by two positional arguments filter_lhs and filter_rhs.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly states that Query.add_filter()'s filter_clause argument was replaced by filter_lhs and filter_rhs, so callers passing filter_clause could break; it names a concrete API a checker can search for. The 4.0 version attribution isn't in the quote but follows from the upgrade range, so the quotes support the core claim."
+ },
+ "usage": {
+  "input_tokens": 849,
+  "output_tokens": 130,
+  "stop_reason": "end_turn"
+ }
+}

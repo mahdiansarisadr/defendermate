@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PROJ < 5 support removed (GeoDjango)\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.2 removes support for PROJ versions older than 5. A deployment that uses PROJ < 5 will no longer be supported after the upgrade and needs PROJ upgraded. The text does not name GeoDjango explicitly or the exact failure mode.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, where support for PROJ < 5 is removed.\",\n   \"quotes\": [\n    \"Support for PROJ < 5 is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses a PROJ library version older than 5.\",\n   \"quotes\": [\n    \"Support for PROJ < 5 is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted removal of support for PROJ < 5 is a concrete, checkable version change that can break deployments using older PROJ, though the GeoDjango label in the path name is not supported by the quotes."
+ },
+ "usage": {
+  "input_tokens": 753,
+  "output_tokens": 637,
+  "stop_reason": "end_turn"
+ }
+}

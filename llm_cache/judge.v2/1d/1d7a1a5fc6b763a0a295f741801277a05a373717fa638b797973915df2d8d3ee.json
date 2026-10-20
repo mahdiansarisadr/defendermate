@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_public_schema_owner_default_changed_cc017f\",\n  \"claim\": \"The public schema owner default changed to pg_database_owner in release 15.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Change the owner of the public schema to be the new pg_database_owner role (Noah Misch)\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_deployment_creates_ne_e8f94d\",\n  \"claim\": \"The application or deployment creates new databases and depends on the public schema owner being the bootstrap superuser.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This change applies to new database clusters and to newly-created databases in existing clusters.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_was_preserved_from_an_exist_5d1c8d\",\n  \"claim\": \"The database was preserved from an existing cluster upgrade or dump restore, so existing public ownership is kept.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Upgrading a cluster or restoring a database dump will preserve public's existing ownership specification.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_public_schema_owner_default_changed_cc017f",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_deployment_creates_ne_e8f94d",
+    "verdict": "partially_supported",
+    "missing": "The quote says the change applies to new clusters and newly-created databases, but does not state that an application depends on the public schema owner being the bootstrap superuser; that dependency is asserted by the claim without support."
+   },
+   {
+    "condition_id": "the_database_was_preserved_from_an_exist_5d1c8d",
+    "verdict": "partially_supported",
+    "missing": "The quote states that upgrading or dump restore preserves existing public ownership, but does not establish that this particular database was actually produced by an upgrade or dump restore."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1260,
+  "output_tokens": 261,
+  "stop_reason": "end_turn"
+ }
+}

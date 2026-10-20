@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"MiddlewareMixin.__init__ get_response now required and non-None\",\n \"risk_type\": \"removed_api\",\n \"description\": \"As of Django 4.0, the get_response argument for django.utils.deprecation.MiddlewareMixin.__init__() is required and no longer accepts None. Custom middleware subclassing MiddlewareMixin that is instantiated without get_response, or with get_response=None, will break after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where this behavior change was made as the end of a deprecation cycle.\",\n   \"quotes\": [\n    \"The get_response argument for django.utils.deprecation.MiddlewareMixin.init() is required and doesn't accept None.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses django.utils.deprecation.MiddlewareMixin, e.g. by subclassing it for custom middleware.\",\n   \"quotes\": [\n    \"django.utils.deprecation.MiddlewareMixin.init()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application instantiates a MiddlewareMixin subclass without get_response or with get_response=None.\",\n   \"quotes\": [\n    \"is required and doesn't accept None.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The quotes support the concrete API behavior (MiddlewareMixin.__init__ get_response is required and rejects None), but none of them state that this changed in Django 4.0 or that it crosses the 3.2 to 4.2 range, so the upgrade-specific risk claim is unsupported by the evidence."
+ },
+ "usage": {
+  "input_tokens": 918,
+  "output_tokens": 691,
+  "stop_reason": "end_turn"
+ }
+}

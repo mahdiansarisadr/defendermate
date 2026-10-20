@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"application_pods_use_the_alpha_seccomp_a_d98dd4\",\n  \"claim\": \"Application pods use the alpha seccomp annotation seccomp.security.alpha.kubernetes.io/pod or container.seccomp.security.alpha.kubernetes.io.\",\n  \"evidence\": [\n   {\n    \"quote\": \"seccomp.security.alpha.kubernetes.io/pod and container.seccomp.security.alpha.kubernetes.io\",\n    \"source\": \"Kubernetes v1.27.0 CHANGELOG\",\n    \"release_of_change\": \"1.27\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"pods_with_seccomp_annotations_no_longer_bed853\",\n  \"claim\": \"Pods with seccomp annotations no longer get their seccomp fields auto-populated when created.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The seccomp fields are no longer auto-populated when pods with seccomp annotations are created.\",\n    \"source\": \"Kubernetes v1.27.0 CHANGELOG\",\n    \"release_of_change\": \"1.27\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"pods_already_set_the_securitycontext_sec_1ffd10\",\n  \"claim\": \"Pods already set the securityContext.seccompProfile field instead of the removed annotations.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Pods should use the corresponding pod or container securityContext.seccompProfile field instead.\",\n    \"source\": \"Kubernetes v1.27.0 CHANGELOG\",\n    \"release_of_change\": \"1.27\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "application_pods_use_the_alpha_seccomp_a_d98dd4",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "pods_with_seccomp_annotations_no_longer_bed853",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "pods_already_set_the_securitycontext_sec_1ffd10",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not explicitly say the annotations were removed; they only say pods should use the securityContext.seccompProfile field instead."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1311,
+  "output_tokens": 864,
+  "stop_reason": "end_turn"
+ }
+}

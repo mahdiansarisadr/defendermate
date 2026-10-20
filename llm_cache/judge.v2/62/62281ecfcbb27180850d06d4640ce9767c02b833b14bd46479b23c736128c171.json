@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_1_24_where_t_d27935\",\n  \"claim\": \"The upgrade crosses release 1.24, where the feature gate name was corrected to CSIMigrationRBD.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This release correct the same and keep it as CSIMigrationRBD.\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_deployment_configures_290477\",\n  \"claim\": \"The application or deployment configures the feature gate using the name csiMigrationRBD.\",\n  \"evidence\": [\n   {\n    \"quote\": \"users who have configured this feature gate as csiMigrationRBD\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_feature_gate_is_already_configured_w_f02af8\",\n  \"claim\": \"The feature gate is already configured with the corrected name CSIMigrationRBD, so no reconfiguration is needed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"has to reconfigure the same to CSIMigrationRBD\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_1_24_where_t_d27935",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_deployment_configures_290477",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_feature_gate_is_already_configured_w_f02af8",
+    "verdict": "not_supported",
+    "missing": "The quote says users have to reconfigure the gate to CSIMigrationRBD, which contradicts the claim that no reconfiguration is needed."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1246,
+  "output_tokens": 523,
+  "stop_reason": "end_turn"
+ }
+}

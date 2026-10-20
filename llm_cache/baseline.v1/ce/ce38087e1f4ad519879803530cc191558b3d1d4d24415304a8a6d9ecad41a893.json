@@ -1,0 +1,582 @@
+{
+ "prompt_id": "baseline.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Read the documentation below for Kubernetes and list the upgrade risks for upgrading from 1.23 to 1.29. For each risk, give a path_name, risk_type, risk_level, the release it was introduced in, the main symbol, a description, and one verbatim evidence quote.\n\nDOCUMENTATION:\n[1.29] The v1.29 release stopped serving the following deprecated API versions:\n[1.29] The flowcontrol.apiserver.k8s.io/v1beta2 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.29.\n[1.29] Migrate manifests and API clients to use the flowcontrol.apiserver.k8s.io/v1 API version, available since v1.29, or the flowcontrol.apiserver.k8s.io/v1beta3 API version, available since v1.26.\n[1.29] All existing persisted objects are accessible via the new API\n[1.29] Notable changes in flowcontrol.apiserver.k8s.io/v1: * The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares and only defaults to 30 when unspecified, and an explicit value of 0 is not changed to 30.\n[1.29] Notable changes in flowcontrol.apiserver.k8s.io/v1beta3: * The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares\n[1.27] The v1.27 release stopped serving the following deprecated API versions:\n[1.27] The storage.k8s.io/v1beta1 API version of CSIStorageCapacity is no longer served as of v1.27.\n[1.27] Migrate manifests and API clients to use the storage.k8s.io/v1 API version, available since v1.24.\n[1.27] All existing persisted objects are accessible via the new API\n[1.27] No notable changes\n[1.26] The v1.26 release stopped serving the following deprecated API versions:\n[1.26] The flowcontrol.apiserver.k8s.io/v1beta1 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.26.\n[1.26] Migrate manifests and API clients to use the flowcontrol.apiserver.k8s.io/v1beta2 API version.\n[1.26] All existing persisted objects are accessible via the new API\n[1.26] No notable changes\n[1.26] The autoscaling/v2beta2 API version of HorizontalPodAutoscaler is no longer served as of v1.26.\n[1.26] Migrate manifests and API clients to use the autoscaling/v2 API version, available since v1.23.\n[1.26] Notable changes: * targetAverageUtilization is replaced with target.averageUtilization and target.type: Utilization. See Autoscaling on multiple metrics and custom metrics.\n[1.25] The v1.25 release stopped serving the following deprecated API versions:\n[1.25] The batch/v1beta1 API version of CronJob is no longer served as of v1.25.\n[1.25] Migrate manifests and API clients to use the batch/v1 API version, available since v1.21.\n[1.25] All existing persisted objects are accessible via the new API\n[1.25] No notable changes\n[1.25] The discovery.k8s.io/v1beta1 API version of EndpointSlice is no longer served as of v1.25.\n[1.25] Migrate manifests and API clients to use the discovery.k8s.io/v1 API version, available since v1.21.\n[1.25] Notable changes in discovery.k8s.io/v1: * use per Endpoint nodeName field instead of deprecated topology[\"kubernetes.io/hostname\"] field * use per Endpoint zone field instead of deprecated topology[\"topology.kubernetes.io/zone\"] field * topology is replaced with the deprecatedTopology field which is not writable in v1\n[1.25] The events.k8s.io/v1beta1 API version of Event is no longer served as of v1.25.\n[1.25] Migrate manifests and API clients to use the events.k8s.io/v1 API version, available since v1.19.\n[1.25] Notable changes in events.k8s.io/v1: * type is limited to Normal and Warning * involvedObject is renamed to regarding * action, reason, reportingController, and reportingInstance are required when creating new events.k8s.io/v1 Events * use eventTime instead of the deprecated firstTimestamp field (which is renamed to deprecatedFirstTimestamp and not permitted in new events.k8s.io/v1 Events) * use series.lastObservedTime instead of the deprecated lastTimestamp field (which is renamed to deprecatedLastTimestamp and not permitted in new events.k8s.io/v1 Events) * use series.count instead of the deprecated count field (which is renamed to deprecatedCount and not permitted in new events.k8s.io/v1 Events) * use reportingController instead of the deprecated source.component field (which is renamed to deprecatedSource.component and not permitted in new events.k8s.io/v1 Events) * use reportingInstance instead of the deprecated source.host field (which is renamed to deprecatedSource.host and not permitted in new events.k8s.io/v1 Events)\n[1.25] The autoscaling/v2beta1 API version of HorizontalPodAutoscaler is no longer served as of v1.25.\n[1.25] Migrate manifests and API clients to use the autoscaling/v2 API version, available since v1.23.\n[1.25] Notable changes: * targetAverageUtilization is replaced with target.averageUtilization and target.type: Utilization. See Autoscaling on multiple metrics and custom metrics.\n[1.25] The policy/v1beta1 API version of PodDisruptionBudget is no longer served as of v1.25.\n[1.25] Migrate manifests and API clients to use the policy/v1 API version, available since v1.21.\n[1.25] Notable changes in policy/v1: * an empty spec.selector ({}) written to a policy/v1 PodDisruptionBudget selects all pods in the namespace (in policy/v1beta1 an empty spec.selector selected no pods). An unset spec.selector selects no pods in either API version.\n[1.25] PodSecurityPolicy in the policy/v1beta1 API version is no longer served as of v1.25, and the PodSecurityPolicy admission controller will be removed. Migrate to Pod Security Admission or a 3rd party admission webhook. For a migration guide, see Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller. For more information on the deprecation, see PodSecurityPolicy Deprecation: Past, Present, and Future.\n[1.25] RuntimeClass in the node.k8s.io/v1beta1 API version is no longer served as of v1.25.\n[1.25] Migrate manifests and API clients to use the node.k8s.io/v1 API version, available since v1.20.\n[1.24] Docker runtime support using dockershim in the kubelet is now completely removed in 1.24. The kubelet used to have a module called dockershim, which implements CRI support for Docker, and it has seen maintenance issues in the Kubernetes community. From 1.24 onwards, please move to a container runtime that is a full-fledged implementation of CRI (v1alpha1 or v1 compliant) as they become available.\n[1.24] Fixed bug with leads to Node goes Not-ready state when credentials for vCenter stored in a secret and Zones feature is in use. Zone labels setup moved to KCM component, kubelet skips this step during startup in such case. If credentials stored in cloud-provider config file as plaintext current behaviour does not change and no action required. For proper functioning kube-system:vsphere-legacy-cloud-provider should be allowed to update node object if vCenter credentials stored in secret and Zone feature used.\n[1.24] The LegacyServiceAccountTokenNoAutoGeneration feature gate is beta, and enabled by default. When enabled, Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount. Use the TokenRequest API to acquire service account tokens, or if a non-expiring token is required, create a Secret API object for the token controller to populate with a service account token by following this guide.\n[1.24] The calculations for Pod topology spread skew now exclude nodes that don't match the node affinity/selector. This may lead to unschedulable pods if you previously had pods matching the spreading selector on those excluded nodes (not matching the node affinity/selector), especially when the topologyKey is not node-level. Revisit the node affinity and/or pod selector in the topology spread constraints to avoid this scenario.\n[1.24] Remove the deprecated flag --experimental-check-node-capabilities-before-mount. With CSI now GA, there is a better alternative. Remove any use of --experimental-check-node-capabilities-before-mount from your kubelet scripts or manifests.\n[1.24] kubeadm.k8s.io/v1beta2 has been deprecated and will be removed in a future release, possibly in 3 releases (one year). You should start using kubeadm.k8s.io/v1beta3 for new clusters. To migrate your old configuration files on disk you can use the kubeadm config migrate command.\n[1.24] Kubeadm: default the kubeadm configuration to the containerd socket (Unix: unix:///var/run/containerd/containerd.sock, Windows: npipe:////./pipe/containerd-containerd) instead of the one for Docker. If the Init|JoinConfiguration.nodeRegistration.criSocket field is empty during cluster creation and multiple sockets are found on the host always throw an error and ask the user to specify which one to use by setting the value in the field. Make sure you update any kubeadm configuration files on disk, to not include the dockershim socket unless you are still using kubelet version < 1.24 with kubeadm >= 1.24. Remove the DockerValidor and ServiceCheck for the docker service from kubeadm preflight. Docker is no longer special cased during host validation and ideally this task should be done in the now external cri-dockerd project where the importance of the compatibility matters. Use crictl for all communication with CRI sockets for actions like pulling images and obtaining a list of running containers instead of using the docker CLI in the case of Docker.\n[1.24] The feature gate was mentioned as csiMigrationRBD where it should have been CSIMigrationRBD to be in parity with other migration plugins. This release correct the same and keep it as CSIMigrationRBD. users who have configured this feature gate as csiMigrationRBD has to reconfigure the same to CSIMigrationRBD from this release.\n[1.24] The experimental dynamic log sanitization feature has been deprecated and removed in the 1.24 release. The feature is no longer available for use.\n[1.24] Kubeadm: apply second stage of the plan to migrate kubeadm away from the usage of the word master in labels and taints. For new clusters, the label node-role.kubernetes.io/master will no longer be added to control plane nodes, only the label node-role.kubernetes.io/control-plane will be added. For clusters that are being upgraded to 1.24 with kubeadm upgrade apply, the command will remove the label node-role.kubernetes.io/master from existing control plane nodes. For new clusters, both the old taint node-role.kubernetes.io/master:NoSchedule and new taint node-role.kubernetes.io/control-plane:NoSchedule will be added to control plane nodes. In release 1.20 (first stage), a release note instructed to preemptively tolerate the new taint. For clusters that are being upgraded to 1.24 with kubeadm upgrade apply, the command will add the new taint node-role.kubernetes.io/control-plane:NoSchedule to existing control plane nodes. Please adapt your infrastructure to these changes. In 1.25 the old taint node-role.kubernetes.io/master:NoSchedule will be removed.\n[1.24] Deprecated Service.Spec.LoadBalancerIP. This field was under-specified and its meaning varies across implementations. As of Kubernetes v1.24, users are encouraged to use implementation-specific annotations when available. This field may be removed in a future API version.\n[1.24] Kube-apiserver: the --master-count flag and --endpoint-reconciler-type=master-count reconciler are deprecated in favor of the lease reconciler\n[1.24] Kube-apiserver: the insecure address flags --address, --insecure-bind-address, --port and --insecure-port (inert since 1.20) are removed\n[1.24] Kubeadm: graduated the UnversionedKubeletConfigMap feature gate to Beta and enabled the feature by default. This implies that 1) for new clusters kubeadm will start using the kube-system/kubelet-config naming scheme for the kubelet ConfigMap and RBAC rules, instead of the legacy kubelet-config-x.yy naming. 2) during upgrade, kubeadm will only write the new scheme ConfigMap and RBAC objects. To disable the feature you can pass UnversionedKubeletConfigMap: false in the kubeadm config for new clusters. For upgrade on existing clusters you can also override the behavior by patching the ClusterConfiguration object in kube-system/kubeadm-config. More details in the associated KEP.\n[1.24] Remove tolerate-unready-endpoints annotation in Service deprecated from 1.11, use Service.spec.publishNotReadyAddresses instead.\n[1.24] Remove deprecated feature gates ValidateProxyRedirects and StreamingProxyRedirects\n[1.24] Remove insecure serving configuration from cloud-provider package, which is consumed by cloud-controller-managers.\n[1.24] The --pod-infra-container-image kubelet flag is deprecated and will be removed in future releases\n[1.24] The client.authentication.k8s.io/v1alpha1 ExecCredential has been removed. If you are using a client-go credential plugin that relies on the v1alpha1 API please contact the distributor of your plugin for instructions on how to migrate to the v1 API.\n[1.24] The node.k8s.io/v1alpha1 RuntimeClass API is no longer served. Use the node.k8s.io/v1 API version, available since v1.20\n[1.24] The cluster addon for dashboard was removed. To install dashboard, see here.\n[1.24] The in-tree Azure plugin has been deprecated. The Azure kubelogin plugin serves as an out-of-tree replacement via the kubectl/client-go credential plugin mechanism. Users will now see a warning in the logs regarding this deprecation.\n[1.24] The insecure address flags --address and --port in kube-controller-manager have had no effect since v1.20 and are removed in v1.24.\n[1.24] The metadata.clusterName field is deprecated. This field has always been unwritable and always blank, but its presence is confusing, so we will remove it next release. Out of an abundance of caution, this release we have merely changed the name in the go struct to ensure any accidental client uses are found before complete removal.\n[1.24] VSphere releases less than 7.0u2 are deprecated as of v1.24. Please consider upgrading vSphere to 7.0u2 or above. vSphere CSI Driver requires minimum vSphere 7.0u2. General Support for vSphere 6.7 will end on October 15, 2022. vSphere 6.7 Update 3 is deprecated in Kubernetes v1.24. Customers are recommended to upgrade vSphere (both ESXi and vCenter) to 7.0u2 or above. vSphere CSI Driver 2.2.3 and higher supports CSI Migration. Support for these deprecations will be available till October 15, 2022.\n[1.25] Deprecated beta APIs scheduled for removal in 1.25 are no longer served. See https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-25 for more information. - Encrypted data with DEK using AES-GCM instead of AES-CBC for kms data encryption. No user action required. Reads with AES-GCM and AES-CBC will continue to be allowed. - End-to-end testing has been migrated from Ginkgo v1 to v2. When running test/e2e via the Ginkgo CLI, the v2 CLI must be used and -timeout=24h (or some other, suitable value) must be passed because the default timeout was reduced from 24h to 1h. When running it via go test, the corresponding -args parameter is -ginkgo.timeout=24h. To build the CLI in the Kubernetes repo, use make all WHAT=github.com/onsi/ginkgo/v2/ginkgo. Ginkgo V2 doesn't accept go test's -parallel flags to parallelize Ginkgo specs, please switch to use ginkgo -p or ginkgo -procs=N instead. - No action required; No API/CLI changed; Add new Windows Image Support - The intree volume plugin flocker support was completely removed from Kubernetes. - The intree volume plugin quobyte support has been completely removed from Kubernetes. - The intree volume plugin storageos support has been completely removed from Kubernetes. - There is a new OCI image registry (registry.k8s.io) that can be used to pull Kubernetes images. The old registry (k8s.gcr.io) will continue to be supported for the foreseeable future, but the new name should perform better because it frontends equivalent mirrors in other clouds. Please point your clusters to the new registry going forward. Admission/Policy integrations that have an allowlist of registries need to include registry.k8s.io alongside k8s.gcr.io. Air-gapped environments and image garbage-collection configurations will need to update to pre-pull and preserve required images under registry.k8s.io as well as k8s.gcr.io.\n[1.25] API server's deprecated --service-account-api-audiences flag was removed. Use --api-audiences instead.\n[1.25] Ginkgo.Measure has been deprecated in Ginkgo V2, switch to use gomega/gmeasure instead\n[1.25] Kube-controller-manager: Removed flags deleting-pods-qps, deleting-pods-burst, and register-retry-count.\n[1.25] Kubeadm: during \"upgrade apply/diff/node\", in case the ClusterConfiguration.imageRepository stored in the \"kubeadm-config\" ConfigMap contains the legacy \"k8s.gcr.io\" repository, modify it to the new default \"registry.k8s.io\". Reflect the change in the in-cluster ConfigMap only during \"upgrade apply\".\n[1.25] Kubeadm: graduated the kubeadm specific feature gate UnversionedKubeletConfigMap to GA and locked it to true by default. The kubelet related ConfigMap and RBAC rules are now locked to have a simplified naming *kubelet-config instead of the legacy naming *kubelet-config-x.yy, where x.yy was the version of the control plane. If you have previously used the old naming format with UnversionedKubeletConfigMap=false, you must manually copy the config map from kube-system/kubelet-config-x.yy to kube-system/kubelet-config before upgrading to v1.25.\n[1.25] Kubeadm: stop applying the node-role.kubernetes.io/master:NoSchedule taint to control plane nodes for new clusters. Remove the taint from existing control plane nodes during \"kubeadm upgrade apply\"\n[1.25] Support for the alpha seccomp annotations seccomp.security.alpha.kubernetes.io/pod and container.seccomp.security.alpha.kubernetes.io, deprecated since v1.19, was partially removed. Kubelets no longer support the annotations, use of the annotations in static pods is no longer supported, and the seccomp annotations are no longer auto-populated when pods with seccomp fields are created. Auto-population of the seccomp fields from the annotations is planned to be removed in 1.27. Pods should use the corresponding pod or container securityContext.seccompProfile field instead.\n[1.25] The gcp and azure auth plugins have been removed from client-go and kubectl. See https://github.com/Azure/kubelogin and https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke\n[1.25] The beta PodSecurityPolicy admission plugin, deprecated since 1.21, is removed. Follow the instructions at https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/ to migrate to the built-in PodSecurity admission plugin (or to another third-party policy webhook) prior to upgrading to v1.25.\n[1.25] VSphere releases less than 7.0u2 are not supported for in-tree vSphere volume as of Kubernetes v1.25. Please consider upgrading vSphere (both ESXi and vCenter) to 7.0u2 or above.\n[1.25] Windows winkernel kube-proxy no longer supports Windows HNS v1 APIs.\n[1.25] GlusterFS provisioner (kubernetes.io/glusterfs) has been deprecated in this release.\n[1.26] Deprecated beta APIs scheduled for removal in v1.26 are no longer served. See https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-26 for more information.\n[1.26] The in-tree cloud provider for OpenStack (and the cinder volume provider) has been removed. Please use the external cloud provider and csi driver from cloud-provider-openstack instead.\n[1.26] GlusterFS in-tree storage driver which was deprecated in kubernetes 1.25 release is now removed entirely in v1.26. Volumes must be migrated to an alternate storage solution before upgrading to v1.26.\n[1.26] CLI flag pod-eviction-timeout is deprecated and will be removed together with enable-taint-manager in v1.27.\n[1.26] Kube-apiserver: the unused --master-service-namespace flag was deprecated and will be removed in v1.27.\n[1.26] The gcp and azure auth plugins have been removed from client-go and kubectl. See kubelogin and Kubectl Auth Changes in GKE for details about the cloud-specific replacements.\n[1.27] 'The IPv6DualStack feature gate for external cloud providers was removed. (The feature became GA in 1.23 and the gate was removed for all other components several releases ago.) If you were still manually enabling it you must stop now.'\n[1.27] Give terminal phase correctly to all pods that will not be restarted. In particular, assign Failed phase to pods which are deleted while pending. Also, assign a terminal phase (Succeeded or Failed, depending on the exit statuses of the pod containers) to pods which are deleted while running. This fixes the issue for jobs using pod failure policy (with JobPodFailurePolicy and PodDisruptionConditions feature gates enabled) that their pods could get stuck in the pending phase when deleted. Users who maintain controllers which relied on the fact that pods with RestartPolicy=Always never enter the Succeeded phase may need to adapt their controllers. This is because as a consequence of the change pods which use RestartPolicy=Always may end up in the Succeeded phase in two scenarios: pod deletion and graceful node shutdown.\n[1.27] The in-tree cloud provider for AWS (and the EBS storage plugin) has now been removed. Please use the external cloud provider and CSI driver from https://github.com/kubernetes/cloud-provider-aws instead.\n[1.27] Added a warning response when handling requests that set the deprecated spec.externalID field for a Node.\n[1.27] Added warnings to the Services API. Kubernetes now warns for Services in the case of: - IPv4 addresses with leading zeros - IPv6 address in non-canonical format (RFC 5952)\n[1.27] Support for the alpha seccomp annotations seccomp.security.alpha.kubernetes.io/pod and container.seccomp.security.alpha.kubernetes.io were deprecated since v1.19, now have been completely removed. The seccomp fields are no longer auto-populated when pods with seccomp annotations are created. Pods should use the corresponding pod or container securityContext.seccompProfile field instead.\n[1.27] The SecurityContextDeny admission plugin is going deprecated and will be removed in future versions.\n[1.28] Action required for the custom scheduler plugin developers. Here's the breaking change in EnqueueExtension in the scheduling framework. The EventsToRegister in EnqueueExtension changed the return value from ClusterEvent to ClusterEventWithHint. ClusterEventWithHint allows each plugin to filter out more useless events via the callback function named QueueingHintFn. When the scheduling queue receives a cluster event, before moving each Pod from unschedulable pod pool to activeQ/backoffQ, it will call QueueingHintFn of plugins that rejected each Pod in the previous scheduling cycle. Depending on the value returned from QueueingHintFn, the scheduling queue changes how it queues each Pod: - if more than one QueueingHintFn returns QueueImmediately, it queues Pod to activeQ. - If no QueueingHintFn returns QueueImmediately and more than one plugin returns QueueAfterBackoff, it queues Pod to backoffQ if Pod is backing off, or to activeQ if Pod's backoff has already finished. - If all QueueingHintFn return QueueSkip, it puts this pod back to the unschedulable pod pool Having appropriate QueueingHintFn contributes to reducing useless retries and thus improves the overall scheduler's performance. How can I migrate? For backward compatibility, nil QueueingHintFn is treated as always returning QueueAfterBackoff. So, if you want to just keep the existing behavior, you can register ClusterEventWithHint with no QueueingHintFn in it. But, registering appropriate QueueingHintFn is, of course, better from a scheduling performance perspective. - CephFS volume plugin (kubernetes.io/cephfs) has been deprecated in this release and will be removed in a subsequent release. The alternative is to use the CephFS CSI driver (https://github.com/ceph/ceph-csi/) in your Kubernetes cluster. - Deprecated support for CSI migration of Ceph RBD volumes. Users who were relying on Kubernetes' ability to migrate to an out-of-tree storage driver should complete that migration before the support for it is removed. - RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release and will be removed in a subsequent release. Alternative is to use RBD CSI driver (https://github.com/ceph/ceph-csi/) in your Kubernetes Cluster.\n[1.28] Changed kubectl version default output to be identical to what kubectl version --short printed, and removed --short flag entirely.\n[1.28] Kube-controller-manager deprecate --volume-host-cidr-denylist and --volume-host-allow-local-loopback flags.\n[1.28] Kubelet: The --azure-container-registry-config flag has been deprecated and will be removed in a future release, please use --image-credential-provider-config and --image-credential-provider-bin-dir to setup acr credential provider instead.\n[1.28] Removed tracking annotation from validation and defaulting.\n[1.28] Removed withdrawn feature NetworkPolicyStatus.\n[1.28] The deprecated flag --lock-object-namespace and --lock-object-name have been removed from kube-scheduler. Please use --leader-elect-resource-namespace and --leader-elect-resource-name or ComponentConfig instead to configure those parameters.\n[1.28] KMSv1 is deprecated and will only receive security updates going forward. Use KMSv2 instead. In a future release, Set --feature-gates=KMSv1=true to use the deprecated KMSv1 feature.\n[1.29] Stopped accepting component configuration for kube-proxy and kubelet during kubeadm upgrade plan --config. This was a legacy behavior that was not well supported for upgrades and could be used only at the plan stage to determine if the configuration for these components stored in the cluster needs manual version migration. In the future, kubeadm will attempt alternative component config migration approaches. - kubeadm: a separate \"super-admin.conf\" file is now deployed. The User in admin.conf is now bound to a new RBAC Group kubeadm:cluster-admins that has cluster-admin ClusterRole access. The User in super-admin.conf is now bound to the system:masters built-in super-powers / break-glass Group that can bypass RBAC. Before this change, the default admin.conf was bound to system:masters Group, which was undesired. Executing kubeadm init phase kubeconfig all or just kubeadm init will now generate the new super-admin.conf file. The cluster admin can then decide to keep the file present on a node host or move it to a safe location. kubadm certs renew will renew the certificate in super-admin.conf to one year if the file exists; if it does not exist a \"MISSING\" note will be printed. kubeadm upgrade apply for this release will migrate this particular node to the two file setup. Subsequent kubeadm releases will continue to optionally renew the certificate in super-admin.conf if the file exists on disk and if renew on upgrade is not disabled. kubeadm join --control-plane will now generate only an admin.conf file that has the less privileged User.\n[1.29] #### Additional documentation e.g., KEPs (Kubernetes Enhancement Proposals), usage docs, etc.:\n[1.29] Creation of new CronJob objects containing TZ or CRON_TZ in .spec.schedule, accidentally enabled in v1.22, is now disallowed. Use the .spec.timeZone field instead, supported in v1.25+ clusters in default configurations. See https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#unsupported-timezone-specification for more information.\n[1.29] Removed the networking alpha API ClusterCIDR.\n[*] This document describes the maximum version skew supported between various Kubernetes components. Specific cluster deployment tools may place additional restrictions on version skew.\n[*] Kubernetes versions are expressed as x.y.z, where x is the major version, y is the minor version, and z is the patch version, following Semantic Versioning terminology. For more information, see Kubernetes Release Versioning. The Kubernetes project maintains release branches for the most recent three minor releases ({{< skew latestVersion >}}, {{< skew prevMinorVersion >}}, {{< skew oldestMinorVersion >}}). Kubernetes 1.19 and newer receive approximately 1 year of patch support. Kubernetes 1.18 and older received approximately 9 months of patch support. Applicable fixes, including security fixes, may be backported to those three release branches, depending on severity and feasibility. Patch releases are cut from those branches at a regular cadence, plus additional urgent releases, when required. The Release Managers group owns this decision. For more information, see the Kubernetes patch releases page.\n[*] In highly-available (HA) clusters, the newest and oldest kube-apiserver instances must be within one minor version. Example:\n[*] newest kube-apiserver is at {{< skew currentVersion >}}\n[*] other kube-apiserver instances are supported at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}}\n[*] kubelet must not be newer than kube-apiserver.\n[*] kubelet may be up to three minor versions older than kube-apiserver (kubelet < 1.25 may only be up to two minor versions older than kube-apiserver).\n[*] Example:\n[*] kube-apiserver is at {{< skew currentVersion >}}\n[*] kubelet is supported at {{< skew currentVersion >}}, {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}}\n[*] {{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the allowed kubelet versions. {{</ note >}} Example:\n[*] kube-apiserver instances are at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}}\n[*] kubelet is supported at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\n[*] kube-proxy must not be newer than kube-apiserver.\n[*] kube-proxy may be up to three minor versions older than kube-apiserver (kube-proxy < 1.25 may only be up to two minor versions older than kube-apiserver).\n[*] kube-proxy may be up to three minor versions older or newer than the kubelet instance it runs alongside (kube-proxy < 1.25 may only be up to two minor versions older or newer than the kubelet instance it runs alongside).\n[*] kube-proxy is supported at {{< skew currentVersion >}}, {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}}\n[*] {{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the allowed kube-proxy versions. {{</ note >}} Example:\n[*] kube-proxy is supported at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\n[*] kube-controller-manager, kube-scheduler, and cloud-controller-manager must not be newer than the kube-apiserver instances they communicate with. They are expected to match the kube-apiserver minor version, but may be up to one minor version older (to allow live upgrades). Example:\n[*] kube-controller-manager, kube-scheduler, and cloud-controller-manager are supported at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}}\n[*] {{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, and these components can communicate with any kube-apiserver instance in the cluster (for example, via a load balancer), this narrows the allowed versions of these components. {{< /note >}} Example:\n[*] kube-controller-manager, kube-scheduler, and cloud-controller-manager communicate with a load balancer that can route to any kube-apiserver instance\n[*] kube-controller-manager, kube-scheduler, and cloud-controller-manager are supported at {{< skew currentVersionAddMinor -1 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\n[*] kubectl is supported within one minor version (older or newer) of kube-apiserver. Example:\n[*] kubectl is supported at {{< skew currentVersionAddMinor 1 >}}, {{< skew currentVersion >}}, and {{< skew currentVersionAddMinor -1 >}}\n[*] {{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the supported kubectl versions. {{< /note >}} Example:\n[*] kubectl is supported at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}} (other versions would be more than one minor version skewed from one of the kube-apiserver components)\n[*] The supported version skew between components has implications on the order in which components must be upgraded. This section describes the order in which components must be upgraded to transition an existing cluster from version {{< skew currentVersionAddMinor -1 >}} to version {{< skew currentVersion >}}. Optionally, when preparing to upgrade, the Kubernetes project recommends that you do the following to benefit from as many regression and bug fixes as possible during your upgrade:\n[*] Ensure that components are on the most recent patch version of your current minor version.\n[*] Upgrade components to the most recent patch version of the target minor version.\n[*] For example, if you're running version {{}}, ensure that you're on the most recent patch version. Then, upgrade to the most recent patch version of {{}}.\n[*] Pre-requisites:\n[*] In a single-instance cluster, the existing kube-apiserver instance is {{< skew currentVersionAddMinor -1 >}}\n[*] In an HA cluster, all kube-apiserver instances are at {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersion >}} (this ensures maximum skew of 1 minor version between the oldest and newest kube-apiserver instance)\n[*] The kube-controller-manager, kube-scheduler, and cloud-controller-manager instances that communicate with this server are at version {{< skew currentVersionAddMinor -1 >}} (this ensures they are not newer than the existing API server version, and are within 1 minor version of the new API server version)\n[*] kubelet instances on all nodes are at version {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersionAddMinor -2 >}} (this ensures they are not newer than the existing API server version, and are within 2 minor versions of the new API server version)\n[*] Registered admission webhooks are able to handle the data the new kube-apiserver instance will send them: * ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include any new versions of REST resources added in {{< skew currentVersion >}} (or use the matchPolicy: Equivalent option available in v1.15+) * The webhooks are able to handle any new versions of REST resources that will be sent to them, and any new fields added to existing versions in {{< skew currentVersion >}}\n[*] Upgrade kube-apiserver to {{< skew currentVersion >}} {{< note >}} Project policies for API deprecation and API change guidelines require kube-apiserver to not skip minor versions when upgrading, even in single-instance clusters. {{< /note >}}\n[*] The kube-apiserver instances these components communicate with are at {{< skew currentVersion >}} (in HA clusters in which these control plane components can communicate with any kube-apiserver instance in the cluster, all kube-apiserver instances must be upgraded before upgrading these components)\n[*] Upgrade kube-controller-manager, kube-scheduler, and cloud-controller-manager to {{< skew currentVersion >}}. There is no required upgrade order between kube-controller-manager, kube-scheduler, and cloud-controller-manager. You can upgrade these components in any order, or even simultaneously.\n[*] The kube-apiserver instances the kubelet communicates with are at {{< skew currentVersion >}}\n[*] Optionally upgrade kubelet instances to {{< skew currentVersion >}} (or they can be left at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, or {{< skew currentVersionAddMinor -3 >}}) {{< note >}} Before performing a minor version kubelet upgrade, drain pods from that node. In-place minor version kubelet upgrades are not supported. {{</ note >}} {{< warning >}} Running a cluster with kubelet instances that are persistently three minor versions behind kube-apiserver means they must be upgraded before the control plane can be upgraded. {{</ warning >}}\n[*] The kube-apiserver instances kube-proxy communicates with are at {{< skew currentVersion >}}\n[*] Optionally upgrade kube-proxy instances to {{< skew currentVersion >}} (or they can be left at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, or {{< skew currentVersionAddMinor -3 >}}) {{< warning >}} Running a cluster with kube-proxy instances that are persistently three minor versions behind kube-apiserver means they must be upgraded before the control plane can be upgraded. {{</ warning >}}",
+ "response": {
+  "risks": [
+   {
+    "path_name": "kubelet/container-runtime",
+    "risk_type": "removal",
+    "risk_level": "high",
+    "introduced_in": "1.24",
+    "primary_symbol": "dockershim",
+    "description": "Dockershim was removed from the kubelet. Nodes using Docker Engine as the runtime must move to a CRI-compliant runtime such as containerd or CRI-O (or cri-dockerd) before upgrading.",
+    "quote": "Docker runtime support using dockershim in the kubelet is now completely removed in 1.24."
+   },
+   {
+    "path_name": "serviceaccount/tokens",
+    "risk_type": "behavior change",
+    "risk_level": "high",
+    "introduced_in": "1.24",
+    "primary_symbol": "LegacyServiceAccountTokenNoAutoGeneration",
+    "description": "Secrets holding service account tokens are no longer auto-generated for each ServiceAccount. Workloads or tooling that read these secrets must use the TokenRequest API or create token Secrets manually.",
+    "quote": "When enabled, Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount."
+   },
+   {
+    "path_name": "scheduler/podTopologySpread",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "topologySpreadConstraints",
+    "description": "Skew calculations now exclude nodes that don't match node affinity or selector, which can make pods unschedulable.",
+    "quote": "This may lead to unschedulable pods if you previously had pods matching the spreading selector on those excluded nodes"
+   },
+   {
+    "path_name": "kubelet/flags",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "--experimental-check-node-capabilities-before-mount",
+    "description": "The kubelet flag was removed, so kubelet scripts and manifests that still pass it will fail.",
+    "quote": "Remove any use of --experimental-check-node-capabilities-before-mount from your kubelet scripts or manifests."
+   },
+   {
+    "path_name": "kubeadm/cri-socket",
+    "risk_type": "default change",
+    "risk_level": "high",
+    "introduced_in": "1.24",
+    "primary_symbol": "nodeRegistration.criSocket",
+    "description": "kubeadm now defaults to the containerd socket instead of Docker. It errors when several sockets are found and the field is empty. Config files should not reference the dockershim socket.",
+    "quote": "Kubeadm: default the kubeadm configuration to the containerd socket (Unix: unix:///var/run/containerd/containerd.sock, Windows: npipe:////./pipe/containerd-containerd) instead of the one for Docker."
+   },
+   {
+    "path_name": "kubeadm/config-api",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "kubeadm.k8s.io/v1beta2",
+    "description": "kubeadm v1beta2 config is deprecated. Migrate to v1beta3 with kubeadm config migrate.",
+    "quote": "kubeadm.k8s.io/v1beta2 has been deprecated and will be removed in a future release, possibly in 3 releases (one year)."
+   },
+   {
+    "path_name": "feature-gates/CSIMigrationRBD",
+    "risk_type": "configuration change",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "CSIMigrationRBD",
+    "description": "The feature gate name was corrected. Anyone who configured csiMigrationRBD must reconfigure it as CSIMigrationRBD.",
+    "quote": "users who have configured this feature gate as csiMigrationRBD has to reconfigure the same to CSIMigrationRBD from this release."
+   },
+   {
+    "path_name": "kubeadm/control-plane-labels-taints",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "node-role.kubernetes.io/master",
+    "description": "kubeadm upgrade apply removes the master label from control plane nodes and adds the control-plane taint. Workloads using node selectors or tolerations for the old label or taint must be adapted. The old taint is removed in 1.25.",
+    "quote": "For clusters that are being upgraded to 1.24 with kubeadm upgrade apply, the command will remove the label node-role.kubernetes.io/master from existing control plane nodes."
+   },
+   {
+    "path_name": "kube-apiserver/flags",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "--insecure-port",
+    "description": "The insecure address and port flags of kube-apiserver were removed. They had been inert since 1.20 but will now cause startup failures if present.",
+    "quote": "Kube-apiserver: the insecure address flags --address, --insecure-bind-address, --port and --insecure-port (inert since 1.20) are removed"
+   },
+   {
+    "path_name": "kube-controller-manager/flags",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "--address",
+    "description": "The kube-controller-manager insecure flags --address and --port were removed.",
+    "quote": "The insecure address flags --address and --port in kube-controller-manager have had no effect since v1.20 and are removed in v1.24."
+   },
+   {
+    "path_name": "kube-apiserver/flags",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "--master-count",
+    "description": "The master-count endpoint reconciler is deprecated in favor of the lease reconciler.",
+    "quote": "Kube-apiserver: the --master-count flag and --endpoint-reconciler-type=master-count reconciler are deprecated in favor of the lease reconciler"
+   },
+   {
+    "path_name": "kubeadm/kubelet-configmap",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "UnversionedKubeletConfigMap",
+    "description": "kubeadm switches to the unversioned kubelet-config ConfigMap and RBAC naming, and upgrades write only the new scheme.",
+    "quote": "during upgrade, kubeadm will only write the new scheme ConfigMap and RBAC objects."
+   },
+   {
+    "path_name": "service/annotations",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "tolerate-unready-endpoints",
+    "description": "The annotation was removed. Use Service.spec.publishNotReadyAddresses.",
+    "quote": "Remove tolerate-unready-endpoints annotation in Service deprecated from 1.11, use Service.spec.publishNotReadyAddresses instead."
+   },
+   {
+    "path_name": "feature-gates/proxy-redirects",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "ValidateProxyRedirects",
+    "description": "The ValidateProxyRedirects and StreamingProxyRedirects feature gates were removed, so setting them will fail.",
+    "quote": "Remove deprecated feature gates ValidateProxyRedirects and StreamingProxyRedirects"
+   },
+   {
+    "path_name": "client-go/exec-credential",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "client.authentication.k8s.io/v1alpha1",
+    "description": "The v1alpha1 ExecCredential API was removed. Credential plugins relying on it must be updated to v1.",
+    "quote": "The client.authentication.k8s.io/v1alpha1 ExecCredential has been removed."
+   },
+   {
+    "path_name": "node.k8s.io/RuntimeClass",
+    "risk_type": "api removal",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "node.k8s.io/v1alpha1",
+    "description": "The v1alpha1 RuntimeClass API is no longer served. Use node.k8s.io/v1.",
+    "quote": "The node.k8s.io/v1alpha1 RuntimeClass API is no longer served."
+   },
+   {
+    "path_name": "addons/dashboard",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "dashboard",
+    "description": "The dashboard cluster addon was removed and must be installed separately.",
+    "quote": "The cluster addon for dashboard was removed."
+   },
+   {
+    "path_name": "cloud-provider/vsphere",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "kube-system:vsphere-legacy-cloud-provider",
+    "description": "With vCenter credentials in a secret and the Zones feature in use, zone labels are set by KCM. The vsphere-legacy-cloud-provider must be allowed to update the node object.",
+    "quote": "For proper functioning kube-system:vsphere-legacy-cloud-provider should be allowed to update node object if vCenter credentials stored in secret and Zone feature used."
+   },
+   {
+    "path_name": "cloud-provider/vsphere",
+    "risk_type": "deprecation",
+    "risk_level": "medium",
+    "introduced_in": "1.24",
+    "primary_symbol": "vSphere",
+    "description": "vSphere releases below 7.0u2 are deprecated and become unsupported for the in-tree volume plugin in 1.25.",
+    "quote": "VSphere releases less than 7.0u2 are deprecated as of v1.24."
+   },
+   {
+    "path_name": "core/v1/Service",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "Service.Spec.LoadBalancerIP",
+    "description": "The field is deprecated. Use implementation-specific annotations.",
+    "quote": "Deprecated Service.Spec.LoadBalancerIP."
+   },
+   {
+    "path_name": "kubelet/flags",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "--pod-infra-container-image",
+    "description": "The kubelet flag is deprecated and will be removed.",
+    "quote": "The --pod-infra-container-image kubelet flag is deprecated and will be removed in future releases"
+   },
+   {
+    "path_name": "client-go/auth-plugins",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.24",
+    "primary_symbol": "in-tree Azure plugin",
+    "description": "The in-tree Azure auth plugin is deprecated. Use kubelogin.",
+    "quote": "The in-tree Azure plugin has been deprecated."
+   },
+   {
+    "path_name": "policy/v1beta1/PodSecurityPolicy",
+    "risk_type": "api removal",
+    "risk_level": "high",
+    "introduced_in": "1.25",
+    "primary_symbol": "PodSecurityPolicy",
+    "description": "PodSecurityPolicy and its admission plugin were removed. Migrate to Pod Security Admission or a third-party policy webhook before upgrading.",
+    "quote": "The beta PodSecurityPolicy admission plugin, deprecated since 1.21, is removed."
+   },
+   {
+    "path_name": "batch/v1beta1/CronJob",
+    "risk_type": "api removal",
+    "risk_level": "high",
+    "introduced_in": "1.25",
+    "primary_symbol": "CronJob",
+    "description": "batch/v1beta1 CronJob is no longer served. Migrate manifests and clients to batch/v1.",
+    "quote": "The batch/v1beta1 API version of CronJob is no longer served as of v1.25."
+   },
+   {
+    "path_name": "discovery.k8s.io/v1beta1/EndpointSlice",
+    "risk_type": "api removal",
+    "risk_level": "medium",
+    "introduced_in": "1.25",
+    "primary_symbol": "EndpointSlice",
+    "description": "discovery.k8s.io/v1beta1 EndpointSlice is no longer served. In v1, topology is replaced by nodeName, zone and deprecatedTopology.",
+    "quote": "The discovery.k8s.io/v1beta1 API version of EndpointSlice is no longer served as of v1.25."
+   },
+   {
+    "path_name": "events.k8s.io/v1beta1/Event",
+    "risk_type": "api removal",
+    "risk_level": "medium",
+    "introduced_in": "1.25",
+    "primary_symbol": "Event",
+    "description": "events.k8s.io/v1beta1 Event is no longer served. v1 renames fields and requires new ones when creating events.",
+    "quote": "The events.k8s.io/v1beta1 API version of Event is no longer served as of v1.25."
+   },
+   {
+    "path_name": "autoscaling/v2beta1/HorizontalPodAutoscaler",
+    "risk_type": "api removal",
+    "risk_level": "high",
+    "introduced_in": "1.25",
+    "primary_symbol": "HorizontalPodAutoscaler",
+    "description": "autoscaling/v2beta1 HPA is no longer served. Migrate to autoscaling/v2. targetAverageUtilization is replaced by target.averageUtilization.",
+    "quote": "The autoscaling/v2beta1 API version of HorizontalPodAutoscaler is no longer served as of v1.25."
+   },
+   {
+    "path_name": "policy/v1beta1/PodDisruptionBudget",
+    "risk_type": "api removal",
+    "risk_level": "high",
+    "introduced_in": "1.25",
+    "primary_symbol": "PodDisruptionBudget",
+    "description": "policy/v1beta1 PDB is no longer served. In policy/v1 an empty spec.selector selects all pods in the namespace, whereas in v1beta1 it selected none.",
+    "quote": "an empty spec.selector ({}) written to a policy/v1 PodDisruptionBudget selects all pods in the namespace (in policy/v1beta1 an empty spec.selector selected no pods)."
+   },
+   {
+    "path_name": "node.k8s.io/v1beta1/RuntimeClass",
+    "risk_type": "api removal",
+    "risk_level": "low",
+    "introduced_in": "1.25",
+    "primary_symbol": "RuntimeClass",
+    "description": "node.k8s.io/v1beta1 RuntimeClass is no longer served. Use node.k8s.io/v1.",
+    "quote": "RuntimeClass in the node.k8s.io/v1beta1 API version is no longer served as of v1.25."
+   },
+   {
+    "path_name": "kubelet/seccomp",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "1.25",
+    "primary_symbol": "seccomp.security.alpha.kubernetes.io/pod",
+    "description": "Alpha seccomp annotations are no longer supported by kubelets, and are no longer auto-populated. Use securityContext.seccompProfile.",
+    "quote": "Kubelets no longer support the annotations, use of the annotations in static pods is no longer supported, and the seccomp annotations are no longer auto-populated when pods with seccomp fields are created."
+   },
+   {
+    "path_name": "client-go/auth-plugins",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "1.25",
+    "primary_symbol": "gcp and azure auth plugins",
+    "description": "The gcp and azure auth plugins were removed from client-go and kubectl. Switch to kubelogin or the GKE auth plugin.",
+    "quote": "The gcp and azure auth plugins have been removed from client-go and kubectl."
+   },
+   {
+    "path_name": "kubeadm/kubelet-configmap",
+    "risk_type": "manual action",
+    "risk_level": "medium",
+    "introduced_in": "1.25",
+    "primary_symbol": "UnversionedKubeletConfigMap",
+    "description": "The feature gate is GA and locked on. Users who set UnversionedKubeletConfigMap=false must manually copy the versioned kubelet-config ConfigMap before upgrading.",
+    "quote": "you must manually copy the config map from kube-system/kubelet-config-x.yy to kube-system/kubelet-config before upgrading to v1.25."
+   },
+   {
+    "path_name": "kubeadm/imageRepository",
+    "risk_type": "default change",
+    "risk_level": "medium",
+    "introduced_in": "1.25",
+    "primary_symbol": "ClusterConfiguration.imageRepository",
+    "description": "kubeadm upgrade rewrites the legacy k8s.gcr.io image repository to registry.k8s.io. Air-gapped setups and registry allowlists need updating.",
+    "quote": "Admission/Policy integrations that have an allowlist of registries need to include registry.k8s.io alongside k8s.gcr.io."
+   },
+   {
+    "path_name": "storage/in-tree-plugins",
+    "risk_type": "removal",
+    "risk_level": "high",
+    "introduced_in": "1.25",
+    "primary_symbol": "flocker, quobyte, storageos",
+    "description": "The in-tree flocker, quobyte and storageos volume plugins were removed, so volumes using them must be migrated.",
+    "quote": "The intree volume plugin flocker support was completely removed from Kubernetes."
+   },
+   {
+    "path_name": "kube-apiserver/flags",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.25",
+    "primary_symbol": "--service-account-api-audiences",
+    "description": "The flag was removed. Use --api-audiences.",
+    "quote": "API server's deprecated --service-account-api-audiences flag was removed. Use --api-audiences instead."
+   },
+   {
+    "path_name": "kube-controller-manager/flags",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.25",
+    "primary_symbol": "deleting-pods-qps",
+    "description": "The kube-controller-manager flags deleting-pods-qps, deleting-pods-burst and register-retry-count were removed.",
+    "quote": "Kube-controller-manager: Removed flags deleting-pods-qps, deleting-pods-burst, and register-retry-count."
+   },
+   {
+    "path_name": "kube-proxy/windows",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.25",
+    "primary_symbol": "winkernel",
+    "description": "Windows kube-proxy no longer supports HNS v1 APIs.",
+    "quote": "Windows winkernel kube-proxy no longer supports Windows HNS v1 APIs."
+   },
+   {
+    "path_name": "flowcontrol.apiserver.k8s.io/v1beta1",
+    "risk_type": "api removal",
+    "risk_level": "medium",
+    "introduced_in": "1.26",
+    "primary_symbol": "FlowSchema",
+    "description": "v1beta1 FlowSchema and PriorityLevelConfiguration are no longer served. Migrate to a newer API version.",
+    "quote": "The flowcontrol.apiserver.k8s.io/v1beta1 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.26."
+   },
+   {
+    "path_name": "autoscaling/v2beta2/HorizontalPodAutoscaler",
+    "risk_type": "api removal",
+    "risk_level": "high",
+    "introduced_in": "1.26",
+    "primary_symbol": "HorizontalPodAutoscaler",
+    "description": "autoscaling/v2beta2 HPA is no longer served. Migrate to autoscaling/v2.",
+    "quote": "The autoscaling/v2beta2 API version of HorizontalPodAutoscaler is no longer served as of v1.26."
+   },
+   {
+    "path_name": "cloud-provider/openstack",
+    "risk_type": "removal",
+    "risk_level": "high",
+    "introduced_in": "1.26",
+    "primary_symbol": "in-tree OpenStack cloud provider",
+    "description": "The in-tree OpenStack cloud provider and cinder volume provider were removed. Use the external provider and CSI driver.",
+    "quote": "The in-tree cloud provider for OpenStack (and the cinder volume provider) has been removed."
+   },
+   {
+    "path_name": "storage/glusterfs",
+    "risk_type": "removal",
+    "risk_level": "high",
+    "introduced_in": "1.26",
+    "primary_symbol": "kubernetes.io/glusterfs",
+    "description": "The in-tree GlusterFS driver was removed. Volumes must be migrated beforehand.",
+    "quote": "Volumes must be migrated to an alternate storage solution before upgrading to v1.26."
+   },
+   {
+    "path_name": "kube-controller-manager/flags",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.26",
+    "primary_symbol": "pod-eviction-timeout",
+    "description": "The pod-eviction-timeout flag is deprecated and removed in 1.27 together with enable-taint-manager.",
+    "quote": "CLI flag pod-eviction-timeout is deprecated and will be removed together with enable-taint-manager in v1.27."
+   },
+   {
+    "path_name": "storage.k8s.io/v1beta1/CSIStorageCapacity",
+    "risk_type": "api removal",
+    "risk_level": "medium",
+    "introduced_in": "1.27",
+    "primary_symbol": "CSIStorageCapacity",
+    "description": "storage.k8s.io/v1beta1 CSIStorageCapacity is no longer served. Use storage.k8s.io/v1.",
+    "quote": "The storage.k8s.io/v1beta1 API version of CSIStorageCapacity is no longer served as of v1.27."
+   },
+   {
+    "path_name": "cloud-provider/aws",
+    "risk_type": "removal",
+    "risk_level": "high",
+    "introduced_in": "1.27",
+    "primary_symbol": "in-tree AWS cloud provider",
+    "description": "The in-tree AWS cloud provider and EBS plugin were removed. Use the external cloud provider and EBS CSI driver.",
+    "quote": "The in-tree cloud provider for AWS (and the EBS storage plugin) has now been removed."
+   },
+   {
+    "path_name": "feature-gates/IPv6DualStack",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.27",
+    "primary_symbol": "IPv6DualStack",
+    "description": "The IPv6DualStack gate for external cloud providers was removed. Stop setting it.",
+    "quote": "If you were still manually enabling it you must stop now."
+   },
+   {
+    "path_name": "kubelet/pod-phase",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "1.27",
+    "primary_symbol": "RestartPolicy=Always",
+    "description": "Pods now get a terminal phase on deletion, so pods with RestartPolicy=Always may reach Succeeded. Custom controllers may need adapting.",
+    "quote": "Users who maintain controllers which relied on the fact that pods with RestartPolicy=Always never enter the Succeeded phase may need to adapt their controllers."
+   },
+   {
+    "path_name": "kubelet/seccomp",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "1.27",
+    "primary_symbol": "seccomp.security.alpha.kubernetes.io/pod",
+    "description": "Alpha seccomp annotations are fully removed and no longer auto-populate seccomp fields. Use securityContext.seccompProfile.",
+    "quote": "The seccomp fields are no longer auto-populated when pods with seccomp annotations are created."
+   },
+   {
+    "path_name": "admission/SecurityContextDeny",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.27",
+    "primary_symbol": "SecurityContextDeny",
+    "description": "The SecurityContextDeny admission plugin is deprecated and will be removed.",
+    "quote": "The SecurityContextDeny admission plugin is going deprecated and will be removed in future versions."
+   },
+   {
+    "path_name": "scheduler/framework/EnqueueExtension",
+    "risk_type": "breaking change",
+    "risk_level": "high",
+    "introduced_in": "1.28",
+    "primary_symbol": "EventsToRegister",
+    "description": "For custom scheduler plugin developers, EventsToRegister now returns ClusterEventWithHint instead of ClusterEvent. Plugins must be updated.",
+    "quote": "The EventsToRegister in EnqueueExtension changed the return value from ClusterEvent to ClusterEventWithHint."
+   },
+   {
+    "path_name": "kubectl/version",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "1.28",
+    "primary_symbol": "kubectl version --short",
+    "description": "The --short flag was removed and the default output now matches the old short output. Scripts that parse output or pass --short may break.",
+    "quote": "Changed kubectl version default output to be identical to what kubectl version --short printed, and removed --short flag entirely."
+   },
+   {
+    "path_name": "kube-scheduler/flags",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "1.28",
+    "primary_symbol": "--lock-object-namespace",
+    "description": "The kube-scheduler flags --lock-object-namespace and --lock-object-name were removed. Use --leader-elect-resource-namespace and --leader-elect-resource-name.",
+    "quote": "The deprecated flag --lock-object-namespace and --lock-object-name have been removed from kube-scheduler."
+   },
+   {
+    "path_name": "networking/NetworkPolicyStatus",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "1.28",
+    "primary_symbol": "NetworkPolicyStatus",
+    "description": "The withdrawn NetworkPolicyStatus feature was removed.",
+    "quote": "Removed withdrawn feature NetworkPolicyStatus."
+   },
+   {
+    "path_name": "kms/encryption",
+    "risk_type": "deprecation",
+    "risk_level": "medium",
+    "introduced_in": "1.28",
+    "primary_symbol": "KMSv1",
+    "description": "KMSv1 is deprecated and receives only security updates. Plan migration to KMSv2.",
+    "quote": "KMSv1 is deprecated and will only receive security updates going forward. Use KMSv2 instead."
+   },
+   {
+    "path_name": "storage/cephfs-rbd",
+    "risk_type": "deprecation",
+    "risk_level": "medium",
+    "introduced_in": "1.28",
+    "primary_symbol": "kubernetes.io/rbd",
+    "description": "The in-tree CephFS and RBD volume plugins and RBD CSI migration are deprecated. Move to the Ceph CSI driver.",
+    "quote": "RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release and will be removed in a subsequent release."
+   },
+   {
+    "path_name": "kubelet/flags",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.28",
+    "primary_symbol": "--azure-container-registry-config",
+    "description": "The flag is deprecated. Use the image credential provider flags.",
+    "quote": "Kubelet: The --azure-container-registry-config flag has been deprecated and will be removed in a future release"
+   },
+   {
+    "path_name": "kube-controller-manager/flags",
+    "risk_type": "deprecation",
+    "risk_level": "low",
+    "introduced_in": "1.28",
+    "primary_symbol": "--volume-host-cidr-denylist",
+    "description": "Two kube-controller-manager volume host flags are deprecated.",
+    "quote": "Kube-controller-manager deprecate --volume-host-cidr-denylist and --volume-host-allow-local-loopback flags."
+   },
+   {
+    "path_name": "flowcontrol.apiserver.k8s.io/v1beta2",
+    "risk_type": "api removal",
+    "risk_level": "medium",
+    "introduced_in": "1.29",
+    "primary_symbol": "FlowSchema",
+    "description": "v1beta2 FlowSchema and PriorityLevelConfiguration are no longer served. Migrate to flowcontrol v1 or v1beta3.",
+    "quote": "The flowcontrol.apiserver.k8s.io/v1beta2 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.29."
+   },
+   {
+    "path_name": "flowcontrol.apiserver.k8s.io/v1/PriorityLevelConfiguration",
+    "risk_type": "field rename",
+    "risk_level": "low",
+    "introduced_in": "1.29",
+    "primary_symbol": "spec.limited.nominalConcurrencyShares",
+    "description": "assuredConcurrencyShares is renamed to nominalConcurrencyShares. In v1 an explicit 0 is no longer changed to 30.",
+    "quote": "The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares and only defaults to 30 when unspecified, and an explicit value of 0 is not changed to 30."
+   },
+   {
+    "path_name": "kubeadm/kubeconfig",
+    "risk_type": "behavior change",
+    "risk_level": "high",
+    "introduced_in": "1.29",
+    "primary_symbol": "super-admin.conf",
+    "description": "admin.conf is now bound to the kubeadm:cluster-admins group instead of system:masters, and a separate super-admin.conf is created. Workflows relying on the break-glass admin.conf privileges must be adjusted.",
+    "quote": "kubeadm: a separate \"super-admin.conf\" file is now deployed."
+   },
+   {
+    "path_name": "kubeadm/upgrade-plan",
+    "risk_type": "behavior change",
+    "risk_level": "low",
+    "introduced_in": "1.29",
+    "primary_symbol": "kubeadm upgrade plan --config",
+    "description": "kubeadm upgrade plan no longer accepts kube-proxy or kubelet component configuration via --config.",
+    "quote": "Stopped accepting component configuration for kube-proxy and kubelet during kubeadm upgrade plan --config."
+   },
+   {
+    "path_name": "batch/v1/CronJob",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "1.29",
+    "primary_symbol": ".spec.schedule",
+    "description": "Creating new CronJobs with TZ or CRON_TZ in .spec.schedule is now disallowed. Use .spec.timeZone.",
+    "quote": "Creation of new CronJob objects containing TZ or CRON_TZ in .spec.schedule, accidentally enabled in v1.22, is now disallowed."
+   },
+   {
+    "path_name": "networking.k8s.io/ClusterCIDR",
+    "risk_type": "api removal",
+    "risk_level": "low",
+    "introduced_in": "1.29",
+    "primary_symbol": "ClusterCIDR",
+    "description": "The alpha networking ClusterCIDR API was removed.",
+    "quote": "Removed the networking alpha API ClusterCIDR."
+   },
+   {
+    "path_name": "cluster/upgrade-process",
+    "risk_type": "process constraint",
+    "risk_level": "high",
+    "introduced_in": "*",
+    "primary_symbol": "kube-apiserver",
+    "description": "Upgrading from 1.23 to 1.29 requires sequential minor upgrades (1.24, 1.25, 1.26, 1.27, 1.28, 1.29) because kube-apiserver must not skip minor versions. Admission webhooks must handle new API versions. Kubelets must be drained before in-place minor upgrades.",
+    "quote": "Project policies for API deprecation and API change guidelines require kube-apiserver to not skip minor versions when upgrading, even in single-instance clusters."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 14286,
+  "output_tokens": 11277,
+  "stop_reason": "end_turn"
+ }
+}

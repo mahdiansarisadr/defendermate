@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"control-plane-noschedule-taint-removed-on-kubeadm-upgrade\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"kubeadm stops applying the node-role.kubernetes.io/master:NoSchedule taint to control plane nodes for new clusters and removes it from existing control plane nodes during kubeadm upgrade apply, so the control plane nodes no longer carry that taint after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.25 (from a version below 1.25 to 1.29).\",\n   \"quotes\": [\n    \"stop applying the node-role.kubernetes.io/master:NoSchedule taint to control plane nodes for new clusters\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The cluster is kubeadm-managed and its control plane nodes carry the node-role.kubernetes.io/master:NoSchedule taint before the upgrade.\",\n   \"quotes\": [\n    \"Remove the taint from existing control plane nodes during\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete behavior (kubeadm dropping the node-role.kubernetes.io/master:NoSchedule taint on control plane nodes during upgrade apply), which could let workloads schedule onto control plane nodes, and both quotes support the taint removal for new and existing clusters; the quotes do not state version 1.25 explicitly, but the risk is still checkable and genuine."
+ },
+ "usage": {
+  "input_tokens": 834,
+  "output_tokens": 149,
+  "stop_reason": "end_turn"
+ }
+}

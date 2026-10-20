@@ -1,0 +1,92 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Next.js. Upgrade being assessed: 12 -> 14.\nThis change was introduced in release 13. Source: Next.js 'How to upgrade to version 13' (current docs) (official_migration_guide). Section: Migrating shared features / <Link> Component.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"13\",\n  \"field\": \"node\",\n  \"value\": \">=14.6.0\",\n  \"source_id\": \"next_pkg@v13.0.0\",\n  \"json_path\": \"engines.node\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"react_peer\",\n  \"value\": \"^18.0.0-0\",\n  \"source_id\": \"next_pkg@v13.0.0\",\n  \"json_path\": \"peerDependencies.react\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"node\",\n  \"value\": \">=16.8.0\",\n  \"source_id\": \"next_pkg@v13.4.0\",\n  \"json_path\": \"engines.node\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"react_peer\",\n  \"value\": \"^18.2.0\",\n  \"source_id\": \"next_pkg@v13.4.0\",\n  \"json_path\": \"peerDependencies.react\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"node\",\n  \"value\": \">=16.14.0\",\n  \"source_id\": \"next_pkg@v13.5.0\",\n  \"json_path\": \"engines.node\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"react_peer\",\n  \"value\": \"^18.2.0\",\n  \"source_id\": \"next_pkg@v13.5.0\",\n  \"json_path\": \"peerDependencies.react\"\n }\n]\n\nITEM:\n<<<\nThe <Link> Component no longer requires manually adding an <a> tag as a child. This behavior was added as an experimental option in version 12.2 and is now the default. In Next.js 13, <Link> always renders <a> and allows you to forward props to the underlying tag. For example: import Link from 'next/link' // Next.js 12: <a> has to be nested otherwise it's excluded <Link href=\"/about\"> <a>About</a> </Link> // Next.js 13: <Link> always renders <a> under the hood <Link href=\"/about\"> About </Link>\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nMigrating shared features / <Link> Component: The <Link> Component no longer requires manually adding an <a> tag as a child. This behavior was added as an experimental option in version 12.2 and is now the default. In Next.js 13, <Link> always renders <a> and allows you to forward props to the underlying tag. For example: import Link from 'next/link' // Next.js 12: <a> has to be nested otherwise it's excluded <Link href=\"/about\"> <a>About</a> </Link> // Next.js 13: <Link> always renders <a> under the hood <Link href=\"/about\"> About </Link> To upgrade your links to Next.js 13, you can use the new-link codemod.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 14 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 13 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Link component nested anchor child",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "In Next.js 13, <Link> always renders <a>. Next.js 12 required the developer to nest an <a> tag as a child of <Link>; that child must be removed on upgrade so the app does not nest a second anchor under the element Link now renders.",
+    "primary_symbol": "Link",
+    "symbols": [
+     "Link",
+     "a",
+     "next/link"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 13, the release that introduced <Link> always rendering <a>.",
+      "category": "version",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Next.js 13",
+      "quotes": [
+       "In Next.js 13, <Link> always renders <a> and allows you to forward props to the underlying tag."
+      ],
+      "relevance": "Ties the <Link> behavior change to release 13, which the upgrade from 12 to 14 crosses.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application nests an <a> element as a child of a <Link> component.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "<a> child inside <Link>",
+      "quotes": [
+       "<a> has to be nested otherwise it's excluded"
+      ],
+      "relevance": "Nested <a> children are the Next.js 12 pattern that Next.js 13 no longer needs because <Link> renders <a> itself.",
+      "ambiguities": [
+       "The text does not state what happens to a nested <a> child in Next.js 13 or 14; it only states that Link always renders <a>."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "<Link[^>]*>\\s*<a[\\s>]"
+       }
+      ]
+     },
+     {
+      "statement": "The <Link> component always renders an <a> element under the hood in the upgraded version.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Link renders a",
+      "quotes": [
+       "<Link> always renders <a> under the hood"
+      ],
+      "relevance": "Confirms that the <a> tag is provided by <Link>, so a manually nested <a> is redundant after the upgrade.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Remove the nested <a> child from each <Link> and place the link text directly inside <Link>.",
+     "Forward any props that were on the nested <a> to <Link>, since Link now forwards props to the underlying tag.",
+     "Run the new-link codemod to upgrade links to the Next.js 13 form."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4143,
+  "output_tokens": 2418,
+  "stop_reason": "end_turn"
+ }
+}

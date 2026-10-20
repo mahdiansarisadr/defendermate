@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"CSS form media link tags no longer include type=\\\"text/css\\\"\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The type=\\\"text/css\\\" attribute is no longer rendered in <link> tags for CSS form media. Code, tests, or templates that depend on that attribute in rendered output (e.g. HTML string assertions or selectors) may break or differ.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, where the type attribute was removed from CSS form media link tags.\",\n   \"quotes\": [\n    \"The type=\\\"text/css\\\" attribute is no longer included in <link> tags for CSS form media.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application renders CSS form media (e.g. forms or widgets with Media css) and depends on the type=\\\"text/css\\\" attribute being present in the rendered <link> tags, such as in tests asserting HTML output or in CSS/JS selectors.\",\n   \"quotes\": [\n    \"The type=\\\"text/css\\\" attribute is no longer included in <link> tags for CSS form media.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports a concrete rendering change in CSS form media <link> tags that could break HTML string assertions or selectors, and a checker can search for dependence on type=\"text/css\" in tests or templates."
+ },
+ "usage": {
+  "input_tokens": 843,
+  "output_tokens": 89,
+  "stop_reason": "end_turn"
+ }
+}

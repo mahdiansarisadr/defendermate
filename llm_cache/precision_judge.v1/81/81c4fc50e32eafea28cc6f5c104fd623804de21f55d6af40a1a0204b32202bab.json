@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"CookieStorage pre-3.2 message format support removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"Django 4.1 removes support for the pre-Django 3.2 format of messages used by django.contrib.messages.storage.cookie.CookieStorage. Applications using CookieStorage could be affected if messages in the old format are still present, for example in cookies set before 3.2. The text does not state the exact failure mode.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, where support for the pre-3.2 CookieStorage message format is removed.\",\n   \"quotes\": [\n    \"Support for the pre-Django 3.2 format of messages used by django.contrib.messages.storage.cookie.CookieStorage is removed.\",\n    \"Support for the pre-Django 3.2 format of messages used by django.contrib.messages.storage.cookie.CookieStorage will be removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses django.contrib.messages.storage.cookie.CookieStorage as its message storage backend.\",\n   \"quotes\": [\n    \"django.contrib.messages.storage.cookie.CookieStorage\",\n    \"django.contrib.messages.storage.cookie.CookieStorage\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"Messages stored in the pre-Django 3.2 format may still exist, such as in cookies created before 3.2 and still unexpired.\",\n   \"quotes\": [\n    \"Support for the pre-Django 3.2 format of messages used by django.contrib.messages.storage.cookie.CookieStorage is removed.\",\n    \"Support for the pre-Django 3.2 format of messages\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (django.contrib.messages.storage.cookie.CookieStorage), a specific version boundary (Django 4.1), and a removal of pre-3.2 message format support that a checker can verify, though the exact failure mode is unstated."
+ },
+ "usage": {
+  "input_tokens": 1057,
+  "output_tokens": 423,
+  "stop_reason": "end_turn"
+ }
+}

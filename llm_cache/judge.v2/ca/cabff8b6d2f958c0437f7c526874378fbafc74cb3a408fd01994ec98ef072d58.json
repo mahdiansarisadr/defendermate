@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_14_where_the_2f92a2\",\n  \"claim\": \"The upgrade crosses release 14, where the intarray containment operator change was introduced.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Prevent the containment operators (<@ and @>) for intarray from using GiST indexes\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_the_intarray_contai_985e06\",\n  \"claim\": \"The application uses the intarray containment operators <@ or @>.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Prevent the containment operators (<@ and @>) for intarray from using GiST indexes\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_has_gist_indexes_that_were_c2f141\",\n  \"claim\": \"The database has GiST indexes that were created for intarray containment queries.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Indexes created for this purpose should be removed.\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_14_where_the_2f92a2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_the_intarray_contai_985e06",
+    "verdict": "partially_supported",
+    "missing": "The quote only describes a change to the containment operators; it does not establish that the application uses these operators, which is a hypothesis the downstream checker must test."
+   },
+   {
+    "condition_id": "the_database_has_gist_indexes_that_were_c2f141",
+    "verdict": "partially_supported",
+    "missing": "The quote says indexes created for this purpose should be removed, but does not establish that the database has any GiST indexes created for intarray containment queries."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1227,
+  "output_tokens": 238,
+  "stop_reason": "end_turn"
+ }
+}

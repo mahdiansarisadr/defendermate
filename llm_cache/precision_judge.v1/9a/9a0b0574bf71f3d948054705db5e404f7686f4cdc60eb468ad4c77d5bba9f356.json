@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom server parameter names with characters invalid in unquoted SQL identifiers\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 14, custom server parameter names must use only characters valid in unquoted SQL identifiers. The text does not state what happens to existing names that do not comply.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where custom server parameter names were required to use only characters valid in unquoted SQL identifiers.\",\n   \"quotes\": [\n    \"Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses custom server parameter names that contain characters not valid in unquoted SQL identifiers.\",\n   \"quotes\": [\n    \"Require custom server parameter names to use only characters\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The text does not state the effect on existing custom parameter names that violate the restriction after upgrading to release 16.\",\n   \"quotes\": [\n    \"Require custom server parameter names to use only characters\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports a concrete release-14 behavior change (custom server parameter names restricted to unquoted SQL identifier characters) that could break deployments using non-compliant names, and a checker can look for such names, though the effect on existing names is honestly flagged as unstated."
+ },
+ "usage": {
+  "input_tokens": 860,
+  "output_tokens": 107,
+  "stop_reason": "end_turn"
+ }
+}

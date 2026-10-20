@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_the_release_in_which_0cc1ea\",\n  \"claim\": \"The upgrade crosses the release in which the kubelet/kube-apiserver version skew statement applies.\",\n  \"evidence\": [\n   {\n    \"quote\": \"kubelet must not be newer than kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"kubelet may be up to three minor versions older than kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"Optionally upgrade kubelet instances to {{< skew currentVersion >}}\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"Running a cluster with kubelet instances that are persistently three minor versions behind kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_kubelet_version_is_within_three_mino_d4ebdd\",\n  \"claim\": \"The kubelet version is within three minor versions of the kube-apiserver version.\",\n  \"evidence\": [\n   {\n    \"quote\": \"kubelet may be up to three minor versions older than kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"kubelet < 1.25 may only be up to two minor versions older than kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"Before performing a minor version kubelet upgrade, drain pods from that node.\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"In-place minor version kubelet upgrades are not supported.\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"Running a cluster with kubelet instances that are persistently three minor versions behind kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_kubelet_version_is_below_1_25_215528\",\n  \"claim\": \"The kubelet version is below 1.25.\",\n  \"evidence\": [\n   {\n    \"quote\": \"kubelet < 1.25 may only be up to two minor versions older than kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_the_release_in_which_0cc1ea",
+    "verdict": "partially_supported",
+    "missing": "The quotes state the kubelet/kube-apiserver skew rules but do not identify a specific release in which the statement applies; the claim's assertion that the upgrade crosses that release is not established by the quotes."
+   },
+   {
+    "condition_id": "the_kubelet_version_is_within_three_mino_d4ebdd",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_kubelet_version_is_below_1_25_215528",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1721,
+  "output_tokens": 1187,
+  "stop_reason": "end_turn"
+ }
+}

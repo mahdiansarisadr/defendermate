@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"SuccessURLAllowedHostsMixin replaced by RedirectURLMixin\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented django.contrib.auth.views.SuccessURLAllowedHostsMixin mixin is replaced by RedirectURLMixin in 4.1. Code that imports or subclasses SuccessURLAllowedHostsMixin will need to switch to RedirectURLMixin.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where the mixin was replaced.\",\n   \"quotes\": [\n    \"The undocumented django.contrib.auth.views.SuccessURLAllowedHostsMixin mixin is replaced by RedirectURLMixin.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application imports or uses django.contrib.auth.views.SuccessURLAllowedHostsMixin (e.g. as a base class of custom views).\",\n   \"quotes\": [\n    \"The undocumented django.contrib.auth.views.SuccessURLAllowedHostsMixin mixin is replaced by RedirectURLMixin.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states SuccessURLAllowedHostsMixin is replaced by RedirectURLMixin, which names a concrete API a checker can grep for, and code importing or subclassing it could break, though the quote itself does not state the 4.1 version or that the replacement is a removal."
+ },
+ "usage": {
+  "input_tokens": 877,
+  "output_tokens": 111,
+  "stop_reason": "end_turn"
+ }
+}

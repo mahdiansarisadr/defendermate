@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"argon2-cffi minimum version raised to 19.2.0\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.2 raises the minimum supported version of argon2-cffi from 19.1.0 to 19.2.0. Deployments that have argon2-cffi installed at a version older than 19.2.0 (for example, for Argon2 password hashing) fall below the supported minimum after upgrading.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which raises the minimum supported argon2-cffi version.\",\n   \"quotes\": [\n    \"The minimum supported version of argon2-cffi is increased from 19.1.0 to 19.2.0.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project or deployment has argon2-cffi installed at a version below 19.2.0.\",\n   \"quotes\": [\n    \"The minimum supported version of argon2-cffi is increased from 19.1.0 to 19.2.0.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The quote supports only the change in the supported minimum from 19.1.0 to 19.2.0, not a concrete breakage or migration need, and the second required condition about a deployment having an older installed argon2-cffi is not backed by any quote."
+ },
+ "usage": {
+  "input_tokens": 815,
+  "output_tokens": 788,
+  "stop_reason": "end_turn"
+ }
+}

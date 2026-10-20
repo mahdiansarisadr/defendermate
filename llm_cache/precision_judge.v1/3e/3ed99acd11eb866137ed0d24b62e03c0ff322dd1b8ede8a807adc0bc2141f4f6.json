@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"blocktranslate asvar output now marked safe\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The result of {% blocktranslate asvar ... %} is now marked as safe for HTML output purposes. Templates that use asvar with blocktranslate will no longer have the variable autoescaped on output, which can change rendered HTML (and potentially introduce unescaped content if the translated block contains unsafe values).\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which introduced the changed blocktranslate asvar behavior.\",\n   \"quotes\": [\n    \"{% blocktranslate asvar ... %} result is now marked as safe for (HTML) output purposes.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Templates use the {% blocktranslate %} tag with the asvar option.\",\n   \"quotes\": [\n    \"{% blocktranslate asvar ... %} result is now marked as safe for (HTML) output purposes.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The asvar variable is output in HTML templates, where the new safe marking changes escaping behavior.\",\n   \"quotes\": [\n    \"{% blocktranslate asvar ... %} result is now marked as safe for (HTML) output purposes.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports that the {% blocktranslate asvar ... %} result is now marked safe for HTML output, which is a concrete behavior change that can alter escaping, and the path names a specific tag and option that can be searched for in templates."
+ },
+ "usage": {
+  "input_tokens": 916,
+  "output_tokens": 97,
+  "stop_reason": "end_turn"
+ }
+}

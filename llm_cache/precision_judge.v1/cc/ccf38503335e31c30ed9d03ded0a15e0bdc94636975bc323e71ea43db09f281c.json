@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Suspense fallback={undefined} no longer ignored\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In React 18, Suspense with fallback={undefined} now behaves the same as fallback={null} and is no longer ignored. Apps that pass an undefined fallback (explicitly or via an undefined variable/prop) may see different loading behavior after upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 18, where Suspense fallback={undefined} behavior changed.\",\n   \"quotes\": [\n    \"Suspense fallback={undefined} now behaves the same as null and isn't ignored.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application renders Suspense with a fallback prop that is undefined (explicitly or via an undefined value).\",\n   \"quotes\": [\n    \"Suspense fallback={undefined} now behaves the same as null and isn't ignored.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly states that Suspense fallback={undefined} now behaves like null and is no longer ignored in React 18, which is a concrete behavior change affecting apps that pass an undefined fallback, and the condition about undefined fallbacks is checkable in code."
+ },
+ "usage": {
+  "input_tokens": 786,
+  "output_tokens": 105,
+  "stop_reason": "end_turn"
+ }
+}

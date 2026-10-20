@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Query.add_annotation() is_summary argument removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The is_summary argument of the undocumented Query.add_annotation() method is removed in Django 4.2. Code that calls Query.add_annotation() and passes is_summary will break. Because the method is undocumented, the affected code is most likely to be custom ORM internals or third-party libraries.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which removes the is_summary argument of Query.add_annotation().\",\n   \"quotes\": [\n    \"The is_summary argument of the undocumented Query.add_annotation() method is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application code or a third-party library calls Query.add_annotation() and passes the is_summary argument.\",\n   \"quotes\": [\n    \"The is_summary argument of the undocumented Query.add_annotation() method is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states the is_summary argument of Query.add_annotation() is removed, so callers passing it would break; it names a concrete API and argument that can be searched for, and the quote supports both conditions."
+ },
+ "usage": {
+  "input_tokens": 797,
+  "output_tokens": 83,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PBKDF2 password hasher default iteration count increased\",\n \"risk_type\": \"changed_default\",\n \"description\": \"The default iteration count for the PBKDF2 password hasher increases from 390,000 to 600,000 in Django 4.2. Applications that use the PBKDF2 hasher with its default iteration count get the new value after the upgrade. The text does not state any further effects.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which changes the PBKDF2 default iteration count.\",\n   \"quotes\": [\n    \"The default iteration count for the PBKDF2 password hasher is increased from 390,000 to 600,000.\",\n    \"The default iteration count for the PBKDF2 password hasher is increased from 260,000 to 320,000.\",\n    \"The default iteration count for the PBKDF2 password hasher is increased from 320,000 to 390,000.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses the PBKDF2 password hasher and relies on its default iteration count.\",\n   \"quotes\": [\n    \"The default iteration count for the PBKDF2 password hasher is increased from 390,000 to 600,000.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Code, tests or configuration depend on the previous iteration count of 390,000.\",\n   \"quotes\": [\n    \"increased from 390,000 to 600,000\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The application overrides the iterations value in a custom PBKDF2 hasher subclass, so the new default may not apply.\",\n   \"quotes\": [\n    \"The default iteration count for the PBKDF2 password hasher is increased from 390,000 to 600,000.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted release-note text supports a concrete changed default (PBKDF2 iterations rising from 390,000 to 600,000 in 4.2, after earlier increases from 3.2's 260,000), which changes hashing cost and any hard-coded iteration expectations, though the disqualifying and optional conditions are only weakly backed by their quotes."
+ },
+ "usage": {
+  "input_tokens": 1062,
+  "output_tokens": 495,
+  "stop_reason": "end_turn"
+ }
+}

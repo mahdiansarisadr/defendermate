@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"jinja2 minimum version raised to 2.11.0\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.2 raises the minimum supported version of jinja2 from 2.9.2 to 2.11.0. Deployments using Django's Jinja2 template backend with an older jinja2 version fall below the supported minimum.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which raises the minimum supported jinja2 version.\",\n   \"quotes\": [\n    \"The minimum supported version of jinja2 is increased from 2.9.2 to 2.11.0.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project installs jinja2 at a version lower than 2.11.0.\",\n   \"quotes\": [\n    \"The minimum supported version of jinja2 is increased from 2.9.2 to 2.11.0.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote names a concrete dependency change (jinja2 minimum raised from 2.9.2 to 2.11.0) that a checker can verify against installed versions, but the quote does not show that this change lands in 4.2 specifically, and the second condition simply repeats the same quote without evidence of the project's installed jinja2 version or use of the Jinja2 template backend."
+ },
+ "usage": {
+  "input_tokens": 779,
+  "output_tokens": 888,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"RssFeed/Atom1Feed empty elements now self-closing\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Since Django 4.0, RssFeed, Atom1Feed, and their subclasses emit elements with no content as self-closing tags. Feed output for empty elements changes in form, which could affect consumers or tests that compare the generated XML textually.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where the feed output change was introduced (3.2 -> 4.2).\",\n   \"quotes\": [\n    \"RssFeed, Atom1Feed, and their subclasses now emit elements with no content as self-closing tags.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses RssFeed, Atom1Feed, or a subclass of either to generate feeds.\",\n   \"quotes\": [\n    \"RssFeed, Atom1Feed, and their subclasses now emit elements with no content as self-closing tags.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Code or tests compare generated feed XML textually, or a consumer parses it in a way sensitive to self-closing versus open/close empty tags.\",\n   \"quotes\": [\n    \"emit elements with no content as self-closing tags\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete APIs (RssFeed, Atom1Feed and subclasses) and a checkable behavior change (empty elements emitted as self-closing tags), and the quoted text directly supports it, though the 4.0 version attribution is inferred rather than stated in the quotes and the impact is limited to textual XML comparisons."
+ },
+ "usage": {
+  "input_tokens": 909,
+  "output_tokens": 130,
+  "stop_reason": "end_turn"
+ }
+}

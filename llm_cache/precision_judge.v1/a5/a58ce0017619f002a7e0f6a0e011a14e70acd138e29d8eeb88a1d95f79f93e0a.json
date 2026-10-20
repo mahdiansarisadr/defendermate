@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PostGIS 2.3 support removed in Django 4.0\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.0 removed support for PostGIS 2.3. Deployments using django.contrib.gis with a PostGIS 2.3 spatial database are no longer supported on Django 4.0 and later, including 4.2, and need a newer PostGIS version.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, in which PostGIS 2.3 support was removed.\",\n   \"quotes\": [\n    \"Support for PostGIS 2.3 is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses a PostGIS 2.3 database as the spatial backend for django.contrib.gis.\",\n   \"quotes\": [\n    \"Support for PostGIS 2.3 is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted line 'Support for PostGIS 2.3 is removed' directly supports a concrete, checkable dependency requirement (PostGIS 2.3 with django.contrib.gis), though the quotes do not explicitly confirm that support stays absent in 4.2 or that a newer PostGIS is required."
+ },
+ "usage": {
+  "input_tokens": 787,
+  "output_tokens": 596,
+  "stop_reason": "end_turn"
+ }
+}

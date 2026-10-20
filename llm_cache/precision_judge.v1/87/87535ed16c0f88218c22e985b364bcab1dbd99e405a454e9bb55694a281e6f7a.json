@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Third-party database backend overrides date/time DatabaseOperations methods with old field_name signatures\",\n \"risk_type\": \"removed_api\",\n \"description\": \"In Django 4.1, several date and time methods on DatabaseOperations take sql and params arguments instead of field_name and return a 2-tuple of SQL and parameters. Third-party database backends (or custom code) that define or call these methods with the old signature or return a single SQL string need updating.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where these DatabaseOperations methods changed signature and return value.\",\n   \"quotes\": [\n    \"Several date and time methods on DatabaseOperations now take sql and params arguments instead of field_name\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project contains or uses a custom or third-party database backend whose DatabaseOperations overrides or calls the changed date/time methods.\",\n   \"quotes\": [\n    \"This section describes changes that may be needed in third-party database backends.\",\n    \"DatabaseOperations.date_extract_sql(lookup_type, sql, params)\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The project uses only Django's built-in database backends and does not override or call these methods.\",\n   \"quotes\": [\n    \"This section describes changes that may be needed in third-party database backends.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a genuine 4.1 change in which DatabaseOperations date/time methods take sql and params instead of field_name, which can break third-party backends, and the risk names a concrete API (DatabaseOperations.date_extract_sql(lookup_type, sql, params)) that can be checked."
+ },
+ "usage": {
+  "input_tokens": 933,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}

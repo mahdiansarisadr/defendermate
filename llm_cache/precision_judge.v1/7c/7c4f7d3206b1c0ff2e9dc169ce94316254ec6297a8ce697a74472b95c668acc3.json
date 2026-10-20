@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed django.utils.http urlquote/urlunquote helpers\",\n \"risk_type\": \"removed_api\",\n \"description\": \"django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() are removed in Django 4.0. Application code that imports or calls them will fail (ImportError/AttributeError) after upgrading from 3.2 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where these functions are removed (3.2 -> 4.2).\",\n   \"quotes\": [\n    \"are removed in Django 4.0\",\n    \"django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() will be removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code uses any of django.utils.http.urlquote, urlquote_plus, urlunquote or urlunquote_plus.\",\n   \"quotes\": [\n    \"django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() are removed.\",\n    \"django.utils.http.urlquote(), urlquote_plus(), urlunquote(), and urlunquote_plus() will be removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete removed functions (django.utils.http urlquote, urlquote_plus, urlunquote, urlunquote_plus) removed in Django 4.0, which falls within the 3.2 to 4.2 upgrade range, and the required condition that application code uses them is directly checkable by searching the codebase."
+ },
+ "usage": {
+  "input_tokens": 905,
+  "output_tokens": 124,
+  "stop_reason": "end_turn"
+ }
+}

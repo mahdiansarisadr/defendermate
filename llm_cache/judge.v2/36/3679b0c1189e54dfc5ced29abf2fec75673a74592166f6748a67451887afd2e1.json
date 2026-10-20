@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_1_29_where_c_05e09d\",\n  \"claim\": \"The upgrade crosses release 1.29, where creation of CronJobs with TZ or CRON_TZ in .spec.schedule becomes disallowed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Creation of new CronJob objects containing TZ or CRON_TZ in .spec.schedule, accidentally enabled in v1.22, is now disallowed.\",\n    \"source\": \"Kubernetes v1.29.0 CHANGELOG\",\n    \"release_of_change\": \"1.29\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_creates_or_applies_cronj_23ad30\",\n  \"claim\": \"The application creates or applies CronJob objects whose .spec.schedule contains TZ or CRON_TZ.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Creation of new CronJob objects containing TZ or CRON_TZ in .spec.schedule\",\n    \"source\": \"Kubernetes v1.29.0 CHANGELOG\",\n    \"release_of_change\": \"1.29\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_cronjob_uses_the_spec_timezone_field_84de63\",\n  \"claim\": \"The CronJob uses the .spec.timeZone field instead of a TZ or CRON_TZ prefix in .spec.schedule.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Use the .spec.timeZone field instead\",\n    \"source\": \"Kubernetes v1.29.0 CHANGELOG\",\n    \"release_of_change\": \"1.29\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_spec_timezone_replacement_is_support_2c2e74\",\n  \"claim\": \"The .spec.timeZone replacement is supported only on clusters in v1.25 or later with default configurations.\",\n  \"evidence\": [\n   {\n    \"quote\": \"supported in v1.25+ clusters in default configurations\",\n    \"source\": \"Kubernetes v1.29.0 CHANGELOG\",\n    \"release_of_change\": \"1.29\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_1_29_where_c_05e09d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_creates_or_applies_cronj_23ad30",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_cronjob_uses_the_spec_timezone_field_84de63",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_spec_timezone_replacement_is_support_2c2e74",
+    "verdict": "partially_supported",
+    "missing": "The quote gives v1.25+ and default configurations as conditions of support but does not say the replacement is supported only under these conditions; the exclusivity implied by 'only' is not stated."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1486,
+  "output_tokens": 851,
+  "stop_reason": "end_turn"
+ }
+}

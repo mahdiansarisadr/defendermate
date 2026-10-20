@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed feature gates ValidateProxyRedirects and StreamingProxyRedirects\",\n \"risk_type\": \"configuration_change\",\n \"description\": \"Feature gates ValidateProxyRedirects and StreamingProxyRedirects were removed in 1.24. Clusters that set these gates in their configuration may need that configuration changed. The text does not state what happens when a removed gate is still set.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.24, where the feature gates are removed.\",\n   \"quotes\": [\n    \"Remove deprecated feature gates ValidateProxyRedirects and StreamingProxyRedirects\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The cluster configuration sets feature gate ValidateProxyRedirects or StreamingProxyRedirects.\",\n   \"quotes\": [\n    \"Remove deprecated feature gates ValidateProxyRedirects and StreamingProxyRedirects\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"Setting a removed feature gate causes a failure or is ignored after the upgrade.\",\n   \"quotes\": [\n    \"Remove deprecated feature gates ValidateProxyRedirects and StreamingProxyRedirects\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names two concrete feature gates whose removal is supported by the quote, and a checker can look for them in component configuration, though the quote does not say which release removed them or what happens when a removed gate is still set (the description admits this)."
+ },
+ "usage": {
+  "input_tokens": 913,
+  "output_tokens": 92,
+  "stop_reason": "end_turn"
+ }
+}

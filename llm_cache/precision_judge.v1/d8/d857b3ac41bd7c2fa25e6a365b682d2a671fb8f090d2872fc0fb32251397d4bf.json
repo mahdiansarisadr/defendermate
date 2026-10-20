@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Regex character class with \\\\w as range start or end\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Regular expressions that use \\\\w as a range start or end inside a character class are no longer allowed in PostgreSQL 14 and later. The text states this previously was allowed but produced unexpected results.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where \\\\w as a range start or end in regex character classes is disallowed.\",\n   \"quotes\": [\n    \"Disallow \\\\w as a range start or end in regular expression character classes\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses a regular expression with \\\\w as a range start or end inside a character class.\",\n   \"quotes\": [\n    \"Disallow \\\\w as a range start or end in regular expression character classes\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports a concrete behavior change (PG14 disallows \\w as a range start or end in regex character classes), which falls within the 13->16 upgrade and can cause regex errors, and a checker can search for patterns like [\\w-x]; the description's claim that it previously gave unexpected results is a minor addition not in the quotes but does not undermine the risk."
+ },
+ "usage": {
+  "input_tokens": 749,
+  "output_tokens": 140,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"django-admin.py entry point removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The django-admin.py entry point is removed in Django 4.0. Scripts, deployment tooling, or documentation that invoke django-admin.py will break after upgrading past 4.0 and must be updated. The text does not name the replacement.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.0, where the django-admin.py entry point is removed.\",\n   \"quotes\": [\n    \"The django-admin.py entry point is removed.\",\n    \"The django-admin.py entry point will be removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Scripts, Dockerfiles, CI configs, Makefiles, or docs invoke django-admin.py.\",\n   \"quotes\": [\n    \"The django-admin.py entry point is removed.\",\n    \"The django-admin.py entry point will be removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted text supports that the django-admin.py entry point is removed around Django 4.0, a concrete, checkable change that breaks scripts or tooling invoking it, though the second condition's quotes only restate the removal rather than evidencing such invocations."
+ },
+ "usage": {
+  "input_tokens": 787,
+  "output_tokens": 435,
+  "stop_reason": "end_turn"
+ }
+}

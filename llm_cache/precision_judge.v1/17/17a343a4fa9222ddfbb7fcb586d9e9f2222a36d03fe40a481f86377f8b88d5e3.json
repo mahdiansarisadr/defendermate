@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"setUpTestData() class attributes that cannot be deep-copied\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Django 4.1 removes support for assigning objects that cannot be copied with copy.deepcopy() to class attributes in TestCase.setUpTestData(). Test classes that assign such non-deepcopy-able objects will no longer be supported after the upgrade crosses 4.1.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where support for non-deepcopy-able objects in setUpTestData() is removed.\",\n   \"quotes\": [\n    \"Support for assigning objects which don't support creating deep copies with copy.deepcopy() to class attributes in TestCase.setUpTestData() will be removed.\",\n    \"Support for assigning objects which don't support creating deep copies with copy.deepcopy() to class attributes in TestCase.setUpTestData() is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Test code defines TestCase.setUpTestData() and assigns objects to class attributes in it.\",\n   \"quotes\": [\n    \"class attributes in TestCase.setUpTestData()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Objects assigned to class attributes in setUpTestData() do not support copy.deepcopy().\",\n   \"quotes\": [\n    \"objects which don't support creating deep copies with copy.deepcopy()\",\n    \"objects which don't support creating deep copies with copy.deepcopy()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Test code defines TestCase.setUpTestData() and assigns objects to class attributes in it.\",\n   \"quotes\": [\n    \"class attributes in TestCase.setUpTestData()\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support that Django 4.1 removes support for assigning non-deepcopy-able objects to class attributes in TestCase.setUpTestData(), a concrete API that can break affected tests when upgrading 3.2 to 4.2, though one condition is duplicated."
+ },
+ "usage": {
+  "input_tokens": 1079,
+  "output_tokens": 111,
+  "stop_reason": "end_turn"
+ }
+}

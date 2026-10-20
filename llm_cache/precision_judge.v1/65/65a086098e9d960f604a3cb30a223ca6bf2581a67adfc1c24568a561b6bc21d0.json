@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"LogoutView.get_next_page() renamed to get_success_url()\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented LogoutView.get_next_page() method is renamed to get_success_url() in 4.1. Code that calls or overrides get_next_page() on LogoutView or a subclass must use the new name. The release notes do not say whether the old name keeps working.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where LogoutView.get_next_page() is renamed to get_success_url().\",\n   \"quotes\": [\n    \"LogoutView.get_next_page() method is renamed to get_success_url()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls or overrides LogoutView.get_next_page(), for example in a LogoutView subclass.\",\n   \"quotes\": [\n    \"The undocumented LogoutView.get_next_page() method is renamed to get_success_url().\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes confirm that LogoutView.get_next_page() is renamed to get_success_url() (a concrete API) and that it is undocumented, so overriding or calling it in a subclass could break, and the description explicitly avoids claiming whether the old name keeps working."
+ },
+ "usage": {
+  "input_tokens": 800,
+  "output_tokens": 107,
+  "stop_reason": "end_turn"
+ }
+}

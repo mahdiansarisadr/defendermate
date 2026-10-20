@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Creating new CronJobs with TZ or CRON_TZ in .spec.schedule\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Creation of new CronJob objects whose .spec.schedule contains TZ or CRON_TZ is disallowed in 1.29. Manifests or tooling that create such CronJobs will fail when creating them on a 1.29 cluster.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.29, where creation of CronJobs with TZ or CRON_TZ in .spec.schedule becomes disallowed.\",\n   \"quotes\": [\n    \"Creation of new CronJob objects containing TZ or CRON_TZ in .spec.schedule, accidentally enabled in v1.22, is now disallowed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application creates or applies CronJob objects whose .spec.schedule contains TZ or CRON_TZ.\",\n   \"quotes\": [\n    \"Creation of new CronJob objects containing TZ or CRON_TZ in .spec.schedule\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The CronJob uses the .spec.timeZone field instead of a TZ or CRON_TZ prefix in .spec.schedule.\",\n   \"quotes\": [\n    \"Use the .spec.timeZone field instead\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The .spec.timeZone replacement is supported only on clusters in v1.25 or later with default configurations.\",\n   \"quotes\": [\n    \"supported in v1.25+ clusters in default configurations\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted evidence states that creating new CronJobs with TZ or CRON_TZ in .spec.schedule is disallowed in the 1.29 range, which is a concrete breaking change, and the conditions name checkable fields (.spec.schedule, TZ, CRON_TZ, .spec.timeZone) with supporting quotes."
+ },
+ "usage": {
+  "input_tokens": 1045,
+  "output_tokens": 132,
+  "stop_reason": "end_turn"
+ }
+}

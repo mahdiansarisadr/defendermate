@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"multiple CRI sockets on host with empty criSocket during cluster creation\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"When criSocket is empty during cluster creation and multiple sockets are found on the host, kubeadm now always throws an error instead of choosing one.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.24, where the kubeadm CRI socket behavior changed.\",\n   \"quotes\": [\n    \"Kubeadm: default the kubeadm configuration to the containerd socket\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The criSocket field is empty in the kubeadm configuration while cluster creation runs on a host where multiple sockets exist.\",\n   \"quotes\": [\n    \"If the Init|JoinConfiguration.nodeRegistration.criSocket field is empty during cluster creation and multiple sockets are found on the host\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete setting (nodeRegistration.criSocket empty with multiple sockets on host) and a behavior change to always erroring, and the second quote directly supports the condition; the first quote about defaulting to the containerd socket is only loosely tied to the 1.24 crossing but the risk is still checkable and genuine for kubeadm users."
+ },
+ "usage": {
+  "input_tokens": 789,
+  "output_tokens": 135,
+  "stop_reason": "end_turn"
+ }
+}

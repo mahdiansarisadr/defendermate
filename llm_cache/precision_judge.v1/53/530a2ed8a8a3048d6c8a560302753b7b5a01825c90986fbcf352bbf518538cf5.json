@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"mysqlclient minimum version raised to 1.4.3\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.2 raises the minimum supported version of mysqlclient from 1.4.0 to 1.4.3. Deployments using mysqlclient older than 1.4.3 (e.g. 1.4.0 to 1.4.2) are below the supported minimum and need the dependency upgraded.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which raises the minimum supported mysqlclient version.\",\n   \"quotes\": [\n    \"The minimum supported version of mysqlclient is increased from 1.4.0 to 1.4.3.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project depends on mysqlclient (the MySQL driver) at a version below 1.4.3.\",\n   \"quotes\": [\n    \"The minimum supported version of mysqlclient is increased from 1.4.0 to 1.4.3.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports that Django 4.2 raises the minimum mysqlclient from 1.4.0 to 1.4.3, which is a genuine, checkable dependency risk for deployments pinned to mysqlclient below 1.4.3."
+ },
+ "usage": {
+  "input_tokens": 816,
+  "output_tokens": 101,
+  "stop_reason": "end_turn"
+ }
+}

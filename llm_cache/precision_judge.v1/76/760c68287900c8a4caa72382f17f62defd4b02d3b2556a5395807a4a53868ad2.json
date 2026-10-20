@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"set_language() no longer stores user language in request.session\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"As of Django 4.0, django.views.i18n.set_language() no longer sets the user language in request.session under the key _language. Code that relies on the session key being populated by set_language() will no longer find it. The text does not state where the language is stored instead.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where this behavior was removed.\",\n   \"quotes\": [\n    \"django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\",\n    \"django.views.i18n.set_language() will no longer set the user language in request.session\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses the django.views.i18n.set_language view (e.g. in URL configuration).\",\n   \"quotes\": [\n    \"django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\",\n    \"django.views.i18n.set_language() will no longer set the user language in request.session\",\n    \"key django.utils.translation.LANGUAGE_SESSION_KEY\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code reads the _language key from request.session to get the user language.\",\n   \"quotes\": [\n    \"doesn't set the user language in request.session (key _language)\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete view (django.views.i18n.set_language), a concrete session key (_language / LANGUAGE_SESSION_KEY), and a concrete removal in Django 4.0 that falls within the 3.2 to 4.2 range, with quotes supporting the behavior change and the required conditions are checkable in code."
+ },
+ "usage": {
+  "input_tokens": 944,
+  "output_tokens": 128,
+  "stop_reason": "end_turn"
+ }
+}

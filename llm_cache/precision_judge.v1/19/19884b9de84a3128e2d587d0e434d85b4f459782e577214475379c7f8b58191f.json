@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PostgreSQL auto fields created as identity columns instead of serial\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"On PostgreSQL, AutoField, BigAutoField, and SmallAutoField columns are now created as identity columns rather than serial columns with sequences. Schemas created at 4.1 or later (new tables, test databases) differ from those created by earlier versions. Code, raw SQL, or tooling that relies on serial columns and their sequences may behave differently.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where the change to identity columns was introduced.\",\n   \"quotes\": [\n    \"On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are now created as identity columns rather than serial columns with sequences.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses PostgreSQL as a database backend.\",\n   \"quotes\": [\n    \"On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are now created as identity columns\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses AutoField, BigAutoField, or SmallAutoField, including via DEFAULT_AUTO_FIELD or implicit primary keys.\",\n   \"quotes\": [\n    \"AutoField, BigAutoField, and SmallAutoField are now created as identity columns\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Application code, raw SQL, or tooling depends on serial columns or their sequences (for example, sequence names or pg_get_serial_sequence).\",\n   \"quotes\": [\n    \"rather than serial columns with sequences\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete behavior change (PostgreSQL AutoField/BigAutoField/SmallAutoField created as identity instead of serial columns, introduced at 4.1) with checkable conditions (PostgreSQL backend, auto field usage, crossing 4.1), and the quotes support these conditions."
+ },
+ "usage": {
+  "input_tokens": 1056,
+  "output_tokens": 124,
+  "stop_reason": "end_turn"
+ }
+}

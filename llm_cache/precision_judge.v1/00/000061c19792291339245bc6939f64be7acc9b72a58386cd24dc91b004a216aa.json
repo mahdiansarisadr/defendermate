@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"DatabaseIntrospection.get_key_columns() removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"DatabaseIntrospection.get_key_columns() is removed in Django 4.1. Third-party database backends or code that define or call this method will break and must use DatabaseIntrospection.get_relations() instead.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where DatabaseIntrospection.get_key_columns() is removed.\",\n   \"quotes\": [\n    \"DatabaseIntrospection.get_key_columns() is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project, or a third-party database backend it uses, defines or calls DatabaseIntrospection.get_key_columns().\",\n   \"quotes\": [\n    \"DatabaseIntrospection.get_key_columns() is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The path names a concrete API a checker could search for, but the only quote says the method \"is removed\" and does not give the 4.1 release, the get_relations() replacement, or the effect on third-party backends, so the quotes do not support those claims, and the second condition has no evidence of its own."
+ },
+ "usage": {
+  "input_tokens": 774,
+  "output_tokens": 110,
+  "stop_reason": "end_turn"
+ }
+}

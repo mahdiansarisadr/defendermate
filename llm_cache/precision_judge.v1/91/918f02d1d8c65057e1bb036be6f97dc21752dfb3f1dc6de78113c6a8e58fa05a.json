@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Session cookies hidden in error reports\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"As of 4.2, session cookies are treated as credentials and replaced with stars in error reports. Workflows that read session cookie values in error reports (debug page or reports derived from it) will no longer see them.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which introduced masking of session cookies in error reports.\",\n   \"quotes\": [\n    \"Session cookies are now treated as credentials and therefore hidden and replaced with stars\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or its operations rely on seeing session cookie values in Django error reports.\",\n   \"quotes\": [\n    \"Session cookies are now treated as credentials and therefore hidden and replaced with stars\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports the 4.2 behavior change of session cookies being masked in error reports, which can break workflows that rely on seeing those values, and the path names a concrete behavior (session cookies in debug/error reports) that can be checked."
+ },
+ "usage": {
+  "input_tokens": 756,
+  "output_tokens": 97,
+  "stop_reason": "end_turn"
+ }
+}

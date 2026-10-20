@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_14_where_thi_75c818\",\n  \"claim\": \"The upgrade crosses release 14, where this change was introduced.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 14 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_has_column_privile_299db3\",\n  \"claim\": \"The application calls has_column_privilege() with attribute numbers.\",\n  \"evidence\": [\n   {\n    \"quote\": \"when using attribute numbers\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_relies_on_has_column_pri_675e5f\",\n  \"claim\": \"The application relies on has_column_privilege() raising an error for non-existent or dropped columns when given attribute numbers.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously such attribute numbers returned an invalid-column error.\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_14_where_thi_75c818",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_calls_has_column_privile_299db3",
+    "verdict": "partially_supported",
+    "missing": "The quote does not name has_column_privilege(); it only says 'when using attribute numbers', so the link to that specific function comes from the section context rather than the quote itself."
+   },
+   {
+    "condition_id": "the_application_relies_on_has_column_pri_675e5f",
+    "verdict": "partially_supported",
+    "missing": "The quote does not name has_column_privilege() or say the error applies to non-existent or dropped columns; 'such attribute numbers' is undefined in the excerpt. It implies the old error behavior changed in release 14, but does not state the new behavior."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1214,
+  "output_tokens": 1241,
+  "stop_reason": "end_turn"
+ }
+}

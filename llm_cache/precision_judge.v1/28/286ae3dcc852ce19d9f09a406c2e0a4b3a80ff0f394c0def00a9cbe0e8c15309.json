@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"psql --single-transaction final COMMIT without ON_ERROR_STOP\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"After an error in psql's --single-transaction mode, the final COMMIT is changed to ROLLBACK only if ON_ERROR_STOP is set, so scripts run with --single-transaction and without ON_ERROR_STOP may end differently after an error.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the final COMMIT is changed to ROLLBACK only if ON_ERROR_STOP is set.\",\n   \"quotes\": [\n    \"change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or script runs psql in --single-transaction mode.\",\n   \"quotes\": [\n    \"psql's --single-transaction mode\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"ON_ERROR_STOP is not set for the psql session.\",\n   \"quotes\": [\n    \"ON_ERROR_STOP is set\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete psql behavior change (--single-transaction final COMMIT becoming ROLLBACK only if ON_ERROR_STOP is set) that crosses release 15 within 13->16, and scripts without ON_ERROR_STOP could end differently (committing partial work after an error), which is a checkable operational risk."
+ },
+ "usage": {
+  "input_tokens": 860,
+  "output_tokens": 130,
+  "stop_reason": "end_turn"
+ }
+}

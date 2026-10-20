@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PriorityLevelConfiguration nominalConcurrencyShares default and explicit zero\",\n \"risk_type\": \"changed_default\",\n \"description\": \"The spec.limited.nominalConcurrencyShares field defaults to 30 only when unspecified, and an explicit value of 0 is not changed to 30.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The change is introduced in release 1.29 and the upgrade from 1.23 crosses release 1.29.\",\n   \"quotes\": [\n    \"only defaults to 30 when unspecified, and an explicit value of 0 is not changed to 30\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment sets spec.limited.nominalConcurrencyShares to an explicit value of 0 in a PriorityLevelConfiguration.\",\n   \"quotes\": [\n    \"only defaults to 30 when unspecified, and an explicit value of 0 is not changed to 30\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The risk names a concrete field (spec.limited.nominalConcurrencyShares) and value (0) that a checker could look for, but the only quote does not mention release 1.29, so the first condition is unsupported, and it does not show that explicit 0 now behaves differently in a way that breaks or requires migration."
+ },
+ "usage": {
+  "input_tokens": 800,
+  "output_tokens": 119,
+  "stop_reason": "end_turn"
+ }
+}

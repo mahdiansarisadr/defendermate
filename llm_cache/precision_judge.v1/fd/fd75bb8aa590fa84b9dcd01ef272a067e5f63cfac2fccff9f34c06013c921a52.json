@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"HttpRequest.get_raw_uri() removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented HttpRequest.get_raw_uri() method is removed in Django 4.0. Code that calls it will fail with AttributeError after upgrading from 3.2 to 4.2. HttpRequest.build_absolute_uri may be a suitable alternative.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, in which HttpRequest.get_raw_uri() is removed (3.2 -> 4.2).\",\n   \"quotes\": [\n    \"The undocumented HttpRequest.get_raw_uri() method is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code calls HttpRequest.get_raw_uri() (e.g. request.get_raw_uri()).\",\n   \"quotes\": [\n    \"The undocumented HttpRequest.get_raw_uri() method is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete removed API (HttpRequest.get_raw_uri()) that can be searched for in code and would raise AttributeError after upgrading; the quote supports the removal, and the 4.0 release attribution plus the build_absolute_uri alternative are only mildly inferred, not contradicted by the evidence."
+ },
+ "usage": {
+  "input_tokens": 805,
+  "output_tokens": 126,
+  "stop_reason": "end_turn"
+ }
+}

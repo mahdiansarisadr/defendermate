@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"kube-apiserver insecure address flags removed\",\n \"risk_type\": \"configuration_change\",\n \"description\": \"The insecure address flags --address, --insecure-bind-address, --port and --insecure-port of kube-apiserver are removed in release 1.24. They were inert since 1.20, so a deployment that still sets them must drop them before the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.24, where the insecure address flags are removed from kube-apiserver.\",\n   \"quotes\": [\n    \"Kube-apiserver: the insecure address flags --address, --insecure-bind-address, --port and --insecure-port (inert since 1.20) are removed\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The kube-apiserver configuration sets one of the removed insecure flags.\",\n   \"quotes\": [\n    \"Kube-apiserver: the insecure address flags --address, --insecure-bind-address, --port and --insecure-port\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The removed flags are only inert when kube-apiserver runs and do not change behavior before the removal.\",\n   \"quotes\": [\n    \"Kube-apiserver: the insecure address flags --address, --insecure-bind-address, --port and --insecure-port (inert since 1.20) are removed\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that --address, --insecure-bind-address, --port and --insecure-port are removed from kube-apiserver (inert since 1.20), so a config still setting them could fail to start after crossing 1.24, and the flags are concrete and checkable in the apiserver configuration."
+ },
+ "usage": {
+  "input_tokens": 935,
+  "output_tokens": 112,
+  "stop_reason": "end_turn"
+ }
+}

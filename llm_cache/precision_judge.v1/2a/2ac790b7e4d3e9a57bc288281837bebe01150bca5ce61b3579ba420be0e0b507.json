@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"In-tree vSphere volume on vSphere releases below 7.0u2\",\n \"risk_type\": \"runtime_requirement\",\n \"description\": \"In-tree vSphere volume is not supported on vSphere releases less than 7.0u2 as of Kubernetes v1.25. Upgrade vSphere (both ESXi and vCenter) to 7.0u2 or above.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Kubernetes release 1.25 (from 1.23 to 1.29)\",\n   \"quotes\": [\n    \"VSphere releases less than 7.0u2 are not supported for in-tree vSphere volume as of Kubernetes v1.25\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"vSphere (ESXi and vCenter) release is less than 7.0u2\",\n   \"quotes\": [\n    \"VSphere releases less than 7.0u2 are not supported\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Cluster uses the in-tree vSphere volume\",\n   \"quotes\": [\n    \"not supported for in-tree vSphere volume\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support that in-tree vSphere volumes are unsupported on vSphere below 7.0u2 as of Kubernetes v1.25, which an upgrade from 1.23 to 1.29 crosses, and the risk names concrete checkable properties (in-tree vSphere volume use, ESXi/vCenter version below 7.0u2)."
+ },
+ "usage": {
+  "input_tokens": 863,
+  "output_tokens": 138,
+  "stop_reason": "end_turn"
+ }
+}

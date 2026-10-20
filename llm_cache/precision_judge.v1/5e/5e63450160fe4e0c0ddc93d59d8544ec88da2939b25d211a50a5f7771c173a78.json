@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"MiddlewareMixin.__init__ get_response required\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"As of release 4.0, the get_response argument for django.utils.deprecation.MiddlewareMixin.__init__() is required and no longer accepts None. Custom middleware subclassing MiddlewareMixin that is instantiated without get_response or with None will break.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where get_response became required for MiddlewareMixin.__init__().\",\n   \"quotes\": [\n    \"The get_response argument for django.utils.deprecation.MiddlewareMixin.init() will be required and won't accept None.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses django.utils.deprecation.MiddlewareMixin, for example by subclassing it for custom middleware.\",\n   \"quotes\": [\n    \"The get_response argument for django.utils.deprecation.MiddlewareMixin.init() will be required and won't accept None.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application instantiates a MiddlewareMixin subclass directly, or calls its __init__, without get_response or with get_response=None.\",\n   \"quotes\": [\n    \"will be required and won't accept None.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports that MiddlewareMixin.__init__() get_response becomes required and rejects None, which is a concrete, checkable API change that can break code that instantiates such middleware without it, though the quote's 'will be required' wording is slightly forward-looking and does not itself state the 4.0 release."
+ },
+ "usage": {
+  "input_tokens": 925,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}

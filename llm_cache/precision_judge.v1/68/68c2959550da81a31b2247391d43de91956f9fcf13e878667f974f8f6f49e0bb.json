@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"kube-controller-manager insecure address flags removed\",\n \"risk_type\": \"configuration_change\",\n \"description\": \"The insecure address flags --address and --port in kube-controller-manager have had no effect since v1.20 and are removed in v1.24. Clusters whose kube-controller-manager configuration still sets these flags are affected by the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.24 (from below 1.24 to 1.29).\",\n   \"quotes\": [\n    \"and are removed in v1.24\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"kube-controller-manager is started with the --address flag.\",\n   \"quotes\": [\n    \"The insecure address flags --address\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"kube-controller-manager is started with the --port flag.\",\n   \"quotes\": [\n    \"--address and --port in kube-controller-manager\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete flags (--address, --port on kube-controller-manager) and a concrete version (removed in v1.24), and the quotes support the removal and the flags; leaving them set would cause startup failure on unknown flags, so it is a genuine and checkable upgrade risk."
+ },
+ "usage": {
+  "input_tokens": 801,
+  "output_tokens": 112,
+  "stop_reason": "end_turn"
+ }
+}

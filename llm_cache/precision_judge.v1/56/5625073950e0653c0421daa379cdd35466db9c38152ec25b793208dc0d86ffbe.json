@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PriorityLevelConfiguration assuredConcurrencyShares renamed to nominalConcurrencyShares\",\n \"risk_type\": \"configuration_change\",\n \"description\": \"The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares in flowcontrol.apiserver.k8s.io/v1, so manifests and clients that use the old field name need to be migrated.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The change is introduced in release 1.29 and the upgrade from 1.23 crosses release 1.29.\",\n   \"quotes\": [\n    \"The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment uses the PriorityLevelConfiguration field spec.limited.assuredConcurrencyShares.\",\n   \"quotes\": [\n    \"The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports the rename of spec.limited.assuredConcurrencyShares to nominalConcurrencyShares, which names a concrete API field that manifests could be checked for and would need migration, though the quotes do not themselves state the 1.29 release, the v1 API version, or the migration requirement."
+ },
+ "usage": {
+  "input_tokens": 887,
+  "output_tokens": 119,
+  "stop_reason": "end_turn"
+ }
+}

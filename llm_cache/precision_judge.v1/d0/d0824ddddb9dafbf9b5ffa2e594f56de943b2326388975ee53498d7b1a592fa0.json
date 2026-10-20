@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"assertQuerysetEqual no longer applies repr() to querysets compared with strings\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values. Tests that compare a queryset to repr()-style strings can behave differently or fail after the upgrade to 4.1 or later.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, where this behavior change was made as part of the removal of deprecated features.\",\n   \"quotes\": [\n    \"TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values.\",\n    \"TransactionTestCase.assertQuerysetEqual() will no longer automatically call repr() on a queryset when compared to string values.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Test code calls assertQuerysetEqual() on a TransactionTestCase (or subclass such as TestCase) and compares a queryset to string values.\",\n   \"quotes\": [\n    \"TransactionTestCase.assertQuerysetEqual() no longer calls repr() on a queryset when compared to string values.\",\n    \"TransactionTestCase.assertQuerysetEqual() will no longer automatically call repr() on a queryset when compared to string values.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The comparison values are strings, such as repr() output like '<Model: name>', rather than model instances or other non-string values.\",\n   \"quotes\": [\n    \"when compared to string values\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The queryset is compared to string values, which previously relied on the automatic repr() call.\",\n   \"quotes\": [\n    \"when compared to string values\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The Django 4.1 removed-features change that TransactionTestCase.assertQuerysetEqual() no longer calls repr() on querysets compared to string values is a concrete, checkable API behavior change, and the quotes support it for the 3.2 to 4.2 range."
+ },
+ "usage": {
+  "input_tokens": 1087,
+  "output_tokens": 570,
+  "stop_reason": "end_turn"
+ }
+}

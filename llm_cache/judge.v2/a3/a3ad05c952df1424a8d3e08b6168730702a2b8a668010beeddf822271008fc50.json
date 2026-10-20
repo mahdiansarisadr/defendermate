@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"application_uses_the_d_or_w_regex_shorth_b272f7\",\n  \"claim\": \"Application uses the \\\\D or \\\\W regex shorthand\",\n  \"evidence\": [\n   {\n    \"quote\": \"Allow \\\\D and \\\\W shorthands to match newlines\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"regular_expression_runs_in_newline_sensi_9c395c\",\n  \"claim\": \"Regular expression runs in newline-sensitive mode\",\n  \"evidence\": [\n   {\n    \"quote\": \"regular expression newline-sensitive mode\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"application_does_not_already_use_the_rep_ccf2fd\",\n  \"claim\": \"Application does not already use the replacement classes instead of \\\\D or \\\\W\",\n  \"evidence\": [\n   {\n    \"quote\": \"[^[:digit:]] or [^[:word:]] can be used to get the old behavior\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "application_uses_the_d_or_w_regex_shorth_b272f7",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "regular_expression_runs_in_newline_sensi_9c395c",
+    "verdict": "partially_supported",
+    "missing": "The quote names newline-sensitive mode as the context of the change but does not state that regular expressions run in this mode by default or what effect the mode has on the expression's behavior."
+   },
+   {
+    "condition_id": "application_does_not_already_use_the_rep_ccf2fd",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1207,
+  "output_tokens": 1035,
+  "stop_reason": "end_turn"
+ }
+}

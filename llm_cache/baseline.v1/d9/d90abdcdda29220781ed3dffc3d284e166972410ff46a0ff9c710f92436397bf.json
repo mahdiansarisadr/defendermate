@@ -1,0 +1,114 @@
+{
+ "prompt_id": "baseline.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Read the documentation below for Next.js and list the upgrade risks for upgrading from 12 to 14. For each risk, give a path_name, risk_type, risk_level, the release it was introduced in, the main symbol, a description, and one verbatim evidence quote.\n\nDOCUMENTATION:\n[13] The Supported Browsers have been changed to drop Internet Explorer and target modern browsers. The minimum Node.js version has been bumped from 12.22.0 to 14.6.0, since 12.x has reached end-of-life. The minimum React version has been bumped from 17.0.2 to 18.2.0. The swcMinify configuration property was changed from false to true. See Next.js Compiler for more info. The next/image import was renamed to next/legacy/image. The next/future/image import was renamed to next/image. A codemod is available to safely and automatically rename your imports. The next/link child can no longer be <a>. Add the legacyBehavior prop to use the legacy behavior or remove the <a> to upgrade. A codemod is available to automatically upgrade your code. The target configuration property has been removed and superseded by Output File Tracing.\n[13] To update to Next.js version 13, run the following command using your preferred package manager: npm i next@13 react@latest react-dom@latest eslint-config-next@13 yarn add next@13 react@latest react-dom@latest eslint-config-next@13 pnpm i next@13 react@latest react-dom@latest eslint-config-next@13 bun add next@13 react@latest react-dom@latest eslint-config-next@13\n[13] Good to know: If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom to their latest versions.\n[13] The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.\n[13] The minimum Node.js version has been bumped from 12.22.0 to 16.14.0, since 12.x and 14.x have reached end-of-life.\n[13] The minimum React version has been bumped from 17.0.2 to 18.2.0.\n[13] The swcMinify configuration property was changed from false to true. See Next.js Compiler for more info.\n[13] The next/image import was renamed to next/legacy/image. The next/future/image import was renamed to next/image. A codemod is available to safely and automatically rename your imports.\n[13] The next/link child can no longer be <a>. Add the legacyBehavior prop to use the legacy behavior or remove the <a> to upgrade. A codemod is available to automatically upgrade your code.\n[13] The target configuration property has been removed and superseded by Output File Tracing.\n[13] Next.js 13 introduces a new app directory with new features and conventions. However, upgrading to Next.js 13 does not require using the new app Router. You can continue using pages with new features that work in both directories, such as the updated Image component, Link component, Script component, and Font optimization.\n[13] Next.js 12 introduced many improvements to the Image Component with a temporary import: next/future/image. These improvements included less client-side JavaScript, easier ways to extend and style images, better accessibility, and native browser lazy loading. Starting in Next.js 13, this new behavior is now the default for next/image. There are two codemods to help you migrate to the new Image Component:\n[13] next-image-to-legacy-image: This codemod will safely and automatically rename next/image imports to next/legacy/image to maintain the same behavior as Next.js 12. We recommend running this codemod to quickly update to Next.js 13 automatically.\n[13] next-image-experimental: After running the previous codemod, you can optionally run this experimental codemod to upgrade next/legacy/image to the new next/image, which will remove unused props and add inline styles. Please note this codemod is experimental and only covers static usage (such as <Image src={img} layout=\"responsive\" />) but not dynamic usage (such as <Image {...props} />).\n[13] Alternatively, you can manually update by following the migration guide and also see the legacy comparison.\n[13] The <Link> Component no longer requires manually adding an <a> tag as a child. This behavior was added as an experimental option in version 12.2 and is now the default. In Next.js 13, <Link> always renders <a> and allows you to forward props to the underlying tag. For example: import Link from 'next/link' // Next.js 12: <a> has to be nested otherwise it's excluded <Link href=\"/about\"> <a>About</a> </Link> // Next.js 13: <Link> always renders <a> under the hood <Link href=\"/about\"> About </Link>\n[13] To upgrade your links to Next.js 13, you can use the new-link codemod.\n[13] The behavior of next/script has been updated to support both pages and app. If incrementally adopting app, read the upgrade guide.\n[13] Previously, Next.js helped you optimize fonts by inlining font CSS. Version 13 introduces the new next/font module which gives you the ability to customize your font loading experience while still ensuring great performance and privacy. See Optimizing Fonts to learn how to use next/font.\n[14] To update to Next.js version 14, run the following command using your preferred package manager: npm i next@latest react@latest react-dom@latest eslint-config-next@latest yarn add next@latest react@latest react-dom@latest eslint-config-next@latest pnpm up next react react-dom eslint-config-next --latest bun add next@latest react@latest react-dom@latest eslint-config-next@latest\n[14] Good to know: If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom to their latest versions.\n[14] The minimum Node.js version has been bumped from 16.14 to 18.17, since 16.x has reached end-of-life.\n[14] The next export command has been removed in favor of output: 'export' config. Please see the docs for more information.\n[14] The next/server import for ImageResponse was renamed to next/og. A codemod is available to safely and automatically rename your imports.\n[14] The @next/font package has been fully removed in favor of the built-in next/font. A codemod is available to safely and automatically rename your imports.\n[14] The WASM target for next-swc has been removed.",
+ "response": {
+  "risks": [
+   {
+    "path_name": "Supported Browsers",
+    "risk_type": "behavior change",
+    "risk_level": "medium",
+    "introduced_in": "13",
+    "primary_symbol": "Supported Browsers",
+    "description": "Internet Explorer support is dropped and the build now targets modern browsers only. Apps that must support IE will break.",
+    "quote": "The Supported Browsers have been changed to drop Internet Explorer and target modern browsers."
+   },
+   {
+    "path_name": "Node.js minimum version",
+    "risk_type": "runtime requirement",
+    "risk_level": "high",
+    "introduced_in": "14",
+    "primary_symbol": "Node.js",
+    "description": "The minimum Node.js version is now 18.17 when upgrading to 14 (it was raised to 16.14 in 13 and then to 18.17 in 14). Environments and CI running older Node versions must be upgraded.",
+    "quote": "The minimum Node.js version has been bumped from 16.14 to 18.17, since 16.x has reached end-of-life."
+   },
+   {
+    "path_name": "React minimum version",
+    "risk_type": "dependency requirement",
+    "risk_level": "high",
+    "introduced_in": "13",
+    "primary_symbol": "react",
+    "description": "The minimum React version is bumped from 17.0.2 to 18.2.0, so React and react-dom must be upgraded (along with @types/react and @types/react-dom for TypeScript).",
+    "quote": "The minimum React version has been bumped from 17.0.2 to 18.2.0."
+   },
+   {
+    "path_name": "next.config.js swcMinify",
+    "risk_type": "default change",
+    "risk_level": "low",
+    "introduced_in": "13",
+    "primary_symbol": "swcMinify",
+    "description": "The swcMinify default changed from false to true, so minification now uses SWC and may alter build output.",
+    "quote": "The swcMinify configuration property was changed from false to true."
+   },
+   {
+    "path_name": "next/image",
+    "risk_type": "breaking change",
+    "risk_level": "high",
+    "introduced_in": "13",
+    "primary_symbol": "next/image",
+    "description": "The next/image import now maps to the new image component (previously next/future/image), and the old component is moved to next/legacy/image. Existing usage may behave differently unless imports are renamed, for example via the codemod.",
+    "quote": "The next/image import was renamed to next/legacy/image. The next/future/image import was renamed to next/image."
+   },
+   {
+    "path_name": "next/link",
+    "risk_type": "breaking change",
+    "risk_level": "high",
+    "introduced_in": "13",
+    "primary_symbol": "Link",
+    "description": "The Link component can no longer have an <a> child. You need to add the legacyBehavior prop or remove the <a>, otherwise nested anchors will cause errors.",
+    "quote": "The next/link child can no longer be <a>. Add the legacyBehavior prop to use the legacy behavior or remove the <a> to upgrade."
+   },
+   {
+    "path_name": "next.config.js target",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "13",
+    "primary_symbol": "target",
+    "description": "The target configuration property has been removed and replaced by Output File Tracing; configs using it must be migrated.",
+    "quote": "The target configuration property has been removed and superseded by Output File Tracing."
+   },
+   {
+    "path_name": "next export command",
+    "risk_type": "removal",
+    "risk_level": "high",
+    "introduced_in": "14",
+    "primary_symbol": "next export",
+    "description": "The next export CLI command is removed. Static export must now use the output: 'export' config, so build scripts need updating.",
+    "quote": "The next export command has been removed in favor of output: 'export' config."
+   },
+   {
+    "path_name": "next/server ImageResponse",
+    "risk_type": "rename",
+    "risk_level": "medium",
+    "introduced_in": "14",
+    "primary_symbol": "ImageResponse",
+    "description": "The ImageResponse import has moved from next/server to next/og, so existing imports will break unless renamed (a codemod is available).",
+    "quote": "The next/server import for ImageResponse was renamed to next/og."
+   },
+   {
+    "path_name": "@next/font",
+    "risk_type": "removal",
+    "risk_level": "medium",
+    "introduced_in": "14",
+    "primary_symbol": "@next/font",
+    "description": "The @next/font package is fully removed in favor of the built-in next/font, so imports must be updated (a codemod is available).",
+    "quote": "The @next/font package has been fully removed in favor of the built-in next/font."
+   },
+   {
+    "path_name": "next-swc WASM target",
+    "risk_type": "removal",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "next-swc",
+    "description": "The WASM target for next-swc is removed, which affects environments relying on the WASM fallback for SWC.",
+    "quote": "The WASM target for next-swc has been removed."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2493,
+  "output_tokens": 1500,
+  "stop_reason": "end_turn"
+ }
+}

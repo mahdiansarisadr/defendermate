@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"FileSystemStorage.delete() empty name exception type changed\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In Django 4.0, calling FileSystemStorage.delete() with an empty name raises ValueError instead of AssertionError. Code that catches AssertionError (or tests asserting it) around this call will no longer handle the exception.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where the exception type changed.\",\n   \"quotes\": [\n    \"Calling FileSystemStorage.delete() with an empty name now raises ValueError instead of AssertionError.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls FileSystemStorage.delete() (directly or via a subclass or storage API) and may pass an empty name.\",\n   \"quotes\": [\n    \"Calling FileSystemStorage.delete() with an empty name now raises ValueError instead of AssertionError.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application or its tests catch or assert AssertionError from FileSystemStorage.delete().\",\n   \"quotes\": [\n    \"now raises ValueError instead of AssertionError\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted evidence directly supports a concrete behavior change in FileSystemStorage.delete() (empty name now raises ValueError instead of AssertionError), which can break code or tests that catch AssertionError, and a checker could search for such calls and handlers."
+ },
+ "usage": {
+  "input_tokens": 891,
+  "output_tokens": 104,
+  "stop_reason": "end_turn"
+ }
+}

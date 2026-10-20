@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"RemoteUserBackend.configure_user subclass without created argument\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Django 4.1 adds created=True to the signature of RemoteUserBackend.configure_user. Support for RemoteUserBackend subclasses whose configure_user does not accept this argument is deprecated, so such subclasses should be updated.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where the configure_user signature change and deprecation were introduced.\",\n   \"quotes\": [\n    \"created=True is added to the signature of RemoteUserBackend.configure_user.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application subclasses RemoteUserBackend and overrides configure_user.\",\n   \"quotes\": [\n    \"Support for RemoteUserBackend subclasses that do not accept this argument is deprecated.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The overriding configure_user does not accept the created argument (for example no created parameter and no **kwargs).\",\n   \"quotes\": [\n    \"subclasses that do not accept this argument is deprecated\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that Django 4.1 adds created=True to RemoteUserBackend.configure_user and deprecates subclasses not accepting it, which is a genuine, concrete, checkable upgrade risk (deprecation warning in 4.x, breakage in 5.0) for overriding subclasses within the 3.2->4.2 range."
+ },
+ "usage": {
+  "input_tokens": 879,
+  "output_tokens": 132,
+  "stop_reason": "end_turn"
+ }
+}

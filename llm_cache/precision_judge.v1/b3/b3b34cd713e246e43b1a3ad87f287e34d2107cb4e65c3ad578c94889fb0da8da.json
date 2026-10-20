@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"AlterIndexTogether not to be used in new migrations\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"AlterIndexTogether is officially supported only for pre-Django 4.2 migration files. It remains part of the public API with no plan to deprecate or remove it, but it should not be used in new migrations. AddIndex and RemoveIndex should be used instead.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.2, from which AlterIndexTogether is officially supported only for pre-4.2 migration files.\",\n   \"quotes\": [\n    \"The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The codebase uses or writes AlterIndexTogether in migration files, or plans to add it to new migrations.\",\n   \"quotes\": [\n    \"The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (AlterIndexTogether) and a concrete version boundary (4.2), and the quote directly supports that it is only officially supported for pre-4.2 migrations, though the claims about no deprecation plan and using AddIndex/RemoveIndex instead go beyond the quoted evidence."
+ },
+ "usage": {
+  "input_tokens": 820,
+  "output_tokens": 124,
+  "stop_reason": "end_turn"
+ }
+}

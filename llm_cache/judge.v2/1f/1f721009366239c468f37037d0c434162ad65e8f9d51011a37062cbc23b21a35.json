@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_1_24_where_t_9199ae\",\n  \"claim\": \"The upgrade crosses release 1.24, where the LegacyServiceAccountTokenNoAutoGeneration feature gate is beta and enabled by default.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The LegacyServiceAccountTokenNoAutoGeneration feature gate is beta, and enabled by default.\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_deployment_depends_on_526cfc\",\n  \"claim\": \"The application or deployment depends on Secret API objects containing service account tokens that are auto-generated for each ServiceAccount.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_obtains_service_account_97652e\",\n  \"claim\": \"The application obtains service account tokens through the TokenRequest API instead of relying on auto-generated Secrets.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Use the TokenRequest API to acquire service account tokens\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_1_24_where_t_9199ae",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_deployment_depends_on_526cfc",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_obtains_service_account_97652e",
+    "verdict": "partially_supported",
+    "missing": "The quote only recommends using the TokenRequest API. It does not state that the application actually obtains its tokens that way or that it stops relying on auto-generated Secrets."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1296,
+  "output_tokens": 743,
+  "stop_reason": "end_turn"
+ }
+}

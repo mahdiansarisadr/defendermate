@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"CREATE OR REPLACE VIEW output column collation\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"CREATE OR REPLACE VIEW no longer changes the collation of an output column of an existing view, so code that replaces a view to change that collation will behave differently after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the change was introduced.\",\n   \"quotes\": [\n    \"Prevent CREATE OR REPLACE VIEW from changing the collation of an output column\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment uses CREATE OR REPLACE VIEW to change the collation of an output column of a view.\",\n   \"quotes\": [\n    \"CREATE OR REPLACE VIEW from changing the collation of an output column\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted release-note text supports that CREATE OR REPLACE VIEW is now prevented from changing an output column's collation, so deployments that rely on it to alter collation could break, and the risk names a concrete command and behavior that can be checked in view-replacement scripts."
+ },
+ "usage": {
+  "input_tokens": 759,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

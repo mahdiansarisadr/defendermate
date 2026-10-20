@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"plpgsql_bound_cursor_portal_name\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In PostgreSQL 16, the string value of PL/pgSQL bound cursor variables is assigned during OPEN and no longer matches the variable name. Code that relies on the previous name-matching behavior may break. A workaround is to assign the desired portal name to the cursor variable before OPEN.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses into release 16, so the source release is before 16.\",\n   \"quotes\": [\n    \"Version 16 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses PL/pgSQL bound cursor variables.\",\n   \"quotes\": [\n    \"Change assignment rules for PL/pgSQL bound cursor variables\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code depends on the string value of the bound cursor variable matching the variable name.\",\n   \"quotes\": [\n    \"Previously, the string value of such variables was set to match the variable name during cursor assignment\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The application does not already assign the desired portal name to the cursor variable before OPEN.\",\n   \"quotes\": [\n    \"To restore the previous behavior, assign the desired portal name to the cursor variable before OPEN.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a genuine behavior change in PL/pgSQL bound cursor portal naming in v16, with concrete checkable conditions (bound cursor variables, reliance on name matching) and a stated workaround, though the disqualifying condition is oddly phrased (it should be that the app already assigns the name before OPEN)."
+ },
+ "usage": {
+  "input_tokens": 962,
+  "output_tokens": 127,
+  "stop_reason": "end_turn"
+ }
+}

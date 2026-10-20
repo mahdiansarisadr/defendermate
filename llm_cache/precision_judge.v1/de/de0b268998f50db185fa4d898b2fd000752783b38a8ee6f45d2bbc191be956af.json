@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"RuntimeClass node.k8s.io/v1alpha1 API no longer served\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The node.k8s.io/v1alpha1 RuntimeClass API is no longer served, so manifests, tooling or clients that use this API version stop working after the upgrade. Migrate to node.k8s.io/v1, which the text states has been available since v1.20.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The change is introduced in release 1.24, and the upgrade from 1.23 to 1.29 crosses that release.\",\n   \"quotes\": [\n    \"The node.k8s.io/v1alpha1 RuntimeClass API is no longer served\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application, manifests or client tooling use the node.k8s.io/v1alpha1 RuntimeClass API.\",\n   \"quotes\": [\n    \"The node.k8s.io/v1alpha1 RuntimeClass API\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The risk is concrete, but the only quote given says the API is no longer served; it doesn't state that this happens in release 1.24 or that v1 has been available since v1.20, so the first condition and the migration claim aren't supported by the evidence."
+ },
+ "usage": {
+  "input_tokens": 812,
+  "output_tokens": 97,
+  "stop_reason": "end_turn"
+ }
+}

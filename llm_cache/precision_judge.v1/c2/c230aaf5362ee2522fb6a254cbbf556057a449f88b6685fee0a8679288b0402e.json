@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Admin log out UI now uses POST requests\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The Django admin log out UI now uses POST requests instead of the previous behavior. The text lists this as a backwards incompatible change, so custom templates, links, tests or integrations that depend on the previous log out request method in the admin may be affected. The text does not state the previous method or the exact impact.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where the admin log out UI change was introduced (3.2 -> 4.2).\",\n   \"quotes\": [\n    \"The admin log out UI now uses POST requests.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses the Django admin log out UI, or has custom templates, links, tests or integrations that depend on how admin log out requests are made.\",\n   \"quotes\": [\n    \"The admin log out UI now uses POST requests.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states the admin log out UI now uses POST requests, which is a concrete behavior change that could break custom templates, links, or tests relying on GET logout, and a checker can look for those; the claim that it was introduced in 4.1 goes slightly beyond the quote, but the version range is only framing and the core risk is supported."
+ },
+ "usage": {
+  "input_tokens": 787,
+  "output_tokens": 124,
+  "stop_reason": "end_turn"
+ }
+}

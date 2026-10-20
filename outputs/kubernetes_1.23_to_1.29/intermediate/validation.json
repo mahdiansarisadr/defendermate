@@ -1,0 +1,32 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/kubernetes_70f592d3da/the_application_or_deployment_uses_one_o_65c2bb",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/kubernetes_c83275ac09/the_registered_webhooks_handle_new_rest_cbf7fa",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/kubernetes_2e91042cd0/the_application_or_deployment_uses_the_d_c10c66",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/kubernetes_fea98e9bba/pods_with_seccomp_annotations_no_longer_bed853",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/kubernetes_9c957094cf/the_application_or_deployment_uses_one_o_939750",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

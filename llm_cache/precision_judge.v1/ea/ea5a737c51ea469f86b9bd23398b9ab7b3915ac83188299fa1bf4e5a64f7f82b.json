@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"CsrfViewMiddleware internal CSRF cookie tracking attributes replaced\",\n \"risk_type\": \"removed_api\",\n \"description\": \"CsrfViewMiddleware now tracks whether the CSRF cookie should be sent with request.META['CSRF_COOKIE_NEEDS_UPDATE'] instead of request.META['CSRF_COOKIE_USED'], request.csrf_cookie_needs_reset and response.csrf_cookie_set. Custom code (for example custom middleware or tests) that reads or sets the old keys or attributes will no longer interact with CSRF cookie handling as before. The text describes these as undocumented, private API.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.0, where this change was introduced (upgrading from 3.2 to 4.2).\",\n   \"quotes\": [\n    \"CsrfViewMiddleware now uses request.META['CSRF_COOKIE_NEEDS_UPDATE'] in place of\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"Application code references request.META['CSRF_COOKIE_USED'].\",\n   \"quotes\": [\n    \"in place of request.META['CSRF_COOKIE_USED'], request.csrf_cookie_needs_reset, and response.csrf_cookie_set to track\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"Application code references request.csrf_cookie_needs_reset.\",\n   \"quotes\": [\n    \"in place of request.META['CSRF_COOKIE_USED'], request.csrf_cookie_needs_reset, and response.csrf_cookie_set to track\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"Application code references response.csrf_cookie_set.\",\n   \"quotes\": [\n    \"in place of request.META['CSRF_COOKIE_USED'], request.csrf_cookie_needs_reset, and response.csrf_cookie_set to track\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that CsrfViewMiddleware now uses request.META['CSRF_COOKIE_NEEDS_UPDATE'] in place of the old META key and the two old attributes, so code reading or setting the old names could break; each is a concrete, greppable name, though the description's 'undocumented private API' claim has no quote and the risk is limited to custom code that touches these internals."
+ },
+ "usage": {
+  "input_tokens": 1150,
+  "output_tokens": 146,
+  "stop_reason": "end_turn"
+ }
+}

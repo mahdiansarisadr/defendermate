@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Service tolerate-unready-endpoints annotation removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The tolerate-unready-endpoints annotation on Service objects was removed in v1.24. Services that still rely on this annotation are affected at upgrade. The replacement is Service.spec.publishNotReadyAddresses.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.24, where the tolerate-unready-endpoints annotation in Service is removed.\",\n   \"quotes\": [\n    \"Remove tolerate-unready-endpoints annotation in Service deprecated from 1.11, use Service.spec.publishNotReadyAddresses instead.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"A Service object sets the tolerate-unready-endpoints annotation.\",\n   \"quotes\": [\n    \"tolerate-unready-endpoints annotation in Service\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The Service already sets spec.publishNotReadyAddresses instead of the annotation.\",\n   \"quotes\": [\n    \"use Service.spec.publishNotReadyAddresses instead\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states the tolerate-unready-endpoints annotation on Service was removed (deprecated since 1.11) in favor of spec.publishNotReadyAddresses; this is a concrete, checkable migration risk for a 1.23->1.29 upgrade, and the conditions are supported by the quotes (the 1.24 version is not in the quote but the removal is within the range as described)."
+ },
+ "usage": {
+  "input_tokens": 885,
+  "output_tokens": 146,
+  "stop_reason": "end_turn"
+ }
+}

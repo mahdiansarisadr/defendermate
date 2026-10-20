@@ -9,6 +9,45 @@ Upgrades covered: Django 3.2→4.2, React 17→18, Kubernetes 1.23→1.29, Postg
 
 The design is in [`TDD.md`](TDD.md); section 17 lists the gaps found while building it. The ten design questions are answered in [`DESIGN_NOTE.md`](DESIGN_NOTE.md). Eval results are in [`eval/results.md`](eval/results.md).
 
+## Results
+
+| Upgrade | Paths | Context facts | Gold recall | Validator errors | Strong model | LLM cost to produce |
+|---|---|---|---|---|---|---|
+| Django 3.2→4.2 | 151 | 126 | 36/36 | 0 | Sonnet 5.5 | ~$7.33 |
+| React 17→18 | 25 | 39 | 14/15 | 0 | Sonnet 5.5 | ~$1.70 |
+| Kubernetes 1.23→1.29 | 83 | 48 | 30/30 | 0 | Haiku 5.5 | ~$2.21 |
+| PostgreSQL 13→16 | 69 | 8 | 27/28 | 0 | Haiku 5.5 | ~$1.38 |
+| Next.js 12→14 | 19 | 1 | 12/12 | 0 | Haiku 5.5 | ~$0.40 |
+
+Costs are estimates from token counts; the LLM evals added about $3–5.
+
+Kubernetes, PostgreSQL and Next.js were extracted with Haiku as the strong model, after the API credit ran out mid-run. Each model records the models it used in `pipeline.models`, and offline replay uses those recorded models.
+
+Eval summary (full table in [`eval/results.md`](eval/results.md); hard gates are asserted in `tests/test_eval_gates.py`):
+
+| Metric | Result | Target |
+|---|---|---|
+| Grounding (quotes verified against cache) | 1384/1384 | 1.00, hard |
+| Validator errors | 0 | 0, hard |
+| Structural completeness | 347/347 | 1.00, hard |
+| Recall per upgrade (min) / overall | 0.93 / 0.98 | ≥0.80 / ≥0.85, hard |
+| Classification (risk / context / disqualified) | 0.97 | ≥0.85, hard |
+| Field consistency | 0.996 | ≥0.95, hard |
+| Drift false-accept, exact matching (fuzzy 0.9 shown for contrast) | 0.00 (fuzzy 1.00) | 0, hard |
+| Estimated precision (gold match or precision judge) | 0.97 | ≥0.85, soft |
+| Strict precision (gold matches only; lower bound) | 0.48 | report |
+| Level agreement | 0.99 | ≥0.80, soft |
+| Calibration: valid rate for high ≥ medium ≥ low | 0.99 ≥ 0.96 ≥ 0.94 | monotone, soft |
+| Judge accuracy and κ on synthetic pairs | 1.00, 1.00 (41 pairs) | ≥0.90, κ≥0.8, soft |
+| **Stability** (path-ID Jaccard, cold React rerun) | **0.70** | ≥0.80, soft: **missed** |
+
+How to read these numbers:
+
+- **Stability** is the one missed target. Path IDs are hashed from the primary symbol the model picks, so a cold run that names the same risk differently gets a new ID. Gold recall moved from 0.93 to 0.87 between the two runs.
+- **Calibration** is monotone but weakly separated. Almost every path is judged valid, so the confidence bands mostly reflect evidence strength, not validity.
+- **The judge set** is synthetic and easy (identity claims versus mutated claims), so it shows the judge isn't broken. It does not show real-world entailment accuracy.
+- **The single-prompt ablation**, run over the same windowed change items, reaches similar gold recall. Its quotes ground, but it has no conditions, roles, version ranges or search queries, and no revert, supersession or remediation handling. What the decomposition buys is structure and composition, not raw recall.
+
 ## Quick start (offline, no API key)
 
 The source cache (`cache/`) and the LLM response cache (`llm_cache/`) are committed, so every committed output can be reproduced with no network access and no key.

@@ -144,15 +144,19 @@ def drift_test(models: dict[str, RiskModel], n: int = 200, seed: int = 7) -> dic
                         pairs.append((e.quote, ctx.corpus(e.source_id)))
     rng.shuffle(pairs)
     pairs = pairs[:n]
-    exact_acc = fuzzy_acc = 0
+    exact_acc = fuzzy_acc = genuine = 0
     for q, corpus in pairs:
         nums = list(re.finditer(r"\d+", q))
         mnum = rng.choice(nums)
         mutated = q[:mnum.start()] + str(int(mnum.group()) + 1) + q[mnum.end():]
+        if corpus and normalize(mutated) in normalize(corpus):
+            genuine += 1  # e.g. v2beta1 -> v2beta2: the mutation is itself real source text, not drift
+            continue
         exact_acc += verify_quote(mutated, corpus)
         fuzzy_acc += difflib.SequenceMatcher(None, normalize(mutated), normalize(q)).ratio() >= 0.9
-    k = max(len(pairs), 1)
-    return {"n": len(pairs), "exact_false_accept": exact_acc / k, "fuzzy_false_accept": fuzzy_acc / k}
+    k = max(len(pairs) - genuine, 1)
+    return {"n": len(pairs) - genuine, "excluded_genuine": genuine,
+            "exact_false_accept": exact_acc / k, "fuzzy_false_accept": fuzzy_acc / k}
 
 
 # ---------------- LLM-assisted metrics ----------------
@@ -259,8 +263,9 @@ def baseline_ablation(client: LLMClient, slug: str, model: RiskModel, gold: dict
     gold_risks = [g for g in gold["items"] if g["kind"] == "risk"]
     blobs = [(normalize(" ".join([r.path_name, r.primary_symbol, r.description, r.quote])).lower(), r.introduced_in)
              for r in res.risks]
-    found = sum(any(matches(g, b, rel) or matches({**g, "release": "*"}, b, rel) for b, rel in blobs) for g in gold_risks)
-    matched_paths = sum(any(matches(g, b, "*") for g in gold["items"] if g["kind"] == "risk") for b, _ in blobs)
+    # The baseline's release labels are unreliable, so both sides ignore the release filter (generous to the baseline).
+    found = sum(any(matches(g, b, None) for b, _ in blobs) for g in gold_risks)
+    matched_paths = sum(any(matches(g, b, None) for g in gold_risks) for b, _ in blobs)
     return {"risks": len(res.risks), "recall": found / max(len(gold_risks), 1),
             "strict_precision": matched_paths / max(len(res.risks), 1),
             "grounding_rate": grounded / max(len(res.risks), 1), "checkable_conditions": 0}
@@ -286,7 +291,7 @@ def filter_ablation(slug: str, model: RiskModel, gold: dict) -> dict:
     return {k: v / n for k, v in res.items()}
 
 
-def stability(client_factory, project="React", current="17", target="18") -> dict:
+def stability_rerun(client_factory, project="React", current="17", target="18") -> dict:
     """G21: cold rerun (empty LLM cache, separate outputs dir) and path-ID Jaccard."""
     from . import pipeline
 
@@ -406,7 +411,7 @@ def run_eval(use_llm: bool = True, offline: bool = False, ablations: bool = Fals
                 ab["baseline_single_prompt"] = baseline_ablation(client, slug, m, gold)
             extra["ablations"][slug] = ab
     if stability_run and client:
-        extra["stability"] = stability(lambda d: LLMClient(cache_dir=d))
+        extra["stability"] = stability_rerun(lambda d: LLMClient(cache_dir=d))
     elif (config.EVAL_DIR / "results.json").exists():
         prev = json.loads((config.EVAL_DIR / "results.json").read_text())
         for key in ("stability", "ablations"):
@@ -469,7 +474,8 @@ def summarize_metrics(per: dict, extra: dict) -> list[dict]:
         out.append(_metric("judge_kappa", j["kappa"], f"{j['kappa']:.3f}"))
     dr = extra["drift"]
     out.append(_metric("drift_false_accept_exact", dr["exact_false_accept"],
-                       f"exact {dr['exact_false_accept']:.3f} vs fuzzy(0.9) {dr['fuzzy_false_accept']:.3f} on {dr['n']} drifted quotes",
+                       f"exact {dr['exact_false_accept']:.3f} vs fuzzy(0.9) {dr['fuzzy_false_accept']:.3f} on {dr['n']} drifted quotes"
+                       f" ({dr.get('excluded_genuine', 0)} mutations excluded because they are real source text)",
                        higher=False))
     if "stability" in extra:
         s = extra["stability"]

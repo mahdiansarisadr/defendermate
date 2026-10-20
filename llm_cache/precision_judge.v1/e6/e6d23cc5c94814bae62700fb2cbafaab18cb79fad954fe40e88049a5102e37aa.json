@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"chr() negative argument now raises an error\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In PostgreSQL 16, chr() supplied with a negative argument generates an error instead of the prior behavior. Application code or SQL that passes a negative value to chr() may fail after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the chr() negative argument change was introduced.\",\n   \"quotes\": [\n    \"Version 15 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or database calls chr() with a negative argument.\",\n   \"quotes\": [\n    \"when chr() is supplied with a negative argument\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete function (chr()) and a checkable condition (negative argument) that is a genuine behavior change, and the quote 'when chr() is supplied with a negative argument' supports the second condition, while the first quote only generically supports that release 15 contains compatibility changes and does not tie this change to version 15, though the cross-version claim is plausible and not contradicted."
+ },
+ "usage": {
+  "input_tokens": 731,
+  "output_tokens": 141,
+  "stop_reason": "end_turn"
+ }
+}

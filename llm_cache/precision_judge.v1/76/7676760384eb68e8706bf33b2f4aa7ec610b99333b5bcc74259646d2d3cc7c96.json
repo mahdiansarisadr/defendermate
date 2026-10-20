@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PostgreSQL 9.6 no longer supported\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.0 dropped support for PostgreSQL 9.6 and supports PostgreSQL 10 and higher. Deployments that run Django against PostgreSQL 9.6 must upgrade the database server before moving to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, which dropped PostgreSQL 9.6 support.\",\n   \"quotes\": [\n    \"Django 4.0 supports PostgreSQL 10 and higher.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses a PostgreSQL server older than version 10 (for example 9.6) as the Django database backend.\",\n   \"quotes\": [\n    \"Django 4.0 supports PostgreSQL 10 and higher.\",\n    \"Upstream support for PostgreSQL 9.6 ends in November 2021.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that Django 4.0 requires PostgreSQL 10+ (and that 9.6 upstream support ended), making PostgreSQL 9.6 deployments an actual upgrade blocker, and the risk names a concrete version and checkable deployment property."
+ },
+ "usage": {
+  "input_tokens": 811,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

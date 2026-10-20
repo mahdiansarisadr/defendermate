@@ -1,0 +1,50 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Next.js. Upgrade: 12 -> 14. Release of these items: 14.\nSource: Next.js 'Version 14' upgrade guide at v14.2.0.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"7d6ffc931020\", \"section\": \"Upgrading from 13 to 14\", \"text\": \"To update to Next.js version 14, run the following command using your preferred package manager: npm i next@latest react@latest react-dom@latest eslint-config-next@latest yarn add next@latest react@latest react-dom@latest eslint-config-next@latest pnpm up next react react-dom eslint-config-next --latest bun add next@latest react@latest react-dom@latest eslint-config-next@latest\"}\n{\"item_id\": \"ac8c7ce0ed67\", \"section\": \"Upgrading from 13 to 14\", \"text\": \"Good to know: If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom to their latest versions.\"}\n{\"item_id\": \"0f3eb7ed96fe\", \"section\": \"Upgrading from 13 to 14 / v14 Summary\", \"text\": \"The minimum Node.js version has been bumped from 16.14 to 18.17, since 16.x has reached end-of-life.\"}\n{\"item_id\": \"58e1ee35cef7\", \"section\": \"Upgrading from 13 to 14 / v14 Summary\", \"text\": \"The next export command has been removed in favor of output: 'export' config. Please see the docs for more information.\"}\n{\"item_id\": \"8d129625a7ee\", \"section\": \"Upgrading from 13 to 14 / v14 Summary\", \"text\": \"The next/server import for ImageResponse was renamed to next/og. A codemod is available to safely and automatically rename your imports.\"}\n{\"item_id\": \"b819a280fe0e\", \"section\": \"Upgrading from 13 to 14 / v14 Summary\", \"text\": \"The @next/font package has been fully removed in favor of the built-in next/font. A codemod is available to safely and automatically rename your imports.\"}\n{\"item_id\": \"f9d34cd5ecae\", \"section\": \"Upgrading from 13 to 14 / v14 Summary\", \"text\": \"The WASM target for next-swc has been removed.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "7d6ffc931020",
+    "label": "noise",
+    "reason": "This item is an install/upgrade command listing package manager invocations, which the classification treats as noise."
+   },
+   {
+    "item_id": "ac8c7ce0ed67",
+    "label": "risk",
+    "reason": "Users with TypeScript must upgrade @types/react and @types/react-dom to be compatible, which requires a dependency update action to avoid build breakage."
+   },
+   {
+    "item_id": "0f3eb7ed96fe",
+    "label": "risk",
+    "reason": "Raising the minimum Node.js version from 16.14 to 18.17 can break deployments and CI environments still running Node 16."
+   },
+   {
+    "item_id": "58e1ee35cef7",
+    "label": "risk",
+    "reason": "The next export command was removed, so scripts relying on it must migrate to output: 'export' config."
+   },
+   {
+    "item_id": "8d129625a7ee",
+    "label": "risk",
+    "reason": "The ImageResponse import path was renamed from next/server to next/og, so existing imports break until updated (a codemod is available)."
+   },
+   {
+    "item_id": "b819a280fe0e",
+    "label": "risk",
+    "reason": "The @next/font package was fully removed, so existing imports break and must be migrated to next/font (a codemod is available)."
+   },
+   {
+    "item_id": "f9d34cd5ecae",
+    "label": "risk",
+    "reason": "The WASM target for next-swc was removed, which can break users who relied on that build target or deployment setup."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1373,
+  "output_tokens": 466,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Dashboard cluster addon removed\",\n \"risk_type\": \"operational_risk\",\n \"description\": \"The cluster addon for dashboard was removed in 1.24. Clusters that relied on the dashboard addon need to install dashboard separately.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.24, in which the dashboard cluster addon was removed.\",\n   \"quotes\": [\n    \"The cluster addon for dashboard was removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The cluster uses the dashboard cluster addon that was removed.\",\n   \"quotes\": [\n    \"The cluster addon for dashboard was removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports that the dashboard cluster addon was removed, which is a concrete, checkable change that would require migration for clusters relying on it, though the quote itself does not state version 1.24 (the path's description does, but only the removal is directly quoted)."
+ },
+ "usage": {
+  "input_tokens": 710,
+  "output_tokens": 101,
+  "stop_reason": "end_turn"
+ }
+}

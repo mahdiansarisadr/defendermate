@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"interval-fractional-input-rounding\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Interval input with a fractional value for a unit greater than months is now rounded to the nearest month instead of being carried into months and smaller units as before, so the same interval literal can yield a different stored or computed value after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the interval input rounding change was introduced.\",\n   \"quotes\": [\n    \"Version 15 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application passes interval input containing a fractional value for a unit greater than months.\",\n   \"quotes\": [\n    \"When interval input provides a fractional value for a unit greater than months\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The interval input is rounded to the nearest month rather than handled as before.\",\n   \"quotes\": [\n    \"round to the nearest month\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in interval input (fractional values for units greater than months are rounded to the nearest month) in release 15, within the 13 to 16 range, and it can change stored or computed values; the 'instead of carried into smaller units' detail is not directly quoted but is consistent with the quoted rounding behavior."
+ },
+ "usage": {
+  "input_tokens": 814,
+  "output_tokens": 127,
+  "stop_reason": "end_turn"
+ }
+}

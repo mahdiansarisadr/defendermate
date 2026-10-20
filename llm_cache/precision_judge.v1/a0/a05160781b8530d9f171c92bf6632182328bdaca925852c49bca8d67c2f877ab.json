@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"kubeadm kubelet-config ConfigMap rename for clusters using UnversionedKubeletConfigMap=false\",\n \"risk_type\": \"configuration_change\",\n \"description\": \"Kubeadm clusters that previously used the legacy naming format with UnversionedKubeletConfigMap=false must manually copy the kubelet ConfigMap from kube-system/kubelet-config-x.yy to kube-system/kubelet-config before upgrading to v1.25, because the kubelet ConfigMap and RBAC naming is now locked to kubelet-config.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.25, since the migration step must be done before upgrading to v1.25.\",\n   \"quotes\": [\n    \"you must manually copy the config map from kube-system/kubelet-config-x.yy to kube-system/kubelet-config before upgrading to v1.25\",\n    \"instead of the legacy kubelet-config-x.yy naming\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The cluster previously used the legacy naming format with the feature gate UnversionedKubeletConfigMap set to false.\",\n   \"quotes\": [\n    \"If you have previously used the old naming format with UnversionedKubeletConfigMap=false\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The kube-system/kubelet-config ConfigMap has not yet been created by copying from the legacy kubelet-config-x.yy ConfigMap.\",\n   \"quotes\": [\n    \"copy the config map from kube-system/kubelet-config-x.yy to kube-system/kubelet-config\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete feature gate (UnversionedKubeletConfigMap=false), specific ConfigMaps (kubelet-config-x.yy and kubelet-config), and a version boundary (v1.25) within the 1.23->1.29 range, and the quotes support the required manual copy migration."
+ },
+ "usage": {
+  "input_tokens": 1031,
+  "output_tokens": 120,
+  "stop_reason": "end_turn"
+ }
+}

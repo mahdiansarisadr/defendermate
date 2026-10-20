@@ -1,0 +1,79 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: PostgreSQL. Upgrade being assessed: 13 -> 16.\nThis change was introduced in release 16. Source: PostgreSQL 16 release notes: Migration to Version 16 (official_release_notes). Section: Release 16 / Migration to Version 16.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nRemove the ability to create views manually with ON SELECT rules (Tom Lane)\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nRelease 16 / Migration to Version 16: A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 16 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities: Change assignment rules for PL/pgSQL bound cursor variables (Tom Lane) Previously, the string value of such variables was set to match the variable name during cursor assignment; now it will be assigned during OPEN, and will not match the variable name. To restore the previous behavior, assign the desired portal name to the cursor variable before OPEN. Disallow NULLS NOT DISTINCT indexes for primary keys (Daniel Gustafsson) Change REINDEX DATABASE and reindexdb to not process indexes on system catalogs (Simon Riggs) Processing such indexes is still possible using REINDEX SYSTEM and reindexdb --system. Tighten GENERATED expression restrictions on inherited and partitioned tables (Amit Langote, Tom Lane) Columns of parent/partitioned and child/partition tables must all have the same generation status, though now the actual generation expressions can be different. Remove pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal() (Bharath Rupireddy) Rename server variable force_parallel_mode to debug_parallel_query (David Rowley) Remove the ability to create views manually with ON SELECT rules (Tom Lane) Remove the server variable vacuum_defer_cleanup_age (Andres Freund) This has been unnecessary since hot_standby_feedback and replication slots were added. Remove server variable promote_trigger_file (Simon Riggs) This was used to promote a standby to primary, but is now more easily accomplished with pg_ctl promote or pg_promote(). Remove read-only server variables lc_collate and lc_ctype (Peter Eisentraut) Collations and locales can vary between databases so having them as read-only server variables was unhelpful. Role inheritance now controls the default inheritance status of member roles added during GRANT (Robert Haas) The role's default inheritance behavior can be overridden with the new GRANT ... WITH INHERIT clause. This allows inheritance of some roles and not others because the members' inheritance status is set at GRANT time. Previously the inheritance status of member roles was controlled only by the role's inheritan\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 16 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 16 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Manually created views using ON SELECT rules",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "application_code",
+    "description": "PostgreSQL 16 removes the ability to create views manually with ON SELECT rules. Code or schema that creates views this way is affected by the upgrade. The text does not name a replacement.",
+    "primary_symbol": "ON SELECT rules",
+    "symbols": [
+     "ON SELECT rules"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 16, which introduces the removal of manual ON SELECT rule view creation.",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "16",
+      "quotes": [
+       "Remove the ability to create views manually with ON SELECT rules"
+      ],
+      "relevance": "Ties the removal to the 13 to 16 upgrade.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application or schema creates views manually with ON SELECT rules.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "ON SELECT rules",
+      "quotes": [
+       "Remove the ability to create views manually with ON SELECT rules"
+      ],
+      "relevance": "Only code or schema that creates views manually with ON SELECT rules is affected by this removal.",
+      "ambiguities": [
+       "The text does not state whether views created by other means are affected, or what replaces manual ON SELECT rules."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "(?i)ON\\s+SELECT"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "(?i)CREATE\\s+(OR\\s+REPLACE\\s+)?RULE"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search the codebase and schema for manually created ON SELECT rules before upgrading to 16.",
+     "Recreate affected views by a method that is supported in PostgreSQL 16; the text does not name a replacement."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4183,
+  "output_tokens": 2191,
+  "stop_reason": "end_turn"
+ }
+}

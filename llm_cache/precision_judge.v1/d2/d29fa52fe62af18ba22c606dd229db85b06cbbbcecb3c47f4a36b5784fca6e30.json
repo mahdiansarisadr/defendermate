@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed Query.where_class property\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The where_class property of django.db.models.sql.query.Query is removed in 4.0. Code accessing Query.where_class will break; the text says to initialize django.db.models.sql.where.WhereNode instead if needed.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.0, where the where_class property of Query was removed.\",\n   \"quotes\": [\n    \"The where_class property of django.db.models.sql.query.Query\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code accesses the where_class property of a Query object.\",\n   \"quotes\": [\n    \"The where_class property of django.db.models.sql.query.Query\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The risk names a concrete API (Query.where_class) that a checker could search for, but the quotes only name the property and never state that it was removed, in which version (4.0), or that WhereNode should be used instead, so the removal claim is not supported by the evidence."
+ },
+ "usage": {
+  "input_tokens": 733,
+  "output_tokens": 101,
+  "stop_reason": "end_turn"
+ }
+}

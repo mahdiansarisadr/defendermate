@@ -1,0 +1,101 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release 1.24. Source: Kubernetes v1.24.0 CHANGELOG (official_changelog). Section: v1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade).\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nThe LegacyServiceAccountTokenNoAutoGeneration feature gate is beta, and enabled by default. When enabled, Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount. Use the TokenRequest API to acquire service account tokens, or if a non-expiring token is required, create a Secret API object for the token controller to populate with a service account token by following this guide.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nv1.24.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade): Docker runtime support using dockershim in the kubelet is now completely removed in 1.24. The kubelet used to have a module called dockershim, which implements CRI support for Docker, and it has seen maintenance issues in the Kubernetes community. From 1.24 onwards, please move to a container runtime that is a full-fledged implementation of CRI (v1alpha1 or v1 compliant) as they become available. Fixed bug with leads to Node goes Not-ready state when credentials for vCenter stored in a secret and Zones feature is in use. Zone labels setup moved to KCM component, kubelet skips this step during startup in such case. If credentials stored in cloud-provider config file as plaintext current behaviour does not change and no action required. For proper functioning kube-system:vsphere-legacy-cloud-provider should be allowed to update node object if vCenter credentials stored in secret and Zone feature used. The LegacyServiceAccountTokenNoAutoGeneration feature gate is beta, and enabled by default. When enabled, Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount. Use the TokenRequest API to acquire service account tokens, or if a non-expiring token is required, create a Secret API object for the token controller to populate with a service account token by following this guide. The calculations for Pod topology spread skew now exclude nodes that don't match the node affinity/selector. This may lead to unschedulable pods if you previously had pods matching the spreading selector on those excluded nodes (not matching the node affinity/selector), especially when the topologyKey is not node-level. Revisit the node affinity and/or pod selector in the topology spread constraints to avoid this scenario. Remove the deprecated flag --experimental-check-node-capabilities-before-mount. With CSI now GA, there is a better alternative. Remove any use of --experimental-check-node-capabilities-before-mount from your kubelet scripts or manifests. kubeadm.k8s.io/v1beta2 has been deprecated and will be removed in a future release, possibly in 3 releases (one year). You should start using kubeadm.k8s.io/v1beta3 for new clusters. To migrate your old configuration files on disk you can use the kubeadm config migrate command. Kubeadm: default the kubeadm configuration to the containerd socket (Unix: unix:///var/run/containerd/containerd.sock, Window\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 1.24 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "LegacyServiceAccountTokenNoAutoGeneration: apps relying on auto-generated ServiceAccount token Secrets",
+    "risk_type": "changed_default",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "The LegacyServiceAccountTokenNoAutoGeneration feature gate is beta and enabled by default. When enabled, Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount. Applications or deployments that depend on those auto-generated token Secrets are affected. The text provides a workaround: use the TokenRequest API, or create a Secret for the token controller to populate if a non-expiring token is required.",
+    "primary_symbol": "LegacyServiceAccountTokenNoAutoGeneration",
+    "symbols": [
+     "LegacyServiceAccountTokenNoAutoGeneration",
+     "Secret",
+     "ServiceAccount",
+     "TokenRequest API"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.24, where the LegacyServiceAccountTokenNoAutoGeneration feature gate is beta and enabled by default.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.24",
+      "quotes": [
+       "The LegacyServiceAccountTokenNoAutoGeneration feature gate is beta, and enabled by default."
+      ],
+      "relevance": "Establishes that the change applies to upgrades that cross release 1.24, which is within the 1.23 to 1.29 upgrade path.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application or deployment depends on Secret API objects containing service account tokens that are auto-generated for each ServiceAccount.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Secret",
+      "quotes": [
+       "Secret API objects containing service account tokens are no longer auto-generated for every ServiceAccount"
+      ],
+      "relevance": "The risk only applies if the workload reads token Secrets that were previously auto-generated for ServiceAccounts.",
+      "ambiguities": [
+       "The text does not state whether existing auto-generated token Secrets are removed or kept after the upgrade."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get secrets --all-namespaces"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "service.?account.?token"
+       }
+      ]
+     },
+     {
+      "statement": "The application obtains service account tokens through the TokenRequest API instead of relying on auto-generated Secrets.",
+      "category": "api_usage",
+      "role": "disqualifying",
+      "operator": "present",
+      "expected_value": "TokenRequest",
+      "quotes": [
+       "Use the TokenRequest API to acquire service account tokens"
+      ],
+      "relevance": "If tokens are acquired through the TokenRequest API, the auto-generated Secret change does not break the application.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "TokenRequest"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Acquire service account tokens through the TokenRequest API instead of reading auto-generated token Secrets.",
+     "If a non-expiring token is required, create a Secret API object for the token controller to populate with a service account token, following the guide linked in the source changelog."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4303,
+  "output_tokens": 2863,
+  "stop_reason": "end_turn"
+ }
+}

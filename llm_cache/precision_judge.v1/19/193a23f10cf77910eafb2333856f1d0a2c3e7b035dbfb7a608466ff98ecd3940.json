@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"custom_scan_provider_projection_support\",\n \"risk_type\": \"changed_default\",\n \"description\": \"The default for custom scan providers changed so they are assumed not to support projections. Custom scan providers that do support projections need to be updated for release 15.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the custom scan provider projection default changed.\",\n   \"quotes\": [\n    \"The default is now that custom scan providers are assumed to not support projections; those that do will need to be updated for this release.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses custom scan providers.\",\n   \"quotes\": [\n    \"Allow custom scan providers to indicate if they support projections\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"A custom scan provider in use supports projections.\",\n   \"quotes\": [\n    \"those that do will need to be updated for this release\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support a behavior change (custom scan providers now assumed not to support projections, so those that do must be updated), which is a checkable risk for 13->16 since it crosses release 15 and names a concrete extension API surface."
+ },
+ "usage": {
+  "input_tokens": 783,
+  "output_tokens": 94,
+  "stop_reason": "end_turn"
+ }
+}

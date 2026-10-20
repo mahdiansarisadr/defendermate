@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"GZipMiddleware gzip response output now includes random bytes\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"GZipMiddleware now adds up to 100 random bytes to gzip responses as BREACH mitigation, so compressed output is no longer deterministic or byte-identical across identical responses and sizes may vary.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django release 4.2, which introduced the GZipMiddleware BREACH mitigation.\",\n   \"quotes\": [\n    \"GZipMiddleware now includes a mitigation for the BREACH attack.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses GZipMiddleware to gzip responses.\",\n   \"quotes\": [\n    \"GZipMiddleware now includes a mitigation for the BREACH attack.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Code, tests, caches or clients depend on gzip response bytes or length being deterministic.\",\n   \"quotes\": [\n    \"It will add up to 100 random bytes to gzip responses to make BREACH attacks harder.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that GZipMiddleware in 4.2 adds up to 100 random bytes to gzip responses, which can break code or tests relying on deterministic gzip bytes or length, and the risk names a concrete middleware and checkable behavior."
+ },
+ "usage": {
+  "input_tokens": 861,
+  "output_tokens": 102,
+  "stop_reason": "end_turn"
+ }
+}

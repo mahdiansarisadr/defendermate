@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"RBD in-tree volume plugin deprecation\",\n \"risk_type\": \"operational_risk\",\n \"description\": \"The kubernetes.io/rbd volume plugin is deprecated in this release and will be removed in a later release; workloads using it should move to the RBD CSI driver.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"Upgrade crosses release 1.28, in which the RBD volume plugin was deprecated\",\n   \"quotes\": [\n    \"RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Cluster uses the in-tree kubernetes.io/rbd volume plugin\",\n   \"quotes\": [\n    \"RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states the kubernetes.io/rbd plugin was deprecated in a release the upgrade crosses, so clusters using it face a migration need, and the risk names a concrete plugin and a checkable condition, though the quote does not itself state the 1.28 version or the removal timeline."
+ },
+ "usage": {
+  "input_tokens": 760,
+  "output_tokens": 113,
+  "stop_reason": "end_turn"
+ }
+}

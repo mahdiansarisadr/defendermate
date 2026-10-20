@@ -1,0 +1,65 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"s20\",\n  \"claim\": \"Django documentation states that Support for passing raw column aliases to QuerySet.order_by() is removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support for passing raw column aliases to QuerySet.order_by() is removed.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m21\",\n  \"claim\": \"Django documentation states that Support for passing raw column aliases to QuerySet.order_by() is added.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support for passing raw column aliases to QuerySet.order_by() is removed.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s22\",\n  \"claim\": \"Django documentation states that On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are now created as identity columns rather than serial columns with sequences.\",\n  \"evidence\": [\n   {\n    \"quote\": \"On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are now created as identity columns rather than serial columns with sequences.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m23\",\n  \"claim\": \"Django documentation states that On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are never created as identity columns rather than serial columns with sequences.\",\n  \"evidence\": [\n   {\n    \"quote\": \"On PostgreSQL, AutoField, BigAutoField, and SmallAutoField are now created as identity columns rather than serial columns with sequences.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s24\",\n  \"claim\": \"Django documentation states that the default value of the USE_L10N setting is changed from False to True\",\n  \"evidence\": [\n   {\n    \"quote\": \"the default value of the USE_L10N setting is changed from False to True\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m25\",\n  \"claim\": \"Django documentation states that the default value of the USE_L13N setting is changed from False to True\",\n  \"evidence\": [\n   {\n    \"quote\": \"the default value of the USE_L10N setting is changed from False to True\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s26\",\n  \"claim\": \"PostgreSQL documentation states that Mark the interval output function as stable, not immutable, since it depends on IntervalStyle\",\n  \"evidence\": [\n   {\n    \"quote\": \"Mark the interval output function as stable, not immutable, since it depends on IntervalStyle\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s27\",\n  \"claim\": \"PostgreSQL documentation states that Prevent tablefunc's function normal_rand() from accepting negative values\",\n  \"evidence\": [\n   {\n    \"quote\": \"Prevent tablefunc's function normal_rand() from accepting negative values\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s28\",\n  \"claim\": \"Kubernetes documentation states that RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release\",\n  \"evidence\": [\n   {\n    \"quote\": \"RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m29\",\n  \"claim\": \"Kubernetes documentation states that RBD volume plugin (kubernetes.io/rbd) has been recommended in this release\",\n  \"evidence\": [\n   {\n    \"quote\": \"RBD volume plugin (kubernetes.io/rbd) has been deprecated in this release\",\n    \"source\": \"official docs\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "s20",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m21",
+    "verdict": "not_supported",
+    "missing": "The quote says support is removed, which contradicts the claim that it is added."
+   },
+   {
+    "condition_id": "s22",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m23",
+    "verdict": "not_supported",
+    "missing": "The quote says these fields are now created as identity columns, which contradicts the claim that they are never created that way."
+   },
+   {
+    "condition_id": "s24",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m25",
+    "verdict": "not_supported",
+    "missing": "The quote refers to the USE_L10N setting, not USE_L13N, so the claim names a different setting."
+   },
+   {
+    "condition_id": "s26",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s27",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s28",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m29",
+    "verdict": "not_supported",
+    "missing": "The quote says the RBD plugin was deprecated, which contradicts the claim that it was recommended."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2062,
+  "output_tokens": 380,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"JSON-encoded string default passed to JSONBAgg\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Aggregates such as JSONBAgg used to accept JSON-encoded string literals as defaults, for example default=Value(\\\"[]\\\"). During the 4.2 deprecation period these are JSON-decoded with a warning. From Django 5.1 string literals will be implicitly interpreted as JSON string literals.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.2, where passing encoded JSON string literals is deprecated (current version below 4.2).\",\n   \"quotes\": [\n    \"During the deprecation period string literals will be attempted to be JSON decoded\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application passes a JSON-encoded string literal in Value() as the default of JSONBAgg or another JSON aggregate.\",\n   \"quotes\": [\n    \"Document.objects.annotate( JSONBAgg(\\\"field\\\", default=Value(\\\"[]\\\")), )\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (JSONBAgg with default=Value(\"[]\")) and a checkable behavior change (JSON-encoded string defaults deprecated in 4.2, decoded with a warning), and both quotes support the version-crossing and usage conditions."
+ },
+ "usage": {
+  "input_tokens": 831,
+  "output_tokens": 109,
+  "stop_reason": "end_turn"
+ }
+}

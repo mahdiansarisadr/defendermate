@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_cluster_is_a_single_instance_cluster_0a6d3a\",\n  \"claim\": \"The cluster is a single-instance cluster with one kube-apiserver instance.\",\n  \"evidence\": [\n   {\n    \"quote\": \"In a single-instance cluster, the existing kube-apiserver instance is\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"In an HA cluster, all kube-apiserver instances are at\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"Upgrade kube-apiserver to\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"the existing kube-apiserver instance is\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"The kube-apiserver instances kube-proxy communicates with are at {{< skew currentVersion >}}\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"In highly-available (HA) clusters\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"in HA clusters in which these control plane components can communicate with any kube-apiserver instance in the cluster, all kube-apiserver instances must be upgraded before upgrading these components\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"The kube-apiserver instances the kubelet communicates with are at {{< skew currentVersion >}}\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"all_kube_apiserver_instances_are_running_a3d42f\",\n  \"claim\": \"All kube-apiserver instances are running at the version range required by the skew policy before the upgrade.\",\n  \"evidence\": [\n   {\n    \"quote\": \"all kube-apiserver instances are at\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"kube_proxy_instances_are_persistently_th_a6ae92\",\n  \"claim\": \"Kube-proxy instances are persistently three minor versions behind kube-apiserver.\",\n  \"evidence\": [\n   {\n    \"quote\": \"kube-proxy instances that are persistently three minor versions behind kube-apiserver\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_cluster_is_a_single_instance_cluster_0a6d3a",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "all_kube_apiserver_instances_are_running_a3d42f",
+    "verdict": "partially_supported",
+    "missing": "The quote is truncated and does not state the required version range. It also does not say that the instances must be at that range before the upgrade, only that they are 'at' some version."
+   },
+   {
+    "condition_id": "kube_proxy_instances_are_persistently_th_a6ae92",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1727,
+  "output_tokens": 836,
+  "stop_reason": "end_turn"
+ }
+}

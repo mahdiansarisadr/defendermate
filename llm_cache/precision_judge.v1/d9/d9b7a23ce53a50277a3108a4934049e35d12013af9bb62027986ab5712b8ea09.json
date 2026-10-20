@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Renamed admin utility lookup_needs_distinct to lookup_spawns_duplicates\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented function django.contrib.admin.utils.lookup_needs_distinct() is renamed to lookup_spawns_duplicates() in 4.0. Code that imports or calls the old name will no longer find it after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where lookup_needs_distinct() is renamed.\",\n   \"quotes\": [\n    \"The undocumented django.contrib.admin.utils.lookup_needs_distinct() function is renamed to lookup_spawns_duplicates().\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code imports or calls django.contrib.admin.utils.lookup_needs_distinct().\",\n   \"quotes\": [\n    \"The undocumented django.contrib.admin.utils.lookup_needs_distinct() function is renamed to lookup_spawns_duplicates().\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted release note says django.contrib.admin.utils.lookup_needs_distinct() is renamed to lookup_spawns_duplicates(), so code using the old name could break, and both the function name and the condition (an import or call of it) are concrete and checkable."
+ },
+ "usage": {
+  "input_tokens": 833,
+  "output_tokens": 105,
+  "stop_reason": "end_turn"
+ }
+}

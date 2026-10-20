@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"mark_safe lazy object preservation\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in Django 4.1, mark_safe preserves lazy objects. Code that passes lazy objects (for example lazy strings) to mark_safe may now get a lazy object back instead of the previous result. The text does not describe the previous behavior or the practical impact.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where mark_safe began preserving lazy objects.\",\n   \"quotes\": [\n    \"mark_safe now preserves lazy objects.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls mark_safe, possibly with lazy objects as input.\",\n   \"quotes\": [\n    \"mark_safe now preserves lazy objects.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application passes lazy objects, such as lazy translation strings or SimpleLazyObject instances, to mark_safe.\",\n   \"quotes\": [\n    \"mark_safe now preserves lazy objects.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports a concrete behavior change in mark_safe (preserving lazy objects as of 4.1, within the 3.2->4.2 range) that could alter results for code passing lazy objects, and a checker can search for mark_safe calls with lazy inputs, though the exact prior behavior and impact are not stated."
+ },
+ "usage": {
+  "input_tokens": 843,
+  "output_tokens": 123,
+  "stop_reason": "end_turn"
+ }
+}

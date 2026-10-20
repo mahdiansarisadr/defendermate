@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"SecurityMiddleware now adds Cross-Origin-Opener-Policy: same-origin by default\",\n \"risk_type\": \"changed_default\",\n \"description\": \"Starting in Django 4.0, SecurityMiddleware adds the Cross-Origin Opener Policy header with value 'same-origin' by default, which prevents cross-origin popups from sharing the same browsing context. Apps relying on cross-origin popups sharing a browsing context may behave differently. The header can be disabled by setting SECURE_CROSS_ORIGIN_OPENER_POLICY to None.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where SecurityMiddleware began adding the Cross-Origin Opener Policy header.\",\n   \"quotes\": [\n    \"The SecurityMiddleware now adds the Cross-Origin Opener Policy header with a value of 'same-origin'\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses SecurityMiddleware (enabled in MIDDLEWARE).\",\n   \"quotes\": [\n    \"The SecurityMiddleware now adds the Cross-Origin Opener Policy header\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"SECURE_CROSS_ORIGIN_OPENER_POLICY is not explicitly set (e.g. to None), so the new 'same-origin' default applies.\",\n   \"quotes\": [\n    \"You can prevent this header from being added by setting the SECURE_CROSS_ORIGIN_OPENER_POLICY setting to None.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application relies on cross-origin popups or windows sharing the same browsing context (e.g. OAuth/payment popups communicating via window.opener).\",\n   \"quotes\": [\n    \"to prevent cross-origin popups from sharing the same browsing context\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete behavior change (SecurityMiddleware adding Cross-Origin-Opener-Policy: same-origin) and a concrete setting (SECURE_CROSS_ORIGIN_OPENER_POLICY) that can be checked, it can break popup flows such as OAuth or payment windows, and the quotes support the new header, the middleware, and the opt-out setting."
+ },
+ "usage": {
+  "input_tokens": 1122,
+  "output_tokens": 150,
+  "stop_reason": "end_turn"
+ }
+}

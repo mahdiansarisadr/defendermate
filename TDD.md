@@ -756,15 +756,16 @@ Stretch: extra upgrade (e.g. Python 3.8→3.12) via registry only; discovery age
 
 ## 16. Assignment compliance checklist
 
-- [ ] Outputs and source inventories for all 5 upgrades
-- [ ] Intermediate artifacts (items, triage, release risks)
-- [ ] README: run, setup, API keys or offline mode, assumptions, limitations, what we trusted, where it fails
-- [ ] Source code, prompts, schemas, retrieval/processing logic
-- [ ] Design note (1–2 pages) answering all 10 questions
-- [ ] Validation: JSON Schema, evidence check, critic/judge, rubric, gold comparison, structural test
-- [ ] Not a single prompt (ablation proves the difference)
-- [ ] Constraints respected: public docs only, no issues filed, no real repos scanned, explicit "not a migration plan" disclaimer in every output
-- [ ] Bonus: extra upgrade, review report, rubric, source ranking, dedup, judge, graph, gold set, search queries, multi-provider
+- [x] Outputs and source inventories for all 5 upgrades
+- [x] Intermediate artifacts (items, triage, release risks)
+- [x] README: run, setup, API keys or offline mode, assumptions, limitations, what we trusted, where it fails
+- [x] Source code, prompts, schemas, retrieval/processing logic
+- [x] Design note (1–2 pages) answering all 10 questions
+- [x] Validation: JSON Schema, evidence check, critic/judge, rubric, gold comparison, structural test
+- [x] Not a single prompt (ablation proves the difference)
+- [x] Constraints respected: public docs only, no issues filed, no real repos scanned, explicit "not a migration plan" disclaimer in every output
+- [x] Bonus: review UI and report, rubric, source ranking, dedup, judge, graph, gold sets (all 5), search queries, multi-provider (Anthropic, OpenAI)
+- [ ] Bonus not done: an extra upgrade beyond the required five; local-model fallback
 
 ---
 

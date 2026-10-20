@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Model.full_clean converts exclude to a set; callers and overrides should pass exclude as a set\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Since 4.1, Model.full_clean converts an exclude value to a set. Code that passes exclude (e.g. as a list) to full_clean, or overrides these methods and relies on the exclude type, may see different behavior. The text states it is preferable to pass exclude as a set to clean_fields, full_clean, validate_unique and validate_constraints.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, where Model.full_clean began converting exclude to a set (upgrading from 3.2 to 4.2).\",\n   \"quotes\": [\n    \"The Model.full_clean method now converts an exclude value to a set.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls or overrides Model.full_clean, clean_fields, validate_unique or validate_constraints with an exclude argument.\",\n   \"quotes\": [\n    \"It's also preferable to pass an exclude value as a set to the Model.clean_fields, Model.full_clean, Model.validate_unique, and Model.validate_constraints methods.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application passes exclude as a non-set type such as a list or tuple.\",\n   \"quotes\": [\n    \"It's also preferable to pass an exclude value as a set\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that Model.full_clean now converts exclude to a set and that passing a set to clean_fields, full_clean, validate_unique and validate_constraints is preferable, which could affect overrides relying on the exclude type, and the named APIs make it checkable."
+ },
+ "usage": {
+  "input_tokens": 962,
+  "output_tokens": 106,
+  "stop_reason": "end_turn"
+ }
+}

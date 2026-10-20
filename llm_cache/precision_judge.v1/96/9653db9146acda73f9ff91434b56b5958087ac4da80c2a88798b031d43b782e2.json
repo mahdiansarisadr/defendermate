@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Email attach/attach_alternative exception type changed from AssertionError to ValueError\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Calling EmailMultiAlternatives.attach_alternative() or EmailMessage.attach() with invalid content or mimetype arguments now raises ValueError instead of AssertionError. Code that catches AssertionError (or tests asserting it) around these calls will no longer handle the error.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, which introduced the exception type change.\",\n   \"quotes\": [\n    \"now raise ValueError instead of AssertionError\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls EmailMessage.attach() or EmailMultiAlternatives.attach_alternative().\",\n   \"quotes\": [\n    \"Calling EmailMultiAlternatives.attach_alternative() or EmailMessage.attach()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or its tests catch or assert AssertionError around these attach calls, and invalid content or mimetype arguments can be passed.\",\n   \"quotes\": [\n    \"with an invalid content or mimetype arguments now raise ValueError instead of AssertionError\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that attach() and attach_alternative() with invalid content or mimetype now raise ValueError instead of AssertionError, which can break code catching AssertionError, and it names concrete APIs and exception types that can be searched for."
+ },
+ "usage": {
+  "input_tokens": 918,
+  "output_tokens": 96,
+  "stop_reason": "end_turn"
+ }
+}

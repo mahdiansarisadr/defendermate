@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Third-party database backend relies on removed DatabaseFeatures.allows_group_by_pk\",\n \"risk_type\": \"removed_api\",\n \"description\": \"DatabaseFeatures.allows_group_by_pk is removed in Django 4.2. Third-party database backends that define or rely on it must be updated; allows_group_by_selected_pks remains supported and should be enabled if the backend supports functional dependency detection in GROUP BY clauses per SQL:1999.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, in which DatabaseFeatures.allows_group_by_pk is removed.\",\n   \"quotes\": [\n    \"DatabaseFeatures.allows_group_by_pk is removed\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"A custom or third-party database backend defines or references DatabaseFeatures.allows_group_by_pk.\",\n   \"quotes\": [\n    \"DatabaseFeatures.allows_group_by_pk is removed\",\n    \"This section describes changes that may be needed in third-party database backends.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The backend supports functional dependency detection in GROUP BY clauses as specified by SQL:1999 but does not enable allows_group_by_selected_pks.\",\n   \"quotes\": [\n    \"should be enabled if your backend supports functional dependency detection in GROUP BY clauses as specified by the SQL:1999 standard\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted text confirms that DatabaseFeatures.allows_group_by_pk is removed in this upgrade range and that the section covers changes needed in third-party database backends, giving a concrete, checkable API removal that can break custom backends."
+ },
+ "usage": {
+  "input_tokens": 974,
+  "output_tokens": 371,
+  "stop_reason": "end_turn"
+ }
+}

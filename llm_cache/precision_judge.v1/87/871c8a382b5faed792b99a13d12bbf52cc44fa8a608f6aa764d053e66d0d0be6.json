@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Home directory lookup via HOME on non-Windows platforms\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"On non-Windows platforms, libpq and client programs now consult the HOME environment variable to find the user's home directory, which affects lookups such as ~/.pgpass. If HOME is empty or unset, the previous passwd-based method is used.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where this change was introduced.\",\n   \"quotes\": [\n    \"Version 15 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The client or application runs on a non-Windows platform.\",\n   \"quotes\": [\n    \"On non-Windows platforms, consult the HOME environment variable to find the user's home directory\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or client relies on the home directory lookup, such as through ~/.pgpass.\",\n   \"quotes\": [\n    \"This change affects libpq (for example, while looking up ~/.pgpass) as well as various client application programs.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The HOME environment variable is set to a value that differs from the home directory recorded in the passwd database.\",\n   \"quotes\": [\n    \"If HOME is empty or unset, fall back to the previous method of checking the <pwd.h> database.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change introduced in v15 (HOME env var now consulted on non-Windows for home directory lookups like ~/.pgpass, with fallback to the passwd database), and it can cause different files to be used when HOME differs from the passwd home, which is a checkable deployment property."
+ },
+ "usage": {
+  "input_tokens": 958,
+  "output_tokens": 119,
+  "stop_reason": "end_turn"
+ }
+}

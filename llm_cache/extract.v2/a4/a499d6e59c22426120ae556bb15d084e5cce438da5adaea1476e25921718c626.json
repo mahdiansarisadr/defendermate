@@ -1,0 +1,96 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release *. Source: Kubernetes Version Skew Policy (official_api_docs). Section: Supported component upgrade order / kube-apiserver.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nIn an HA cluster, all kube-apiserver instances are at {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersion >}} (this ensures maximum skew of 1 minor version between the oldest and newest kube-apiserver instance)\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nSupported component upgrade order / kube-apiserver: Pre-requisites: In a single-instance cluster, the existing kube-apiserver instance is {{< skew currentVersionAddMinor -1 >}} In an HA cluster, all kube-apiserver instances are at {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersion >}} (this ensures maximum skew of 1 minor version between the oldest and newest kube-apiserver instance) The kube-controller-manager, kube-scheduler, and cloud-controller-manager instances that communicate with this server are at version {{< skew currentVersionAddMinor -1 >}} (this ensures they are not newer than the existing API server version, and are within 1 minor version of the new API server version) kubelet instances on all nodes are at version {{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersionAddMinor -2 >}} (this ensures they are not newer than the existing API server version, and are within 2 minor versions of the new API server version) Registered admission webhooks are able to handle the data the new kube-apiserver instance will send them: * ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include any new versions of REST resources added in {{< skew currentVersion >}} (or use the matchPolicy: Equivalent option available in v1.15+) * The webhooks are able to handle any new versions of REST resources that will be sent to them, and any new fields added to existing versions in {{< skew currentVersion >}} Upgrade kube-apiserver to {{< skew currentVersion >}} {{< note >}} Project policies for API deprecation and API change guidelines require kube-apiserver to not skip minor versions when upgrading, even in single-instance clusters. {{< /note >}}\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release * (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "HA kube-apiserver instances outside the supported one-minor-version skew before upgrade",
+    "risk_type": "operational_risk",
+    "risk_level": "medium",
+    "affected_surface": "deployment",
+    "description": "In an HA cluster, the upgrade is only covered by the documented order when all kube-apiserver instances are within one minor version of each other. If instances are outside that range before the upgrade, the upgrade order is not supported.",
+    "primary_symbol": "kube-apiserver",
+    "symbols": [
+     "kube-apiserver"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": "HA",
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses to the release under assessment (1.23 to 1.29), and the text ties the skew requirement to the upgrade of kube-apiserver.",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "1.23 -> 1.29",
+      "quotes": [
+       "this ensures maximum skew of 1 minor version between the oldest and newest kube-apiserver instance"
+      ],
+      "relevance": "The skew rule applies to the upgrade being assessed.",
+      "ambiguities": [
+       "The text uses unresolved template placeholders for version numbers and does not state the concrete release number that the change was introduced in; the release number comes from the assessment request only."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster is an HA cluster with multiple kube-apiserver instances.",
+      "category": "deployment",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "HA",
+      "quotes": [
+       "In an HA cluster, all kube-apiserver instances are at"
+      ],
+      "relevance": "The skew requirement only applies to HA clusters.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pods -n kube-system -l component=kube-apiserver -o wide"
+       }
+      ]
+     },
+     {
+      "statement": "All kube-apiserver instances are running at the version range required by the skew policy before the upgrade.",
+      "category": "runtime",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "{{< skew currentVersionAddMinor -1 >}} or {{< skew currentVersion >}}",
+      "quotes": [
+       "all kube-apiserver instances are at"
+      ],
+      "relevance": "Instances outside this range violate the documented upgrade order.",
+      "ambiguities": [
+       "The text gives the required range only as unresolved template expressions; the text does not state the concrete versions for the 1.23 to 1.29 upgrade, so the downstream engine must derive them."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pods -n kube-system -l component=kube-apiserver -o jsonpath={.items[*].spec.containers[*].image}"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Check the version of every kube-apiserver instance in the HA cluster before starting the upgrade.",
+     "Upgrade lagging kube-apiserver instances so that all instances are within the range the skew policy requires before proceeding."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3997,
+  "output_tokens": 2997,
+  "stop_reason": "end_turn"
+ }
+}

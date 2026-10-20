@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ExclusionConstraint opclasses argument deprecated in favor of OpClass()\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The opclasses argument of django.contrib.postgres.constraints.ExclusionConstraint is deprecated in favor of OpClass() in ExclusionConstraint.expressions. Switching requires 'django.contrib.postgres' in INSTALLED_APPS. After the change, makemigrations generates a new migration with RemoveConstraint and AddConstraint operations. The text says these can be wrapped in SeparateDatabaseAndState state_operations so no SQL runs.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where the opclasses argument of ExclusionConstraint is deprecated (upgrading from a version below 4.1).\",\n   \"quotes\": [\n    \"is deprecated in favor of using OpClass() in ExclusionConstraint.expressions\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application passes the opclasses argument to django.contrib.postgres.constraints.ExclusionConstraint.\",\n   \"quotes\": [\n    \"The opclasses argument of django.contrib.postgres.constraints.ExclusionConstraint\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"To use OpClass() in ExclusionConstraint.expressions, 'django.contrib.postgres' must be in INSTALLED_APPS. If it is not listed, it must be added when migrating.\",\n   \"quotes\": [\n    \"To use it, you need to add 'django.contrib.postgres' in your INSTALLED_APPS\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "It names a concrete deprecated API (ExclusionConstraint opclasses, replaced by OpClass()) that is checkable in code and requires migration changes and an INSTALLED_APPS entry, and the quotes support the deprecation and the INSTALLED_APPS requirement. The risk_type 'removed_api' is slightly off, since this is a deprecation, but it is still a genuine upgrade risk."
+ },
+ "usage": {
+  "input_tokens": 1037,
+  "output_tokens": 155,
+  "stop_reason": "end_turn"
+ }
+}

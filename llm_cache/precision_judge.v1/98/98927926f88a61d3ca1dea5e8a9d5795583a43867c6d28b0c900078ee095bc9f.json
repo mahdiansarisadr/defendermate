@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"OpenLayers widget map_css block removed and inline CSS dropped\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The OpenLayers template widget no longer includes inline CSS, which also removes the former map_css template block. Custom widget templates that extend the OpenLayers template and override map_css will no longer have that block rendered, and map styling that relied on the inline CSS must be provided elsewhere (e.g. via static CSS).\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, where the OpenLayers template widget no longer includes inline CSS and the map_css block is removed.\",\n   \"quotes\": [\n    \"The OpenLayers template widget no longer includes inline CSS (which also removes the former map_css block)\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"The application overrides or extends the OpenLayers widget template and uses the map_css block.\",\n   \"quotes\": [\n    \"which also removes the former map_css block\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"The application uses the OpenLayers widget (OpenLayersWidget / OpenLayers template widget) and relies on its inline CSS for map styling.\",\n   \"quotes\": [\n    \"The OpenLayers template widget no longer includes inline CSS\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted evidence names a concrete removed behavior (OpenLayers template widget inline CSS and the map_css block) that can break custom widget templates and map styling when upgrading to Django 4.2."
+ },
+ "usage": {
+  "input_tokens": 919,
+  "output_tokens": 457,
+  "stop_reason": "end_turn"
+ }
+}

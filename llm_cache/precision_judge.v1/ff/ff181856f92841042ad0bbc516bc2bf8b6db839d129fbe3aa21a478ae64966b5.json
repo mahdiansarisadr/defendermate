@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"InvalidQuery exception class removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The django.db.models.query_utils.InvalidQuery exception class is removed in Django 4.0. Application code that imports, raises or catches InvalidQuery will fail (e.g. ImportError) after upgrading from 3.2 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, in which InvalidQuery is removed.\",\n   \"quotes\": [\n    \"The django.db.models.query_utils.InvalidQuery exception class is removed.\",\n    \"The django.db.models.query_utils.InvalidQuery exception class will be removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application references django.db.models.query_utils.InvalidQuery (imports, raises or catches it).\",\n   \"quotes\": [\n    \"The django.db.models.query_utils.InvalidQuery exception class is removed.\",\n    \"The django.db.models.query_utils.InvalidQuery exception class will be removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The quotes support that InvalidQuery is removed, but none states it was removed in Django 4.0, so the required condition that the 3.2 to 4.2 upgrade crosses 4.0 has no quote support."
+ },
+ "usage": {
+  "input_tokens": 846,
+  "output_tokens": 603,
+  "stop_reason": "end_turn"
+ }
+}

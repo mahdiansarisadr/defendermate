@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"kubectl version default output changed\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The default output of kubectl version was changed to be identical to what kubectl version --short printed. Scripts that parse the previous default output may behave differently.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.28, which introduced the output change.\",\n   \"quotes\": [\n    \"Changed kubectl version default output to be identical to what kubectl version --short printed\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment parses the default output of kubectl version.\",\n   \"quotes\": [\n    \"Changed kubectl version default output\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete behavior (kubectl version default output now matching --short), the quote supports the change, and scripts parsing the old default output could break; the release 1.28 attribution is not shown in the quote, but the condition is checkable and the risk is genuine."
+ },
+ "usage": {
+  "input_tokens": 705,
+  "output_tokens": 104,
+  "stop_reason": "end_turn"
+ }
+}

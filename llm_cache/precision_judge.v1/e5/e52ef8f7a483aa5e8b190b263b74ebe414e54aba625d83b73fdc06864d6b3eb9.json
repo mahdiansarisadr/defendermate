@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Cached template loader enabled by default when DEBUG is True\",\n \"risk_type\": \"changed_default\",\n \"description\": \"Starting in Django 4.1, the cached template loader is enabled in development (DEBUG True) when OPTIONS['loaders'] is not specified in TEMPLATES. Projects that relied on the previous default behavior may see different template loading behavior. The text states OPTIONS['loaders'] can be specified to override this.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, which introduced the change to enable the cached template loader in development.\",\n   \"quotes\": [\n    \"The cached template loader is now enabled in development, when DEBUG is True, and OPTIONS['loaders'] isn't specified.\",\n    \"the cached template loader is now enabled in development\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project runs with DEBUG set to True (e.g. in development).\",\n   \"quotes\": [\n    \"when DEBUG is True\",\n    \"You may specify OPTIONS['loaders'] to override this, if necessary.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The TEMPLATES setting does not specify OPTIONS['loaders'].\",\n   \"quotes\": [\n    \"OPTIONS['loaders'] isn't specified\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The project explicitly sets OPTIONS['loaders'], which overrides the new default.\",\n   \"quotes\": [\n    \"You may specify OPTIONS['loaders'] to override this, if necessary.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete setting (TEMPLATES OPTIONS['loaders']), a concrete condition (DEBUG True), and a concrete version boundary (Django 4.1), all supported by the quoted release-note text, so a checker can verify whether a project is affected."
+ },
+ "usage": {
+  "input_tokens": 1016,
+  "output_tokens": 110,
+  "stop_reason": "end_turn"
+ }
+}

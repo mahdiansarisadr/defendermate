@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"InlineAdminFormSet.non_form_errors property replaced by method\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented InlineAdminFormSet.non_form_errors property is replaced by the non_form_errors() method, consistent with BaseFormSet. Code that accesses it as a property (for example in custom admin templates or code) must now call it as a method.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, which replaced the InlineAdminFormSet.non_form_errors property with a method.\",\n   \"quotes\": [\n    \"The undocumented InlineAdminFormSet.non_form_errors property is replaced by the non_form_errors() method.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application accesses InlineAdminFormSet.non_form_errors as a property (e.g. in custom admin templates or Python code).\",\n   \"quotes\": [\n    \"The undocumented InlineAdminFormSet.non_form_errors property is replaced by the non_form_errors() method.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API change (InlineAdminFormSet.non_form_errors changed from property to method) in the 3.2 to 4.2 range, and the quote supports the change, so a checker can look for property-style access to it."
+ },
+ "usage": {
+  "input_tokens": 842,
+  "output_tokens": 94,
+  "stop_reason": "end_turn"
+ }
+}

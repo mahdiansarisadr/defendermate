@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"InlineModelAdmin.verbose_name_plural fallback change\",\n \"risk_type\": \"changed_default\",\n \"description\": \"Starting in Django 4.0, InlineModelAdmin.verbose_name_plural falls back to InlineModelAdmin.verbose_name + 's'. Inline admin classes that set verbose_name but not verbose_name_plural may display a different plural label in the admin after the upgrade. The text does not state what the previous fallback was.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.0, where the verbose_name_plural fallback changed.\",\n   \"quotes\": [\n    \"The InlineModelAdmin.verbose_name_plural attribute now fallbacks to the InlineModelAdmin.verbose_name + 's'.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application defines InlineModelAdmin subclasses (e.g. TabularInline or StackedInline) that set verbose_name.\",\n   \"quotes\": [\n    \"The InlineModelAdmin.verbose_name_plural attribute now fallbacks to the InlineModelAdmin.verbose_name + 's'.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The inline does not explicitly set verbose_name_plural, so the new fallback applies.\",\n   \"quotes\": [\n    \"The InlineModelAdmin.verbose_name_plural attribute now fallbacks to the InlineModelAdmin.verbose_name + 's'.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports a concrete behavior change in InlineModelAdmin.verbose_name_plural fallback (Django 4.0) that can alter admin labels for inlines setting verbose_name without verbose_name_plural, and a checker can look for such inline classes; the description appropriately avoids claiming the prior behavior."
+ },
+ "usage": {
+  "input_tokens": 986,
+  "output_tokens": 127,
+  "stop_reason": "end_turn"
+ }
+}

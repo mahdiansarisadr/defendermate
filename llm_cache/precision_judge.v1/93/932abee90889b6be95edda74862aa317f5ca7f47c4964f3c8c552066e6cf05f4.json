@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"websearch_to_tsquery() output change for quoted text with discarded tokens\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"websearch_to_tsquery() now produces different tsquery output for quoted query text containing discarded tokens such as underscore. Applications that rely on the previous output may return different search results after upgrading to 16.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where the websearch_to_tsquery() change was introduced\",\n   \"quotes\": [\n    \"Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens\",\n    \"Version 14 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls websearch_to_tsquery()\",\n   \"quotes\": [\n    \"caused the output of these functions to produce incorrect tsquery output\",\n    \"Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The query text passed to websearch_to_tsquery() contains discarded tokens such as underscore\",\n   \"quotes\": [\n    \"Certain discarded tokens, like underscore\",\n    \"Previously, quoted text that contained multiple adjacent discarded tokens was treated as multiple tokens\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Output of the query now differs from the previous output\",\n   \"quotes\": [\n    \"now both output 'pg' <-> 'class' <-> 'pg'\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete function (websearch_to_tsquery()), a version boundary (release 14, inside 13->16), and a checkable trigger (quoted text with discarded tokens such as underscore), and the quotes support a changed tsquery output that could alter search results."
+ },
+ "usage": {
+  "input_tokens": 1027,
+  "output_tokens": 107,
+  "stop_reason": "end_turn"
+ }
+}

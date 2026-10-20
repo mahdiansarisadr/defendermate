@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Exists expression negated parameter removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented negated parameter of the Exists expression is removed in Django 4.2. Code that passes negated to Exists will break after upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which removes the negated parameter of Exists.\",\n   \"quotes\": [\n    \"The undocumented negated parameter of the Exists expression is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application passes the negated parameter to the Exists expression.\",\n   \"quotes\": [\n    \"The undocumented negated parameter of the Exists expression is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states the undocumented negated parameter of Exists is removed, which names a concrete API (Exists, negated) that code can be searched for and would break; the quote supports both the removal and the usage condition, though the version attribution to 4.2 is inferred from the release-note context."
+ },
+ "usage": {
+  "input_tokens": 715,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

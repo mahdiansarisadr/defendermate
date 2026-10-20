@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"MariaDB 10.2 no longer supported\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.1 dropped support for MariaDB 10.2 and supports MariaDB 10.3 and higher. Deployments using MariaDB 10.2 as the database backend must move to MariaDB 10.3 or newer to upgrade from 3.2 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, which supports MariaDB 10.3 and higher and drops MariaDB 10.2.\",\n   \"quotes\": [\n    \"Django 4.1 supports MariaDB 10.3 and higher.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The deployment uses a MariaDB database server at version 10.2 (less than 10.3) with Django.\",\n   \"quotes\": [\n    \"Upstream support for MariaDB 10.2 ends in May 2022.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote 'Django 4.1 supports MariaDB 10.3 and higher' directly supports that deployments on MariaDB 10.2 must upgrade the database, and the risk names a concrete, checkable version constraint (MariaDB 10.2 vs 10.3+), with the second quote about upstream end-of-support being consistent context."
+ },
+ "usage": {
+  "input_tokens": 803,
+  "output_tokens": 132,
+  "stop_reason": "end_turn"
+ }
+}

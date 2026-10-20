@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Pre-3.1 SHA-1 admin password reset tokens no longer accepted\",\n \"risk_type\": \"removed_api\",\n \"description\": \"Django 4.0 removes support for pre-Django 3.1 password reset tokens in the admin site that use the SHA-1 hashing algorithm. Any such legacy token still outstanding will no longer be accepted after upgrading from 3.2 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where support for pre-3.1 SHA-1 admin password reset tokens is removed.\",\n   \"quotes\": [\n    \"Support for the pre-Django 3.1 password reset tokens in the admin site (that use the SHA-1 hashing algorithm) is removed.\",\n    \"Support for the pre-Django 3.1 password reset tokens in the admin site (that use the SHA-1 hashing algorithm) will be removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses the admin site's password reset functionality and has pre-Django 3.1 (SHA-1) password reset tokens that are still in use.\",\n   \"quotes\": [\n    \"Support for the pre-Django 3.1 password reset tokens in the admin site\",\n    \"Support for the pre-Django 3.1 password reset tokens in the admin site\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly state that support for pre-Django 3.1 SHA-1 admin password reset tokens is removed (with a deprecation notice in the earlier release), which is a concrete removed behavior that could invalidate outstanding legacy tokens when upgrading from 3.2 to 4.2."
+ },
+ "usage": {
+  "input_tokens": 937,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}

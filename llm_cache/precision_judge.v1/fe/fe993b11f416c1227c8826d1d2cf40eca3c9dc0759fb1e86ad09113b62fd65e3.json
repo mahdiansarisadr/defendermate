@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed where_class argument of get_extra_restriction()\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The where_class argument to the private get_extra_restriction() method of ForeignObject and ForeignObjectRel is removed in 4.0. Custom subclasses overriding or callers invoking get_extra_restriction() with where_class will break; the text says to initialize WhereNode instead.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.0, where the where_class argument of get_extra_restriction() was removed.\",\n   \"quotes\": [\n    \"the where_class argument to the private get_extra_restriction() method of ForeignObject and ForeignObjectRel are removed\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application defines or calls get_extra_restriction() on ForeignObject or ForeignObjectRel (or subclasses) using a where_class argument.\",\n   \"quotes\": [\n    \"the where_class argument to the private get_extra_restriction() method of ForeignObject and ForeignObjectRel\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted evidence states that the where_class argument of the get_extra_restriction() method of ForeignObject and ForeignObjectRel is removed, which falls within the 3.2 to 4.2 range and names a concrete, checkable API that code can be searched for."
+ },
+ "usage": {
+  "input_tokens": 838,
+  "output_tokens": 408,
+  "stop_reason": "end_turn"
+ }
+}

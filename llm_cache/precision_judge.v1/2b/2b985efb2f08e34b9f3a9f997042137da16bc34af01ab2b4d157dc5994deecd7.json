@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"logical_replication_rls_target_tables\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Logical replication can run as the subscription owner. Because row-level security policies are not checked, replication into tables with row-level security policies is limited to superusers, roles with bypassrls, and table owners.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The change is introduced in release 15 and the upgrade crosses release 15.\",\n   \"quotes\": [\n    \"Allow logical replication to run as the owner of the subscription\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses logical replication to replicate into tables that have row-level security policies.\",\n   \"quotes\": [\n    \"replicate into tables with row-level security policies\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The subscription runs as the subscription owner.\",\n   \"quotes\": [\n    \"Allow logical replication to run as the owner of the subscription\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The subscription owner is not a superuser, does not have bypassrls, and does not own the target table.\",\n   \"quotes\": [\n    \"only superusers, roles with bypassrls, and table owners can replicate into tables with row-level security policies\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete PG15 behavior change (logical replication runs as subscription owner, so only superusers, bypassrls roles, and table owners can replicate into RLS-protected tables), which can break replication on a 13->16 upgrade and is checkable via subscription owner, RLS policies, and role attributes, though the 'disqualifying' condition is really the risk-triggering condition and is mislabeled."
+ },
+ "usage": {
+  "input_tokens": 905,
+  "output_tokens": 155,
+  "stop_reason": "end_turn"
+ }
+}

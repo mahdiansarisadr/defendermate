@@ -17,7 +17,7 @@
 {"item_id": "d362c56e77c8", "label": "risk", "reason": "The autoscaling/v2beta2 API version of HorizontalPodAutoscaler is no longer served, so existing manifests using it will fail.", "swept": false}
 {"item_id": "78ae3807adc1", "label": "risk", "reason": "Users must migrate manifests and API clients to autoscaling/v2, which requires migration work.", "swept": false}
 {"item_id": "535de5056cb0", "label": "risk", "reason": "The targetAverageUtilization field is replaced by target.averageUtilization and target.type, a renamed setting that requires config changes.", "swept": false}
-{"item_id": "b1ae46f95284", "label": "risk", "reason": "States that v1.25 stopped serving deprecated API versions, so manifests and clients still using those removed versions will break and need migration when upgrading from 1.23 to 1.29.", "swept": true}
+{"item_id": "b1ae46f95284", "label": "risk", "reason": "The text states that the v1.25 release stopped serving deprecated API versions, so manifests or clients still using them will break and need migration.", "swept": true}
 {"item_id": "9e8e33bb9ae7", "label": "risk", "reason": "The batch/v1beta1 CronJob API is no longer served as of v1.25, so manifests and clients using it will break on upgrade.", "swept": false}
 {"item_id": "e2a0afdda958", "label": "risk", "reason": "Users must migrate manifests and API clients to batch/v1 to avoid breakage from the removed v1beta1 version.", "swept": false}
 {"item_id": "0ec9117eb896", "label": "context", "reason": "It states existing persisted objects remain accessible through the new API, so no data migration is needed, though it is reassuring rather than a required action.", "swept": false}

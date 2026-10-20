@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"sqlparse minimum version raised to 0.3.1\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.2 raises the minimum supported version of sqlparse from 0.2.2 to 0.3.1. A deployment that has sqlparse installed at a version older than 0.3.1 is below the supported minimum and needs sqlparse upgraded.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which raises the minimum supported sqlparse version.\",\n   \"quotes\": [\n    \"The minimum supported version of sqlparse is increased from 0.2.2 to 0.3.1.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment has sqlparse installed at a version lower than 0.3.1.\",\n   \"quotes\": [\n    \"The minimum supported version of sqlparse is increased from 0.2.2 to 0.3.1.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted Django 4.2 change raising the minimum supported sqlparse from 0.2.2 to 0.3.1 is a concrete, checkable dependency requirement that can break deployments with older sqlparse installed, though the second condition reuses the same quote and does not independently evidence the deployment's installed version."
+ },
+ "usage": {
+  "input_tokens": 792,
+  "output_tokens": 298,
+  "stop_reason": "end_turn"
+ }
+}

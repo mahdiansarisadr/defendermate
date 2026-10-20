@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"has_case_insensitive_like default changed from True to False for third-party database backends\",\n \"risk_type\": \"changed_default\",\n \"description\": \"In Django 4.1 the BaseDatabaseFeatures.has_case_insensitive_like default changed from True to False. Third-party database backends that subclass BaseDatabaseFeatures and relied on the inherited True default will now get False, which may change behavior (e.g. in tests that are skipped or run depending on this feature flag). The section states this may need changes in third-party database backends.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, where has_case_insensitive_like default changed from True to False.\",\n   \"quotes\": [\n    \"BaseDatabaseFeatures.has_case_insensitive_like is changed from True to False\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project ships or uses a custom/third-party database backend with a features class subclassing BaseDatabaseFeatures that relies on the inherited has_case_insensitive_like value.\",\n   \"quotes\": [\n    \"This section describes changes that may be needed in third-party database backends.\",\n    \"BaseDatabaseFeatures.has_case_insensitive_like is changed from True to False\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The backend's DatabaseFeatures explicitly sets has_case_insensitive_like, so the new default does not apply.\",\n   \"quotes\": [\n    \"BaseDatabaseFeatures.has_case_insensitive_like is changed from True to False\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support that BaseDatabaseFeatures.has_case_insensitive_like changed from True to False and that the section concerns third-party database backends, so backends relying on the inherited default are genuinely affected, and the risk names a concrete attribute that can be checked."
+ },
+ "usage": {
+  "input_tokens": 1001,
+  "output_tokens": 109,
+  "stop_reason": "end_turn"
+ }
+}

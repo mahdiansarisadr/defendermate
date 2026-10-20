@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ProjectState real_apps must be a set\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The real_apps argument of the undocumented django.db.migrations.state.ProjectState.__init__() method must now be a set if provided. Code that constructs ProjectState with a non-set real_apps (e.g. a list) will break. This is an undocumented API, so only custom migration tooling or tests calling it directly are likely affected.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where real_apps was changed to require a set.\",\n   \"quotes\": [\n    \"The real_apps argument of the undocumented django.db.migrations.state.ProjectState.init() method must now be a set if provided.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application constructs ProjectState and passes the real_apps argument.\",\n   \"quotes\": [\n    \"The real_apps argument of the undocumented django.db.migrations.state.ProjectState.init() method must now be a set if provided.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The real_apps value passed is not a set (e.g. a list or tuple).\",\n   \"quotes\": [\n    \"must now be a set if provided\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change (ProjectState.__init__ real_apps must now be a set), which could break callers passing a list or tuple, and the risk names a checkable API and argument; the 4.0 release attribution is not directly quoted but is consistent with the 3.2 to 4.2 range."
+ },
+ "usage": {
+  "input_tokens": 900,
+  "output_tokens": 120,
+  "stop_reason": "end_turn"
+ }
+}

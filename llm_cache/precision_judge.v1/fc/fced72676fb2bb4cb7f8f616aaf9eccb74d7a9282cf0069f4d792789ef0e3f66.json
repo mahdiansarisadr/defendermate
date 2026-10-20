@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"DatabaseOperations.insert_statement() ignore_conflicts argument replaced by on_conflict\",\n \"risk_type\": \"removed_api\",\n \"description\": \"In Django 4.1 the ignore_conflicts argument of DatabaseOperations.insert_statement() is replaced by on_conflict, which accepts django.db.models.constants.OnConflict. Third-party database backends that override or call insert_statement() with ignore_conflicts will need changes when upgrading across 4.1 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where the ignore_conflicts argument of insert_statement() was replaced by on_conflict.\",\n   \"quotes\": [\n    \"The ignore_conflicts argument of the DatabaseOperations.insert_statement() method is replaced by on_conflict\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project contains a custom or third-party database backend that overrides or calls DatabaseOperations.insert_statement() using the ignore_conflicts argument.\",\n   \"quotes\": [\n    \"The ignore_conflicts argument of the DatabaseOperations.insert_statement() method is replaced by on_conflict\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The codebase includes a custom database backend (a DatabaseOperations subclass), as the section describes changes that may be needed in third-party database backends.\",\n   \"quotes\": [\n    \"This section describes changes that may be needed in third-party database backends.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API change (DatabaseOperations.insert_statement() ignore_conflicts replaced by on_conflict in 4.1) that a checker can look for in custom database backends, and the quoted evidence supports the replacement and the third-party backend scope."
+ },
+ "usage": {
+  "input_tokens": 989,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

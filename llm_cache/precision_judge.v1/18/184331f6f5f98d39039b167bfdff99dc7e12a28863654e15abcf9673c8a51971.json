@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Third-party database backend overrides DatabaseOperations.ignore_conflicts_suffix_sql()\",\n \"risk_type\": \"removed_api\",\n \"description\": \"In Django 4.1, DatabaseOperations.ignore_conflicts_suffix_sql() is replaced by DatabaseOperations.on_conflict_suffix_sql(), which accepts the fields, on_conflict, update_fields, and unique_fields arguments. Third-party or custom database backends that define or call ignore_conflicts_suffix_sql() need to be updated to the new method.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where ignore_conflicts_suffix_sql() was replaced.\",\n   \"quotes\": [\n    \"DatabaseOperations.ignore_conflicts_suffix_sql() method is replaced by DatabaseOperations.on_conflict_suffix_sql()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project contains a custom or third-party database backend that defines or calls DatabaseOperations.ignore_conflicts_suffix_sql().\",\n   \"quotes\": [\n    \"DatabaseOperations.ignore_conflicts_suffix_sql() method is replaced by DatabaseOperations.on_conflict_suffix_sql()\",\n    \"This section describes changes that may be needed in third-party database backends.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that ignore_conflicts_suffix_sql() is replaced by on_conflict_suffix_sql() and that this affects third-party database backends, and the risk names a concrete API that can be searched for in backend code; the quoted text does not state the 4.1 version or the argument list, but the conditions are otherwise supported."
+ },
+ "usage": {
+  "input_tokens": 955,
+  "output_tokens": 128,
+  "stop_reason": "end_turn"
+ }
+}

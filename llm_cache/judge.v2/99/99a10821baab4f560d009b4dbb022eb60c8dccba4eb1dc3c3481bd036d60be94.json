@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"upgrade_crosses_release_13_c83395\",\n  \"claim\": \"Upgrade crosses release 13\",\n  \"evidence\": [\n   {\n    \"quote\": \"The next/link child can no longer be <a>.\",\n    \"source\": \"Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13)\",\n    \"release_of_change\": \"13\"\n   },\n   {\n    \"quote\": \"Upgrading from 12 to 13\",\n    \"source\": \"Next.js 'How to upgrade to version 13' (current docs)\",\n    \"release_of_change\": \"13\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"application_renders_next_link_with_an_a_3bf8f2\",\n  \"claim\": \"Application renders next/link with an <a> child\",\n  \"evidence\": [\n   {\n    \"quote\": \"The next/link child can no longer be <a>.\",\n    \"source\": \"Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13)\",\n    \"release_of_change\": \"13\"\n   },\n   {\n    \"quote\": \"The next/link child can no longer be <a>\",\n    \"source\": \"Next.js 'How to upgrade to version 13' (current docs)\",\n    \"release_of_change\": \"13\"\n   },\n   {\n    \"quote\": \"Add the legacyBehavior prop to use the legacy behavior\",\n    \"source\": \"Next.js 'How to upgrade to version 13' (current docs)\",\n    \"release_of_change\": \"13\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"application_sets_the_legacybehavior_prop_75b30e\",\n  \"claim\": \"Application sets the legacyBehavior prop on next/link\",\n  \"evidence\": [\n   {\n    \"quote\": \"Add the legacyBehavior prop to use the legacy behavior\",\n    \"source\": \"Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13)\",\n    \"release_of_change\": \"13\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "upgrade_crosses_release_13_c83395",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "application_renders_next_link_with_an_a_3bf8f2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "application_sets_the_legacybehavior_prop_75b30e",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1413,
+  "output_tokens": 516,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"version_14_is_crossed_by_the_upgrade_fro_077b9a\",\n  \"claim\": \"Version 14 is crossed by the upgrade from 13 to 16\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 14 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_var_samp_or_stddev_86ea0c\",\n  \"claim\": \"The application calls var_samp() or stddev_samp() with numeric parameters\",\n  \"evidence\": [\n   {\n    \"quote\": \"stddev_samp() with numeric parameters\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_input_to_the_function_is_a_single_na_56b049\",\n  \"claim\": \"The input to the function is a single NaN value\",\n  \"evidence\": [\n   {\n    \"quote\": \"when the input is a single NaN value\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "version_14_is_crossed_by_the_upgrade_fro_077b9a",
+    "verdict": "partially_supported",
+    "missing": "The quote says Version 14 has compatibility-affecting changes but does not mention an upgrade path from 13 to 16 or state that the upgrade crosses version 14."
+   },
+   {
+    "condition_id": "the_application_calls_var_samp_or_stddev_86ea0c",
+    "verdict": "partially_supported",
+    "missing": "The quote mentions only stddev_samp() with numeric parameters; it does not mention var_samp(), so the 'var_samp() or' alternative is unsupported."
+   },
+   {
+    "condition_id": "the_input_to_the_function_is_a_single_na_56b049",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1201,
+  "output_tokens": 717,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Meta.index_together deprecated in favor of Meta.indexes\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Meta.index_together is deprecated in favor of Meta.indexes. Moving existing index_together definitions to indexes must be handled as a migration: makemigrations generates a RenameIndex operation that renames the existing index. Historical migrations that contain index_together or AlterIndexTogether can be squashed. AlterIndexTogether is now officially supported only for pre-4.2 migration files and should not be used in new migrations.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, where Meta.index_together is deprecated.\",\n   \"quotes\": [\n    \"The Meta.index_together option is deprecated in favor of the indexes option\",\n    \"The Meta.index_together option is deprecated in favor of the indexes option.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Models declare Meta.index_together.\",\n   \"quotes\": [\n    \"Migrating existing index_together should be handled as a migration\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Existing migration files use the AlterIndexTogether operation, so squashing is advised and it must not be used in new migrations.\",\n   \"quotes\": [\n    \"The AlterIndexTogether migration operation is now officially supported only for pre-Django 4.2 migration files\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The core risk is supported by quotes naming the concrete Meta.index_together option being deprecated in favor of Meta.indexes in the 3.2 to 4.2 range, but the description's claim that makemigrations generates a RenameIndex operation and its squashing advice are not backed by the provided quotes."
+ },
+ "usage": {
+  "input_tokens": 952,
+  "output_tokens": 585,
+  "stop_reason": "end_turn"
+ }
+}

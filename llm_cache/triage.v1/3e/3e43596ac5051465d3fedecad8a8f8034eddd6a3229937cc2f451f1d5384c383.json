@@ -1,0 +1,75 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: PostgreSQL. Upgrade: 13 -> 16. Release of these items: 15.\nSource: PostgreSQL 15 release notes: Migration to Version 15.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"e10474ef6e3c\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"When EXPLAIN references the session's temporary object schema, refer to it as pg_temp (Amul Sul) Previously the actual schema name was reported, leading to inconsistencies across sessions.\"}\n{\"item_id\": \"d1aa2ceb411c\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Fix pg_statio_all_tables to sum values for the rare case of TOAST tables with multiple indexes (Andrei Zubkov) Previously such cases would show one row for each index.\"}\n{\"item_id\": \"940c197ca9ba\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Disallow setting custom options that match the name of an installed extension, but are not one of the extension's declared variables (Florin Irion, Tom Lane) This change causes any such pre-existing variables to be deleted during extension load, and then prevents new ones from being created later in the session. The intent is to prevent confusion about whether a variable is associated with an extension or not.\"}\n{\"item_id\": \"4b04f760c2a6\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Remove obsolete server variable stats_temp_directory (Andres Freund, Kyotaro Horiguchi)\"}\n{\"item_id\": \"a716901bf6e5\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Improve the algorithm used to compute random() (Fabien Coelho) This will cause random()'s results to differ from what was emitted by prior versions, even for the same seed value.\"}\n{\"item_id\": \"3ca7cfb1164b\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"libpq's PQsendQuery() function is no longer supported in pipeline mode (Álvaro Herrera) Applications that are using that combination will need to be modified to use PQsendQueryParams() instead.\"}\n{\"item_id\": \"bfcef8a575c3\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"On non-Windows platforms, consult the HOME environment variable to find the user's home directory (Anders Kaseorg) If HOME is empty or unset, fall back to the previous method of checking the <pwd.h> database. This change affects libpq (for example, while looking up ~/.pgpass) as well as various client application programs.\"}\n{\"item_id\": \"11fc01aaee57\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Remove pg_dump's --no-synchronized-snapshots option (Tom Lane) All still-supported server versions support synchronized snapshots, so there's no longer a need for this option.\"}\n{\"item_id\": \"3506ea939703\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"After an error is detected in psql's --single-transaction mode, change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set (Michael Paquier)\"}\n{\"item_id\": \"1ddbbc99bb12\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Avoid unnecessary casting of constants in queries sent by postgres_fdw (Dian Fay) When column types are intentionally different between local and remote databases, such casts could cause errors.\"}\n{\"item_id\": \"11eb1b1c4fd0\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Remove xml2's xml_is_well_formed() function (Tom Lane) This function has been implemented in the core backend since Postgres 9.1.\"}\n{\"item_id\": \"751b7c12e175\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Allow custom scan providers to indicate if they support projections (Sven Klemm) The default is now that custom scan providers are assumed to not support projections; those that do will need to be updated for this release.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "e10474ef6e3c",
+    "label": "context",
+    "reason": "EXPLAIN output now shows pg_temp instead of the actual temporary schema name, a cosmetic output change that needs no user action."
+   },
+   {
+    "item_id": "d1aa2ceb411c",
+    "label": "noise",
+    "reason": "Pure bug fix correcting pg_statio_all_tables row aggregation for TOAST tables with multiple indexes, which does not change correct behavior."
+   },
+   {
+    "item_id": "940c197ca9ba",
+    "label": "risk",
+    "reason": "Pre-existing custom variables matching an installed extension name are deleted at extension load and new ones are blocked, which can break existing configurations or sessions."
+   },
+   {
+    "item_id": "4b04f760c2a6",
+    "label": "risk",
+    "reason": "The obsolete stats_temp_directory server variable is removed, so any configuration or code setting it will fail."
+   },
+   {
+    "item_id": "a716901bf6e5",
+    "label": "risk",
+    "reason": "random() results for the same seed differ from prior versions, which can break reproducible tests or workloads that depend on fixed seeds."
+   },
+   {
+    "item_id": "3ca7cfb1164b",
+    "label": "risk",
+    "reason": "PQsendQuery() is no longer supported in pipeline mode, so applications using that combination must be modified to use PQsendQueryParams()."
+   },
+   {
+    "item_id": "bfcef8a575c3",
+    "label": "risk",
+    "reason": "On non-Windows platforms HOME is now consulted first, which changes where libpq and client tools look for files such as ~/.pgpass when HOME is set."
+   },
+   {
+    "item_id": "11fc01aaee57",
+    "label": "risk",
+    "reason": "The pg_dump --no-synchronized-snapshots option is removed, so scripts or tools passing it will fail."
+   },
+   {
+    "item_id": "3506ea939703",
+    "label": "risk",
+    "reason": "psql --single-transaction behavior changes so the final COMMIT becomes ROLLBACK only when ON_ERROR_STOP is set, altering outcomes of scripts after errors."
+   },
+   {
+    "item_id": "1ddbbc99bb12",
+    "label": "risk",
+    "reason": "postgres_fdw no longer emits unnecessary casts, which changes the generated remote queries and can alter behavior for deployments relying on the old casts."
+   },
+   {
+    "item_id": "11eb1b1c4fd0",
+    "label": "risk",
+    "reason": "The xml2 xml_is_well_formed() function is removed, so applications calling it must switch to the core backend version."
+   },
+   {
+    "item_id": "751b7c12e175",
+    "label": "risk",
+    "reason": "Custom scan providers are now assumed not to support projections by default, so existing providers that do support them must be updated."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2008,
+  "output_tokens": 871,
+  "stop_reason": "end_turn"
+ }
+}

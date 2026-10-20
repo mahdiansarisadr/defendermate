@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"QuerySet.iterator() with prefetch_related and no chunk_size\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Calling QuerySet.iterator() on a queryset that prefetches related objects without chunk_size is deprecated as of 4.1. Older versions did no prefetching in this case. Callers must pass chunk_size to signal that the additional prefetch query per chunk is wanted.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, which deprecates iterator() on prefetching querysets without chunk_size.\",\n   \"quotes\": [\n    \"The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated.\",\n    \"QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls QuerySet.iterator().\",\n   \"quotes\": [\n    \"The usage of QuerySet.iterator() on a queryset that prefetches related objects without providing the chunk_size argument is deprecated.\",\n    \"QuerySet.iterator now supports prefetching related objects as long as the chunk_size argument is provided.\",\n    \"In older versions, no prefetching was done.\",\n    \"as long as the chunk_size argument is provided\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The queryset passed to iterator() prefetches related objects (for example via prefetch_related or Prefetch).\",\n   \"quotes\": [\n    \"on a queryset that prefetches related objects without providing the chunk_size argument\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The iterator() call does not pass a chunk_size argument.\",\n   \"quotes\": [\n    \"without providing the chunk_size argument is deprecated\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Prefetching is now performed on iterator(), with one additional query per chunk, where older versions did none.\",\n   \"quotes\": [\n    \"In older versions, no prefetching was done.\",\n    \"the additional query per chunk needed to prefetch\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (QuerySet.iterator() on prefetching querysets without chunk_size) with a checkable condition, and the quotes support the 4.1 deprecation and the change from no prefetching to chunked prefetching, which causes deprecation warnings and altered query behavior."
+ },
+ "usage": {
+  "input_tokens": 1208,
+  "output_tokens": 116,
+  "stop_reason": "end_turn"
+ }
+}

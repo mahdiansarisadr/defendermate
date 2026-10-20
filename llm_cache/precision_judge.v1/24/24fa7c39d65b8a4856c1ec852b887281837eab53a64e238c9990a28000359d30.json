@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PriorityLevelConfiguration spec.limited.assuredConcurrencyShares renamed in flowcontrol.apiserver.k8s.io/v1beta3\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In flowcontrol.apiserver.k8s.io/v1beta3, the PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares. Manifests or API clients that use the old field name in v1beta3 must be updated to the new name.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.29, the release in which this change is introduced.\",\n   \"quotes\": [\n    \"The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or manifests use the flowcontrol.apiserver.k8s.io/v1beta3 API version for PriorityLevelConfiguration.\",\n   \"quotes\": [\n    \"Notable changes in flowcontrol.apiserver.k8s.io/v1beta3:\",\n    \"The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field\",\n    \"The flowcontrol.apiserver.k8s.io/v1beta3 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.32.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or manifests use the spec.limited.assuredConcurrencyShares field of PriorityLevelConfiguration.\",\n   \"quotes\": [\n    \"The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly state the spec.limited.assuredConcurrencyShares to nominalConcurrencyShares rename under flowcontrol.apiserver.k8s.io/v1beta3, which is a concrete, checkable field and API version that manifests must be updated for, though the quotes do not explicitly name release 1.29."
+ },
+ "usage": {
+  "input_tokens": 1124,
+  "output_tokens": 587,
+  "stop_reason": "end_turn"
+ }
+}

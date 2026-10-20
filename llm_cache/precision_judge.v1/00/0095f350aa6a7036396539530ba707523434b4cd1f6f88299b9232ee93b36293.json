@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"random() output changes for a given seed\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The algorithm used by random() was changed, so its results can differ from prior versions even for the same seed value. Code or tests that depend on exact random() output for a given seed may produce different results after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, which introduced the change to random().\",\n   \"quotes\": [\n    \"Version 15 contains a number of changes that may affect compatibility with previous releases.\",\n    \"Improve the algorithm used to compute random()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls random().\",\n   \"quotes\": [\n    \"Improve the algorithm used to compute random()\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application depends on random() results being reproducible for a given seed.\",\n   \"quotes\": [\n    \"even for the same seed value\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes show PostgreSQL 15 changed the random() algorithm and that results can differ even for the same seed, so code or tests relying on exact seeded output could break when upgrading from 13 to 16, and random() is a concrete, checkable function."
+ },
+ "usage": {
+  "input_tokens": 797,
+  "output_tokens": 347,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"kube-scheduler --lock-object-name flag removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The deprecated kube-scheduler flag --lock-object-name was removed in 1.28. Deployments that still pass this flag to kube-scheduler are affected at upgrade. The text names --leader-elect-resource-name or ComponentConfig as replacements.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.28, in which the kube-scheduler flag --lock-object-name was removed.\",\n   \"quotes\": [\n    \"The deprecated flag --lock-object-namespace and --lock-object-name have been removed from kube-scheduler.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The kube-scheduler is started with the flag --lock-object-name.\",\n   \"quotes\": [\n    \"The deprecated flag --lock-object-namespace and --lock-object-name have been removed from kube-scheduler.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states --lock-object-name was removed from kube-scheduler, which breaks deployments still passing it, and the risk names a concrete flag that can be checked; the 1.28 version and the replacement names are not in the quotes, though the removal claim itself is supported."
+ },
+ "usage": {
+  "input_tokens": 807,
+  "output_tokens": 106,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Deprecated API versions no longer served in v1.25\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The v1.25 release stopped serving deprecated API versions. The item is truncated and does not list the specific API versions, so the affected symbols cannot be identified from the text provided.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Kubernetes release v1.25 (from 1.23 to 1.29).\",\n   \"quotes\": [\n    \"The v1.25 release stopped serving the following deprecated API versions:\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application or deployment uses one of the deprecated API versions that v1.25 stopped serving.\",\n   \"quotes\": [\n    \"stopped serving the following deprecated API versions\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": false,
+  "reason": "The quotes support that v1.25 stopped serving deprecated API versions, which is a real upgrade risk across 1.23->1.29, but the item is truncated and names no concrete API, so it is not specific or checkable."
+ },
+ "usage": {
+  "input_tokens": 748,
+  "output_tokens": 91,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,100 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release *. Source: Kubernetes Version Skew Policy (official_api_docs). Section: Supported version skew / kubelet.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nkubelet must not be newer than kube-apiserver.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nSupported version skew / kubelet: kubelet must not be newer than kube-apiserver. kubelet may be up to three minor versions older than kube-apiserver (kubelet < 1.25 may only be up to two minor versions older than kube-apiserver). Example: kube-apiserver is at {{< skew currentVersion >}} kubelet is supported at {{< skew currentVersion >}}, {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} {{< note >}} If version skew exists between kube-apiserver instances in an HA cluster, this narrows the allowed kubelet versions. {{</ note >}} Example: kube-apiserver instances are at {{< skew currentVersion >}} and {{< skew currentVersionAddMinor -1 >}} kubelet is supported at {{< skew currentVersionAddMinor -1 >}}, {{< skew currentVersionAddMinor -2 >}}, and {{< skew currentVersionAddMinor -3 >}} ({{< skew currentVersion >}} is not supported because that would be newer than the kube-apiserver instance at version {{< skew currentVersionAddMinor -1 >}})\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release * (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "kubelet newer than kube-apiserver during upgrade",
+    "risk_type": "operational_risk",
+    "risk_level": "high",
+    "affected_surface": "deployment",
+    "description": "The item states that kubelet must not be newer than kube-apiserver. Upgrading kubelets ahead of kube-apiserver violates this constraint.",
+    "primary_symbol": "kubelet",
+    "symbols": [
+     "kubelet",
+     "kube-apiserver"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses the release in which the kubelet/kube-apiserver version skew statement applies.",
+      "category": "version",
+      "role": "required",
+      "operator": "unknown",
+      "expected_value": "release *",
+      "quotes": [
+       "kubelet must not be newer than kube-apiserver"
+      ],
+      "relevance": "The change statement itself is the version-linked text; the release number is not given in the text.",
+      "ambiguities": [
+       "The text does not state the release number, so the version tie to 1.29 is not confirmed by the text."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The kubelet version is within three minor versions of the kube-apiserver version.",
+      "category": "deployment",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "kube-apiserver minus three minor versions through kube-apiserver",
+      "quotes": [
+       "kubelet may be up to three minor versions older than kube-apiserver"
+      ],
+      "relevance": "Cluster kubelet versions must fall in this range relative to kube-apiserver for the skew to be supported.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get nodes -o wide"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl version"
+       }
+      ]
+     },
+     {
+      "statement": "The kubelet version is below 1.25.",
+      "category": "deployment",
+      "role": "optional",
+      "operator": "less_than",
+      "expected_value": "1.25",
+      "quotes": [
+       "kubelet < 1.25 may only be up to two minor versions older than kube-apiserver"
+      ],
+      "relevance": "For kubelet versions below 1.25, the allowed skew is narrower, raising the risk of a mismatch.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "kubectl",
+        "query": "kubectl get nodes -o wide"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Check kubelet versions on all nodes against the kube-apiserver version before and during the upgrade.",
+     "Ensure no kubelet is newer than any kube-apiserver instance.",
+     "Ensure each kubelet is within three minor versions of kube-apiserver, and within two minor versions for kubelet versions below 1.25."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3744,
+  "output_tokens": 2979,
+  "stop_reason": "end_turn"
+ }
+}

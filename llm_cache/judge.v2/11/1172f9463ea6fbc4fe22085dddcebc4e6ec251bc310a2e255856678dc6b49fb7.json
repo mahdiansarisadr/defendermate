@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_change_applies_to_postgresql_release_aafac9\",\n  \"claim\": \"The change applies to PostgreSQL releases from 15 onward, so the upgrade from 13 to 16 crosses this change.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Disallow setting custom options that match the name of an installed extension\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_has_custom_options_set_wh_4ffa1e\",\n  \"claim\": \"The deployment has custom options set whose names match the name of an installed extension and are not declared variables of that extension.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Disallow setting custom options that match the name of an installed extension, but are not one of the extension's declared variables\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_change_applies_to_postgresql_release_aafac9",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish the change is in the PostgreSQL 15 migration notes but do not state it persists in releases after 15 ('onward'), and the claim that a 13 to 16 upgrade crosses it is an inference not stated in the quotes."
+   },
+   {
+    "condition_id": "the_deployment_has_custom_options_set_wh_4ffa1e",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1102,
+  "output_tokens": 499,
+  "stop_reason": "end_turn"
+ }
+}

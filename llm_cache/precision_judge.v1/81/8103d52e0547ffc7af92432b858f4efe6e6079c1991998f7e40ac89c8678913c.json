@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Admin inline formset:added/formset:removed events no longer jQuery events\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The formset:added and formset:removed admin JavaScript events are now pure JavaScript events that do not depend on jQuery. Custom admin JavaScript that listens to these events using jQuery handlers may be affected and should be adapted per the admin-javascript-inline-form-events documentation.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, where the events became pure JavaScript events (upgrading from 3.2 to 4.2).\",\n   \"quotes\": [\n    \"formset:added and formset:removed JavaScript events are now pure JavaScript events and don't depend on jQuery.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application has custom JavaScript (e.g. in admin templates or media) that handles the formset:added or formset:removed events.\",\n   \"quotes\": [\n    \"formset:added and formset:removed JavaScript events are now pure JavaScript events\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete events (formset:added, formset:removed), the change to pure JavaScript events without jQuery, and a checkable condition (custom admin JS handling these events), and the quotes directly support the behavior change and the upgrade range crossing 4.1."
+ },
+ "usage": {
+  "input_tokens": 833,
+  "output_tokens": 105,
+  "stop_reason": "end_turn"
+ }
+}

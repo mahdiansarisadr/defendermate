@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Meta.constraints now checked during model validation\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Check, unique, and exclusion constraints defined in Meta.constraints are now checked during model validation. Models with such constraints may now reject data during validation (e.g. in forms or full_clean) that was previously accepted at the validation stage and only failed, if at all, at the database level.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, which introduced constraint checking during model validation.\",\n   \"quotes\": [\n    \"Check, unique, and exclusion constraints defined in the Meta.constraints option are now checked during model validation.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application defines check, unique, or exclusion constraints in a model's Meta.constraints option.\",\n   \"quotes\": [\n    \"defined in the Meta.constraints option\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application validates models, for example via full_clean() or ModelForm/admin validation, so the new constraint checks can surface as validation errors.\",\n   \"quotes\": [\n    \"are now checked during model validation\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted text directly supports that Meta.constraints (check, unique, exclusion) are now enforced during model validation, which can newly reject data in full_clean or forms, and it names a concrete option (Meta.constraints) that can be searched for."
+ },
+ "usage": {
+  "input_tokens": 871,
+  "output_tokens": 99,
+  "stop_reason": "end_turn"
+ }
+}

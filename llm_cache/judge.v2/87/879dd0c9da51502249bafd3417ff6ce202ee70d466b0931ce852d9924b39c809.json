@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_to_the_target_releas_b81f1e\",\n  \"claim\": \"The upgrade crosses to the target release of this item.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Upgrade kube-apiserver to {{< skew currentVersion >}}\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_validatingwebhookconfiguration_and_m_2a738e\",\n  \"claim\": \"The ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include new REST resource versions added in the target release.\",\n  \"evidence\": [\n   {\n    \"quote\": \"ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects are updated to include any new versions of REST resources added in\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"webhook_configurations_use_matchpolicy_e_ea3958\",\n  \"claim\": \"Webhook configurations use matchPolicy: Equivalent, which avoids the need to update them for new resource versions.\",\n  \"evidence\": [\n   {\n    \"quote\": \"or use the matchPolicy: Equivalent option available in v1.15+\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_registered_webhooks_handle_new_rest_cbf7fa\",\n  \"claim\": \"The registered webhooks handle new REST resource versions and new fields added to existing versions in the target release.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The webhooks are able to handle any new versions of REST resources that will be sent to them\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   },\n   {\n    \"quote\": \"and any new fields added to existing versions in\",\n    \"source\": \"Kubernetes Version Skew Policy\",\n    \"release_of_change\": \"*\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_to_the_target_releas_b81f1e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_validatingwebhookconfiguration_and_m_2a738e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "webhook_configurations_use_matchpolicy_e_ea3958",
+    "verdict": "partially_supported",
+    "missing": "The quote presents matchPolicy: Equivalent only as an available option ('or use'), not as something webhook configurations actually use. It does support the implied point that this option avoids updating configurations for new resource versions."
+   },
+   {
+    "condition_id": "the_registered_webhooks_handle_new_rest_cbf7fa",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1490,
+  "output_tokens": 754,
+  "stop_reason": "end_turn"
+ }
+}

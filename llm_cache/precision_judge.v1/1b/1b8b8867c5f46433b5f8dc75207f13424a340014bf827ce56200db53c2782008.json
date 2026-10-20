@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"output_field no longer guessed for combined expressions and database functions with mixed types\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"As of Django 4.1, combined expressions no longer guess output_field when argument types match. Resolving an output_field for database functions and combined expressions may now crash with mixed types, so output_field must be set explicitly in such cases.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where combined expressions stopped guessing output_field.\",\n   \"quotes\": [\n    \"Combined expressions no longer use the error-prone behavior of guessing output_field when argument types match.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses combined expressions or database functions (for example F() arithmetic, Func, Value, Coalesce) whose source arguments have mixed types and do not set output_field explicitly.\",\n   \"quotes\": [\n    \"resolving an output_field for database functions and combined expressions may now crash with mixed types\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The expression already sets output_field explicitly, in which case the crash does not apply.\",\n   \"quotes\": [\n    \"You will need to explicitly set the output_field in such cases.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete changed behavior (combined expressions no longer guessing output_field as of Django 4.1) and a checkable condition (expressions with mixed-type arguments lacking explicit output_field), and the quoted evidence supports it."
+ },
+ "usage": {
+  "input_tokens": 908,
+  "output_tokens": 100,
+  "stop_reason": "end_turn"
+ }
+}

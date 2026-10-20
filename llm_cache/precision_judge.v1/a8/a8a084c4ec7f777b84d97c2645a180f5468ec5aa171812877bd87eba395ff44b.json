@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Windows winkernel kube-proxy no longer supports HNS v1 APIs\",\n \"risk_type\": \"removed_api\",\n \"description\": \"Windows winkernel kube-proxy no longer supports Windows HNS v1 APIs in the 1.25 release. Clusters with Windows nodes running winkernel kube-proxy that depend on HNS v1 APIs may break on upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.25, where winkernel kube-proxy stopped supporting HNS v1 APIs.\",\n   \"quotes\": [\n    \"Windows winkernel kube-proxy no longer supports Windows HNS v1 APIs.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The cluster runs Windows nodes with winkernel kube-proxy.\",\n   \"quotes\": [\n    \"Windows winkernel kube-proxy\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application or cluster uses HNS v1 APIs.\",\n   \"quotes\": [\n    \"no longer supports Windows HNS v1 APIs\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that Windows winkernel kube-proxy no longer supports HNS v1 APIs, which is a concrete removal that can break Windows-node clusters relying on it, though the quotes never name release 1.25 and the dependence on HNS v1 is correctly marked uncertain."
+ },
+ "usage": {
+  "input_tokens": 866,
+  "output_tokens": 405,
+  "stop_reason": "end_turn"
+ }
+}

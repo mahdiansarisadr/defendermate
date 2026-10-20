@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"assertHTMLEqual boolean-less attribute comparison change\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in Django 4.0, assertHTMLEqual no longer treats a non-boolean attribute without a value as equal to an attribute with the same name and value. Tests that relied on the old equality may now fail.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where the assertHTMLEqual behavior change was introduced (3.2 -> 4.2).\",\n   \"quotes\": [\n    \"assertHTMLEqual no longer considers a non-boolean attribute without a value equal to an attribute with the same name and value.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The test suite calls assertHTMLEqual.\",\n   \"quotes\": [\n    \"assertHTMLEqual no longer considers a non-boolean attribute without a value equal to an attribute with the same name and value.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Expected or actual HTML in assertHTMLEqual comparisons contains a non-boolean attribute without a value (e.g. valueless attribute) compared against the same attribute with a value.\",\n   \"quotes\": [\n    \"a non-boolean attribute without a value equal to an attribute with the same name and value\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (assertHTMLEqual), a specific behavior change tied to release 4.0 within the 3.2 to 4.2 range, and checkable conditions (test suite calling assertHTMLEqual with valueless non-boolean attributes), and the quote supports the behavior change."
+ },
+ "usage": {
+  "input_tokens": 923,
+  "output_tokens": 119,
+  "stop_reason": "end_turn"
+ }
+}

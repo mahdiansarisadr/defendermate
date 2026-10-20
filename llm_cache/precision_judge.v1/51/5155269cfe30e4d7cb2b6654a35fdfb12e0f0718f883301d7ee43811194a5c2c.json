@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed networking alpha API ClusterCIDR\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The networking alpha API ClusterCIDR was removed in release 1.29. Applications or tooling that use this API may break when the cluster is upgraded to 1.29 or later.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.29, in which the ClusterCIDR networking alpha API was removed.\",\n   \"quotes\": [\n    \"Removed the networking alpha API ClusterCIDR\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses the ClusterCIDR API.\",\n   \"quotes\": [\n    \"Removed the networking alpha API ClusterCIDR\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The cluster serves the ClusterCIDR alpha API before the upgrade.\",\n   \"quotes\": [\n    \"networking alpha API\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (ClusterCIDR, networking alpha) and a version (1.29) that a checker can look for, and the quote 'Removed the networking alpha API ClusterCIDR' supports the removal, which can break users of the API when upgrading from 1.23 to 1.29."
+ },
+ "usage": {
+  "input_tokens": 806,
+  "output_tokens": 117,
+  "stop_reason": "end_turn"
+ }
+}

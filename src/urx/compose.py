@@ -329,11 +329,14 @@ def fact_disagreements(paths: list[RiskPath], facts: list[VersionFact], reg: Reg
                     for e in c.evidence:
                         if not e.quote or e.json_path:
                             continue
-                        m = re.search(rf"minimum {kw} version has been bumped from [\d.]+ to ([\d.]+)", e.quote, re.I)
+                        m = re.search(rf"minimum {kw} version has been bumped from [\d.]+ to (\d+(?:\.\d+)*)", e.quote, re.I)
                         if not m:
                             continue
                         prose = m.group(1)
-                        rel = p.introduced_in
+                        # R2 keeps superseded evidence on the surviving path, so compare against the
+                        # release the quoting source documents, not the path's release.
+                        src_rel = inventory[e.source_id].release if e.source_id in inventory else None
+                        rel = src_rel if src_rel and src_rel != "*" else p.introduced_in
                         rel_facts = sorted([f for f in facts if f.field == field and f.release == rel],
                                            key=lambda f: vkey(f.source_id.split("@v")[-1]))
                         if not rel_facts:

@@ -1,0 +1,65 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"s10\",\n  \"claim\": \"Django documentation states that django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\",\n  \"evidence\": [\n   {\n    \"quote\": \"django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m11\",\n  \"claim\": \"Django documentation states that django.views.i21n.set_language() doesn't set the user language in request.session (key _language).\",\n  \"evidence\": [\n   {\n    \"quote\": \"django.views.i18n.set_language() doesn't set the user language in request.session (key _language).\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s12\",\n  \"claim\": \"Django documentation states that Support for GDAL 2.0 and GEOS 3.5 is removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support for GDAL 2.0 and GEOS 3.5 is removed.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m13\",\n  \"claim\": \"Django documentation states that Support for GDAL 5 and GEOS 3.5 is removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support for GDAL 2.0 and GEOS 3.5 is removed.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s14\",\n  \"claim\": \"Django documentation states that ManifestStaticFilesStorage now replaces paths to JavaScript source map references with their hashed counterparts.\",\n  \"evidence\": [\n   {\n    \"quote\": \"ManifestStaticFilesStorage now replaces paths to JavaScript source map references with their hashed counterparts.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m15\",\n  \"claim\": \"Django documentation states that ManifestStaticFilesStorage never replaces paths to JavaScript source map references with their hashed counterparts.\",\n  \"evidence\": [\n   {\n    \"quote\": \"ManifestStaticFilesStorage now replaces paths to JavaScript source map references with their hashed counterparts.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s16\",\n  \"claim\": \"Django documentation states that The Model.full_clean method now converts an exclude value to a set.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The Model.full_clean method now converts an exclude value to a set.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m17\",\n  \"claim\": \"Django documentation states that The Model.full_clean method never converts an exclude value to a set.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The Model.full_clean method now converts an exclude value to a set.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s18\",\n  \"claim\": \"Django documentation states that parent rows will be returned only if there is a relationship to some 17-year-old child named Jamal\",\n  \"evidence\": [\n   {\n    \"quote\": \"parent rows will be returned only if there is a relationship to some 17-year-old child named Jamal\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m19\",\n  \"claim\": \"Django documentation states that parent rows will be returned only if there is a relationship to some 20-year-old child named Jamal\",\n  \"evidence\": [\n   {\n    \"quote\": \"parent rows will be returned only if there is a relationship to some 17-year-old child named Jamal\",\n    \"source\": \"official docs\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "s10",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m11",
+    "verdict": "not_supported",
+    "missing": "The claim names django.views.i21n.set_language(), but the quote refers to django.views.i18n.set_language(). The module name differs."
+   },
+   {
+    "condition_id": "s12",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m13",
+    "verdict": "not_supported",
+    "missing": "The claim says GDAL 5 support is removed, but the quote says GDAL 2.0."
+   },
+   {
+    "condition_id": "s14",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m15",
+    "verdict": "not_supported",
+    "missing": "The quote says ManifestStaticFilesStorage now replaces these paths. The claim says it never does, which contradicts the quote."
+   },
+   {
+    "condition_id": "s16",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m17",
+    "verdict": "not_supported",
+    "missing": "The quote says full_clean now converts an exclude value to a set. The claim says it never does, which contradicts the quote."
+   },
+   {
+    "condition_id": "s18",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m19",
+    "verdict": "not_supported",
+    "missing": "The claim says the child is 20 years old, but the quote says 17 years old."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2014,
+  "output_tokens": 438,
+  "stop_reason": "end_turn"
+ }
+}

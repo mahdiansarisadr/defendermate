@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_where_the_980e7b\",\n  \"claim\": \"The upgrade crosses release 15, where the numeric literal change was introduced.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Prevent numeric literals from having non-numeric trailing characters\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"application_query_text_contains_a_numeri_071f62\",\n  \"claim\": \"Application query text contains a numeric literal immediately followed by non-numeric characters.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously, query text like 123abc would be interpreted as 123 followed by a separate token abc.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_where_the_980e7b",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish that the numeric literal change was introduced in release 15, but say nothing about the upgrade's source and target versions, so they do not establish that the upgrade crosses release 15."
+   },
+   {
+    "condition_id": "application_query_text_contains_a_numeri_071f62",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1076,
+  "output_tokens": 421,
+  "stop_reason": "end_turn"
+ }
+}

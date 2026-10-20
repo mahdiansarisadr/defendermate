@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Third-party database backend minimum_database_version requires get_database_version and super() call in init_connection_state\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Django 4.1 lets third-party database backends declare DatabaseFeatures.minimum_database_version. If a backend specifies a minimum version, it must also implement DatabaseWrapper.get_database_version(), and its DatabaseWrapper.init_connection_state() must call super() for the version check to run. This affects only custom or third-party backends that adopt this attribute; otherwise the check does not run.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, which introduced the minimum_database_version attribute for third-party backends.\",\n   \"quotes\": [\n    \"Third-party database backends can now specify the minimum required version of the database using the DatabaseFeatures.minimum_database_version attribute\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project ships or uses a third-party/custom database backend that sets DatabaseFeatures.minimum_database_version.\",\n   \"quotes\": [\n    \"DatabaseFeatures.minimum_database_version attribute which is a tuple\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The backend's DatabaseWrapper does not implement get_database_version() returning a tuple of the current database version.\",\n   \"quotes\": [\n    \"backends must also implement DatabaseWrapper.get_database_version(), which returns a tuple of the current database version\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"The backend's DatabaseWrapper.init_connection_state() does not call super(), so the version check will not run.\",\n   \"quotes\": [\n    \"The backend's DatabaseWrapper.init_connection_state() method must call super() in order for the check to run.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete APIs (DatabaseFeatures.minimum_database_version, DatabaseWrapper.get_database_version(), init_connection_state() calling super()), applies to custom backends crossing 4.1, and the quotes directly support each condition."
+ },
+ "usage": {
+  "input_tokens": 1092,
+  "output_tokens": 106,
+  "stop_reason": "end_turn"
+ }
+}

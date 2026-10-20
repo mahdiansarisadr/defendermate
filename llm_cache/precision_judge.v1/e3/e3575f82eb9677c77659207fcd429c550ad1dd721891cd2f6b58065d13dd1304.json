@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"EXTRACT(date) errors on units not in the date type\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"EXTRACT(date) now throws an error for units that are not part of the date data type.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where EXTRACT(date) began raising an error for units not part of the date type.\",\n   \"quotes\": [\n    \"Also, EXTRACT(date) now throws an error for units that are not part of the date data type.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls EXTRACT() on date values with a unit that is not part of the date data type.\",\n   \"quotes\": [\n    \"EXTRACT(date) now throws an error for units that are not part of the date data type\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support that EXTRACT(date) now errors for units outside the date type, which can break existing queries when upgrading across release 14, and the risk names a concrete function and behavior that can be checked for in application SQL."
+ },
+ "usage": {
+  "input_tokens": 733,
+  "output_tokens": 92,
+  "stop_reason": "end_turn"
+ }
+}

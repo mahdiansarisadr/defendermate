@@ -80,6 +80,15 @@ def _write_jsonl(path: Path, rows) -> None:
             f.write(json.dumps(r.model_dump() if hasattr(r, "model_dump") else r, ensure_ascii=False, default=str) + "\n")
 
 
+def _recorded_models(slug: str) -> dict[str, str] | None:
+    """Offline replays must use the models that produced the cached responses (cache keys include the model)."""
+    for root in (config.OUTPUTS_DIR, config.ROOT / "outputs"):
+        f = root / slug / "risk_model.json"
+        if f.exists():
+            return json.loads(f.read_text()).get("pipeline", {}).get("models")
+    return None
+
+
 def _ensure_unique_path_ids(paths: list[RiskPath]) -> None:
     """Distinct risks can share a risk_key (norm_symbol keeps only the last dotted component)."""
     seen: set[str] = set()
@@ -161,8 +170,9 @@ def run_upgrade(project: str, current: str, target: str, offline: bool = False, 
     run_id = run_id or uuid.uuid4().hex[:10]
     log = RunLog(out, run_id, project, slug)
     client = client or LLMClient(offline=offline)
-    log("run_start", project=project, current=current, target=target, offline=offline,
-        models=config.MODELS[client.provider_name])
+    if offline and client.models is None:
+        client.models = _recorded_models(slug)
+    log("run_start", project=project, current=current, target=target, offline=offline, models=client.model_map())
     ctx_vars = {"project": project, "current_version": current, "target_version": target}
     rejected: list[dict] = []
     funnel: dict[str, int] = {}
@@ -361,7 +371,7 @@ def run_upgrade(project: str, current: str, target: str, offline: bool = False, 
             funnel["context_facts"] = len(model.context_facts)
             model.pipeline = {
                 "run_id": run_id, "generated_at": _now(), "provider": client.provider_name,
-                "models": config.MODELS[client.provider_name],
+                "models": client.model_map(),
                 "prompts": ["triage.v1", "extract.v1", "judge.v1", "reconcile.v1"],
                 "funnel": funnel, "judge": judge_stats, "usage": client.usage.by_stage, "timings_s": log.timings,
             }

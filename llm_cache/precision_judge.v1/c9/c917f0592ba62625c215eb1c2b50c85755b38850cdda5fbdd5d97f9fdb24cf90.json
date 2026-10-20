@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"get_random_string() called without length argument\",\n \"risk_type\": \"removed_api\",\n \"description\": \"Starting in Django 4.0, the length argument for django.utils.crypto.get_random_string() is required. Calls that omit length will no longer work when upgrading from 3.2 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django release 4.0, where the length argument becomes required (3.2 -> 4.2).\",\n   \"quotes\": [\n    \"The length argument for django.utils.crypto.get_random_string() will be required.\",\n    \"The length argument for django.utils.crypto.get_random_string() is required.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls django.utils.crypto.get_random_string() without passing the length argument.\",\n   \"quotes\": [\n    \"The length argument for django.utils.crypto.get_random_string() will be required.\",\n    \"The length argument for django.utils.crypto.get_random_string() is required.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"All get_random_string() calls already pass an explicit length, so the risk does not apply.\",\n   \"quotes\": [\n    \"The length argument for django.utils.crypto.get_random_string() will be required.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes state that the length argument for django.utils.crypto.get_random_string() is required (deprecated in 3.1, required in 4.0), so calls omitting it break across 3.2 -> 4.2, and the named API and missing-argument condition are concrete and checkable."
+ },
+ "usage": {
+  "input_tokens": 898,
+  "output_tokens": 109,
+  "stop_reason": "end_turn"
+ }
+}

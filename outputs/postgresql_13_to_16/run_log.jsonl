@@ -1,0 +1,29 @@
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "run_start", "project": "PostgreSQL", "current": "13", "target": "16", "offline": false, "models": {"cheap": "claude-haiku-5-5", "strong": "claude-haiku-5-5"}}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "plan"}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "plan", "releases": ["14", "15", "16"], "future": []}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "plan", "seconds": 0.0}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "fetch"}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.06, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "fetch", "seconds": 0.06}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.06, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "parse"}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.27, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "parsed", "items_total": 74, "items_on_path": 74, "items_future": 0, "items_dropped_r4": 0, "revert_candidates": 0, "patch_notes_scanned": 0}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.27, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "parse", "seconds": 0.2}
+{"ts": "2026-10-20T15:02:03Z", "elapsed_s": 0.27, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "triage"}
+{"ts": "2026-10-20T15:02:13Z", "elapsed_s": 9.67, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "triage_done", "batches": 5}
+{"ts": "2026-10-20T15:02:13Z", "elapsed_s": 9.67, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "triage", "seconds": 9.4}
+{"ts": "2026-10-20T15:02:13Z", "elapsed_s": 9.67, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "extract"}
+{"ts": "2026-10-20T15:03:43Z", "elapsed_s": 100.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "extracted", "paths": 71, "failures": 0}
+{"ts": "2026-10-20T15:03:43Z", "elapsed_s": 100.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "extract", "seconds": 90.33}
+{"ts": "2026-10-20T15:03:43Z", "elapsed_s": 100.0, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "link"}
+{"ts": "2026-10-20T15:03:43Z", "elapsed_s": 100.01, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "link", "seconds": 0.01}
+{"ts": "2026-10-20T15:03:43Z", "elapsed_s": 100.01, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "compose"}
+{"ts": "2026-10-20T15:03:43Z", "elapsed_s": 100.01, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "compose", "seconds": 0.0}
+{"ts": "2026-10-20T15:03:43Z", "elapsed_s": 100.01, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "judge"}
+{"ts": "2026-10-20T15:04:14Z", "elapsed_s": 131.36, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "judge_done", "supported": 124, "partially_supported": 48, "not_supported": 8, "failed": 0}
+{"ts": "2026-10-20T15:04:14Z", "elapsed_s": 131.36, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "judge", "seconds": 31.36}
+{"ts": "2026-10-20T15:04:14Z", "elapsed_s": 131.36, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "rubric"}
+{"ts": "2026-10-20T15:04:14Z", "elapsed_s": 131.37, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "rubric", "seconds": 0.0}
+{"ts": "2026-10-20T15:04:14Z", "elapsed_s": 131.37, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "assemble"}
+{"ts": "2026-10-20T15:04:15Z", "elapsed_s": 131.6, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "assemble", "seconds": 0.23}
+{"ts": "2026-10-20T15:04:15Z", "elapsed_s": 131.6, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_start", "stage": "validate"}
+{"ts": "2026-10-20T15:04:15Z", "elapsed_s": 131.66, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "stage_end", "stage": "validate", "seconds": 0.06}
+{"ts": "2026-10-20T15:04:15Z", "elapsed_s": 131.66, "run_id": "001fbfbae5", "upgrade": "postgresql_13_to_16", "event": "run_end", "status": "ok", "final_paths": 69, "validation": {"errors": 0, "warnings": 16, "by_code": {"W4_no_search_queries": 16}}, "usage": {"triage": {"calls": 5, "cache_hits": 0, "input_tokens": 12224, "output_tokens": 7229, "usd_estimate": 0.048368999999999995, "usd_full": 0.048368999999999995}, "extract": {"calls": 71, "cache_hits": 0, "input_tokens": 299270, "output_tokens": 151508, "usd_estimate": 1.0568099999999998, "usd_full": 1.0568099999999998}, "judge": {"calls": 69, "cache_hits": 0, "input_tokens": 81830, "output_tokens": 39204, "usd_estimate": 0.27785000000000004, "usd_full": 0.27785000000000004}}}

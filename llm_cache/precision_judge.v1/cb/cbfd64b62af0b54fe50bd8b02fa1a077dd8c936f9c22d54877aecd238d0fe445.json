@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"GeoJSON serializer output now includes id key\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In 4.2 the GeoJSON serializer adds an id key to each serialized feature, defaulting to the object's primary key. Code, tests, or API clients that depend on the exact GeoJSON output of earlier versions may see a different structure.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.2, where the GeoJSON serializer started outputting the id key.\",\n   \"quotes\": [\n    \"The GeoJSON serializer now outputs the id key for serialized features\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application serializes data with the GeoJSON serializer.\",\n   \"quotes\": [\n    \"The GeoJSON serializer now outputs the id key for serialized features\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"Tests or downstream consumers compare or strictly validate the exact GeoJSON feature structure, so the added id key could cause a mismatch.\",\n   \"quotes\": [\n    \"which defaults to the primary key of objects\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that 4.2's GeoJSON serializer now outputs an id key defaulting to the object's primary key, a concrete behavior change that could break exact-output comparisons or strict consumers, and it is checkable by looking for use of the GeoJSON serializer."
+ },
+ "usage": {
+  "input_tokens": 858,
+  "output_tokens": 109,
+  "stop_reason": "end_turn"
+ }
+}

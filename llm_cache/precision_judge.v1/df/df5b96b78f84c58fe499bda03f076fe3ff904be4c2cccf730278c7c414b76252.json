@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom BaseConstraint subclasses must implement validate()\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"As of Django 4.1, custom subclasses of BaseConstraint must implement a validate method for the constraint to be usable for validation. Custom constraints without validate() cannot be used for validation after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, which introduced this requirement.\",\n   \"quotes\": [\n    \"BaseConstraint subclasses must implement validate method to allow those constraints to be used for validation.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application defines a custom subclass of BaseConstraint.\",\n   \"quotes\": [\n    \"BaseConstraint subclasses must implement validate method\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The custom BaseConstraint subclass does not implement a validate method and is expected to be used for validation.\",\n   \"quotes\": [\n    \"to allow those constraints to be used for validation\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that BaseConstraint subclasses must implement validate() to be used for validation, which is a concrete, checkable API change (a custom BaseConstraint subclass lacking validate()) that can break code upgrading from 3.2 to 4.2 across 4.1."
+ },
+ "usage": {
+  "input_tokens": 843,
+  "output_tokens": 110,
+  "stop_reason": "end_turn"
+ }
+}

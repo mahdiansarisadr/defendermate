@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Signal providing_args argument removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The providing_args argument for django.dispatch.Signal is removed in Django 4.0. Code that still passes providing_args when constructing a Signal will break after upgrading from 3.2 to 4.2, since the removal happened in 4.0.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where the providing_args argument was removed.\",\n   \"quotes\": [\n    \"The providing_args argument for django.dispatch.Signal is removed.\",\n    \"The providing_args argument for django.dispatch.Signal will be removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application passes the providing_args argument when creating django.dispatch.Signal instances.\",\n   \"quotes\": [\n    \"The providing_args argument for django.dispatch.Signal is removed.\",\n    \"The providing_args argument for django.dispatch.Signal will be removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (django.dispatch.Signal providing_args), the quotes directly state its removal and the earlier deprecation, and code passing that argument would break across 3.2 to 4.2, making it checkable by searching for Signal(providing_args=...)."
+ },
+ "usage": {
+  "input_tokens": 807,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

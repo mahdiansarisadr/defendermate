@@ -1,0 +1,307 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: Kubernetes. Upgrade being assessed: 1.23 -> 1.29.\nThis change was introduced in release 1.25. Source: Kubernetes v1.25.0 CHANGELOG (official_changelog). Section: v1.25.0 / Urgent Upgrade Notes / (No, really, you MUST read this before you upgrade).\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nDeprecated beta APIs scheduled for removal in 1.25 are no longer served. See https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-25 for more information. - Encrypted data with DEK using AES-GCM instead of AES-CBC for kms data encryption. No user action required. Reads with AES-GCM and AES-CBC will continue to be allowed. - End-to-end testing has been migrated from Ginkgo v1 to v2. When running test/e2e via the Ginkgo CLI, the v2 CLI must be used and -timeout=24h (or some other, suitable value) must be passed because the default timeout was reduced from 24h to 1h. When running it via go test, the corresponding -args parameter is -ginkgo.timeout=24h. To build the CLI in the Kubernetes repo, use make all WHAT=github.com/onsi/ginkgo/v2/ginkgo. Ginkgo V2 doesn't accept go test's -parallel flags to parallelize Ginkgo specs, please switch to use ginkgo -p or ginkgo -procs=N instead. - No action required; No API/CLI changed; Add new Windows Image Support - The intree volume plugin flocker support was completely removed from Kubernetes. - The intree volume plugin quobyte support has been completely removed from Kubernetes. - The intree volume plugin storageos support has been completely removed from Kubernetes. - There is a new OCI image registry (registry.k8s.io) that can be used to pull Kubernetes images. The old registry (k8s.gcr.io) will continue to be supported for the foreseeable future, but the new name should perform better because it frontends equivalent mirrors in other clouds. Please point your clusters to the new registry going forward. Admission/Policy integrations that have an allowlist of registries need to include registry.k8s.io alongside k8s.gcr.io. Air-gapped environments and image garbage-collection configurations will need to update to pre-pull and preserve required images under registry.k8s.io as well as k8s.gcr.io.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\n(none)\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 1.29 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 1.25 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Removed in-tree volume plugin: flocker",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "deployment",
+    "description": "The in-tree flocker volume plugin support was completely removed from Kubernetes in 1.25. Workloads or PersistentVolumes that depend on flocker in-tree volumes cannot rely on it after upgrading past 1.25.",
+    "primary_symbol": "flocker",
+    "symbols": [
+     "flocker"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.25, where the in-tree flocker volume plugin support was removed.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.25",
+      "quotes": [
+       "The intree volume plugin flocker support was completely removed from Kubernetes."
+      ],
+      "relevance": "Establishes that the removal takes effect when the upgrade crosses 1.25.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster uses in-tree flocker volumes.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "flocker",
+      "quotes": [
+       "The intree volume plugin flocker support was completely removed from Kubernetes."
+      ],
+      "relevance": "The risk applies only if workloads or volumes reference the flocker in-tree plugin.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "flocker"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pv,pods -A -o yaml"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search manifests and PersistentVolumes for flocker usage before upgrading.",
+     "Migrate flocker volumes to a supported storage option before upgrading past 1.25."
+    ]
+   },
+   {
+    "path_name": "Removed in-tree volume plugin: quobyte",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "deployment",
+    "description": "The in-tree quobyte volume plugin support has been completely removed from Kubernetes in 1.25. Workloads or PersistentVolumes that depend on quobyte in-tree volumes cannot rely on it after upgrading past 1.25.",
+    "primary_symbol": "quobyte",
+    "symbols": [
+     "quobyte"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.25, where the in-tree quobyte volume plugin support was removed.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.25",
+      "quotes": [
+       "The intree volume plugin quobyte support has been completely removed from Kubernetes."
+      ],
+      "relevance": "Establishes that the removal takes effect when the upgrade crosses 1.25.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster uses in-tree quobyte volumes.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "quobyte",
+      "quotes": [
+       "The intree volume plugin quobyte support has been completely removed from Kubernetes."
+      ],
+      "relevance": "The risk applies only if workloads or volumes reference the quobyte in-tree plugin.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "quobyte"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pv,pods -A -o yaml"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search manifests and PersistentVolumes for quobyte usage before upgrading.",
+     "Migrate quobyte volumes to a supported storage option before upgrading past 1.25."
+    ]
+   },
+   {
+    "path_name": "Removed in-tree volume plugin: storageos",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "deployment",
+    "description": "The in-tree storageos volume plugin support has been completely removed from Kubernetes in 1.25. Workloads or PersistentVolumes that depend on storageos in-tree volumes cannot rely on it after upgrading past 1.25.",
+    "primary_symbol": "storageos",
+    "symbols": [
+     "storageos"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.25, where the in-tree storageos volume plugin support was removed.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.25",
+      "quotes": [
+       "The intree volume plugin storageos support has been completely removed from Kubernetes."
+      ],
+      "relevance": "Establishes that the removal takes effect when the upgrade crosses 1.25.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster uses in-tree storageos volumes.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "storageos",
+      "quotes": [
+       "The intree volume plugin storageos support has been completely removed from Kubernetes."
+      ],
+      "relevance": "The risk applies only if workloads or volumes reference the storageos in-tree plugin.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "storageos"
+       },
+       {
+        "tool": "kubectl",
+        "query": "kubectl get pv,pods -A -o yaml"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Search manifests and PersistentVolumes for storageos usage before upgrading.",
+     "Migrate storageos volumes to a supported storage option before upgrading past 1.25."
+    ]
+   },
+   {
+    "path_name": "Admission/Policy registry allowlists need registry.k8s.io",
+    "risk_type": "operational_risk",
+    "risk_level": "medium",
+    "affected_surface": "configuration",
+    "description": "A new image registry registry.k8s.io was introduced in 1.25. Admission or policy integrations with an allowlist of registries must include registry.k8s.io alongside k8s.gcr.io.",
+    "primary_symbol": "registry.k8s.io",
+    "symbols": [
+     "registry.k8s.io",
+     "k8s.gcr.io"
+    ],
+    "fires_at": "rollout",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.25, where the registry.k8s.io image registry was introduced.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.25",
+      "quotes": [
+       "There is a new OCI image registry (registry.k8s.io) that can be used to pull Kubernetes images."
+      ],
+      "relevance": "Ties the new registry change to release 1.25.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The cluster uses an admission or policy integration with an allowlist of registries.",
+      "category": "configuration",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "allowlist of registries",
+      "quotes": [
+       "Admission/Policy integrations that have an allowlist of registries need to include registry.k8s.io alongside k8s.gcr.io."
+      ],
+      "relevance": "The risk applies only if an allowlist of registries is configured in an admission or policy integration.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "allowlist|allowedRegistries|k8s\\.gcr\\.io"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Add registry.k8s.io alongside k8s.gcr.io in admission or policy registry allowlists before upgrading.",
+     "Update air-gapped environments and image garbage-collection configurations to pre-pull and preserve images under registry.k8s.io as well as k8s.gcr.io."
+    ]
+   },
+   {
+    "path_name": "Deprecated beta APIs no longer served",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "application_code",
+    "description": "Deprecated beta APIs scheduled for removal in 1.25 are no longer served. The item does not name the specific APIs; the linked deprecation guide lists them.",
+    "primary_symbol": "deprecated beta APIs",
+    "symbols": [
+     "deprecated beta APIs"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 1.25, where deprecated beta APIs were removed.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "1.25",
+      "quotes": [
+       "Deprecated beta APIs scheduled for removal in 1.25 are no longer served."
+      ],
+      "relevance": "Establishes that the beta API removal takes effect when the upgrade crosses 1.25.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application or its manifests use deprecated beta APIs scheduled for removal in 1.25.",
+      "category": "api_usage",
+      "role": "uncertain",
+      "operator": "unknown",
+      "expected_value": "deprecated beta API",
+      "quotes": [
+       "Deprecated beta APIs scheduled for removal in 1.25 are no longer served."
+      ],
+      "relevance": "The risk applies only if the application uses one of the removed beta APIs.",
+      "ambiguities": [
+       "The text does not name the specific beta APIs affected; the linked deprecation guide is referenced but its content is not provided."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Consult the Kubernetes deprecation guide for v1.25 to identify removed beta APIs.",
+     "Update manifests and clients to use the GA API versions before upgrading past 1.25."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4028,
+  "output_tokens": 5467,
+  "stop_reason": "end_turn"
+ }
+}

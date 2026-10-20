@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_1_25_where_t_5c2f31\",\n  \"claim\": \"The upgrade crosses release 1.25, where the registry.k8s.io image registry was introduced.\",\n  \"evidence\": [\n   {\n    \"quote\": \"There is a new OCI image registry (registry.k8s.io) that can be used to pull Kubernetes images.\",\n    \"source\": \"Kubernetes v1.25.0 CHANGELOG\",\n    \"release_of_change\": \"1.25\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_cluster_uses_an_admission_or_policy_f4d1be\",\n  \"claim\": \"The cluster uses an admission or policy integration with an allowlist of registries.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Admission/Policy integrations that have an allowlist of registries need to include registry.k8s.io alongside k8s.gcr.io.\",\n    \"source\": \"Kubernetes v1.25.0 CHANGELOG\",\n    \"release_of_change\": \"1.25\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_1_25_where_t_5c2f31",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_cluster_uses_an_admission_or_policy_f4d1be",
+    "verdict": "partially_supported",
+    "missing": "The quote establishes that admission/policy integrations with registry allowlists must add registry.k8s.io, which implies such integrations are affected; it does not itself state that this cluster uses one. The claim's assertion about the cluster is a deployment hypothesis, so the quote supports the condition that such deployments are affected."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1117,
+  "output_tokens": 209,
+  "stop_reason": "end_turn"
+ }
+}

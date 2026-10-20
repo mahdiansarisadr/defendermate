@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"unescape_entities removed in Django 4.0\",\n \"risk_type\": \"removed_api\",\n \"description\": \"django.utils.text.unescape_entities() is removed in Django 4.0, so application code that still calls it will fail after upgrading from 3.2 to 4.2.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, in which unescape_entities() is removed.\",\n   \"quotes\": [\n    \"django.utils.text.unescape_entities() is removed.\",\n    \"django.utils.text.unescape_entities() will be removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code calls or imports django.utils.text.unescape_entities.\",\n   \"quotes\": [\n    \"django.utils.text.unescape_entities() is removed.\",\n    \"django.utils.text.unescape_entities() will be removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (django.utils.text.unescape_entities) that can be grepped for, and the quotes say it is removed, which would break any code still calling it; the quotes do not state the 4.0 version, but the removal falls inside the 3.2 to 4.2 range."
+ },
+ "usage": {
+  "input_tokens": 778,
+  "output_tokens": 111,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"TRANSLATOR_COMMENT_MARK moved from django.template.base\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented TRANSLATOR_COMMENT_MARK constant was moved from django.template.base to django.utils.translation.template in 4.0. Code importing or referencing it from django.template.base will no longer find it there. Because it was undocumented, few projects are likely to use it.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, where the constant was moved.\",\n   \"quotes\": [\n    \"The undocumented TRANSLATOR_COMMENT_MARK constant is moved from django.template.base to django.utils.translation.template.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application references TRANSLATOR_COMMENT_MARK from django.template.base.\",\n   \"quotes\": [\n    \"The undocumented TRANSLATOR_COMMENT_MARK constant is moved from django.template.base to django.utils.translation.template.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states the undocumented TRANSLATOR_COMMENT_MARK constant moved from django.template.base to django.utils.translation.template, which can break code importing it from the old location, and the risk names a concrete, greppable symbol and module path."
+ },
+ "usage": {
+  "input_tokens": 837,
+  "output_tokens": 101,
+  "stop_reason": "end_turn"
+ }
+}

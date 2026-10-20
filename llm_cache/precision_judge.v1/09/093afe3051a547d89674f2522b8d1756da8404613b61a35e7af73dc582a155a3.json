@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"OpenLayersWidget upgraded to OpenLayers 7.2.2\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The OpenLayersWidget in django.contrib.gis is now based on OpenLayers 7.2.2 instead of 4.6.5. Applications that use the widget, or customize it, may see differences in map behavior or rendering. The text does not state specific incompatibilities.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django release 4.2, where OpenLayersWidget moved to OpenLayers 7.2.2.\",\n   \"quotes\": [\n    \"OpenLayersWidget is now based on OpenLayers 7.2.2 (previously 4.6.5).\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses OpenLayersWidget (for example in GIS model admin or forms).\",\n   \"quotes\": [\n    \"OpenLayersWidget is now based on OpenLayers 7.2.2\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application customizes the widget's JavaScript or templates, or relies on OpenLayers 4.6.5-specific APIs, which may be affected by the library version change.\",\n   \"quotes\": [\n    \"OpenLayersWidget is now based on OpenLayers 7.2.2 (previously 4.6.5).\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports a concrete behavior change (OpenLayersWidget moving from OpenLayers 4.6.5 to 7.2.2) that could affect apps using or customizing the widget, and a checker can look for OpenLayersWidget usage and customization."
+ },
+ "usage": {
+  "input_tokens": 944,
+  "output_tokens": 107,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Text mismatch now reverts to client render\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"React 18 reverts to client rendering when a text mismatch occurs. Server-rendered output with text content that differs from what the client renders will now behave differently than in 17. The text does not say what the behavior was before or what happens to the rendered output.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React 18.0.0, which introduced the revert to client render on text mismatch.\",\n   \"quotes\": [\n    \"Revert to client render on text mismatch\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application renders text content on the server that can mismatch the text rendered on the client.\",\n   \"quotes\": [\n    \"Revert to client render on text mismatch\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application uses React DOM Server rendering.\",\n   \"quotes\": [\n    \"React DOM Server\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete behavior change (React 18 reverts to client render on SSR text mismatch) that is checkable via server-rendered/hydrated text content, and the quote supports it, though the quotes are thin and the description admits missing details on prior behavior."
+ },
+ "usage": {
+  "input_tokens": 797,
+  "output_tokens": 104,
+  "stop_reason": "end_turn"
+ }
+}

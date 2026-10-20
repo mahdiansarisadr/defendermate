@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"package.json exports field restricts module resolution\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"React 18 adds an exports field to package.json. The text does not say what the field contains or what changes. An exports field generally limits which package paths can be imported, but the text does not state this, so any impact on deep or unlisted imports is uncertain.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 18, where the exports field was added to package.json.\",\n   \"quotes\": [\n    \"Add exports field to package.json.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application imports React package paths other than the package entry points, for example deep or internal file paths, that may be affected by the new exports field.\",\n   \"quotes\": [\n    \"Add exports field to package.json.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": false,
+  "reason": "The only quote, 'Add exports field to package.json.', shows that an exports field was added but not its contents or any behavioral change, so the claimed restriction on deep imports is not supported by the evidence and the risk stays speculative with no concrete checkable API or path."
+ },
+ "usage": {
+  "input_tokens": 738,
+  "output_tokens": 104,
+  "stop_reason": "end_turn"
+ }
+}

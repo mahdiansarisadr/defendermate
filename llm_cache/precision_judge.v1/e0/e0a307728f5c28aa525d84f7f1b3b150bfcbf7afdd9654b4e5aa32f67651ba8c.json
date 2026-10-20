@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ModelAdmin.list_editable edits now run in atomic transactions\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in Django 4.2, edits made through ModelAdmin.list_editable use atomic transactions. Admin classes that use list_editable now run their edits transactionally, which may differ from 3.2 behavior in how saves are committed or rolled back. The release note does not state any specific breakage.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.2, where list_editable edits became atomic (upgrading from 3.2).\",\n   \"quotes\": [\n    \"ModelAdmin.list_editable now uses atomic transactions when making edits.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application defines ModelAdmin classes that set list_editable.\",\n   \"quotes\": [\n    \"ModelAdmin.list_editable now uses atomic transactions when making edits.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application depends on edits in list_editable being non-atomic, for example relying on partial saves or on custom save/signal logic that is sensitive to transaction boundaries.\",\n   \"quotes\": [\n    \"now uses atomic transactions when making edits\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted release note supports the claim that ModelAdmin.list_editable now uses atomic transactions in 4.2, a concrete behavior change that could matter to apps relying on partial saves or transaction-sensitive save/signal logic, and the description does not overstate the evidence."
+ },
+ "usage": {
+  "input_tokens": 902,
+  "output_tokens": 111,
+  "stop_reason": "end_turn"
+ }
+}

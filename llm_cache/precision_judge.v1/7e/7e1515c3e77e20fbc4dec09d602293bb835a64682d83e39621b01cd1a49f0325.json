@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Deprecated beta APIs removed in v1.26\",\n \"risk_type\": \"removed_api\",\n \"description\": \"Deprecated beta APIs scheduled for removal in v1.26 are no longer served, so workloads or tooling that still use them will fail after upgrading past v1.26. The text does not name the specific APIs; see the linked deprecation guide.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release v1.26, where deprecated beta APIs scheduled for removal are no longer served.\",\n   \"quotes\": [\n    \"Deprecated beta APIs scheduled for removal in v1.26 are no longer served.\",\n    \"Deprecated beta APIs scheduled for removal in 1.25 are no longer served.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application, its manifests, or its clients use a deprecated beta API that is scheduled for removal in v1.26.\",\n   \"quotes\": [\n    \"Deprecated beta APIs scheduled for removal in v1.26 are no longer served.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": false,
+  "reason": "The quotes support the risk that beta APIs scheduled for removal in v1.26 stop being served, and 1.23 to 1.29 crosses that version, so it is a genuine risk; however, no concrete API is named (the description admits this), so a downstream checker has nothing specific to look for."
+ },
+ "usage": {
+  "input_tokens": 830,
+  "output_tokens": 114,
+  "stop_reason": "end_turn"
+ }
+}

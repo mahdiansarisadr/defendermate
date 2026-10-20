@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ManifestStaticFilesStorage rewrites JavaScript source map references\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"As of Django 4.0, ManifestStaticFilesStorage replaces paths to JavaScript source map references with their hashed counterparts. Projects on 3.2 that use this storage will see different processed static file output after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0 (3.2 -> 4.2), where ManifestStaticFilesStorage began replacing source map paths with hashed counterparts.\",\n   \"quotes\": [\n    \"ManifestStaticFilesStorage now replaces paths to JavaScript source map references with their hashed counterparts.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment uses ManifestStaticFilesStorage as its static files storage.\",\n   \"quotes\": [\n    \"ManifestStaticFilesStorage now replaces paths to JavaScript source map references\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The collected static JavaScript files contain source map references that are now rewritten to hashed paths.\",\n   \"quotes\": [\n    \"replaces paths to JavaScript source map references with their hashed counterparts\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete class (ManifestStaticFilesStorage), a concrete behavior change (source map references rewritten to hashed paths) tied to release 4.0, and the supporting quote directly states this change, so it is checkable and crosses the 3.2 to 4.2 range."
+ },
+ "usage": {
+  "input_tokens": 912,
+  "output_tokens": 114,
+  "stop_reason": "end_turn"
+ }
+}

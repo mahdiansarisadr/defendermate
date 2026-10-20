@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Oracle table and column naming scheme change for names longer than 30 characters\",\n \"risk_type\": \"data_migration\",\n \"description\": \"Django 4.0 inadvertently changed the table and column naming scheme on Oracle, causing errors for models and fields with names longer than 30 characters. Some Oracle tables and columns must be renamed, using the upgrade script in #33789 to generate RENAME statements.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, which introduced the Oracle naming scheme change.\",\n   \"quotes\": [\n    \"Django 4.0 inadvertently changed the table and column naming scheme on Oracle.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses Oracle as the database backend.\",\n   \"quotes\": [\n    \"changed the table and column naming scheme on Oracle\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application has models or fields whose names are longer than 30 characters.\",\n   \"quotes\": [\n    \"errors for models and fields with names longer than 30 characters\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete behavior (Oracle table/column naming change in 4.0 for names over 30 characters), has checkable conditions (Oracle backend, long model/field names), and the quotes support the claim and its renaming requirement, though the #33789 upgrade script detail is not directly quoted."
+ },
+ "usage": {
+  "input_tokens": 845,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}

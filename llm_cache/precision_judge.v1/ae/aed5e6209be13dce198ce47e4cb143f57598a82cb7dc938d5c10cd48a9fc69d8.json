@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Function and symbol values on custom elements ignored during server rendering\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In React 18, server rendering ignores function and symbol values inside custom elements. An app that passes function or symbol values as props or attributes to custom elements and renders them on the server may see those values omitted from the server output.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React 18, which introduced this server rendering change.\",\n   \"quotes\": [\n    \"Ignore function and symbol values inside custom elements on the server.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application renders custom elements on the server and passes function or symbol values to them.\",\n   \"quotes\": [\n    \"Ignore function and symbol values inside custom elements on the server.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses server-side rendering through React DOM Server.\",\n   \"quotes\": [\n    \"Ignore function and symbol values inside custom elements on the server.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports a concrete React 18 behavior change (server rendering ignores function and symbol values in custom elements), which is a checkable risk for SSR apps passing such values to custom elements."
+ },
+ "usage": {
+  "input_tokens": 811,
+  "output_tokens": 84,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Regex \\\\D and \\\\W shorthands in newline-sensitive mode\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In regular expression newline-sensitive mode, the \\\\D and \\\\W shorthands now match newlines. Previously they did not match newlines in this mode. The text says [^[:digit:]] or [^[:word:]] can be used to get the old behavior.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"Upgrade crosses release 14 from a source version below 14\",\n   \"quotes\": [\n    \"Allow \\\\D and \\\\W shorthands to match newlines in regular expression newline-sensitive mode\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application uses the \\\\D or \\\\W regex shorthand\",\n   \"quotes\": [\n    \"Allow \\\\D and \\\\W shorthands to match newlines\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"Regular expression runs in newline-sensitive mode\",\n   \"quotes\": [\n    \"regular expression newline-sensitive mode\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"Application does not already use the replacement classes instead of \\\\D or \\\\W\",\n   \"quotes\": [\n    \"[^[:digit:]] or [^[:word:]] can be used to get the old behavior\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change (\\D and \\W now match newlines in newline-sensitive regex mode) that can alter results when upgrading from below 14, and it names checkable items (\\D, \\W, newline-sensitive mode, [^[:digit:]]/[^[:word:]] workaround), though the 'disqualifying' condition is awkwardly phrased."
+ },
+ "usage": {
+  "input_tokens": 928,
+  "output_tokens": 145,
+  "stop_reason": "end_turn"
+ }
+}

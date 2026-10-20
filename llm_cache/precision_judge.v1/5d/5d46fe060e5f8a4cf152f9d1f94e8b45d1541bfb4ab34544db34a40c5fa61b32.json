@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Test runner non-zero exit code for unexpected successes with unittest.expectedFailure\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in Django 4.1, the Django test runner returns a non-zero error code for unexpected successes from tests marked with unittest.expectedFailure. A test suite that previously passed (exit code 0) despite such tests unexpectedly succeeding may now report failure, which can break CI pipelines that rely on the test runner exit code.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where the test runner exit code behavior changed (upgrading from 3.2 to 4.2).\",\n   \"quotes\": [\n    \"The Django test runner now returns a non-zero error code for unexpected successes from tests marked with unittest.expectedFailure.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The test suite contains tests marked with unittest.expectedFailure and is run with the Django test runner.\",\n   \"quotes\": [\n    \"unexpected successes from tests marked with unittest.expectedFailure\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"One or more tests marked with expectedFailure currently pass (unexpected success), for example because the underlying bug was fixed.\",\n   \"quotes\": [\n    \"unexpected successes from tests marked with unittest.expectedFailure\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"CI or automation relies on the exit code of the Django test runner (manage.py test).\",\n   \"quotes\": [\n    \"The Django test runner now returns a non-zero error code\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted release-note text supports a concrete behavior change (non-zero exit code for unexpected successes of unittest.expectedFailure tests), which can fail CI after upgrading, and a checker can look for expectedFailure-marked tests and reliance on the test runner exit code."
+ },
+ "usage": {
+  "input_tokens": 1025,
+  "output_tokens": 111,
+  "stop_reason": "end_turn"
+ }
+}

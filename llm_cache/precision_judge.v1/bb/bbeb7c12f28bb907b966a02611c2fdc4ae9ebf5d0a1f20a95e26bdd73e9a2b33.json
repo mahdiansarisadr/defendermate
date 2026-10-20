@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Pillow minimum version raised to 6.2.1\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.2 raises the minimum supported version of Pillow from 6.2.0 to 6.2.1. Deployments that have Pillow installed at 6.2.0 are below the new minimum supported version.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which raised the minimum supported Pillow version.\",\n   \"quotes\": [\n    \"The minimum supported version of Pillow is increased from 6.2.0 to 6.2.1.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The environment has Pillow installed at a version below 6.2.1.\",\n   \"quotes\": [\n    \"The minimum supported version of Pillow is increased from 6.2.0 to 6.2.1.\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application uses Pillow-dependent Django features such as ImageField.\",\n   \"quotes\": [\n    \"The minimum supported version of Pillow is increased from 6.2.0 to 6.2.1.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports a concrete, checkable dependency floor change (Pillow 6.2.0 to 6.2.1) that can affect deployments with an older Pillow, though the optional ImageField condition is not backed by the quote and is only an inference."
+ },
+ "usage": {
+  "input_tokens": 859,
+  "output_tokens": 102,
+  "stop_reason": "end_turn"
+ }
+}

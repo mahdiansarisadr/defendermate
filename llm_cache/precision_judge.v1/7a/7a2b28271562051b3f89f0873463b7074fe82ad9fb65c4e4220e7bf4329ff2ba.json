@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ModelAdmin log_addition/log_change/log_deletion argument renamed to obj\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The object argument of the undocumented ModelAdmin.log_addition(), log_change(), and log_deletion() methods is renamed to obj in 4.0. Code that overrides these methods using the old parameter name, or calls them with object as a keyword argument, will break.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, where the argument was renamed.\",\n   \"quotes\": [\n    \"The object argument of undocumented ModelAdmin.log_addition(), log_change(), and log_deletion() methods is renamed to obj.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application overrides or calls ModelAdmin.log_addition(), log_change(), or log_deletion(), in particular using the object keyword argument or the object parameter name.\",\n   \"quotes\": [\n    \"The object argument of undocumented ModelAdmin.log_addition(), log_change(), and log_deletion() methods is renamed to obj.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports a concrete rename of the object argument to obj in ModelAdmin.log_addition/log_change/log_deletion, which would break overrides or keyword calls using the old name when upgrading 3.2 to 4.2, and a checker can search for these method names and the object parameter."
+ },
+ "usage": {
+  "input_tokens": 848,
+  "output_tokens": 113,
+  "stop_reason": "end_turn"
+ }
+}

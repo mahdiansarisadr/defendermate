@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_change_is_introduced_in_release_1_24_a53b9d\",\n  \"claim\": \"The change is introduced in release 1.24, so the upgrade from 1.23 to 1.29 crosses release 1.24.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Fixed bug with leads to Node goes Not-ready state when credentials for vCenter stored in a secret and Zones feature is in use.\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_cluster_uses_vcenter_credentials_sto_5e6888\",\n  \"claim\": \"The cluster uses vCenter credentials stored in a secret and the Zones feature is in use.\",\n  \"evidence\": [\n   {\n    \"quote\": \"when credentials for vCenter stored in a secret and Zones feature is in use\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"credentials_are_stored_in_the_cloud_prov_53bb22\",\n  \"claim\": \"Credentials are stored in the cloud-provider config file as plaintext, in which case the behavior does not change.\",\n  \"evidence\": [\n   {\n    \"quote\": \"If credentials stored in cloud-provider config file as plaintext current behaviour does not change and no action required.\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_kube_system_vsphere_legacy_cloud_pro_e69ec2\",\n  \"claim\": \"The kube-system:vsphere-legacy-cloud-provider identity is permitted to update node objects.\",\n  \"evidence\": [\n   {\n    \"quote\": \"should be allowed to update node object\",\n    \"source\": \"Kubernetes v1.24.0 CHANGELOG\",\n    \"release_of_change\": \"1.24\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_change_is_introduced_in_release_1_24_a53b9d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_cluster_uses_vcenter_credentials_sto_5e6888",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "credentials_are_stored_in_the_cloud_prov_53bb22",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_kube_system_vsphere_legacy_cloud_pro_e69ec2",
+    "verdict": "partially_supported",
+    "missing": "The quote does not name the kube-system:vsphere-legacy-cloud-provider identity; it only says something should be allowed to update node objects."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1462,
+  "output_tokens": 699,
+  "stop_reason": "end_turn"
+ }
+}

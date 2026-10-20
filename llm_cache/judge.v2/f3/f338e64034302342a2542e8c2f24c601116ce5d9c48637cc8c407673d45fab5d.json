@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_application_or_deployment_uses_the_f_a96143\",\n  \"claim\": \"The application or deployment uses the flowcontrol.apiserver.k8s.io/v1beta2 API version for FlowSchema or PriorityLevelConfiguration objects.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The flowcontrol.apiserver.k8s.io/v1beta2 API version of FlowSchema and PriorityLevelConfiguration\",\n    \"source\": \"Kubernetes Deprecated API Migration Guide\",\n    \"release_of_change\": \"1.29\"\n   },\n   {\n    \"quote\": \"The flowcontrol.apiserver.k8s.io/v1beta3 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.32.\",\n    \"source\": \"Kubernetes Deprecated API Migration Guide\",\n    \"release_of_change\": \"1.29\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_upgrade_crosses_release_1_29_the_rel_29ea62\",\n  \"claim\": \"The upgrade crosses release 1.29, the release in which flowcontrol.apiserver.k8s.io/v1beta2 stops being served.\",\n  \"evidence\": [\n   {\n    \"quote\": \"is no longer served as of v1.29\",\n    \"source\": \"Kubernetes Deprecated API Migration Guide\",\n    \"release_of_change\": \"1.29\"\n   },\n   {\n    \"quote\": \"The flowcontrol.apiserver.k8s.io/v1beta2 API version of FlowSchema and PriorityLevelConfiguration is no longer served as of v1.29.\",\n    \"source\": \"Kubernetes Deprecated API Migration Guide\",\n    \"release_of_change\": \"1.29\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"manifests_or_clients_migrated_to_flowcon_669cec\",\n  \"claim\": \"Manifests or clients migrated to flowcontrol.apiserver.k8s.io/v1 use PriorityLevelConfiguration spec.limited.assuredConcurrencyShares, which is renamed in that version.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The PriorityLevelConfiguration spec.limited.assuredConcurrencyShares field is renamed to spec.limited.nominalConcurrencyShares\",\n    \"source\": \"Kubernetes Deprecated API Migration Guide\",\n    \"release_of_change\": \"1.29\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_application_or_deployment_uses_the_f_a96143",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not state that flowcontrol.apiserver.k8s.io/v1beta2 is deprecated or removed; they only name it as a FlowSchema and PriorityLevelConfiguration version in the migration guide, and the removal statement quoted concerns v1beta3."
+   },
+   {
+    "condition_id": "the_upgrade_crosses_release_1_29_the_rel_29ea62",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "manifests_or_clients_migrated_to_flowcon_669cec",
+    "verdict": "partially_supported",
+    "missing": "The quote states the field rename but does not name flowcontrol.apiserver.k8s.io/v1 as the version where the rename applies."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1598,
+  "output_tokens": 1293,
+  "stop_reason": "end_turn"
+ }
+}

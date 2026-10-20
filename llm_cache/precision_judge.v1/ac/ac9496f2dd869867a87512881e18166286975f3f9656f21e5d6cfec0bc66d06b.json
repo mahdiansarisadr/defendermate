@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"redis-py minimum version raised to 3.4.0\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.2 raises the minimum supported version of redis-py from 3.0.0 to 3.4.0. Deployments with redis-py older than 3.4.0 (for example, when using Django's Redis cache backend) are below the supported minimum and need redis-py upgraded.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, which raises the minimum supported redis-py version.\",\n   \"quotes\": [\n    \"The minimum supported version of redis-py is increased from 3.0.0 to 3.4.0.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment has the redis-py package installed at a version older than 3.4.0.\",\n   \"quotes\": [\n    \"The minimum supported version of redis-py is increased from 3.0.0 to 3.4.0.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly states the redis-py minimum rose from 3.0.0 to 3.4.0, which is a genuine, checkable dependency requirement for deployments on older redis-py; the 'Redis cache backend' example is context only and does not undermine the claim."
+ },
+ "usage": {
+  "input_tokens": 795,
+  "output_tokens": 105,
+  "stop_reason": "end_turn"
+ }
+}

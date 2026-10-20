@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"cx_Oracle < 7.0 support removed\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"Django 4.0 removed support for cx_Oracle versions older than 7.0. Deployments using Oracle with an older cx_Oracle driver are no longer supported on 4.2 and need a newer driver.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.0, which removed support for cx_Oracle < 7.0.\",\n   \"quotes\": [\n    \"Support for cx_Oracle < 7.0 is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses the cx_Oracle driver at a version lower than 7.0.\",\n   \"quotes\": [\n    \"Support for cx_Oracle < 7.0 is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The quote states that support for cx_Oracle < 7.0 is removed, but it does not say this happened in release 4.0 or within the 3.2 to 4.2 range, so the claim that the upgrade crosses that change is unsupported by the given evidence."
+ },
+ "usage": {
+  "input_tokens": 765,
+  "output_tokens": 623,
+  "stop_reason": "end_turn"
+ }
+}

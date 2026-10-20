@@ -1,0 +1,65 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"s30\",\n  \"claim\": \"PostgreSQL documentation states that the functions pg_backup_start_time() and pg_is_in_backup() have been removed\",\n  \"evidence\": [\n   {\n    \"quote\": \"the functions pg_backup_start_time() and pg_is_in_backup() have been removed\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m31\",\n  \"claim\": \"PostgreSQL documentation states that the functions pg_backup_start_time() and pg_is_in_backup() have been added\",\n  \"evidence\": [\n   {\n    \"quote\": \"the functions pg_backup_start_time() and pg_is_in_backup() have been removed\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s32\",\n  \"claim\": \"Django documentation states that Upstream support for MariaDB 10.2 ends in May 2022.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Upstream support for MariaDB 10.2 ends in May 2022.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m33\",\n  \"claim\": \"Django documentation states that Upstream support for MariaDB 13 ends in May 2022.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Upstream support for MariaDB 10.2 ends in May 2022.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s34\",\n  \"claim\": \"Django documentation states that You can prevent this header from being added by setting the SECURE_CROSS_ORIGIN_OPENER_POLICY setting to None.\",\n  \"evidence\": [\n   {\n    \"quote\": \"You can prevent this header from being added by setting the SECURE_CROSS_ORIGIN_OPENER_POLICY setting to None.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s35\",\n  \"claim\": \"PostgreSQL documentation states that Change EXTRACT() to return type numeric instead of float8\",\n  \"evidence\": [\n   {\n    \"quote\": \"Change EXTRACT() to return type numeric instead of float8\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m36\",\n  \"claim\": \"PostgreSQL documentation states that Change EXTRACT() to return type numeric instead of float11\",\n  \"evidence\": [\n   {\n    \"quote\": \"Change EXTRACT() to return type numeric instead of float8\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s37\",\n  \"claim\": \"Next.js documentation states that swcMinify configuration property was changed from false to true\",\n  \"evidence\": [\n   {\n    \"quote\": \"swcMinify configuration property was changed from false to true\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s38\",\n  \"claim\": \"Django documentation states that The undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved to django.contrib.admindocs.utils.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved to django.contrib.admindocs.utils.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s39\",\n  \"claim\": \"Kubernetes documentation states that For clusters that are being upgraded to 1.24 with kubeadm upgrade apply, the command will add the new taint node-role.kubernetes.io/control-plane:NoSchedule to existing control plane nodes.\",\n  \"evidence\": [\n   {\n    \"quote\": \"For clusters that are being upgraded to 1.24 with kubeadm upgrade apply, the command will add the new taint node-role.kubernetes.io/control-plane:NoSchedule to existing control plane nodes.\",\n    \"source\": \"official docs\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "s30",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m31",
+    "verdict": "not_supported",
+    "missing": "The quote says the functions were removed, not added; the claim contradicts it."
+   },
+   {
+    "condition_id": "s32",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m33",
+    "verdict": "not_supported",
+    "missing": "The quote refers to MariaDB 10.2, not MariaDB 13; the claim changes the version."
+   },
+   {
+    "condition_id": "s34",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s35",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m36",
+    "verdict": "not_supported",
+    "missing": "The quote says the return type is numeric instead of float8, not float11."
+   },
+   {
+    "condition_id": "s37",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s38",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s39",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2135,
+  "output_tokens": 335,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"django.test.runner.reorder_suite() renamed to reorder_tests() with changed argument and return types\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented function django.test.runner.reorder_suite() is renamed to reorder_tests(). Code that still calls reorder_suite() (e.g. custom test runners) will fail to find it. The new function accepts an iterable of tests rather than a test suite and returns an iterator of tests, so callers must adapt to the new input and output types.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.0, which renamed reorder_suite() to reorder_tests().\",\n   \"quotes\": [\n    \"The undocumented django.test.runner.reorder_suite() function is renamed to reorder_tests().\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or its test tooling (e.g. a custom test runner) calls or imports django.test.runner.reorder_suite().\",\n   \"quotes\": [\n    \"The undocumented django.test.runner.reorder_suite() function is renamed to reorder_tests().\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Callers of the renamed function pass a test suite or rely on a suite being returned, which differs from the new iterable-in, iterator-out contract.\",\n   \"quotes\": [\n    \"It now accepts an iterable of tests rather than a test suite, and returns an iterator of tests.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that reorder_suite() was renamed to reorder_tests() with a new iterable-in, iterator-out contract, which could break custom test runners that call it, and it names a concrete, searchable function."
+ },
+ "usage": {
+  "input_tokens": 963,
+  "output_tokens": 88,
+  "stop_reason": "end_turn"
+ }
+}

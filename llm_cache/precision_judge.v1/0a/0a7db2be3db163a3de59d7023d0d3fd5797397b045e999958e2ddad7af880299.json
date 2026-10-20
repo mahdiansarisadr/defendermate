@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"JSON-encoded string literals passed via Value() to JSONField\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"JSONField and its lookups used to accept JSON-encoded string literals such as Value(\\\"null\\\"), Value(\\\"[]\\\") or Value('\\\"foo-bar\\\"'). During the 4.2 deprecation period Django tries to JSON-decode such string literals and emits a warning if decoding succeeds. From Django 5.1 string literals will be implicitly interpreted as JSON string literals, which changes their meaning.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.2, where passing encoded JSON string literals is deprecated (current version below 4.2).\",\n   \"quotes\": [\n    \"During the deprecation period string literals will be attempted to be JSON decoded\",\n    \"From Django 5.1+ string literals will be implicitly interpreted as JSON string literals.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application passes JSON-encoded string literals wrapped in Value() to a JSONField, for example in bulk_create, create or update.\",\n   \"quotes\": [\n    \"Document.objects.bulk_create( Document(data=Value(\\\"null\\\")), Document(data=Value(\\\"[]\\\")),\",\n    \"JSONField and its associated lookups and aggregates used to allow passing JSON encoded string literals\",\n    \"Document(data=Value(None, JSONField())), Document(data=[]), Document(data=\\\"foo-bar\\\"),\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete APIs (JSONField, Value(), bulk_create) and a checkable pattern (JSON-encoded string literals), and the quotes support the 4.2 deprecation with decode-attempt behavior and the 5.1 change in interpretation."
+ },
+ "usage": {
+  "input_tokens": 986,
+  "output_tokens": 107,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom options matching installed extension names\",\n \"risk_type\": \"configuration_change\",\n \"description\": \"Setting custom options whose names match an installed extension but are not declared variables of that extension is disallowed starting in release 15. Pre-existing variables of this kind are deleted during extension load, and new ones cannot be created later in the session.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The change applies to PostgreSQL releases from 15 onward, so the upgrade from 13 to 16 crosses this change.\",\n   \"quotes\": [\n    \"Disallow setting custom options that match the name of an installed extension\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment has custom options set whose names match the name of an installed extension and are not declared variables of that extension.\",\n   \"quotes\": [\n    \"Disallow setting custom options that match the name of an installed extension, but are not one of the extension's declared variables\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports the core behavior of disallowing custom options that match an installed extension's name but are not its declared variables, which is a concrete setting-level breakage checkable in configs, though the quotes do not themselves state release 15 or the delete-on-load detail."
+ },
+ "usage": {
+  "input_tokens": 781,
+  "output_tokens": 505,
+  "stop_reason": "end_turn"
+ }
+}

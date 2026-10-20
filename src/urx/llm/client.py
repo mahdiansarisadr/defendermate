@@ -87,11 +87,12 @@ class Usage:
 
 class LLMClient:
     def __init__(self, provider: str | None = None, offline: bool = False, cache_dir: Path | None = None,
-                 provider_impl: Provider | None = None) -> None:
+                 provider_impl: Provider | None = None, models: dict[str, str] | None = None) -> None:
         self.provider_name = provider or config.PROVIDER
         self.offline = offline
         self.cache_dir = cache_dir or config.LLM_CACHE_DIR
         self._provider = provider_impl
+        self.models = models
         self.usage = Usage()
 
     @property
@@ -101,7 +102,10 @@ class LLMClient:
         return self._provider
 
     def model_for(self, tier: str) -> str:
-        return config.MODELS[self.provider_name][tier]
+        return (self.models or config.MODELS[self.provider_name])[tier]
+
+    def model_map(self) -> dict[str, str]:
+        return {t: self.model_for(t) for t in ("cheap", "strong")}
 
     def cache_key(self, prompt_id: str, model: str, system: str, user: str, schema: dict) -> str:
         h = hashlib.sha256()

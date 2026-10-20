@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Undocumented URL resolver internals moved to django.contrib.admindocs.utils\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() were moved to django.contrib.admindocs.utils in Django 4.1. Code that calls these private attributes on the URL resolver/pattern classes will no longer find them there and must use the new location.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 3.2 to 4.2 crosses release 4.1, where these undocumented methods were moved.\",\n   \"quotes\": [\n    \"The undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved to django.contrib.admindocs.utils.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code references URLResolver._is_callback, URLResolver._callback_strs, or URLPattern.lookup_str.\",\n   \"quotes\": [\n    \"The undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() are moved to django.contrib.admindocs.utils.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly states that the undocumented URLResolver._is_callback(), URLResolver._callback_strs, and URLPattern.lookup_str() moved to django.contrib.admindocs.utils, so code calling them on the old classes can break, and the three names are concrete and checkable by search."
+ },
+ "usage": {
+  "input_tokens": 897,
+  "output_tokens": 115,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"makemigrations --check no longer creates migration files\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In 4.2, the makemigrations --check option no longer creates missing migration files. Scripts, CI jobs or workflows that relied on makemigrations --check to also generate missing migrations will no longer get those files created.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, where makemigrations --check stops creating missing migration files.\",\n   \"quotes\": [\n    \"The makemigrations --check option no longer creates missing migration files.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project's scripts, CI configuration, or tooling invoke makemigrations with the --check option and rely on it to create missing migration files.\",\n   \"quotes\": [\n    \"The makemigrations --check option no longer creates missing migration files.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete option (makemigrations --check), a specific version change (4.2), and a checkable condition (CI or scripts relying on --check to create migrations), and the quote supports the behavior change, though the second condition's reliance claim is an inference beyond the quoted text."
+ },
+ "usage": {
+  "input_tokens": 769,
+  "output_tokens": 110,
+  "stop_reason": "end_turn"
+ }
+}

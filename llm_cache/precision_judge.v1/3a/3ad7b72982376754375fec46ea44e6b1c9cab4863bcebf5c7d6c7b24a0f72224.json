@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Durable nested atomic in TestCase raises RuntimeError\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"A nested atomic block marked as durable inside django.test.TestCase now raises a RuntimeError, the same as outside of tests. Tests that relied on the previous behavior inside TestCase will fail.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, which introduced the RuntimeError for nested durable atomic blocks in django.test.TestCase.\",\n   \"quotes\": [\n    \"A nested atomic block marked as durable in django.test.TestCase now raises a RuntimeError, the same as outside of tests.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application's tests use atomic blocks marked as durable that are nested inside another atomic block while running under django.test.TestCase.\",\n   \"quotes\": [\n    \"A nested atomic block marked as durable in django.test.TestCase now raises a RuntimeError\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Test classes subclass django.test.TestCase, which wraps each test in an atomic block, so durable atomic blocks used in the code under test become nested.\",\n   \"quotes\": [\n    \"A nested atomic block marked as durable in django.test.TestCase now raises a RuntimeError\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The first quote directly supports the changed behavior (RuntimeError for nested durable atomic in django.test.TestCase), which is a concrete breaking risk, and the conditions name checkable APIs (atomic(durable=True), TestCase); the third condition's claim that TestCase wraps each test in an atomic block is an inference not stated in the quote, but it is minor and does not undermine the core risk."
+ },
+ "usage": {
+  "input_tokens": 931,
+  "output_tokens": 150,
+  "stop_reason": "end_turn"
+ }
+}

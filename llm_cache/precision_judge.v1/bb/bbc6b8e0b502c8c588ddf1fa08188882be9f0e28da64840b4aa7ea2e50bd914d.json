@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"REINDEX DATABASE and reindexdb no longer process system catalog indexes\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"REINDEX DATABASE and reindexdb no longer process indexes on system catalogs in release 16. Processing such indexes is still possible using REINDEX SYSTEM and reindexdb --system.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 16, which introduced the change to REINDEX DATABASE and reindexdb.\",\n   \"quotes\": [\n    \"Version 16 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment uses REINDEX DATABASE or reindexdb to reindex system catalog indexes.\",\n   \"quotes\": [\n    \"Change REINDEX DATABASE and reindexdb to not process indexes on system catalogs\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The application or deployment already runs REINDEX SYSTEM or reindexdb --system to process system catalog indexes.\",\n   \"quotes\": [\n    \"Processing such indexes is still possible using REINDEX SYSTEM and reindexdb --system.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in PG16 (REINDEX DATABASE and reindexdb skip system catalog indexes, with REINDEX SYSTEM and reindexdb --system as the alternative), which can silently stop catalog index maintenance for users relying on the old behavior, and the commands are checkable."
+ },
+ "usage": {
+  "input_tokens": 903,
+  "output_tokens": 126,
+  "stop_reason": "end_turn"
+ }
+}

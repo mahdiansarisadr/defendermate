@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_where_the_1e7d46\",\n  \"claim\": \"The upgrade crosses release 15, where the change was introduced.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove server-side language plpython2u and generic Python language plpythonu (Andres Freund)\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_uses_the_plpythonu_language_ec01cc\",\n  \"claim\": \"The database uses the plpythonu language.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove server-side language plpython2u and generic Python language plpythonu\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_uses_the_plpython2u_languag_d807fa\",\n  \"claim\": \"The database uses the plpython2u language.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove server-side language plpython2u and generic Python language plpythonu\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"whether_the_database_could_be_affected_t_d6e3fe\",\n  \"claim\": \"Whether the database could be affected through plpython3u is not stated in the text.\",\n  \"evidence\": [\n   {\n    \"quote\": \"While the original intent of plpythonu was that it could eventually refer to plpython3u\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_where_the_1e7d46",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_uses_the_plpythonu_language_ec01cc",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_uses_the_plpython2u_languag_d807fa",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "whether_the_database_could_be_affected_t_d6e3fe",
+    "verdict": "partially_supported",
+    "missing": "The claim asserts that the text does not state whether plpython3u affects the database. The quote is a fragment that mentions plpython3u only in the context of plpythonu's original intent, so it cannot confirm that the full text is silent on this point."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1374,
+  "output_tokens": 838,
+  "stop_reason": "end_turn"
+ }
+}

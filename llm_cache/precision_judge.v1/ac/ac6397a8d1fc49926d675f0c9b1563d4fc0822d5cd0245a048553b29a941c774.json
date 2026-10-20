@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Kubernetes 1.23 -> 1.29.\nExtracted risk path (JSON):\n{\n \"path_name\": \"kubectl version --short flag removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The --short flag was removed from kubectl version entirely. Scripts or pipelines that invoke kubectl version --short will no longer work after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 1.28, which introduced the removal.\",\n   \"quotes\": [\n    \"Changed kubectl version default output to be identical to what kubectl version --short printed\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or deployment invokes kubectl version with the --short flag.\",\n   \"quotes\": [\n    \"removed --short flag entirely\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote 'removed --short flag entirely' directly supports the removal of kubectl version --short, which would break scripts using it, and the flag is a concrete, checkable item, though the first quote only shows the default output change and does not itself name release 1.28."
+ },
+ "usage": {
+  "input_tokens": 711,
+  "output_tokens": 100,
+  "stop_reason": "end_turn"
+ }
+}

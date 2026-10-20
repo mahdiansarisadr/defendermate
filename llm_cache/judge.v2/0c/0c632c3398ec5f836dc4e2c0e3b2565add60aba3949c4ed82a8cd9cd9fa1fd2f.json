@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_14_where_the_04a83c\",\n  \"claim\": \"The upgrade crosses release 14, where the to_tsquery() change was introduced\",\n  \"evidence\": [\n   {\n    \"quote\": \"Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_to_tsquery_f4c2a3\",\n  \"claim\": \"The application calls to_tsquery()\",\n  \"evidence\": [\n   {\n    \"quote\": \"caused the output of these functions to produce incorrect tsquery output\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_query_text_passed_to_to_tsquery_cont_ed7d56\",\n  \"claim\": \"The query text passed to to_tsquery() contains discarded tokens such as underscore\",\n  \"evidence\": [\n   {\n    \"quote\": \"Certain discarded tokens, like underscore\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"output_of_the_query_now_differs_from_the_e88905\",\n  \"claim\": \"Output of the query now differs from the previous output\",\n  \"evidence\": [\n   {\n    \"quote\": \"now both output 'pg' <-> 'class' <-> 'pg'\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_14_where_the_04a83c",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish that the to_tsquery() fix was introduced in release 14, but do not state that the upgrade being assessed crosses release 14."
+   },
+   {
+    "condition_id": "the_application_calls_to_tsquery_f4c2a3",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_query_text_passed_to_to_tsquery_cont_ed7d56",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "output_of_the_query_now_differs_from_the_e88905",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1373,
+  "output_tokens": 833,
+  "stop_reason": "end_turn"
+ }
+}

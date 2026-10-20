@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"log_response exc_info argument replaced by exception\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The exc_info argument of the undocumented django.utils.log.log_response() function was replaced by exception in 4.1. Code calling log_response() with exc_info will need to pass exception instead.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, where the log_response() argument change was introduced.\",\n   \"quotes\": [\n    \"The exc_info argument of the undocumented django.utils.log.log_response() function is replaced by exception.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application code calls django.utils.log.log_response() passing the exc_info argument.\",\n   \"quotes\": [\n    \"The exc_info argument of the undocumented django.utils.log.log_response() function is replaced by exception.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete function and argument (django.utils.log.log_response, exc_info replaced by exception), and the quote directly supports the change, which is a genuine breaking change for code calling it with exc_info; the 4.1 release attribution is not stated in the quote but falls within the 3.2->4.2 range, and the conditions are checkable."
+ },
+ "usage": {
+  "input_tokens": 763,
+  "output_tokens": 132,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,582 @@
+{
+ "prompt_id": "baseline.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Read the documentation below for PostgreSQL and list the upgrade risks for upgrading from 13 to 16. For each risk, give a path_name, risk_type, risk_level, the release it was introduced in, the main symbol, a description, and one verbatim evidence quote.\n\nDOCUMENTATION:\n[14] A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 14 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities:\n[14] User-defined objects that reference certain built-in array functions along with their argument types must be recreated (Tom Lane) Specifically, array_append(), array_prepend(), array_cat(), array_position(), array_positions(), array_remove(), array_replace(), and width_bucket() used to take anyarray arguments but now take anycompatiblearray. Therefore, user-defined objects like aggregates and operators that reference those array function signatures must be dropped before upgrading, and recreated once the upgrade completes.\n[14] Remove deprecated containment operators @ and ~ for built-in geometric data types and contrib modules cube, hstore, intarray, and seg (Justin Pryzby) The more consistently named <@ and @> have been recommended for many years.\n[14] Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens (Alexander Korotkov) Certain discarded tokens, like underscore, caused the output of these functions to produce incorrect tsquery output, e.g., both websearch_to_tsquery('\"pg_class pg\"') and to_tsquery('pg_class <-> pg') used to output ( 'pg' & 'class' ) <-> 'pg', but now both output 'pg' <-> 'class' <-> 'pg'.\n[14] Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes (Alexander Korotkov) Previously, quoted text that contained multiple adjacent discarded tokens was treated as multiple tokens, causing incorrect tsquery output, e.g., websearch_to_tsquery('\"aaa: bbb\"') used to output 'aaa' <2> 'bbb', but now outputs 'aaa' <-> 'bbb'.\n[14] Change EXTRACT() to return type numeric instead of float8 (Peter Eisentraut) This avoids loss-of-precision issues in some usages. The old behavior can still be obtained by using the old underlying function date_part(). Also, EXTRACT(date) now throws an error for units that are not part of the date data type.\n[14] Change var_samp() and stddev_samp() with numeric parameters to return NULL when the input is a single NaN value (Tom Lane) Previously NaN was returned.\n[14] Return false for has_column_privilege() checks on non-existent or dropped columns when using attribute numbers (Joe Conway) Previously such attribute numbers returned an invalid-column error.\n[14] Fix handling of infinite window function ranges (Tom Lane) Previously window frame clauses like 'inf' PRECEDING AND 'inf' FOLLOWING returned incorrect results.\n[14] Remove factorial operators ! and !!, as well as function numeric_fac() (Mark Dilger) The factorial() function is still supported.\n[14] Disallow factorial() of negative numbers (Peter Eisentraut) Previously such cases returned 1.\n[14] Remove support for postfix (right-unary) operators (Mark Dilger) pg_dump and pg_upgrade will warn if postfix operators are being dumped.\n[14] Allow \\D and \\W shorthands to match newlines in regular expression newline-sensitive mode (Tom Lane) Previously they did not match newlines in this mode, but that disagrees with the behavior of other common regular expression engines. [^[:digit:]] or [^[:word:]] can be used to get the old behavior.\n[14] Disregard constraints when matching regular expression back-references (Tom Lane) For example, in (^\\d+).*\\1, the ^ constraint should be applied at the start of the string, but not when matching \\1.\n[14] Disallow \\w as a range start or end in regular expression character classes (Tom Lane) This previously was allowed but produced unexpected results.\n[14] Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers (Tom Lane)\n[14] Change the default of the password_encryption server parameter to scram-sha-256 (Peter Eisentraut) Previously it was md5. All new passwords will be stored as SHA256 unless this server setting is changed or the password is specified in MD5 format. Also, the legacy (and undocumented) Boolean-like values which were previously synonyms for md5 are no longer accepted.\n[14] Remove server parameter vacuum_cleanup_index_scale_factor (Peter Geoghegan) This setting was ignored starting in PostgreSQL version 13.3.\n[14] Remove server parameter operator_precedence_warning (Tom Lane) This setting was used for warning applications about PostgreSQL 9.5 changes.\n[14] Overhaul the specification of clientcert in pg_hba.conf (Kyotaro Horiguchi) Values 1/0/no-verify are no longer supported; only the strings verify-ca and verify-full can be used. Also, disallow verify-ca if cert authentication is enabled since cert requires verify-full checking.\n[14] Remove support for SSL compression (Daniel Gustafsson, Michael Paquier) This was already disabled by default in previous PostgreSQL releases, and most modern OpenSSL and TLS versions no longer support it.\n[14] Remove server and libpq support for the version 2 wire protocol (Heikki Linnakangas) This was last used as the default in PostgreSQL 7.3 (released in 2002).\n[14] Disallow single-quoting of the language name in the CREATE/DROP LANGUAGE command (Peter Eisentraut)\n[14] Remove the composite types that were formerly created for sequences and toast tables (Tom Lane)\n[14] Process doubled quote marks in ecpg SQL command strings correctly (Tom Lane) Previously 'abc''def' was passed to the server as 'abc'def', and \"abc\"\"def\" was passed as \"abc\"def\", causing syntax errors.\n[14] Prevent the containment operators (<@ and @>) for intarray from using GiST indexes (Tom Lane) Previously a full GiST index scan was required, so just avoid that and scan the heap, which is faster. Indexes created for this purpose should be removed.\n[14] Remove contrib program pg_standby (Justin Pryzby)\n[14] Prevent tablefunc's function normal_rand() from accepting negative values (Ashutosh Bapat) Negative values produced undesirable results.\n[15] A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 15 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities:\n[15] Remove PUBLIC creation permission on the public schema (Noah Misch) The new default is one of the secure schema usage patterns that ddl-schemas-patterns has recommended since the security release for CVE-2018-1058. The change applies to new database clusters and to newly-created databases in existing clusters. Upgrading a cluster or restoring a database dump will preserve public's existing permissions. For existing databases, especially those having multiple users, consider revoking CREATE permission on the public schema to adopt this new default. For new databases having no need to defend against insider threats, granting CREATE permission will yield the behavior of prior releases.\n[15] Change the owner of the public schema to be the new pg_database_owner role (Noah Misch) This allows each database's owner to have ownership privileges on the public schema within their database. Previously it was owned by the bootstrap superuser, so that non-superuser database owners could not do anything with it. This change applies to new database clusters and to newly-created databases in existing clusters. Upgrading a cluster or restoring a database dump will preserve public's existing ownership specification.\n[15] Remove long-deprecated exclusive backup mode (David Steele, Nathan Bossart) If the database server stops abruptly while in this mode, the server could fail to start. The non-exclusive backup mode is considered superior for all purposes. Functions pg_start_backup()/pg_stop_backup() have been renamed to pg_backup_start()/pg_backup_stop(), and the functions pg_backup_start_time() and pg_is_in_backup() have been removed.\n[15] Increase hash_mem_multiplier default to 2.0 (Peter Geoghegan) This allows query hash operations to use more work_mem memory than other operations.\n[15] Remove server-side language plpython2u and generic Python language plpythonu (Andres Freund) Python 2.x is no longer supported. While the original intent of plpythonu was that it could eventually refer to plpython3u, changing it now seems more likely to cause problems than solve them, so it's just been removed.\n[15] Generate an error if array_to_tsvector() is passed an empty-string array element (Jean-Christophe Arnu) This is prohibited because lexemes should never be empty. Users of previous Postgres releases should verify that no empty lexemes are stored because they can lead to dump/restore failures and inconsistent results.\n[15] Generate an error when chr() is supplied with a negative argument (Peter Eisentraut)\n[15] Prevent CREATE OR REPLACE VIEW from changing the collation of an output column (Tom Lane)\n[15] Disallow zero-length Unicode identifiers, e.g., U&\"\" (Peter Eisentraut) Non-Unicode zero-length identifiers were already disallowed.\n[15] Prevent numeric literals from having non-numeric trailing characters (Peter Eisentraut) Previously, query text like 123abc would be interpreted as 123 followed by a separate token abc.\n[15] Adjust JSON numeric literal processing to match the SQL/JSON-standard (Peter Eisentraut) This accepts numeric formats like .1 and 1., and disallows trailing junk after numeric literals, like 1.type().\n[15] When interval input provides a fractional value for a unit greater than months, round to the nearest month (Bruce Momjian) For example, convert 1.99 years to 2 years, not 1 year 11 months as before.\n[15] Improve consistency of interval parsing with trailing periods (Tom Lane) Numbers with trailing periods were rejected on some platforms.\n[15] Mark the interval output function as stable, not immutable, since it depends on IntervalStyle (Tom Lane) This will, for example, cause creation of indexes relying on the text output of interval values to fail.\n[15] Detect integer overflow in interval justification functions (Joe Koshakow) The affected functions are justify_interval(), justify_hours(), and justify_days().\n[15] Change the I/O format of type \"char\" for non-ASCII characters (Tom Lane) Bytes with the high bit set are now output as a backslash and three octal digits, to avoid encoding issues.\n[15] Remove the default ADMIN OPTION privilege a login role has on its own role membership (Robert Haas) Previously, a login role could add/remove members of its own role, even without ADMIN OPTION privilege.\n[15] Allow logical replication to run as the owner of the subscription (Mark Dilger) Because row-level security policies are not checked, only superusers, roles with bypassrls, and table owners can replicate into tables with row-level security policies.\n[15] Prevent UPDATE and DELETE logical replication operations on tables where the subscription owner does not have SELECT permission on the table (Jeff Davis) UPDATE and DELETE commands typically involve reading the table as well, so require the subscription owner to have table SELECT permission.\n[15] When EXPLAIN references the session's temporary object schema, refer to it as pg_temp (Amul Sul) Previously the actual schema name was reported, leading to inconsistencies across sessions.\n[15] Fix pg_statio_all_tables to sum values for the rare case of TOAST tables with multiple indexes (Andrei Zubkov) Previously such cases would show one row for each index.\n[15] Disallow setting custom options that match the name of an installed extension, but are not one of the extension's declared variables (Florin Irion, Tom Lane) This change causes any such pre-existing variables to be deleted during extension load, and then prevents new ones from being created later in the session. The intent is to prevent confusion about whether a variable is associated with an extension or not.\n[15] Remove obsolete server variable stats_temp_directory (Andres Freund, Kyotaro Horiguchi)\n[15] Improve the algorithm used to compute random() (Fabien Coelho) This will cause random()'s results to differ from what was emitted by prior versions, even for the same seed value.\n[15] libpq's PQsendQuery() function is no longer supported in pipeline mode (Álvaro Herrera) Applications that are using that combination will need to be modified to use PQsendQueryParams() instead.\n[15] On non-Windows platforms, consult the HOME environment variable to find the user's home directory (Anders Kaseorg) If HOME is empty or unset, fall back to the previous method of checking the <pwd.h> database. This change affects libpq (for example, while looking up ~/.pgpass) as well as various client application programs.\n[15] Remove pg_dump's --no-synchronized-snapshots option (Tom Lane) All still-supported server versions support synchronized snapshots, so there's no longer a need for this option.\n[15] After an error is detected in psql's --single-transaction mode, change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set (Michael Paquier)\n[15] Avoid unnecessary casting of constants in queries sent by postgres_fdw (Dian Fay) When column types are intentionally different between local and remote databases, such casts could cause errors.\n[15] Remove xml2's xml_is_well_formed() function (Tom Lane) This function has been implemented in the core backend since Postgres 9.1.\n[15] Allow custom scan providers to indicate if they support projections (Sven Klemm) The default is now that custom scan providers are assumed to not support projections; those that do will need to be updated for this release.\n[16] A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 16 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities:\n[16] Change assignment rules for PL/pgSQL bound cursor variables (Tom Lane) Previously, the string value of such variables was set to match the variable name during cursor assignment; now it will be assigned during OPEN, and will not match the variable name. To restore the previous behavior, assign the desired portal name to the cursor variable before OPEN.\n[16] Disallow NULLS NOT DISTINCT indexes for primary keys (Daniel Gustafsson)\n[16] Change REINDEX DATABASE and reindexdb to not process indexes on system catalogs (Simon Riggs) Processing such indexes is still possible using REINDEX SYSTEM and reindexdb --system.\n[16] Tighten GENERATED expression restrictions on inherited and partitioned tables (Amit Langote, Tom Lane) Columns of parent/partitioned and child/partition tables must all have the same generation status, though now the actual generation expressions can be different.\n[16] Remove pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal() (Bharath Rupireddy)\n[16] Rename server variable force_parallel_mode to debug_parallel_query (David Rowley)\n[16] Remove the ability to create views manually with ON SELECT rules (Tom Lane)\n[16] Remove the server variable vacuum_defer_cleanup_age (Andres Freund) This has been unnecessary since hot_standby_feedback and replication slots were added.\n[16] Remove server variable promote_trigger_file (Simon Riggs) This was used to promote a standby to primary, but is now more easily accomplished with pg_ctl promote or pg_promote().\n[16] Remove read-only server variables lc_collate and lc_ctype (Peter Eisentraut) Collations and locales can vary between databases so having them as read-only server variables was unhelpful.\n[16] Role inheritance now controls the default inheritance status of member roles added during GRANT (Robert Haas) The role's default inheritance behavior can be overridden with the new GRANT ... WITH INHERIT clause. This allows inheritance of some roles and not others because the members' inheritance status is set at GRANT time. Previously the inheritance status of member roles was controlled only by the role's inheritance status, and changes to a role's inheritance status affected all previous and future member roles.\n[16] Restrict the privileges of CREATEROLE and its ability to modify other roles (Robert Haas) Previously roles with CREATEROLE privileges could change many aspects of any non-superuser role. Such changes, including adding members, now require the role requesting the change to have ADMIN OPTION permission. For example, they can now change the CREATEDB, REPLICATION, and BYPASSRLS properties only if they also have those permissions.\n[16] Remove symbolic links for the postmaster binary (Peter Eisentraut)",
+ "response": {
+  "risks": [
+   {
+    "path_name": "Built-in array functions",
+    "risk_type": "Object recreation required",
+    "risk_level": "high",
+    "introduced_in": "14",
+    "primary_symbol": "array_append()",
+    "description": "Built-in array functions now take anycompatiblearray instead of anyarray. User-defined aggregates and operators that reference the old signatures must be dropped before the upgrade and recreated afterward.",
+    "quote": "User-defined objects that reference certain built-in array functions along with their argument types must be recreated"
+   },
+   {
+    "path_name": "Containment operators",
+    "risk_type": "Removed feature",
+    "risk_level": "medium",
+    "introduced_in": "14",
+    "primary_symbol": "@ and ~ operators",
+    "description": "The deprecated @ and ~ containment operators are removed for geometric types and the cube, hstore, intarray and seg modules. Queries must use <@ and @> instead.",
+    "quote": "Remove deprecated containment operators @ and ~ for built-in geometric data types and contrib modules cube, hstore, intarray, and seg"
+   },
+   {
+    "path_name": "Full-text search",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "to_tsquery()",
+    "description": "Query text containing discarded tokens such as underscore now produces different tsquery output.",
+    "quote": "Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens"
+   },
+   {
+    "path_name": "Full-text search",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "websearch_to_tsquery()",
+    "description": "Quoted text with multiple adjacent discarded tokens now yields a different tsquery.",
+    "quote": "Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes"
+   },
+   {
+    "path_name": "Date/time functions",
+    "risk_type": "Behavior change",
+    "risk_level": "medium",
+    "introduced_in": "14",
+    "primary_symbol": "EXTRACT()",
+    "description": "EXTRACT() now returns numeric instead of float8, and EXTRACT(date) errors for units that are not part of the date type. Applications may see different result types or new errors. date_part() keeps the old behavior.",
+    "quote": "Change EXTRACT() to return type numeric instead of float8"
+   },
+   {
+    "path_name": "Aggregate functions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "var_samp()",
+    "description": "var_samp() and stddev_samp() on numeric input return NULL for a single NaN input instead of NaN.",
+    "quote": "Change var_samp() and stddev_samp() with numeric parameters to return NULL when the input is a single NaN value"
+   },
+   {
+    "path_name": "Privilege inquiry functions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "has_column_privilege()",
+    "description": "Checks on non-existent or dropped columns by attribute number now return false instead of an error.",
+    "quote": "Return false for has_column_privilege() checks on non-existent or dropped columns when using attribute numbers"
+   },
+   {
+    "path_name": "Math operators",
+    "risk_type": "Removed feature",
+    "risk_level": "medium",
+    "introduced_in": "14",
+    "primary_symbol": "numeric_fac()",
+    "description": "The factorial operators ! and !! and the function numeric_fac() are removed. Use factorial() instead.",
+    "quote": "Remove factorial operators ! and !!, as well as function numeric_fac()"
+   },
+   {
+    "path_name": "Math functions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "factorial()",
+    "description": "factorial() of a negative number now raises an error instead of returning 1.",
+    "quote": "Disallow factorial() of negative numbers"
+   },
+   {
+    "path_name": "Operators",
+    "risk_type": "Removed feature",
+    "risk_level": "high",
+    "introduced_in": "14",
+    "primary_symbol": "postfix operators",
+    "description": "Postfix (right-unary) operators are no longer supported. pg_dump and pg_upgrade warn if any are being dumped.",
+    "quote": "Remove support for postfix (right-unary) operators"
+   },
+   {
+    "path_name": "Regular expressions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "\\D and \\W",
+    "description": "The \\D and \\W shorthands now match newlines in newline-sensitive mode.",
+    "quote": "Allow \\D and \\W shorthands to match newlines in regular expression newline-sensitive mode"
+   },
+   {
+    "path_name": "Regular expressions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "\\w",
+    "description": "Using \\w as a range start or end in a character class is now rejected.",
+    "quote": "Disallow \\w as a range start or end in regular expression character classes"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Configuration change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "custom server parameter names",
+    "description": "Custom server parameter names may only use characters valid in unquoted SQL identifiers.",
+    "quote": "Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers"
+   },
+   {
+    "path_name": "Authentication",
+    "risk_type": "Default change",
+    "risk_level": "high",
+    "introduced_in": "14",
+    "primary_symbol": "password_encryption",
+    "description": "The default is now scram-sha-256. New passwords are stored as SCRAM, which older clients and drivers may not support. The legacy Boolean-like synonyms for md5 are no longer accepted.",
+    "quote": "Change the default of the password_encryption server parameter to scram-sha-256"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Removed setting",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "vacuum_cleanup_index_scale_factor",
+    "description": "The server parameter is removed. It had been ignored since 13.3.",
+    "quote": "Remove server parameter vacuum_cleanup_index_scale_factor"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Removed setting",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "operator_precedence_warning",
+    "description": "The server parameter is removed, and configuration files that set it will fail.",
+    "quote": "Remove server parameter operator_precedence_warning"
+   },
+   {
+    "path_name": "pg_hba.conf",
+    "risk_type": "Configuration change",
+    "risk_level": "medium",
+    "introduced_in": "14",
+    "primary_symbol": "clientcert",
+    "description": "The values 1, 0 and no-verify are no longer supported. Only verify-ca and verify-full are valid. verify-ca is disallowed when cert authentication is enabled.",
+    "quote": "Values 1/0/no-verify are no longer supported; only the strings verify-ca and verify-full can be used."
+   },
+   {
+    "path_name": "SSL/TLS",
+    "risk_type": "Removed feature",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "SSL compression",
+    "description": "Support for SSL compression is removed. It was already disabled by default.",
+    "quote": "Remove support for SSL compression"
+   },
+   {
+    "path_name": "Wire protocol",
+    "risk_type": "Removed feature",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "version 2 wire protocol",
+    "description": "Server and libpq support for the version 2 protocol is removed. Very old clients can no longer connect.",
+    "quote": "Remove server and libpq support for the version 2 wire protocol"
+   },
+   {
+    "path_name": "SQL syntax",
+    "risk_type": "Syntax change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "CREATE/DROP LANGUAGE",
+    "description": "A single-quoted language name is no longer accepted in CREATE/DROP LANGUAGE.",
+    "quote": "Disallow single-quoting of the language name in the CREATE/DROP LANGUAGE command"
+   },
+   {
+    "path_name": "System catalogs",
+    "risk_type": "Removed feature",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "sequence and toast composite types",
+    "description": "The composite types formerly created for sequences and toast tables are removed.",
+    "quote": "Remove the composite types that were formerly created for sequences and toast tables"
+   },
+   {
+    "path_name": "intarray",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "<@ and @>",
+    "description": "The intarray containment operators no longer use GiST indexes, so indexes created for this purpose should be removed.",
+    "quote": "Prevent the containment operators (<@ and @>) for intarray from using GiST indexes"
+   },
+   {
+    "path_name": "contrib",
+    "risk_type": "Removed feature",
+    "risk_level": "medium",
+    "introduced_in": "14",
+    "primary_symbol": "pg_standby",
+    "description": "The pg_standby contrib program is removed. Setups that use it for warm standby must be changed.",
+    "quote": "Remove contrib program pg_standby"
+   },
+   {
+    "path_name": "tablefunc",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "14",
+    "primary_symbol": "normal_rand()",
+    "description": "normal_rand() now rejects negative values.",
+    "quote": "Prevent tablefunc's function normal_rand() from accepting negative values"
+   },
+   {
+    "path_name": "public schema",
+    "risk_type": "Security default change",
+    "risk_level": "medium",
+    "introduced_in": "15",
+    "primary_symbol": "public schema CREATE permission",
+    "description": "New clusters and new databases no longer grant PUBLIC CREATE on the public schema. Upgraded clusters keep the existing permissions, so administrators should consider revoking CREATE themselves.",
+    "quote": "Remove PUBLIC creation permission on the public schema"
+   },
+   {
+    "path_name": "public schema",
+    "risk_type": "Security default change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "pg_database_owner",
+    "description": "The public schema is owned by pg_database_owner in new databases. Upgraded databases keep their existing ownership.",
+    "quote": "Change the owner of the public schema to be the new pg_database_owner role"
+   },
+   {
+    "path_name": "Backup",
+    "risk_type": "Removed feature",
+    "risk_level": "high",
+    "introduced_in": "15",
+    "primary_symbol": "pg_start_backup()",
+    "description": "Exclusive backup mode is removed. pg_start_backup() and pg_stop_backup() are renamed to pg_backup_start() and pg_backup_stop(), and pg_backup_start_time() and pg_is_in_backup() are removed. Backup scripts must be updated.",
+    "quote": "Remove long-deprecated exclusive backup mode"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Default change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "hash_mem_multiplier",
+    "description": "The default increases to 2.0, so hash operations may use more memory than before.",
+    "quote": "Increase hash_mem_multiplier default to 2.0"
+   },
+   {
+    "path_name": "Procedural languages",
+    "risk_type": "Removed feature",
+    "risk_level": "high",
+    "introduced_in": "15",
+    "primary_symbol": "plpythonu",
+    "description": "The plpython2u and plpythonu languages are removed. Functions written in them must be migrated to plpython3u before upgrading.",
+    "quote": "Remove server-side language plpython2u and generic Python language plpythonu"
+   },
+   {
+    "path_name": "Full-text search",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "array_to_tsvector()",
+    "description": "array_to_tsvector() now errors on empty-string elements. Empty lexemes already stored can cause dump/restore failures and should be checked for.",
+    "quote": "Generate an error if array_to_tsvector() is passed an empty-string array element"
+   },
+   {
+    "path_name": "String functions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "chr()",
+    "description": "chr() now raises an error for a negative argument.",
+    "quote": "Generate an error when chr() is supplied with a negative argument"
+   },
+   {
+    "path_name": "Views",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "CREATE OR REPLACE VIEW",
+    "description": "CREATE OR REPLACE VIEW can no longer change the collation of an output column.",
+    "quote": "Prevent CREATE OR REPLACE VIEW from changing the collation of an output column"
+   },
+   {
+    "path_name": "SQL syntax",
+    "risk_type": "Syntax change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "U&\"\"",
+    "description": "Zero-length Unicode identifiers are now disallowed.",
+    "quote": "Disallow zero-length Unicode identifiers"
+   },
+   {
+    "path_name": "SQL syntax",
+    "risk_type": "Syntax change",
+    "risk_level": "medium",
+    "introduced_in": "15",
+    "primary_symbol": "numeric literals",
+    "description": "Numeric literals followed by non-numeric characters, such as 123abc, are now rejected. They were previously parsed as two tokens.",
+    "quote": "Prevent numeric literals from having non-numeric trailing characters"
+   },
+   {
+    "path_name": "JSON",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "JSON numeric literals",
+    "description": "JSON numeric literal processing now follows the SQL/JSON standard. It accepts .1 and 1. and disallows trailing junk.",
+    "quote": "Adjust JSON numeric literal processing to match the SQL/JSON-standard"
+   },
+   {
+    "path_name": "Date/time types",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "interval input",
+    "description": "Fractional values for units larger than months now round to the nearest month.",
+    "quote": "When interval input provides a fractional value for a unit greater than months, round to the nearest month"
+   },
+   {
+    "path_name": "Date/time types",
+    "risk_type": "Volatility change",
+    "risk_level": "medium",
+    "introduced_in": "15",
+    "primary_symbol": "interval output function",
+    "description": "The interval output function is now stable instead of immutable. Creating indexes that rely on the text output of intervals will fail.",
+    "quote": "Mark the interval output function as stable, not immutable, since it depends on IntervalStyle"
+   },
+   {
+    "path_name": "Data types",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "\"char\"",
+    "description": "Bytes with the high bit set in type \"char\" are now output as a backslash and three octal digits.",
+    "quote": "Change the I/O format of type \"char\" for non-ASCII characters"
+   },
+   {
+    "path_name": "Roles",
+    "risk_type": "Privilege change",
+    "risk_level": "medium",
+    "introduced_in": "15",
+    "primary_symbol": "ADMIN OPTION",
+    "description": "A login role no longer has the default ADMIN OPTION on its own role membership, so it can no longer add or remove members of its own role.",
+    "quote": "Remove the default ADMIN OPTION privilege a login role has on its own role membership"
+   },
+   {
+    "path_name": "Logical replication",
+    "risk_type": "Behavior change",
+    "risk_level": "medium",
+    "introduced_in": "15",
+    "primary_symbol": "subscription owner",
+    "description": "Logical replication now runs as the subscription owner, and row-level security policies are not checked. Only superusers, roles with bypassrls and table owners can replicate into tables with RLS policies.",
+    "quote": "Allow logical replication to run as the owner of the subscription"
+   },
+   {
+    "path_name": "Logical replication",
+    "risk_type": "Privilege change",
+    "risk_level": "medium",
+    "introduced_in": "15",
+    "primary_symbol": "UPDATE and DELETE replication",
+    "description": "UPDATE and DELETE replication fails on tables where the subscription owner lacks SELECT permission.",
+    "quote": "Prevent UPDATE and DELETE logical replication operations on tables where the subscription owner does not have SELECT permission on the table"
+   },
+   {
+    "path_name": "Extensions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "custom options",
+    "description": "Custom options matching an installed extension's name but not one of its declared variables are deleted during extension load and cannot be created later in the session.",
+    "quote": "Disallow setting custom options that match the name of an installed extension, but are not one of the extension's declared variables"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Removed setting",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "stats_temp_directory",
+    "description": "The stats_temp_directory server variable is removed.",
+    "quote": "Remove obsolete server variable stats_temp_directory"
+   },
+   {
+    "path_name": "Math functions",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "random()",
+    "description": "random() uses a new algorithm, so its results differ from earlier versions even for the same seed.",
+    "quote": "Improve the algorithm used to compute random()"
+   },
+   {
+    "path_name": "libpq",
+    "risk_type": "API change",
+    "risk_level": "medium",
+    "introduced_in": "15",
+    "primary_symbol": "PQsendQuery()",
+    "description": "PQsendQuery() is not supported in pipeline mode. Applications must use PQsendQueryParams() instead.",
+    "quote": "libpq's PQsendQuery() function is no longer supported in pipeline mode"
+   },
+   {
+    "path_name": "libpq and client applications",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "HOME",
+    "description": "On non-Windows platforms the HOME environment variable is now consulted to find the home directory, which affects libpq (for example ~/.pgpass lookup) and client programs.",
+    "quote": "On non-Windows platforms, consult the HOME environment variable to find the user's home directory"
+   },
+   {
+    "path_name": "pg_dump",
+    "risk_type": "Removed option",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "--no-synchronized-snapshots",
+    "description": "The pg_dump option is removed, and scripts that pass it will fail.",
+    "quote": "Remove pg_dump's --no-synchronized-snapshots option"
+   },
+   {
+    "path_name": "psql",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "--single-transaction",
+    "description": "After an error in --single-transaction mode, the final COMMIT becomes ROLLBACK only if ON_ERROR_STOP is set.",
+    "quote": "After an error is detected in psql's --single-transaction mode, change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set"
+   },
+   {
+    "path_name": "xml2",
+    "risk_type": "Removed feature",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "xml_is_well_formed()",
+    "description": "The xml2 module's xml_is_well_formed() function is removed. The core backend function of the same name replaces it.",
+    "quote": "Remove xml2's xml_is_well_formed() function"
+   },
+   {
+    "path_name": "Custom scan providers",
+    "risk_type": "API change",
+    "risk_level": "low",
+    "introduced_in": "15",
+    "primary_symbol": "custom scan providers",
+    "description": "Custom scan providers are now assumed not to support projections. Providers that do must be updated.",
+    "quote": "The default is now that custom scan providers are assumed to not support projections; those that do will need to be updated for this release."
+   },
+   {
+    "path_name": "PL/pgSQL",
+    "risk_type": "Behavior change",
+    "risk_level": "medium",
+    "introduced_in": "16",
+    "primary_symbol": "bound cursor variables",
+    "description": "The portal name for a bound cursor variable is now assigned at OPEN and no longer matches the variable name. To keep the old behavior, assign the desired portal name before OPEN.",
+    "quote": "Change assignment rules for PL/pgSQL bound cursor variables"
+   },
+   {
+    "path_name": "Indexes",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "16",
+    "primary_symbol": "NULLS NOT DISTINCT",
+    "description": "NULLS NOT DISTINCT indexes are no longer allowed for primary keys.",
+    "quote": "Disallow NULLS NOT DISTINCT indexes for primary keys"
+   },
+   {
+    "path_name": "REINDEX",
+    "risk_type": "Behavior change",
+    "risk_level": "low",
+    "introduced_in": "16",
+    "primary_symbol": "REINDEX DATABASE",
+    "description": "REINDEX DATABASE and reindexdb no longer process indexes on system catalogs. Use REINDEX SYSTEM or reindexdb --system for those.",
+    "quote": "Change REINDEX DATABASE and reindexdb to not process indexes on system catalogs"
+   },
+   {
+    "path_name": "Generated columns",
+    "risk_type": "Behavior change",
+    "risk_level": "medium",
+    "introduced_in": "16",
+    "primary_symbol": "GENERATED",
+    "description": "GENERATED expression restrictions are tighter on inherited and partitioned tables. Parent and child columns must all have the same generation status.",
+    "quote": "Tighten GENERATED expression restrictions on inherited and partitioned tables"
+   },
+   {
+    "path_name": "pg_walinspect",
+    "risk_type": "Removed feature",
+    "risk_level": "low",
+    "introduced_in": "16",
+    "primary_symbol": "pg_get_wal_records_info_till_end_of_wal()",
+    "description": "The pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal() are removed.",
+    "quote": "Remove pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal()"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Renamed setting",
+    "risk_level": "low",
+    "introduced_in": "16",
+    "primary_symbol": "force_parallel_mode",
+    "description": "force_parallel_mode is renamed to debug_parallel_query, so configuration that sets the old name must be updated.",
+    "quote": "Rename server variable force_parallel_mode to debug_parallel_query"
+   },
+   {
+    "path_name": "Views and rules",
+    "risk_type": "Removed feature",
+    "risk_level": "medium",
+    "introduced_in": "16",
+    "primary_symbol": "ON SELECT rules",
+    "description": "Views can no longer be created manually with ON SELECT rules.",
+    "quote": "Remove the ability to create views manually with ON SELECT rules"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Removed setting",
+    "risk_level": "medium",
+    "introduced_in": "16",
+    "primary_symbol": "vacuum_defer_cleanup_age",
+    "description": "The server variable is removed. hot_standby_feedback and replication slots replace it.",
+    "quote": "Remove the server variable vacuum_defer_cleanup_age"
+   },
+   {
+    "path_name": "Replication",
+    "risk_type": "Removed setting",
+    "risk_level": "medium",
+    "introduced_in": "16",
+    "primary_symbol": "promote_trigger_file",
+    "description": "promote_trigger_file is removed. Standbys must be promoted with pg_ctl promote or pg_promote().",
+    "quote": "Remove server variable promote_trigger_file"
+   },
+   {
+    "path_name": "Server configuration",
+    "risk_type": "Removed setting",
+    "risk_level": "low",
+    "introduced_in": "16",
+    "primary_symbol": "lc_collate",
+    "description": "The read-only server variables lc_collate and lc_ctype are removed.",
+    "quote": "Remove read-only server variables lc_collate and lc_ctype"
+   },
+   {
+    "path_name": "Roles",
+    "risk_type": "Behavior change",
+    "risk_level": "medium",
+    "introduced_in": "16",
+    "primary_symbol": "GRANT ... WITH INHERIT",
+    "description": "Role inheritance now controls the default inheritance status of member roles added during GRANT. The status is set at GRANT time rather than being controlled only by the role's inheritance status.",
+    "quote": "Role inheritance now controls the default inheritance status of member roles added during GRANT"
+   },
+   {
+    "path_name": "Roles",
+    "risk_type": "Privilege change",
+    "risk_level": "high",
+    "introduced_in": "16",
+    "primary_symbol": "CREATEROLE",
+    "description": "CREATEROLE roles can no longer freely modify other non-superuser roles. Changes now require ADMIN OPTION on the target role, which can break existing role-management workflows.",
+    "quote": "Restrict the privileges of CREATEROLE and its ability to modify other roles"
+   },
+   {
+    "path_name": "Installation",
+    "risk_type": "Removed feature",
+    "risk_level": "low",
+    "introduced_in": "16",
+    "primary_symbol": "postmaster",
+    "description": "The symbolic links for the postmaster binary are removed. Scripts that call postmaster must use postgres instead.",
+    "quote": "Remove symbolic links for the postmaster binary"
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 6434,
+  "output_tokens": 10014,
+  "stop_reason": "end_turn"
+ }
+}

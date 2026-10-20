@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"inspectdb CharField uses display_size from get_table_description()\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"inspectdb now takes the CharField size from display_size returned by DatabaseIntrospection.get_table_description() instead of internal_size. Third-party database backends that implement or override get_table_description() may need changes so display_size holds the correct value, otherwise inspectdb-generated CharField definitions may differ.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, where inspectdb switched from internal_size to display_size for CharField.\",\n   \"quotes\": [\n    \"inspectdb now uses display_size from DatabaseIntrospection.get_table_description() rather than internal_size for CharField.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project uses a third-party database backend that provides its own DatabaseIntrospection.get_table_description().\",\n   \"quotes\": [\n    \"This section describes changes that may be needed in third-party database backends.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The project runs inspectdb to generate models, so the CharField sizes it produces are affected.\",\n   \"quotes\": [\n    \"inspectdb now uses display_size from DatabaseIntrospection.get_table_description()\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that inspectdb now reads display_size from DatabaseIntrospection.get_table_description() instead of internal_size for CharField, and that the surrounding section covers changes third-party backends may need, so the risk is genuine and names concrete APIs a checker can search for."
+ },
+ "usage": {
+  "input_tokens": 915,
+  "output_tokens": 111,
+  "stop_reason": "end_turn"
+ }
+}

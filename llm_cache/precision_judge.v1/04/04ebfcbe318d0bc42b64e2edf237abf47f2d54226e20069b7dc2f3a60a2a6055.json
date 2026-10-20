@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed django.http.multipartparser.parse_header() function\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The undocumented django.http.multipartparser.parse_header() function is removed in Django 4.2. Code that imports or calls it will fail with an ImportError or AttributeError. The replacement is django.utils.http.parse_header_parameters().\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.2, where parse_header() is removed.\",\n   \"quotes\": [\n    \"The undocumented django.http.multipartparser.parse_header() function is removed.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application imports or calls django.http.multipartparser.parse_header().\",\n   \"quotes\": [\n    \"The undocumented django.http.multipartparser.parse_header() function is removed.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete removed function (django.http.multipartparser.parse_header) that code could import or call, a checker can search for it, and the quotes directly state its removal; the replacement name goes beyond the quotes but the core risk is supported."
+ },
+ "usage": {
+  "input_tokens": 761,
+  "output_tokens": 98,
+  "stop_reason": "end_turn"
+ }
+}

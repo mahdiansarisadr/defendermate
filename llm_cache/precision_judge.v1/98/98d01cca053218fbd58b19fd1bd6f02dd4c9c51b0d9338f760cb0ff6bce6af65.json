@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Durable nested atomic in TestCase raises RuntimeError\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"A nested atomic block marked as durable inside django.test.TestCase now raises a RuntimeError, the same as outside of tests. Tests that relied on the previous behavior inside TestCase will fail.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 4.1, which introduced the RuntimeError for nested durable atomic blocks in django.test.TestCase.\",\n   \"quotes\": [\n    \"A nested atomic block marked as durable in django.test.TestCase now raises a RuntimeError, the same as outside of tests.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application's tests use atomic blocks marked as durable that are nested inside another atomic block while running under django.test.TestCase.\",\n   \"quotes\": [\n    \"A nested atomic block marked as durable in django.test.TestCase now raises a RuntimeError\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Test classes subclass django.test.TestCase, which wraps each test in an atomic block, so durable atomic blocks used in the code under test become nested.\",\n   \"quotes\": [\n    \"A nested atomic block marked as durable in django.test.TestCase now raises a RuntimeError\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The risk names concrete APIs (durable atomic blocks, django.test.TestCase, RuntimeError), but the only quote is the description restated, so it does not support the claim that the 3.2 to 4.2 range crosses release 4.1, and conditions 2 and 3 are likewise unsupported by independent evidence."
+ },
+ "usage": {
+  "input_tokens": 931,
+  "output_tokens": 658,
+  "stop_reason": "end_turn"
+ }
+}

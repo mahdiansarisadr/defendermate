@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Django 3.2 -> 4.2.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ModelAdmin.actions and inlines default changed from list to tuple\",\n \"risk_type\": \"changed_default\",\n \"description\": \"The ModelAdmin.actions and inlines attributes now default to an empty tuple instead of an empty list. Code that mutates these inherited defaults in place (e.g. append/extend) will fail on a tuple.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses Django 4.1, where the default of ModelAdmin.actions and inlines changed to an empty tuple.\",\n   \"quotes\": [\n    \"The ModelAdmin.actions and inlines attributes now default to an empty tuple rather than an empty list\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses ModelAdmin.actions or inlines attributes, in particular relying on the default value or mutating it.\",\n   \"quotes\": [\n    \"The ModelAdmin.actions and inlines attributes now default to an empty tuple rather than an empty list\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"Code mutates the inherited default (e.g. appends to ModelAdmin.actions or inlines) rather than assigning its own list or tuple.\",\n   \"quotes\": [\n    \"to discourage unintended mutation\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete attributes (ModelAdmin.actions and inlines) and a checkable behavior change (default list to tuple) whose quotes support it, and in-place mutation like append/extend of the inherited default would genuinely break on a tuple."
+ },
+ "usage": {
+  "input_tokens": 907,
+  "output_tokens": 102,
+  "stop_reason": "end_turn"
+ }
+}

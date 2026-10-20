@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"has_column_privilege attribute-number checks on non-existent or dropped columns\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"has_column_privilege() called with attribute numbers now returns false for non-existent or dropped columns instead of raising an invalid-column error. Application code that depends on that error will see different results.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where this change was introduced.\",\n   \"quotes\": [\n    \"Version 14 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls has_column_privilege() with attribute numbers.\",\n   \"quotes\": [\n    \"when using attribute numbers\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application relies on has_column_privilege() raising an error for non-existent or dropped columns when given attribute numbers.\",\n   \"quotes\": [\n    \"Previously such attribute numbers returned an invalid-column error.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "It names a concrete function (has_column_privilege with attribute numbers) and a behavior change from an invalid-column error to a different result, crossing version 14 within the 13->16 range, and the quotes support the call pattern and the previous error behavior, though the 'returns false' outcome is not directly quoted."
+ },
+ "usage": {
+  "input_tokens": 822,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}
