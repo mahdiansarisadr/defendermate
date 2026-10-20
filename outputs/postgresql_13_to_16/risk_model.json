@@ -8902,8 +8902,8 @@
     "hops": 3
   },
   "pipeline": {
-    "run_id": "001fbfbae5",
-    "generated_at": "2026-10-20T15:04:15Z",
+    "run_id": "755c3bff7a",
+    "generated_at": "2026-10-20T15:17:17Z",
     "provider": "anthropic",
     "models": {
       "cheap": "claude-haiku-5-5",
@@ -8948,40 +8948,43 @@
     "usage": {
       "triage": {
         "calls": 5,
-        "cache_hits": 0,
+        "cache_hits": 5,
         "input_tokens": 12224,
         "output_tokens": 7229,
-        "usd_estimate": 0.048368999999999995,
-        "usd_full": 0.048368999999999995
+        "usd_estimate": 0.0,
+        "usd_full": 0.004836900000000001,
+        "model": "claude-haiku-5-5"
       },
       "extract": {
         "calls": 71,
-        "cache_hits": 0,
+        "cache_hits": 71,
         "input_tokens": 299270,
         "output_tokens": 151508,
-        "usd_estimate": 1.0568099999999998,
-        "usd_full": 1.0568099999999998
+        "usd_estimate": 0.0,
+        "usd_full": 0.10568099999999998,
+        "model": "claude-haiku-5-5"
       },
       "judge": {
         "calls": 69,
-        "cache_hits": 0,
+        "cache_hits": 69,
         "input_tokens": 81830,
         "output_tokens": 39204,
-        "usd_estimate": 0.27785000000000004,
-        "usd_full": 0.27785000000000004
+        "usd_estimate": 0.0,
+        "usd_full": 0.027785000000000004,
+        "model": "claude-haiku-5-5"
       }
     },
     "timings_s": {
       "plan": 0.0,
-      "fetch": 0.06,
-      "parse": 0.2,
-      "triage": 9.4,
-      "extract": 90.33,
-      "link": 0.01,
+      "fetch": 0.04,
+      "parse": 0.19,
+      "triage": 0.0,
+      "extract": 0.1,
+      "link": 0.0,
       "compose": 0.0,
-      "judge": 31.36,
+      "judge": 0.03,
       "rubric": 0.0,
-      "assemble": 0.23
+      "assemble": 0.2
     },
     "validation": {
       "errors": 0,

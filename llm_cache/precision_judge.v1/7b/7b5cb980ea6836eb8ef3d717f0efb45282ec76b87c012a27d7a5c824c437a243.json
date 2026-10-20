@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"\\\"char\\\" type output of non-ASCII bytes changed to octal escapes\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In PostgreSQL 15 the I/O format of the single-byte type \\\"char\\\" changed: bytes with the high bit set are now output as a backslash followed by three octal digits. Applications that read or compare text output of \\\"char\\\" columns containing non-ASCII bytes may see different values.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15 (13 -> 16).\",\n   \"quotes\": [\n    \"Change the I/O format of type \\\"char\\\" for non-ASCII characters\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The database uses columns or values of type \\\"char\\\" (the single-byte internal type).\",\n   \"quotes\": [\n    \"Change the I/O format of type \\\"char\\\" for non-ASCII characters\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Stored \\\"char\\\" values contain bytes with the high bit set (non-ASCII).\",\n   \"quotes\": [\n    \"Bytes with the high bit set are now output as a backslash and three octal digits\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in \"char\" I/O format for high-bit bytes (octal escapes) introduced in PG 15, which falls within 13->16 and can alter text output seen by applications, and the conditions name checkable properties (type \"char\", non-ASCII bytes)."
+ },
+ "usage": {
+  "input_tokens": 876,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}

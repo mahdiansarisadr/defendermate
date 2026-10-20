@@ -1,0 +1,14 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/nextjs_523375afdf/the_application_had_already_opted_into_t_2276af",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/nextjs_f8d3770f36/after_upgrade_next_image_provides_the_co_375b8d",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

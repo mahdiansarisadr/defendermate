@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed composite types for sequences and toast tables\",\n \"risk_type\": \"removed_api\",\n \"description\": \"PostgreSQL 14 removed the composite types that were formerly created for sequences and toast tables. Any application, query, or catalog-dependent tooling that references those composite row types would no longer find them after the upgrade. The text does not say which objects or names are affected beyond this.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14 (13 -> 16), where the composite types for sequences and toast tables were removed.\",\n   \"quotes\": [\n    \"Remove the composite types that were formerly created for sequences and toast tables\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application, queries, or tooling reference the row/composite type of a sequence or toast table (for example, selecting a sequence as a composite type or looking up these types in pg_type).\",\n   \"quotes\": [\n    \"Remove the composite types that were formerly created for sequences and toast tables\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports removal of composite types for sequences and toast tables (a concrete behavior change in PG14, within 13->16), and a checker could look for code or catalog queries referencing those row types, though the examples in condition 2 go slightly beyond the quote."
+ },
+ "usage": {
+  "input_tokens": 809,
+  "output_tokens": 105,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Regex character class ranges using \\\\w as start or end now rejected\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 14, regular expressions that use \\\\w as a range start or end inside a character class (e.g. [\\\\w-z]) are disallowed. Previously they were accepted but produced unexpected results; such patterns will now raise errors when evaluated.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 14 (13 -> 16), where \\\\w as a range endpoint in character classes became disallowed.\",\n   \"quotes\": [\n    \"Disallow \\\\w as a range start or end in regular expression character classes\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or database objects use regular expressions with a character class range whose start or end is \\\\w (e.g. [\\\\w-z] or [a-\\\\w]).\",\n   \"quotes\": [\n    \"Disallow \\\\w as a range start or end in regular expression character classes\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted release note says PostgreSQL 14 disallows \\w as a range start or end in regex character classes, so patterns like [\\w-z] can break when upgrading from 13 to 16, and a checker can search for such patterns in queries, constraints, and code."
+ },
+ "usage": {
+  "input_tokens": 816,
+  "output_tokens": 106,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"s10\",\n  \"claim\": \"React documentation states that In the rare case that you need to opt out, wrap the state update in flushSync.\",\n  \"evidence\": [\n   {\n    \"quote\": \"In the rare case that you need to opt out, wrap the state update in flushSync.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s11\",\n  \"claim\": \"React documentation states that Make <StrictMode> re-run effects to check for restorable state.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Make <StrictMode> re-run effects to check for restorable state.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s12\",\n  \"claim\": \"PostgreSQL documentation states that Upgrading a cluster or restoring a database dump will preserve public's existing ownership specification.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Upgrading a cluster or restoring a database dump will preserve public's existing ownership specification.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s13\",\n  \"claim\": \"PostgreSQL documentation states that Version 14 contains a number of changes that may affect compatibility with previous releases.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 14 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m14\",\n  \"claim\": \"PostgreSQL documentation states that Version 17 contains a number of changes that may affect compatibility with previous releases.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 14 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s15\",\n  \"claim\": \"PostgreSQL documentation states that Prevent tablefunc's function normal_rand() from accepting negative values\",\n  \"evidence\": [\n   {\n    \"quote\": \"Prevent tablefunc's function normal_rand() from accepting negative values\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s16\",\n  \"claim\": \"React documentation states that Eventually, we expect testing libraries will configure this for you automatically.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Eventually, we expect testing libraries will configure this for you automatically.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s17\",\n  \"claim\": \"PostgreSQL documentation states that Generate an error if array_to_tsvector() is passed an empty-string array element\",\n  \"evidence\": [\n   {\n    \"quote\": \"Generate an error if array_to_tsvector() is passed an empty-string array element\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s18\",\n  \"claim\": \"PostgreSQL documentation states that Allow custom scan providers to indicate if they support projections\",\n  \"evidence\": [\n   {\n    \"quote\": \"Allow custom scan providers to indicate if they support projections\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s19\",\n  \"claim\": \"Next.js documentation states that The WASM target for next-swc has been removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The WASM target for next-swc has been removed.\",\n    \"source\": \"official docs\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "s10",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s11",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s12",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s13",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m14",
+    "verdict": "not_supported",
+    "missing": "The quote refers to Version 14, not Version 17; the claim about Version 17 is not stated and is contradicted by the version mismatch."
+   },
+   {
+    "condition_id": "s15",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s16",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s17",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s18",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s19",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1939,
+  "output_tokens": 298,
+  "stop_reason": "end_turn"
+ }
+}

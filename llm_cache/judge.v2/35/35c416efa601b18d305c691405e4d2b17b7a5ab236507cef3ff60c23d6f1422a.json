@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whe_fcd5b0\",\n  \"claim\": \"The upgrade crosses React release 18, where Suspense trees are always consistent\",\n  \"evidence\": [\n   {\n    \"quote\": \"Suspense trees are always consistent: If a component suspends before it's fully added to the tree\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Make Suspense remount layout effects when content reappears.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_uses_suspense_with_compo_f420f8\",\n  \"claim\": \"The application uses Suspense with components that suspend before being fully added to the tree\",\n  \"evidence\": [\n   {\n    \"quote\": \"React will not add it to the tree in an incomplete state or fire its effects\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"React will throw away the new tree completely, wait for the asynchronous operation to finish, and then retry rendering again from scratch\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Make Suspense remount layout effects when content reappears.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"components_rely_on_effects_firing_or_ren_d2700d\",\n  \"claim\": \"Components rely on effects firing or render work persisting for a tree that suspended before completing mount\",\n  \"evidence\": [\n   {\n    \"quote\": \"React will not add it to the tree in an incomplete state or fire its effects\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Make Suspense remount layout effects when content reappears.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whe_fcd5b0",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_uses_suspense_with_compo_f420f8",
+    "verdict": "partially_supported",
+    "missing": "The quotes never explicitly name the condition of a component suspending before it is fully added to the tree. They only say React won't add 'it' in an incomplete state and will throw away the new tree."
+   },
+   {
+    "condition_id": "components_rely_on_effects_firing_or_ren_d2700d",
+    "verdict": "partially_supported",
+    "missing": "The quotes support that effects won't fire for the incomplete tree. Nothing in this claim's evidence says render work is discarded or fails to persist."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1517,
+  "output_tokens": 624,
+  "stop_reason": "end_turn"
+ }
+}

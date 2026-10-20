@@ -11871,8 +11871,8 @@
     "hops": 6
   },
   "pipeline": {
-    "run_id": "e7f5452e39",
-    "generated_at": "2026-10-20T15:02:03Z",
+    "run_id": "44f9829300",
+    "generated_at": "2026-10-20T15:17:16Z",
     "provider": "anthropic",
     "models": {
       "cheap": "claude-haiku-5-5",
@@ -11921,52 +11921,57 @@
         "input_tokens": 29791,
         "output_tokens": 16025,
         "usd_estimate": 0.0,
-        "usd_full": 0.10991600000000001
+        "usd_full": 0.010991600000000002,
+        "model": "claude-haiku-5-5"
       },
       "triage_sweep": {
         "calls": 1,
-        "cache_hits": 0,
+        "cache_hits": 1,
         "input_tokens": 774,
         "output_tokens": 198,
-        "usd_estimate": 0.001764,
-        "usd_full": 0.001764
+        "usd_estimate": 0.0,
+        "usd_full": 0.0001764,
+        "model": "claude-haiku-5-5"
       },
       "extract": {
         "calls": 97,
-        "cache_hits": 0,
+        "cache_hits": 97,
         "input_tokens": 378748,
         "output_tokens": 257536,
-        "usd_estimate": 1.6664280000000005,
-        "usd_full": 1.6664280000000005
+        "usd_estimate": 0.0,
+        "usd_full": 0.1666427999999999,
+        "model": "claude-haiku-5-5"
       },
       "extract_repair": {
         "calls": 5,
-        "cache_hits": 0,
+        "cache_hits": 5,
         "input_tokens": 20608,
         "output_tokens": 16904,
-        "usd_estimate": 0.10512800000000001,
-        "usd_full": 0.10512800000000001
+        "usd_estimate": 0.0,
+        "usd_full": 0.0105128,
+        "model": "claude-haiku-5-5"
       },
       "judge": {
         "calls": 83,
-        "cache_hits": 0,
+        "cache_hits": 83,
         "input_tokens": 101690,
         "output_tokens": 45245,
-        "usd_estimate": 0.32791499999999996,
-        "usd_full": 0.32791499999999996
+        "usd_estimate": 0.0,
+        "usd_full": 0.0327915,
+        "model": "claude-haiku-5-5"
       }
     },
     "timings_s": {
       "plan": 0.0,
-      "fetch": 0.07,
-      "parse": 0.2,
-      "triage": 3.51,
-      "extract": 150.23,
+      "fetch": 0.04,
+      "parse": 0.19,
+      "triage": 0.01,
+      "extract": 0.13,
       "link": 0.01,
       "compose": 0.0,
-      "judge": 36.44,
+      "judge": 0.03,
       "rubric": 0.0,
-      "assemble": 0.21
+      "assemble": 0.19
     },
     "validation": {
       "errors": 0,

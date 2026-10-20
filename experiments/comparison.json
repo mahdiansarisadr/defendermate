@@ -1,0 +1,301 @@
+{
+ "rows": [
+  {
+   "name": "haiku_haiku",
+   "label": "Haiku / Haiku",
+   "models": {
+    "cheap": "claude-haiku-5-5",
+    "strong": "claude-haiku-5-5"
+   },
+   "evaluator": {
+    "cheap": "claude-sonnet-5-5",
+    "strong": "claude-sonnet-5-5"
+   },
+   "upgrades": [
+    "react_17_to_18",
+    "postgresql_13_to_16",
+    "nextjs_12_to_14"
+   ],
+   "cost_usd": 0.269,
+   "input_tokens": 778738,
+   "output_tokens": 381394,
+   "paths": 115,
+   "recall": 0.9636363636363636,
+   "recall_hits": [
+    53,
+    55
+   ],
+   "estimated_precision": 0.991304347826087,
+   "strict_precision": 0.6782608695652174,
+   "f1": 0.9772745653052972,
+   "classification": 0.9649122807017544,
+   "level_agreement": 0.9811320754716981,
+   "field_consistency": 0.9966996699669967,
+   "grounding": 1.0,
+   "validator_errors": 0,
+   "judge_accuracy": 1.0,
+   "judge_kappa": 1.0,
+   "stability": 0.7419354838709677,
+   "stability_reused": false,
+   "usd_per_gold_risk_found": 0.0051,
+   "per_upgrade": {
+    "react_17_to_18": {
+     "paths": 27,
+     "cost_usd": 0.0903,
+     "recall": [
+      14,
+      15
+     ],
+     "estimated_precision": [
+      26,
+      27
+     ],
+     "strict_precision": [
+      22,
+      27
+     ],
+     "missed": [
+      "re_render_to_node_stream"
+     ]
+    },
+    "postgresql_13_to_16": {
+     "paths": 69,
+     "cost_usd": 0.1383,
+     "recall": [
+      27,
+      28
+     ],
+     "estimated_precision": [
+      69,
+      69
+     ],
+     "strict_precision": [
+      38,
+      69
+     ],
+     "missed": [
+      "pg14_ssl_compression"
+     ]
+    },
+    "nextjs_12_to_14": {
+     "paths": 19,
+     "cost_usd": 0.0399,
+     "recall": [
+      12,
+      12
+     ],
+     "estimated_precision": [
+      19,
+      19
+     ],
+     "strict_precision": [
+      18,
+      19
+     ],
+     "missed": []
+    }
+   },
+   "pareto": true,
+   "cost_multiple": 1.0,
+   "delta_f1_vs_cheapest": 0.0
+  },
+  {
+   "name": "haiku_sonnet",
+   "label": "Haiku / Sonnet",
+   "models": {
+    "cheap": "claude-haiku-5-5",
+    "strong": "claude-sonnet-5-5"
+   },
+   "evaluator": {
+    "cheap": "claude-sonnet-5-5",
+    "strong": "claude-sonnet-5-5"
+   },
+   "upgrades": [
+    "react_17_to_18",
+    "postgresql_13_to_16",
+    "nextjs_12_to_14"
+   ],
+   "cost_usd": 3.246,
+   "input_tokens": 773957,
+   "output_tokens": 198959,
+   "paths": 110,
+   "recall": 0.9818181818181818,
+   "recall_hits": [
+    54,
+    55
+   ],
+   "estimated_precision": 0.990909090909091,
+   "strict_precision": 0.6545454545454545,
+   "f1": 0.986342689568496,
+   "classification": 0.9824561403508771,
+   "level_agreement": 1.0,
+   "field_consistency": 1.0,
+   "grounding": 1.0,
+   "validator_errors": 0,
+   "judge_accuracy": 1.0,
+   "judge_kappa": 1.0,
+   "stability": 0.7,
+   "stability_reused": true,
+   "usd_per_gold_risk_found": 0.0601,
+   "per_upgrade": {
+    "react_17_to_18": {
+     "paths": 25,
+     "cost_usd": 1.079,
+     "recall": [
+      14,
+      15
+     ],
+     "estimated_precision": [
+      24,
+      25
+     ],
+     "strict_precision": [
+      20,
+      25
+     ],
+     "missed": [
+      "re_render_to_node_stream"
+     ]
+    },
+    "postgresql_13_to_16": {
+     "paths": 69,
+     "cost_usd": 1.6733,
+     "recall": [
+      28,
+      28
+     ],
+     "estimated_precision": [
+      69,
+      69
+     ],
+     "strict_precision": [
+      37,
+      69
+     ],
+     "missed": []
+    },
+    "nextjs_12_to_14": {
+     "paths": 16,
+     "cost_usd": 0.4935,
+     "recall": [
+      12,
+      12
+     ],
+     "estimated_precision": [
+      16,
+      16
+     ],
+     "strict_precision": [
+      15,
+      16
+     ],
+     "missed": []
+    }
+   },
+   "pareto": true,
+   "cost_multiple": 12.1,
+   "delta_f1_vs_cheapest": 0.009068124263198807
+  },
+  {
+   "name": "sonnet_opus",
+   "label": "Sonnet / Opus",
+   "models": {
+    "cheap": "claude-sonnet-5-5",
+    "strong": "claude-opus-5-5"
+   },
+   "evaluator": {
+    "cheap": "claude-sonnet-5-5",
+    "strong": "claude-sonnet-5-5"
+   },
+   "upgrades": [
+    "react_17_to_18",
+    "postgresql_13_to_16",
+    "nextjs_12_to_14"
+   ],
+   "cost_usd": 7.648,
+   "input_tokens": 833387,
+   "output_tokens": 226486,
+   "paths": 123,
+   "recall": 1.0,
+   "recall_hits": [
+    55,
+    55
+   ],
+   "estimated_precision": 0.983739837398374,
+   "strict_precision": 0.6422764227642277,
+   "f1": 0.9918032786885246,
+   "classification": 1.0,
+   "level_agreement": 1.0,
+   "field_consistency": 1.0,
+   "grounding": 1.0,
+   "validator_errors": 0,
+   "judge_accuracy": 1.0,
+   "judge_kappa": 1.0,
+   "stability": 0.6216216216216216,
+   "stability_reused": false,
+   "usd_per_gold_risk_found": 0.1391,
+   "per_upgrade": {
+    "react_17_to_18": {
+     "paths": 30,
+     "cost_usd": 2.709,
+     "recall": [
+      15,
+      15
+     ],
+     "estimated_precision": [
+      29,
+      30
+     ],
+     "strict_precision": [
+      24,
+      30
+     ],
+     "missed": []
+    },
+    "postgresql_13_to_16": {
+     "paths": 79,
+     "cost_usd": 4.0139,
+     "recall": [
+      28,
+      28
+     ],
+     "estimated_precision": [
+      78,
+      79
+     ],
+     "strict_precision": [
+      41,
+      79
+     ],
+     "missed": []
+    },
+    "nextjs_12_to_14": {
+     "paths": 14,
+     "cost_usd": 0.9255,
+     "recall": [
+      12,
+      12
+     ],
+     "estimated_precision": [
+      14,
+      14
+     ],
+     "strict_precision": [
+      14,
+      14
+     ],
+     "missed": []
+    }
+   },
+   "pareto": true,
+   "cost_multiple": 28.4,
+   "delta_f1_vs_cheapest": 0.014528713383227365
+  }
+ ],
+ "quality_score": "F1 of gold recall and estimated precision (fixed Sonnet 5.5 precision judge)",
+ "subset": [
+  "react_17_to_18",
+  "postgresql_13_to_16",
+  "nextjs_12_to_14"
+ ]
+}

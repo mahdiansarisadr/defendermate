@@ -1,0 +1,105 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Next.js. Upgrade: 12 -> 14. Release of these items: 13.\nSource: Next.js 'How to upgrade to version 13' (current docs).\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"2396000e13e7\", \"section\": \"Upgrading from 12 to 13\", \"text\": \"To update to Next.js version 13, run the following command using your preferred package manager: npm i next@13 react@latest react-dom@latest eslint-config-next@13 yarn add next@13 react@latest react-dom@latest eslint-config-next@13 pnpm i next@13 react@latest react-dom@latest eslint-config-next@13 bun add next@13 react@latest react-dom@latest eslint-config-next@13\"}\n{\"item_id\": \"736c29c11229\", \"section\": \"Upgrading from 12 to 13\", \"text\": \"Good to know: If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom to their latest versions.\"}\n{\"item_id\": \"d4e173812e93\", \"section\": \"Upgrading from 12 to 13 / v13 Summary\", \"text\": \"The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.\"}\n{\"item_id\": \"ebb3e9d48420\", \"section\": \"Upgrading from 12 to 13 / v13 Summary\", \"text\": \"The minimum Node.js version has been bumped from 12.22.0 to 16.14.0, since 12.x and 14.x have reached end-of-life.\"}\n{\"item_id\": \"feb176bab8b1\", \"section\": \"Upgrading from 12 to 13 / v13 Summary\", \"text\": \"The minimum React version has been bumped from 17.0.2 to 18.2.0.\"}\n{\"item_id\": \"8ddf774f317f\", \"section\": \"Upgrading from 12 to 13 / v13 Summary\", \"text\": \"The swcMinify configuration property was changed from false to true. See Next.js Compiler for more info.\"}\n{\"item_id\": \"28157854fc7e\", \"section\": \"Upgrading from 12 to 13 / v13 Summary\", \"text\": \"The next/image import was renamed to next/legacy/image. The next/future/image import was renamed to next/image. A codemod is available to safely and automatically rename your imports.\"}\n{\"item_id\": \"1fd4d357ead8\", \"section\": \"Upgrading from 12 to 13 / v13 Summary\", \"text\": \"The next/link child can no longer be <a>. Add the legacyBehavior prop to use the legacy behavior or remove the <a> to upgrade. A codemod is available to automatically upgrade your code.\"}\n{\"item_id\": \"a0edede396c4\", \"section\": \"Upgrading from 12 to 13 / v13 Summary\", \"text\": \"The target configuration property has been removed and superseded by Output File Tracing.\"}\n{\"item_id\": \"07fd2aadba4e\", \"section\": \"Migrating shared features\", \"text\": \"Next.js 13 introduces a new app directory with new features and conventions. However, upgrading to Next.js 13 does not require using the new app Router. You can continue using pages with new features that work in both directories, such as the updated Image component, Link component, Script component, and Font optimization.\"}\n{\"item_id\": \"7f6f7d06347e\", \"section\": \"Migrating shared features / <Image/> Component\", \"text\": \"Next.js 12 introduced many improvements to the Image Component with a temporary import: next/future/image. These improvements included less client-side JavaScript, easier ways to extend and style images, better accessibility, and native browser lazy loading. Starting in Next.js 13, this new behavior is now the default for next/image. There are two codemods to help you migrate to the new Image Component:\"}\n{\"item_id\": \"e22866274e94\", \"section\": \"Migrating shared features / <Image/> Component\", \"text\": \"next-image-to-legacy-image: This codemod will safely and automatically rename next/image imports to next/legacy/image to maintain the same behavior as Next.js 12. We recommend running this codemod to quickly update to Next.js 13 automatically.\"}\n{\"item_id\": \"f0193f2c012e\", \"section\": \"Migrating shared features / <Image/> Component\", \"text\": \"next-image-experimental: After running the previous codemod, you can optionally run this experimental codemod to upgrade next/legacy/image to the new next/image, which will remove unused props and add inline styles. Please note this codemod is experimental and only covers static usage (such as <Image src={img} layout=\\\"responsive\\\" />) but not dynamic usage (such as <Image {...props} />).\"}\n{\"item_id\": \"2161edabe55d\", \"section\": \"Migrating shared features / <Image/> Component\", \"text\": \"Alternatively, you can manually update by following the migration guide and also see the legacy comparison.\"}\n{\"item_id\": \"3d62ea0f1eec\", \"section\": \"Migrating shared features / <Link> Component\", \"text\": \"The <Link> Component no longer requires manually adding an <a> tag as a child. This behavior was added as an experimental option in version 12.2 and is now the default. In Next.js 13, <Link> always renders <a> and allows you to forward props to the underlying tag. For example: import Link from 'next/link' // Next.js 12: <a> has to be nested otherwise it's excluded <Link href=\\\"/about\\\"> <a>About</a> </Link> // Next.js 13: <Link> always renders <a> under the hood <Link href=\\\"/about\\\"> About </Link>\"}\n{\"item_id\": \"29d0485933a8\", \"section\": \"Migrating shared features / <Link> Component\", \"text\": \"To upgrade your links to Next.js 13, you can use the new-link codemod.\"}\n{\"item_id\": \"d9452281082c\", \"section\": \"Migrating shared features / <Script> Component\", \"text\": \"The behavior of next/script has been updated to support both pages and app. If incrementally adopting app, read the upgrade guide.\"}\n{\"item_id\": \"d2184f97e70e\", \"section\": \"Migrating shared features / Font Optimization\", \"text\": \"Previously, Next.js helped you optimize fonts by inlining font CSS. Version 13 introduces the new next/font module which gives you the ability to customize your font loading experience while still ensuring great performance and privacy. See Optimizing Fonts to learn how to use next/font.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "2396000e13e7",
+    "label": "noise",
+    "reason": "This is just the install/upgrade command for the package managers."
+   },
+   {
+    "item_id": "736c29c11229",
+    "label": "risk",
+    "reason": "TypeScript users must upgrade @types/react and @types/react-dom to the latest versions or may hit type errors."
+   },
+   {
+    "item_id": "d4e173812e93",
+    "label": "risk",
+    "reason": "Dropping Internet Explorer support can break applications that must serve IE users."
+   },
+   {
+    "item_id": "ebb3e9d48420",
+    "label": "risk",
+    "reason": "The minimum Node.js version was raised from 12.22.0 to 16.14.0, which can break build and deployment environments."
+   },
+   {
+    "item_id": "feb176bab8b1",
+    "label": "risk",
+    "reason": "The minimum React version was raised from 17.0.2 to 18.2.0, requiring a dependency upgrade."
+   },
+   {
+    "item_id": "8ddf774f317f",
+    "label": "risk",
+    "reason": "The swcMinify default changed from false to true, which can change minified output and behavior."
+   },
+   {
+    "item_id": "28157854fc7e",
+    "label": "risk",
+    "reason": "next/image was renamed to next/legacy/image and next/future/image to next/image, so imports must be migrated or behavior changes."
+   },
+   {
+    "item_id": "1fd4d357ead8",
+    "label": "risk",
+    "reason": "The next/link child can no longer be <a>, which requires code changes (legacyBehavior or removing <a>)."
+   },
+   {
+    "item_id": "a0edede396c4",
+    "label": "risk",
+    "reason": "The target configuration property was removed, requiring migration to Output File Tracing for users who set it."
+   },
+   {
+    "item_id": "07fd2aadba4e",
+    "label": "context",
+    "reason": "It explains that adopting the app directory is optional and that pages can continue to be used, so no action is needed."
+   },
+   {
+    "item_id": "7f6f7d06347e",
+    "label": "risk",
+    "reason": "The new Image behavior is now the default for next/image, changing rendering and requiring migration or codemods."
+   },
+   {
+    "item_id": "e22866274e94",
+    "label": "risk",
+    "reason": "Without this codemod renaming imports to next/legacy/image, Next.js 12 image behavior changes, so migration action is needed."
+   },
+   {
+    "item_id": "f0193f2c012e",
+    "label": "context",
+    "reason": "This is an optional experimental codemod to move to the new next/image after the required migration, so no required action."
+   },
+   {
+    "item_id": "2161edabe55d",
+    "label": "context",
+    "reason": "It points to the manual migration guide and legacy comparison as an alternative, which is a documentation pointer."
+   },
+   {
+    "item_id": "3d62ea0f1eec",
+    "label": "risk",
+    "reason": "The Link behavior changed by default so it always renders <a>, and existing nested <a> children can break or produce duplicate anchors."
+   },
+   {
+    "item_id": "29d0485933a8",
+    "label": "risk",
+    "reason": "It refers to the new-link codemod needed to migrate links for the changed Link behavior, indicating required migration work."
+   },
+   {
+    "item_id": "d9452281082c",
+    "label": "context",
+    "reason": "The next/script update supports both pages and app, with a pointer to the upgrade guide only if incrementally adopting app."
+   },
+   {
+    "item_id": "d2184f97e70e",
+    "label": "context",
+    "reason": "It introduces the new additive next/font module with a documentation pointer and does not require action."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2717,
+  "output_tokens": 1079,
+  "stop_reason": "end_turn"
+ }
+}

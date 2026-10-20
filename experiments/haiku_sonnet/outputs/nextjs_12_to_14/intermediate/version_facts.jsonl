@@ -1,0 +1,10 @@
+{"release": "12", "field": "node", "value": ">=12.22.0", "source_id": "next_pkg@v12.3.4", "json_path": "engines.node"}
+{"release": "12", "field": "react_peer", "value": "^17.0.2 || ^18.0.0-0", "source_id": "next_pkg@v12.3.4", "json_path": "peerDependencies.react"}
+{"release": "13", "field": "node", "value": ">=14.6.0", "source_id": "next_pkg@v13.0.0", "json_path": "engines.node"}
+{"release": "13", "field": "react_peer", "value": "^18.0.0-0", "source_id": "next_pkg@v13.0.0", "json_path": "peerDependencies.react"}
+{"release": "13", "field": "node", "value": ">=16.8.0", "source_id": "next_pkg@v13.4.0", "json_path": "engines.node"}
+{"release": "13", "field": "react_peer", "value": "^18.2.0", "source_id": "next_pkg@v13.4.0", "json_path": "peerDependencies.react"}
+{"release": "13", "field": "node", "value": ">=16.14.0", "source_id": "next_pkg@v13.5.0", "json_path": "engines.node"}
+{"release": "13", "field": "react_peer", "value": "^18.2.0", "source_id": "next_pkg@v13.5.0", "json_path": "peerDependencies.react"}
+{"release": "14", "field": "node", "value": ">=18.17.0", "source_id": "next_pkg@v14.0.0", "json_path": "engines.node"}
+{"release": "14", "field": "react_peer", "value": "^18.2.0", "source_id": "next_pkg@v14.0.0", "json_path": "peerDependencies.react"}

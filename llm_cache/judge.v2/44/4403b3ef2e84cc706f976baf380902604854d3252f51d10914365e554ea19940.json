@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_which_rem_ff5532\",\n  \"claim\": \"The upgrade crosses release 15, which removed exclusive backup mode and renamed the backup functions.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove long-deprecated exclusive backup mode\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"backup_scripts_tooling_or_application_co_ae800f\",\n  \"claim\": \"Backup scripts, tooling or application code call pg_start_backup() or pg_stop_backup().\",\n  \"evidence\": [\n   {\n    \"quote\": \"Functions pg_start_backup()/pg_stop_backup() have been renamed to pg_backup_start()/pg_backup_stop()\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"backups_rely_on_exclusive_backup_mode_wh_57068c\",\n  \"claim\": \"Backups rely on exclusive backup mode, which no longer exists.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The non-exclusive backup mode is considered superior for all purposes.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_which_rem_ff5532",
+    "verdict": "partially_supported",
+    "missing": "The quote only states that exclusive backup mode was removed in release 15. It does not say the backup functions were renamed (that rename is not in this quote), and it does not say anything about the upgrade crossing release 15."
+   },
+   {
+    "condition_id": "backup_scripts_tooling_or_application_co_ae800f",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "backups_rely_on_exclusive_backup_mode_wh_57068c",
+    "verdict": "partially_supported",
+    "missing": "The quote says non-exclusive mode is considered superior, but it does not state that exclusive backup mode was removed/no longer exists, nor that any backups rely on it."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1264,
+  "output_tokens": 274,
+  "stop_reason": "end_turn"
+ }
+}

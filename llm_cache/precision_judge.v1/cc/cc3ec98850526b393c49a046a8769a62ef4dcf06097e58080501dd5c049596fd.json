@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom server parameter names with characters invalid in unquoted SQL identifiers\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 14, custom server parameter names (e.g. extension-style names like prefix.name) must use only characters valid in unquoted SQL identifiers. Configurations or application code that set custom parameter names containing other characters may no longer be accepted after upgrading from 13 to 16.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, which introduced the requirement on custom server parameter names.\",\n   \"quotes\": [\n    \"Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment or application defines or sets custom server parameters whose names contain characters not valid in unquoted SQL identifiers.\",\n   \"quotes\": [\n    \"Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports a concrete behavior change in release 14 (within the 13->16 range) that can reject custom parameter names with characters invalid in unquoted SQL identifiers, and a checker can scan configs and application code for such names."
+ },
+ "usage": {
+  "input_tokens": 820,
+  "output_tokens": 94,
+  "stop_reason": "end_turn"
+ }
+}

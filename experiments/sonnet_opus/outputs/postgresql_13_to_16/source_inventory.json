@@ -1,0 +1,55 @@
+{
+  "project": "PostgreSQL",
+  "current_version": "13",
+  "target_version": "16",
+  "sources": [
+    {
+      "source_id": "pg_release_notes@14",
+      "title": "PostgreSQL 14 release notes: Migration to Version 14",
+      "url": "https://www.postgresql.org/docs/release/14.0/",
+      "source_type": "official_release_notes",
+      "retrieved_at": "2026-10-20T14:02:44Z",
+      "why_relevant": "The 'Migration to Version 14' section lists every incompatibility of the 14.0 major; minor-release sections are excluded by exact title match.",
+      "authority_tier": 1,
+      "content_hash": "sha256:44fc42e50b54edcc8dbd77536104aa1cb2fa15cf9e753ceb06dfc7f1de27ce94",
+      "pinned_ref": "branch:REL_14_STABLE",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "14",
+      "raw_url": "https://raw.githubusercontent.com/postgres/postgres/REL_14_STABLE/doc/src/sgml/release-14.sgml",
+      "registry_source": "pg_release_notes"
+    },
+    {
+      "source_id": "pg_release_notes@15",
+      "title": "PostgreSQL 15 release notes: Migration to Version 15",
+      "url": "https://www.postgresql.org/docs/release/15.0/",
+      "source_type": "official_release_notes",
+      "retrieved_at": "2026-10-20T14:02:44Z",
+      "why_relevant": "The 'Migration to Version 15' section lists every incompatibility of the 15.0 major; minor-release sections are excluded by exact title match.",
+      "authority_tier": 1,
+      "content_hash": "sha256:ba1aff4b791c8cc5045591c254356d1a214f648e59a78a407d85936a2d7d64f8",
+      "pinned_ref": "branch:REL_15_STABLE",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "15",
+      "raw_url": "https://raw.githubusercontent.com/postgres/postgres/REL_15_STABLE/doc/src/sgml/release-15.sgml",
+      "registry_source": "pg_release_notes"
+    },
+    {
+      "source_id": "pg_release_notes@16",
+      "title": "PostgreSQL 16 release notes: Migration to Version 16",
+      "url": "https://www.postgresql.org/docs/release/16.0/",
+      "source_type": "official_release_notes",
+      "retrieved_at": "2026-10-20T14:02:44Z",
+      "why_relevant": "The 'Migration to Version 16' section lists every incompatibility of the 16.0 major; minor-release sections are excluded by exact title match.",
+      "authority_tier": 1,
+      "content_hash": "sha256:af871f37a826a254b1ae9d4bd259a73e7a79a5d5a1ae95bcded5bab36830f52d",
+      "pinned_ref": "branch:REL_16_STABLE",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "16",
+      "raw_url": "https://raw.githubusercontent.com/postgres/postgres/REL_16_STABLE/doc/src/sgml/release-16.sgml",
+      "registry_source": "pg_release_notes"
+    }
+  ]
+}

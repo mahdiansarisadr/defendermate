@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"has_column_privilege() attribute-number checks on non-existent or dropped columns now return false\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In release 14, has_column_privilege() called with an attribute number for a non-existent or dropped column returns false. Previously such attribute numbers raised an invalid-column error. Code that relied on catching that error, or that assumes an error for such columns, will see different behavior after the upgrade from 13 to 16.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 13 to 16 crosses release 14, which introduced the has_column_privilege() change.\",\n   \"quotes\": [\n    \"Return false for has_column_privilege() checks on non-existent or dropped columns when using attribute numbers\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or database code calls has_column_privilege() with an attribute number (not a column name) as the column argument.\",\n   \"quotes\": [\n    \"Return false for has_column_privilege() checks on non-existent or dropped columns when using attribute numbers\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The attribute number passed refers to a column that does not exist or has been dropped.\",\n   \"quotes\": [\n    \"checks on non-existent or dropped columns when using attribute numbers\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application depends on the previous invalid-column error being raised, for example by catching it or treating it as a signal.\",\n   \"quotes\": [\n    \"Previously such attribute numbers returned an invalid-column error.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete function (has_column_privilege() with attribute numbers) and a checkable behavior change (false instead of an invalid-column error) that could break code relying on the error, and the quotes support the change and the prior error behavior, though the release 14 attribution rests on the extractor's context."
+ },
+ "usage": {
+  "input_tokens": 1007,
+  "output_tokens": 115,
+  "stop_reason": "end_turn"
+ }
+}

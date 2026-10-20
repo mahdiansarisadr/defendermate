@@ -1,30 +1,30 @@
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.0, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "run_start", "project": "Django", "current": "3.2", "target": "4.2", "offline": true, "models": {"cheap": "claude-haiku-5-5", "strong": "claude-sonnet-5-5"}}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.0, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "plan"}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.0, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "plan", "releases": ["4.0", "4.1", "4.2"], "future": ["5.0", "5.1"]}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.0, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "plan", "seconds": 0.0}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.0, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "fetch"}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.01, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "fetch", "seconds": 0.01}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.01, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "parse"}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.05, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "parsed", "items_total": 758, "items_on_path": 422, "items_future": 46, "items_dropped_r4": 290, "revert_candidates": 1, "patch_notes_scanned": 53}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.05, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "parse", "seconds": 0.04}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.05, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "triage"}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.07, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "triage_done", "batches": 24}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.07, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "sweep_done", "swept": 2, "flipped": 2}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.08, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "triage", "seconds": 0.02}
-{"ts": "2026-10-20T14:32:03Z", "elapsed_s": 0.08, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "extract"}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.34, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "extracted", "paths": 207, "failures": 0}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.34, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "extract", "seconds": 0.26}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.34, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "link"}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.37, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "link", "seconds": 0.03}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.37, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "compose"}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.38, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "compose", "seconds": 0.01}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.38, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "judge"}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.44, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "judge_done", "supported": 264, "partially_supported": 131, "not_supported": 10, "failed": 0}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.44, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "judge", "seconds": 0.06}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.44, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "rubric"}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.44, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "rubric", "seconds": 0.0}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.44, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "assemble"}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.46, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "assemble", "seconds": 0.02}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.46, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "validate"}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.57, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "validate", "seconds": 0.11}
-{"ts": "2026-10-20T14:32:04Z", "elapsed_s": 0.59, "run_id": "872720f16a", "upgrade": "django_3.2_to_4.2", "event": "run_end", "status": "ok", "final_paths": 151, "validation": {"errors": 0, "warnings": 7, "by_code": {"W4_no_search_queries": 7}}, "usage": {"triage": {"calls": 24, "cache_hits": 24, "input_tokens": 61176, "output_tokens": 41749, "usd_estimate": 0.0, "usd_full": 0.269921}, "triage_sweep": {"calls": 2, "cache_hits": 2, "input_tokens": 1689, "output_tokens": 180, "usd_estimate": 0.0, "usd_full": 0.007767}, "extract": {"calls": 223, "cache_hits": 223, "input_tokens": 895107, "output_tokens": 220825, "usd_estimate": 0.0, "usd_full": 5.997696}, "extract_repair": {"calls": 1, "cache_hits": 1, "input_tokens": 3588, "output_tokens": 1042, "usd_estimate": 0.0, "usd_full": 0.026394}, "reconcile": {"calls": 1, "cache_hits": 1, "input_tokens": 1247, "output_tokens": 199, "usd_estimate": 0.0, "usd_full": 0.006726}, "judge": {"calls": 151, "cache_hits": 151, "input_tokens": 189322, "output_tokens": 30361, "usd_estimate": 0.0, "usd_full": 1.0233810000000003}}}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.0, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "run_start", "project": "Django", "current": "3.2", "target": "4.2", "offline": true, "models": {"cheap": "claude-haiku-5-5", "strong": "claude-sonnet-5-5"}}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.0, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "plan"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.0, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "plan", "releases": ["4.0", "4.1", "4.2"], "future": ["5.0", "5.1"]}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.0, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "plan", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.0, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "fetch"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.01, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "fetch", "seconds": 0.01}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.01, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "parse"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.06, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "parsed", "items_total": 758, "items_on_path": 422, "items_future": 46, "items_dropped_r4": 290, "revert_candidates": 1, "patch_notes_scanned": 53}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.06, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "parse", "seconds": 0.05}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.06, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "triage"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.08, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "triage_done", "batches": 24}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.08, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "sweep_done", "swept": 2, "flipped": 2}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.08, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "triage", "seconds": 0.02}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.08, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "extract"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.35, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "extracted", "paths": 207, "failures": 0}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.35, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "extract", "seconds": 0.27}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.35, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "link"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.38, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "link", "seconds": 0.03}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.38, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "compose"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.39, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "compose", "seconds": 0.01}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.39, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "judge"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.45, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "judge_done", "supported": 264, "partially_supported": 131, "not_supported": 10, "failed": 0}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.45, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "judge", "seconds": 0.06}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.45, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "rubric"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.45, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "rubric", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.45, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "assemble"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.47, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "assemble", "seconds": 0.02}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.47, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_start", "stage": "validate"}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.58, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "stage_end", "stage": "validate", "seconds": 0.11}
+{"ts": "2026-10-20T15:17:15Z", "elapsed_s": 0.6, "run_id": "065ce05ef0", "upgrade": "django_3.2_to_4.2", "event": "run_end", "status": "ok", "final_paths": 151, "validation": {"errors": 0, "warnings": 7, "by_code": {"W4_no_search_queries": 7}}, "usage": {"triage": {"calls": 24, "cache_hits": 24, "input_tokens": 61176, "output_tokens": 41749, "usd_estimate": 0.0, "usd_full": 0.026992099999999998, "model": "claude-haiku-5-5"}, "triage_sweep": {"calls": 2, "cache_hits": 2, "input_tokens": 1689, "output_tokens": 180, "usd_estimate": 0.0, "usd_full": 0.005178, "model": "claude-sonnet-5-5"}, "extract": {"calls": 223, "cache_hits": 223, "input_tokens": 895107, "output_tokens": 220825, "usd_estimate": 0.0, "usd_full": 3.998463999999996, "model": "claude-sonnet-5-5"}, "extract_repair": {"calls": 1, "cache_hits": 1, "input_tokens": 3588, "output_tokens": 1042, "usd_estimate": 0.0, "usd_full": 0.017596, "model": "claude-sonnet-5-5"}, "reconcile": {"calls": 1, "cache_hits": 1, "input_tokens": 1247, "output_tokens": 199, "usd_estimate": 0.0, "usd_full": 0.004484, "model": "claude-sonnet-5-5"}, "judge": {"calls": 151, "cache_hits": 151, "input_tokens": 189322, "output_tokens": 30361, "usd_estimate": 0.0, "usd_full": 0.6822540000000001, "model": "claude-sonnet-5-5"}}}

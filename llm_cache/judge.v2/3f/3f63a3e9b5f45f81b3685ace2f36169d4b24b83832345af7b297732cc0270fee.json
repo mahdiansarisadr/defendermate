@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_where_pg_5c7649\",\n  \"claim\": \"The upgrade crosses release 15, where pg_statio_all_tables output changed\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 15 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_monitoring_tooling_qu_357e20\",\n  \"claim\": \"The application or monitoring tooling queries pg_statio_all_tables\",\n  \"evidence\": [\n   {\n    \"quote\": \"Fix pg_statio_all_tables to sum values for the rare case of TOAST tables with multiple indexes\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_has_toast_tables_with_multi_ae49e7\",\n  \"claim\": \"The database has TOAST tables with multiple indexes, which previously produced one row per index\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously such cases would show one row for each index.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_where_pg_5c7649",
+    "verdict": "partially_supported",
+    "missing": "The quote only says version 15 has compatibility changes in general. It does not mention that pg_statio_all_tables output changed."
+   },
+   {
+    "condition_id": "the_application_or_monitoring_tooling_qu_357e20",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_has_toast_tables_with_multi_ae49e7",
+    "verdict": "partially_supported",
+    "missing": "The quote refers only to \"such cases\" and does not itself identify them as TOAST tables with multiple indexes."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1240,
+  "output_tokens": 497,
+  "stop_reason": "end_turn"
+ }
+}

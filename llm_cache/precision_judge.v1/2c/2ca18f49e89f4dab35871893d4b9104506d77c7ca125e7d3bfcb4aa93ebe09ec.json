@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Suspense fallback={undefined} no longer ignored\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In React 18, a Suspense boundary with fallback={undefined} behaves the same as fallback={null} instead of being ignored. Code relying on the boundary being ignored (so suspension propagates to an outer boundary) will now show an empty fallback at this boundary instead.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React 18.0.0, where Suspense fallback={undefined} behavior changed.\",\n   \"quotes\": [\n    \"Suspense fallback={undefined} now behaves the same as null and isn't ignored.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application renders a Suspense component whose fallback prop is undefined (explicitly or via a variable that may be undefined).\",\n   \"quotes\": [\n    \"Suspense fallback={undefined} now behaves the same as null and isn't ignored.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application relies on a Suspense boundary with undefined fallback being skipped so that an outer boundary's fallback is shown.\",\n   \"quotes\": [\n    \"now behaves the same as null and isn't ignored\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted evidence directly supports the behavior change (Suspense fallback={undefined} now acts like null and is not ignored), it is a genuine upgrade risk when code relied on the old skipping behavior, and it names a concrete, checkable pattern (Suspense with undefined fallback)."
+ },
+ "usage": {
+  "input_tokens": 895,
+  "output_tokens": 116,
+  "stop_reason": "end_turn"
+ }
+}

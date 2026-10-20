@@ -1,0 +1,94 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: React CHANGELOG (18.0.0 section) (official_changelog). Section: React / React DOM Server.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nIgnore function and symbol values inside custom elements on the server. (#21157 by @sebmarkbage)\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nReact / React DOM Server: Add the new streaming renderer. (#14144, #20970, #21056, #21255, #21200, #21257, #21276, #22443, #22450, #23247, #24025, #24030 by @sebmarkbage) Fix context providers in SSR when handling multiple requests. (#23171 by @frandiox) Revert to client render on text mismatch. (#23354 by @acdlite) Deprecate renderToNodeStream. (#23359 by @sebmarkbage) Fix a spurious error log in the new server renderer. (#24043 by @eps1lon) Fix a bug in the new server renderer. (#22617 by @shuding) Ignore function and symbol values inside custom elements on the server. (#21157 by @sebmarkbage)\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "SSR omits function/symbol values on custom elements",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "In React 18 the server renderer ignores function and symbol values passed as props to custom elements. Server-rendered HTML for custom elements that receive such values may differ from React 17 output.",
+    "primary_symbol": "custom elements",
+    "symbols": [
+     "custom elements",
+     "React DOM Server"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, where the server renderer ignores function and symbol values inside custom elements.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "17",
+      "quotes": [
+       "Ignore function and symbol values inside custom elements on the server."
+      ],
+      "relevance": "The change ships in 18.0.0.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application server-renders custom elements (hyphenated tag names) using React DOM Server.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "React DOM Server rendering of custom elements",
+      "quotes": [
+       "Ignore function and symbol values inside custom elements on the server."
+      ],
+      "relevance": "Only server rendering of custom elements is affected.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "renderToString|renderToStaticMarkup|renderToNodeStream|renderToPipeableStream|renderToReadableStream"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "<[a-z]+-[a-z0-9-]+[\\s>/]"
+       }
+      ]
+     },
+     {
+      "statement": "The application passes function or symbol values as props to those custom elements and relies on their previous server-rendered output.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "function or symbol prop values on custom elements",
+      "quotes": [
+       "Ignore function and symbol values inside custom elements on the server."
+      ],
+      "relevance": "Those values are now dropped from server output.",
+      "ambiguities": [
+       "The text does not state how React 17 rendered these values on the server, so the exact output difference is not specified."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Review server-rendered custom elements that receive function or symbol props and verify the HTML output and any dependent behavior after upgrading to React 18.",
+     "Attach such values on the client (e.g., after hydration) rather than relying on server-rendered attributes."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3575,
+  "output_tokens": 1018,
+  "stop_reason": "end_turn"
+ }
+}

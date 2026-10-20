@@ -1,0 +1,65 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"s0\",\n  \"claim\": \"Next.js documentation states that The minimum React version has been bumped from 17.0.2 to 18.2.0\",\n  \"evidence\": [\n   {\n    \"quote\": \"The minimum React version has been bumped from 17.0.2 to 18.2.0\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m1\",\n  \"claim\": \"Next.js documentation states that The minimum React version has been bumped from 20.2 to 18.2.0\",\n  \"evidence\": [\n   {\n    \"quote\": \"The minimum React version has been bumped from 17.0.2 to 18.2.0\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s2\",\n  \"claim\": \"React documentation states that Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m3\",\n  \"claim\": \"React documentation states that Starting in React 21 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s4\",\n  \"claim\": \"PostgreSQL documentation states that On non-Windows platforms, consult the HOME environment variable to find the user's home directory\",\n  \"evidence\": [\n   {\n    \"quote\": \"On non-Windows platforms, consult the HOME environment variable to find the user's home directory\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s5\",\n  \"claim\": \"React documentation states that Strict Mode has gotten stricter in React 18\",\n  \"evidence\": [\n   {\n    \"quote\": \"Strict Mode has gotten stricter in React 18\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m6\",\n  \"claim\": \"React documentation states that Strict Mode has gotten stricter in React 21\",\n  \"evidence\": [\n   {\n    \"quote\": \"Strict Mode has gotten stricter in React 18\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s7\",\n  \"claim\": \"React documentation states that emit the fallback HTML for the closest <Suspense> boundary\",\n  \"evidence\": [\n   {\n    \"quote\": \"emit the fallback HTML for the closest <Suspense> boundary\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s8\",\n  \"claim\": \"PostgreSQL documentation states that Remove factorial operators ! and !!, as well as function numeric_fac()\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove factorial operators ! and !!, as well as function numeric_fac()\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s9\",\n  \"claim\": \"PostgreSQL documentation states that Change the I/O format of type \\\"char\\\" for non-ASCII characters (Tom Lane)\",\n  \"evidence\": [\n   {\n    \"quote\": \"Change the I/O format of type \\\"char\\\" for non-ASCII characters (Tom Lane)\",\n    \"source\": \"official docs\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "s0",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m1",
+    "verdict": "not_supported",
+    "missing": "The quote states the minimum React version was bumped from 17.0.2 to 18.2.0, not from 20.2; the claim's starting version 20.2 contradicts the quote."
+   },
+   {
+    "condition_id": "s2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m3",
+    "verdict": "not_supported",
+    "missing": "The quote says batching starts in React 18, not React 21; the claim's version contradicts the quote."
+   },
+   {
+    "condition_id": "s4",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s5",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m6",
+    "verdict": "not_supported",
+    "missing": "The quote says Strict Mode got stricter in React 18, not React 21; the claim's version contradicts the quote."
+   },
+   {
+    "condition_id": "s7",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s8",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s9",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1972,
+  "output_tokens": 383,
+  "stop_reason": "end_turn"
+ }
+}

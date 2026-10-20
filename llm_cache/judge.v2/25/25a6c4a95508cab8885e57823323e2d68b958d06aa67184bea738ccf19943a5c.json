@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_client_or_application_runs_on_a_non_762d6d\",\n  \"claim\": \"The client or application runs on a non-Windows platform.\",\n  \"evidence\": [\n   {\n    \"quote\": \"On non-Windows platforms, consult the HOME environment variable\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_client_programs_use_l_242fac\",\n  \"claim\": \"The application or client programs use libpq or PostgreSQL client applications that resolve files relative to the user's home directory, such as ~/.pgpass.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This change affects libpq (for example, while looking up ~/.pgpass) as well as various client application programs.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"home_is_set_to_a_non_empty_value_that_di_687061\",\n  \"claim\": \"HOME is set to a non-empty value that differs from the home directory recorded in the passwd database for the running user (for example under sudo, containers, or service managers).\",\n  \"evidence\": [\n   {\n    \"quote\": \"consult the HOME environment variable to find the user's home directory\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"if_home_is_empty_or_unset_the_lookup_fal_dc6a3f\",\n  \"claim\": \"If HOME is empty or unset, the lookup falls back to the previous <pwd.h> behavior, so the risk does not apply.\",\n  \"evidence\": [\n   {\n    \"quote\": \"If HOME is empty or unset, fall back to the previous method of checking the <pwd.h> database.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_client_or_application_runs_on_a_non_762d6d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_client_programs_use_l_242fac",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "home_is_set_to_a_non_empty_value_that_di_687061",
+    "verdict": "partially_supported",
+    "missing": "The quote only says HOME is consulted to find the home directory; it does not state that HOME may differ from the passwd database entry, nor mention sudo, containers, or service managers as examples."
+   },
+   {
+    "condition_id": "if_home_is_empty_or_unset_the_lookup_fal_dc6a3f",
+    "verdict": "partially_supported",
+    "missing": "The fallback to the <pwd.h> database when HOME is empty or unset is stated, but the quote does not say that the risk does not apply in that case."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1462,
+  "output_tokens": 302,
+  "stop_reason": "end_turn"
+ }
+}

@@ -31,7 +31,8 @@
      "input_tokens": 61176,
      "output_tokens": 41749,
      "usd_estimate": 0.0,
-     "usd_full": 0.269921
+     "usd_full": 0.026992099999999998,
+     "model": "claude-haiku-5-5"
     },
     "triage_sweep": {
      "calls": 2,
@@ -39,7 +40,8 @@
      "input_tokens": 1689,
      "output_tokens": 180,
      "usd_estimate": 0.0,
-     "usd_full": 0.007767
+     "usd_full": 0.005178,
+     "model": "claude-sonnet-5-5"
     },
     "extract": {
      "calls": 223,
@@ -47,7 +49,8 @@
      "input_tokens": 895107,
      "output_tokens": 220825,
      "usd_estimate": 0.0,
-     "usd_full": 5.997696
+     "usd_full": 3.998463999999996,
+     "model": "claude-sonnet-5-5"
     },
     "extract_repair": {
      "calls": 1,
@@ -55,7 +58,8 @@
      "input_tokens": 3588,
      "output_tokens": 1042,
      "usd_estimate": 0.0,
-     "usd_full": 0.026394
+     "usd_full": 0.017596,
+     "model": "claude-sonnet-5-5"
     },
     "reconcile": {
      "calls": 1,
@@ -63,7 +67,8 @@
      "input_tokens": 1247,
      "output_tokens": 199,
      "usd_estimate": 0.0,
-     "usd_full": 0.006726
+     "usd_full": 0.004484,
+     "model": "claude-sonnet-5-5"
     },
     "judge": {
      "calls": 151,
@@ -71,15 +76,16 @@
      "input_tokens": 189322,
      "output_tokens": 30361,
      "usd_estimate": 0.0,
-     "usd_full": 1.0233810000000003
+     "usd_full": 0.6822540000000001,
+     "model": "claude-sonnet-5-5"
     }
    },
    "timings_s": {
     "plan": 0.0,
     "fetch": 0.01,
-    "parse": 0.04,
+    "parse": 0.05,
     "triage": 0.02,
-    "extract": 0.26,
+    "extract": 0.27,
     "link": 0.03,
     "compose": 0.01,
     "judge": 0.06,
@@ -1737,7 +1743,8 @@
      "input_tokens": 17818,
      "output_tokens": 14682,
      "usd_estimate": 0.0,
-     "usd_full": 0.091228
+     "usd_full": 0.009122799999999999,
+     "model": "claude-haiku-5-5"
     },
     "extract": {
      "calls": 57,
@@ -1745,7 +1752,8 @@
      "input_tokens": 224298,
      "output_tokens": 49426,
      "usd_estimate": 0.0,
-     "usd_full": 1.4142839999999999
+     "usd_full": 0.942856,
+     "model": "claude-sonnet-5-5"
     },
     "judge": {
      "calls": 25,
@@ -1753,15 +1761,16 @@
      "input_tokens": 33830,
      "output_tokens": 5939,
      "usd_estimate": 0.0,
-     "usd_full": 0.190575
+     "usd_full": 0.12705,
+     "model": "claude-sonnet-5-5"
     }
    },
    "timings_s": {
     "plan": 0.0,
     "fetch": 0.01,
     "parse": 0.04,
-    "triage": 0.01,
-    "extract": 0.1,
+    "triage": 0.0,
+    "extract": 0.07,
     "link": 0.0,
     "compose": 0.0,
     "judge": 0.01,
@@ -2327,52 +2336,57 @@
      "input_tokens": 29791,
      "output_tokens": 16025,
      "usd_estimate": 0.0,
-     "usd_full": 0.10991600000000001
+     "usd_full": 0.010991600000000002,
+     "model": "claude-haiku-5-5"
     },
     "triage_sweep": {
      "calls": 1,
-     "cache_hits": 0,
+     "cache_hits": 1,
      "input_tokens": 774,
      "output_tokens": 198,
-     "usd_estimate": 0.001764,
-     "usd_full": 0.001764
+     "usd_estimate": 0.0,
+     "usd_full": 0.0001764,
+     "model": "claude-haiku-5-5"
     },
     "extract": {
      "calls": 97,
-     "cache_hits": 0,
+     "cache_hits": 97,
      "input_tokens": 378748,
      "output_tokens": 257536,
-     "usd_estimate": 1.6664280000000005,
-     "usd_full": 1.6664280000000005
+     "usd_estimate": 0.0,
+     "usd_full": 0.1666427999999999,
+     "model": "claude-haiku-5-5"
     },
     "extract_repair": {
      "calls": 5,
-     "cache_hits": 0,
+     "cache_hits": 5,
      "input_tokens": 20608,
      "output_tokens": 16904,
-     "usd_estimate": 0.10512800000000001,
-     "usd_full": 0.10512800000000001
+     "usd_estimate": 0.0,
+     "usd_full": 0.0105128,
+     "model": "claude-haiku-5-5"
     },
     "judge": {
      "calls": 83,
-     "cache_hits": 0,
+     "cache_hits": 83,
      "input_tokens": 101690,
      "output_tokens": 45245,
-     "usd_estimate": 0.32791499999999996,
-     "usd_full": 0.32791499999999996
+     "usd_estimate": 0.0,
+     "usd_full": 0.0327915,
+     "model": "claude-haiku-5-5"
     }
    },
    "timings_s": {
     "plan": 0.0,
-    "fetch": 0.07,
-    "parse": 0.2,
-    "triage": 3.51,
-    "extract": 150.23,
+    "fetch": 0.04,
+    "parse": 0.19,
+    "triage": 0.01,
+    "extract": 0.13,
     "link": 0.01,
     "compose": 0.0,
-    "judge": 36.44,
+    "judge": 0.03,
     "rubric": 0.0,
-    "assemble": 0.21
+    "assemble": 0.19
    },
    "funnel": {
     "items_total": 200,
@@ -3553,40 +3567,43 @@
    "usage": {
     "triage": {
      "calls": 5,
-     "cache_hits": 0,
+     "cache_hits": 5,
      "input_tokens": 12224,
      "output_tokens": 7229,
-     "usd_estimate": 0.048368999999999995,
-     "usd_full": 0.048368999999999995
+     "usd_estimate": 0.0,
+     "usd_full": 0.004836900000000001,
+     "model": "claude-haiku-5-5"
     },
     "extract": {
      "calls": 71,
-     "cache_hits": 0,
+     "cache_hits": 71,
      "input_tokens": 299270,
      "output_tokens": 151508,
-     "usd_estimate": 1.0568099999999998,
-     "usd_full": 1.0568099999999998
+     "usd_estimate": 0.0,
+     "usd_full": 0.10568099999999998,
+     "model": "claude-haiku-5-5"
     },
     "judge": {
      "calls": 69,
-     "cache_hits": 0,
+     "cache_hits": 69,
      "input_tokens": 81830,
      "output_tokens": 39204,
-     "usd_estimate": 0.27785000000000004,
-     "usd_full": 0.27785000000000004
+     "usd_estimate": 0.0,
+     "usd_full": 0.027785000000000004,
+     "model": "claude-haiku-5-5"
     }
    },
    "timings_s": {
     "plan": 0.0,
-    "fetch": 0.06,
-    "parse": 0.2,
-    "triage": 9.4,
-    "extract": 90.33,
-    "link": 0.01,
+    "fetch": 0.04,
+    "parse": 0.19,
+    "triage": 0.0,
+    "extract": 0.1,
+    "link": 0.0,
     "compose": 0.0,
-    "judge": 31.36,
+    "judge": 0.03,
     "rubric": 0.0,
-    "assemble": 0.23
+    "assemble": 0.2
    },
    "funnel": {
     "items_total": 74,
@@ -4572,7 +4589,8 @@
      "input_tokens": 5127,
      "output_tokens": 1754,
      "usd_estimate": 0.0,
-     "usd_full": 0.013897
+     "usd_full": 0.0013897000000000002,
+     "model": "claude-haiku-5-5"
     },
     "extract": {
      "calls": 20,
@@ -4580,7 +4598,8 @@
      "input_tokens": 79601,
      "output_tokens": 44883,
      "usd_estimate": 0.0,
-     "usd_full": 0.30401599999999995
+     "usd_full": 0.0304016,
+     "model": "claude-haiku-5-5"
     },
     "extract_repair": {
      "calls": 1,
@@ -4588,7 +4607,8 @@
      "input_tokens": 4189,
      "output_tokens": 2903,
      "usd_estimate": 0.0,
-     "usd_full": 0.018704
+     "usd_full": 0.0018704000000000001,
+     "model": "claude-haiku-5-5"
     },
     "judge": {
      "calls": 17,
@@ -4596,13 +4616,14 @@
      "input_tokens": 19960,
      "output_tokens": 8563,
      "usd_estimate": 0.0,
-     "usd_full": 0.062775
+     "usd_full": 0.0062775,
+     "model": "claude-haiku-5-5"
     }
    },
    "timings_s": {
     "plan": 0.0,
     "fetch": 0.0,
-    "parse": 0.01,
+    "parse": 0.0,
     "triage": 0.0,
     "extract": 0.03,
     "link": 0.0,
@@ -5009,6 +5030,14 @@
    "exact_false_accept": 0.0,
    "fuzzy_false_accept": 1.0
   },
+  "models": {
+   "cheap": "claude-haiku-5-5",
+   "strong": "claude-sonnet-5-5"
+  },
+  "evaluator_models": {
+   "cheap": "claude-haiku-5-5",
+   "strong": "claude-sonnet-5-5"
+  },
   "judge_calibration": {
    "n": 41,
    "accuracy": 1.0,
@@ -5226,11 +5255,11 @@
   {
    "name": "cost_latency",
    "value": {
-    "usd_full": 13.021544,
+    "usd_full": 6.213354099999996,
     "llm_calls": 877,
-    "seconds": 322.96
+    "seconds": 1.83
    },
-   "display": "~$13.02 for 877 LLM calls to produce 5 models; 323s stage time on the last (possibly cached) run",
+   "display": "~$6.21 for 877 LLM calls to produce 5 models; 2s stage time on the last (possibly cached) run",
    "target": null,
    "pass": null,
    "gate": "report"

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"React 18 requires a global Symbol implementation\",\n \"risk_type\": \"runtime_requirement\",\n \"description\": \"React 18 assumes Symbols are always available and no longer accommodates JavaScript environments without Symbol. Applications running in environments that lack native Symbol support and do not load a polyfill may fail to run React.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React release 18, where React begins assuming Symbols are always available.\",\n   \"quotes\": [\n    \"Assume Symbols are always available.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application runs (or supports running) in a JavaScript environment that lacks a native global Symbol and does not load a Symbol polyfill.\",\n   \"quotes\": [\n    \"Assume Symbols are always available.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote 'Assume Symbols are always available.' supports the claim that React 18 stops accommodating environments without Symbol, and the risk is checkable (target environments lacking native Symbol and no polyfill), though the second condition's quote only indirectly supports the inference that failure occurs without a polyfill."
+ },
+ "usage": {
+  "input_tokens": 741,
+  "output_tokens": 120,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_change_is_introduced_in_react_releas_c6dbf5\",\n  \"claim\": \"The change is introduced in React release 18, so the upgrade from 17 to 18 crosses it.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Stricter hydration errors: Hydration mismatches due to missing or extra text content are now treated like errors instead of warnings.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_server_markup_th_81e6a1\",\n  \"claim\": \"The application renders server markup that is hydrated on the client, so text content can mismatch the client render.\",\n  \"evidence\": [\n   {\n    \"quote\": \"to match the server markup\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"hydration_mismatch_due_to_missing_or_ext_f8de35\",\n  \"claim\": \"Hydration mismatch due to missing or extra text content occurs in the application.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Hydration mismatches due to missing or extra text content are now treated like errors\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_change_is_introduced_in_react_releas_c6dbf5",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_renders_server_markup_th_81e6a1",
+    "verdict": "not_supported",
+    "missing": "The quote 'to match the server markup' is a fragment that does not establish that the application renders server markup hydrated on the client; it only references server markup in a general sense, and the claim's application-specific premise is not established by the quotes beyond the hypothesis-style condition that such apps are affected."
+   },
+   {
+    "condition_id": "hydration_mismatch_due_to_missing_or_ext_f8de35",
+    "verdict": "partially_supported",
+    "missing": "The quote establishes that such mismatches are treated as errors in React 18, but says nothing about whether the application actually has hydration mismatches; the occurrence in this application is not stated by the quotes."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1230,
+  "output_tokens": 303,
+  "stop_reason": "end_turn"
+ }
+}

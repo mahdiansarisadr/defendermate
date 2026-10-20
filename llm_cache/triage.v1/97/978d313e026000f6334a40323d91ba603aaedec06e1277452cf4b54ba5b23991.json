@@ -1,0 +1,85 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: PostgreSQL. Upgrade: 13 -> 16. Release of these items: 16.\nSource: PostgreSQL 16 release notes: Migration to Version 16.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"a49f86bfa044\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 16 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities:\"}\n{\"item_id\": \"568c782896f2\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Change assignment rules for PL/pgSQL bound cursor variables (Tom Lane) Previously, the string value of such variables was set to match the variable name during cursor assignment; now it will be assigned during OPEN, and will not match the variable name. To restore the previous behavior, assign the desired portal name to the cursor variable before OPEN.\"}\n{\"item_id\": \"596e3045b69c\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Disallow NULLS NOT DISTINCT indexes for primary keys (Daniel Gustafsson)\"}\n{\"item_id\": \"2d1b06f04b3d\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Change REINDEX DATABASE and reindexdb to not process indexes on system catalogs (Simon Riggs) Processing such indexes is still possible using REINDEX SYSTEM and reindexdb --system.\"}\n{\"item_id\": \"f56195ac7354\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Tighten GENERATED expression restrictions on inherited and partitioned tables (Amit Langote, Tom Lane) Columns of parent/partitioned and child/partition tables must all have the same generation status, though now the actual generation expressions can be different.\"}\n{\"item_id\": \"2510d17d8183\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Remove pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal() (Bharath Rupireddy)\"}\n{\"item_id\": \"463086e5ac1a\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Rename server variable force_parallel_mode to debug_parallel_query (David Rowley)\"}\n{\"item_id\": \"f13323338593\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Remove the ability to create views manually with ON SELECT rules (Tom Lane)\"}\n{\"item_id\": \"323f5773ab7b\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Remove the server variable vacuum_defer_cleanup_age (Andres Freund) This has been unnecessary since hot_standby_feedback and replication slots were added.\"}\n{\"item_id\": \"fd8a486fbd9b\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Remove server variable promote_trigger_file (Simon Riggs) This was used to promote a standby to primary, but is now more easily accomplished with pg_ctl promote or pg_promote().\"}\n{\"item_id\": \"6a80fcd00327\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Remove read-only server variables lc_collate and lc_ctype (Peter Eisentraut) Collations and locales can vary between databases so having them as read-only server variables was unhelpful.\"}\n{\"item_id\": \"38376557af04\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Role inheritance now controls the default inheritance status of member roles added during GRANT (Robert Haas) The role's default inheritance behavior can be overridden with the new GRANT ... WITH INHERIT clause. This allows inheritance of some roles and not others because the members' inheritance status is set at GRANT time. Previously the inheritance status of member roles was controlled only by the role's inheritance status, and changes to a role's inheritance status affected all previous and future member roles.\"}\n{\"item_id\": \"65ad26f4e3a9\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Restrict the privileges of CREATEROLE and its ability to modify other roles (Robert Haas) Previously roles with CREATEROLE privileges could change many aspects of any non-superuser role. Such changes, including adding members, now require the role requesting the change to have ADMIN OPTION permission. For example, they can now change the CREATEDB, REPLICATION, and BYPASSRLS properties only if they also have those permissions.\"}\n{\"item_id\": \"f46eb9ab5edb\", \"section\": \"Release 16 / Migration to Version 16\", \"text\": \"Remove symbolic links for the postmaster binary (Peter Eisentraut)\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "a49f86bfa044",
+    "label": "risk",
+    "reason": "States that a dump/restore, pg_upgrade, or logical replication is required to migrate data from any previous release, which is mandatory migration work."
+   },
+   {
+    "item_id": "568c782896f2",
+    "label": "risk",
+    "reason": "Changes PL/pgSQL bound cursor variable assignment so the string value no longer matches the variable name, which can break code that relies on it."
+   },
+   {
+    "item_id": "596e3045b69c",
+    "label": "risk",
+    "reason": "Disallows NULLS NOT DISTINCT indexes for primary keys, so existing DDL or schema definitions using this will fail."
+   },
+   {
+    "item_id": "2d1b06f04b3d",
+    "label": "risk",
+    "reason": "REINDEX DATABASE and reindexdb no longer process system catalog indexes, so maintenance scripts relying on that must switch to REINDEX SYSTEM or reindexdb --system."
+   },
+   {
+    "item_id": "f56195ac7354",
+    "label": "risk",
+    "reason": "Tightens GENERATED column restrictions on inherited and partitioned tables, requiring matching generation status across parent and child, which can break existing schemas or DDL."
+   },
+   {
+    "item_id": "2510d17d8183",
+    "label": "risk",
+    "reason": "Removes the pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal(), breaking any callers."
+   },
+   {
+    "item_id": "463086e5ac1a",
+    "label": "risk",
+    "reason": "Renames the server variable force_parallel_mode to debug_parallel_query, so configs using the old name need updating."
+   },
+   {
+    "item_id": "f13323338593",
+    "label": "risk",
+    "reason": "Removes the ability to manually create views with ON SELECT rules, which breaks any scripts or schemas that do this."
+   },
+   {
+    "item_id": "323f5773ab7b",
+    "label": "risk",
+    "reason": "Removes the server variable vacuum_defer_cleanup_age, so configurations setting it will need to change, e.g. use hot_standby_feedback or replication slots."
+   },
+   {
+    "item_id": "fd8a486fbd9b",
+    "label": "risk",
+    "reason": "Removes promote_trigger_file, so standby promotion workflows using it must move to pg_ctl promote or pg_promote()."
+   },
+   {
+    "item_id": "6a80fcd00327",
+    "label": "risk",
+    "reason": "Removes the read-only server variables lc_collate and lc_ctype, so queries or tooling like SHOW lc_collate that reference them will break."
+   },
+   {
+    "item_id": "38376557af04",
+    "label": "risk",
+    "reason": "Changes role inheritance semantics for member roles added with GRANT, which can alter effective privileges for existing setups."
+   },
+   {
+    "item_id": "65ad26f4e3a9",
+    "label": "risk",
+    "reason": "Restricts CREATEROLE privileges so role management that previously worked now requires ADMIN OPTION, which may break administrative workflows."
+   },
+   {
+    "item_id": "f46eb9ab5edb",
+    "label": "risk",
+    "reason": "Removes the postmaster binary symbolic links, so scripts or service definitions that invoke postmaster will fail."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2315,
+  "output_tokens": 1034,
+  "stop_reason": "end_turn"
+ }
+}

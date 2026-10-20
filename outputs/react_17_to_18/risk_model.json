@@ -5018,8 +5018,8 @@
     "hops": 1
   },
   "pipeline": {
-    "run_id": "e72187420b",
-    "generated_at": "2026-10-20T14:32:04Z",
+    "run_id": "990277dd84",
+    "generated_at": "2026-10-20T15:17:15Z",
     "provider": "anthropic",
     "models": {
       "cheap": "claude-haiku-5-5",
@@ -5068,7 +5068,8 @@
         "input_tokens": 17818,
         "output_tokens": 14682,
         "usd_estimate": 0.0,
-        "usd_full": 0.091228
+        "usd_full": 0.009122799999999999,
+        "model": "claude-haiku-5-5"
       },
       "extract": {
         "calls": 57,
@@ -5076,7 +5077,8 @@
         "input_tokens": 224298,
         "output_tokens": 49426,
         "usd_estimate": 0.0,
-        "usd_full": 1.4142839999999999
+        "usd_full": 0.942856,
+        "model": "claude-sonnet-5-5"
       },
       "judge": {
         "calls": 25,
@@ -5084,15 +5086,16 @@
         "input_tokens": 33830,
         "output_tokens": 5939,
         "usd_estimate": 0.0,
-        "usd_full": 0.190575
+        "usd_full": 0.12705,
+        "model": "claude-sonnet-5-5"
       }
     },
     "timings_s": {
       "plan": 0.0,
       "fetch": 0.01,
       "parse": 0.04,
-      "triage": 0.01,
-      "extract": 0.1,
+      "triage": 0.0,
+      "extract": 0.07,
       "link": 0.0,
       "compose": 0.0,
       "judge": 0.01,

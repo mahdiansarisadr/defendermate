@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: React. Upgrade: 17 -> 18. Release of these items: 18.\nSource: How to Upgrade to React 18.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"e5e546f7ca6b\", \"section\": \"\", \"text\": \"March 08, 2022 by Rick Hanlon --- As we shared in the release post, React 18 introduces features powered by our new concurrent renderer, with a gradual adoption strategy for existing applications. In this post, we will guide you through the steps for upgrading to React 18. Please report any issues you encounter while upgrading to React 18. For React Native users, React 18 will ship in a future version of React Native. This is because React 18 relies on the New React Native Architecture to benefit from the new capabilities presented in this blogpost. For more information, see the React Conf keynote here. ---\"}\n{\"item_id\": \"bf33d00773b8\", \"section\": \"Installing\", \"text\": \"To install the latest version of React: npm install react react-dom\"}\n{\"item_id\": \"50c458d9d3fb\", \"section\": \"Installing\", \"text\": \"Or if you're using yarn: yarn add react react-dom\"}\n{\"item_id\": \"4066f745eeb4\", \"section\": \"Updates to Client Rendering APIs\", \"text\": \"When you first install React 18, you will see a warning in the console: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features. // Before import { render } from 'react-dom'; const container = document.getElementById('app'); render(<App tab=\\\"home\\\" />, container); // After import { createRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = createRoot(container); // createRoot(container!) if you use TypeScript root.render(<App tab=\\\"home\\\" />);\"}\n{\"item_id\": \"c5da55b217e6\", \"section\": \"Updates to Client Rendering APIs\", \"text\": \"We've also changed unmountComponentAtNode to root.unmount: // Before unmountComponentAtNode(container); // After root.unmount();\"}\n{\"item_id\": \"c183172d165c\", \"section\": \"Updates to Client Rendering APIs\", \"text\": \"We've also removed the callback from render, since it usually does not have the expected result when using Suspense: // Before const container = document.getElementById('app'); render(<App tab=\\\"home\\\" />, container, () => { console.log('rendered'); }); // After function AppWithCallbackAfterRender() { useEffect(() => { console.log('rendered'); }); return <App tab=\\\"home\\\" /> } const container = document.getElementById('app'); const root = createRoot(container); root.render(<AppWithCallbackAfterRender />);\"}\n{\"item_id\": \"115a79ae0770\", \"section\": \"Updates to Client Rendering APIs\", \"text\": \"There is no one-to-one replacement for the old render callback API — it depends on your use case. See the working group post for Replacing render with createRoot for more information. Finally, if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot: // Before import { hydrate } from 'react-dom'; const container = document.getElementById('app'); hydrate(<App tab=\\\"home\\\" />, container); // After import { hydrateRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = hydrateRoot(container, <App tab=\\\"home\\\" />); // Unlike with createRoot, you don't need a separate root.render() call here.\"}\n{\"item_id\": \"f478de67a675\", \"section\": \"Updates to Client Rendering APIs\", \"text\": \"For more information, see the working group discussion here. If your app doesn't work after upgrading, check whether it's wrapped in <StrictMode>. Strict Mode has gotten stricter in React 18, and not all your components may be resilient to the new checks it adds in development mode. If removing Strict Mode fixes your app, you can remove it during the upgrade, and then add it back (either at the top or for a part of the tree) after you fix the issues that it's pointing out.\"}\n{\"item_id\": \"a3f8f71f6f5d\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"In this release, we're revamping our react-dom/server APIs to fully support Suspense on the server and Streaming SSR. As part of these changes, we're deprecating the old Node streaming API, which does not support incremental Suspense streaming on the server. Using this API will now warn:\"}\n{\"item_id\": \"cc4d31a38274\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"renderToNodeStream: Deprecated ⛔️️\"}\n{\"item_id\": \"b48dd36bf70e\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"Instead, for streaming in Node environments, use:\"}\n{\"item_id\": \"e347ce2d6fb4\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"renderToPipeableStream: New ✨\"}\n{\"item_id\": \"94047f576dde\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"We're also introducing a new API to support streaming SSR with Suspense for modern edge runtime environments, such as Deno and Cloudflare workers:\"}\n{\"item_id\": \"9ae9f8e67fbb\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"renderToReadableStream: New ✨\"}\n{\"item_id\": \"6e50b9aadd47\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"The following APIs will continue working, but with limited support for Suspense:\"}\n{\"item_id\": \"594310e34959\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"renderToString: Limited ⚠️\"}\n{\"item_id\": \"b43e9f47a6e5\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"renderToStaticMarkup: Limited ⚠️\"}\n{\"item_id\": \"cdfae4e6ac37\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"Finally, this API will continue to work for rendering e-mails:\"}\n{\"item_id\": \"2f7847ce555f\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"renderToStaticNodeStream\"}\n{\"item_id\": \"8e2a1e0f658d\", \"section\": \"Updates to Server Rendering APIs\", \"text\": \"For more information on the changes to server rendering APIs, see the working group post on Upgrading to React 18 on the server, a deep dive on the new Suspense SSR Architecture, and Shaundai Person's talk on Streaming Server Rendering with Suspense at React Conf 2021.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "e5e546f7ca6b",
+    "label": "risk",
+    "reason": "The intro states that React Native users cannot adopt React 18 yet because it ships in a future React Native version, which is an operational constraint for those users."
+   },
+   {
+    "item_id": "bf33d00773b8",
+    "label": "noise",
+    "reason": "This is an install command with no information about upgrade behavior changes."
+   },
+   {
+    "item_id": "50c458d9d3fb",
+    "label": "noise",
+    "reason": "This is a yarn install command with no information about upgrade behavior changes."
+   },
+   {
+    "item_id": "4066f745eeb4",
+    "label": "risk",
+    "reason": "The text says ReactDOM.render is 'no longer supported' and shows a required migration to createRoot, since the app otherwise runs as React 17."
+   },
+   {
+    "item_id": "c5da55b217e6",
+    "label": "risk",
+    "reason": "unmountComponentAtNode was changed to root.unmount, a renamed API that requires code changes."
+   },
+   {
+    "item_id": "c183172d165c",
+    "label": "risk",
+    "reason": "The callback argument was removed from render, so code relying on it must be rewritten."
+   },
+   {
+    "item_id": "115a79ae0770",
+    "label": "risk",
+    "reason": "There is no one-to-one replacement for the render callback, and hydrate must be migrated to hydrateRoot, which requires code changes."
+   },
+   {
+    "item_id": "f478de67a675",
+    "label": "risk",
+    "reason": "Strict Mode is stricter in React 18 and may cause apps to break, requiring fixes or removal of Strict Mode during the upgrade."
+   },
+   {
+    "item_id": "a3f8f71f6f5d",
+    "label": "context",
+    "reason": "The old Node streaming API is deprecated and only warns when used, so it still works and needs no immediate action."
+   },
+   {
+    "item_id": "cc4d31a38274",
+    "label": "context",
+    "reason": "renderToNodeStream is marked Deprecated, which means a warning only and no immediate breakage."
+   },
+   {
+    "item_id": "b48dd36bf70e",
+    "label": "context",
+    "reason": "This is a pointer to the recommended replacement for Node streaming and states no required change by itself."
+   },
+   {
+    "item_id": "e347ce2d6fb4",
+    "label": "context",
+    "reason": "renderToPipeableStream is a new API, which is additive and requires no action to keep existing code working."
+   },
+   {
+    "item_id": "94047f576dde",
+    "label": "context",
+    "reason": "This describes a new API for edge runtimes, which is additive and needs no action from existing users."
+   },
+   {
+    "item_id": "9ae9f8e67fbb",
+    "label": "context",
+    "reason": "renderToReadableStream is a new additive API with no required action for existing apps."
+   },
+   {
+    "item_id": "6e50b9aadd47",
+    "label": "context",
+    "reason": "These APIs continue working with only limited Suspense support, so no user action is required in this release."
+   },
+   {
+    "item_id": "594310e34959",
+    "label": "context",
+    "reason": "renderToString continues to work with limited Suspense support, so no action is required."
+   },
+   {
+    "item_id": "b43e9f47a6e5",
+    "label": "context",
+    "reason": "renderToStaticMarkup continues to work with limited Suspense support, so no action is required."
+   },
+   {
+    "item_id": "cdfae4e6ac37",
+    "label": "context",
+    "reason": "The text states this API will continue to work for rendering e-mails, so no action is needed."
+   },
+   {
+    "item_id": "2f7847ce555f",
+    "label": "noise",
+    "reason": "This is a bare API name with no explanatory content."
+   },
+   {
+    "item_id": "8e2a1e0f658d",
+    "label": "context",
+    "reason": "This is a documentation pointer to further information on the server rendering changes."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2940,
+  "output_tokens": 2185,
+  "stop_reason": "end_turn"
+ }
+}

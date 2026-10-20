@@ -187,6 +187,54 @@ export interface Run {
   events?: RunEvent[]
 }
 
+export interface ExperimentRow {
+  name: string
+  label: string
+  models: { cheap: string; strong: string }
+  evaluator: { cheap: string; strong: string }
+  upgrades: string[]
+  cost_usd: number
+  input_tokens: number
+  output_tokens: number
+  paths: number
+  recall: number | null
+  recall_hits: [number, number]
+  estimated_precision: number | null
+  strict_precision: number | null
+  f1: number | null
+  classification: number | null
+  level_agreement: number | null
+  field_consistency: number | null
+  grounding: number | null
+  validator_errors: number
+  judge_accuracy: number | null
+  judge_kappa: number | null
+  stability: number | null
+  stability_reused: boolean
+  usd_per_gold_risk_found: number | null
+  pareto: boolean
+  cost_multiple: number | null
+  delta_f1_vs_cheapest: number | null
+  per_upgrade: Record<
+    string,
+    {
+      paths: number
+      cost_usd: number
+      recall: [number, number] | null
+      estimated_precision: [number, number] | null
+      strict_precision: [number, number] | null
+      missed: string[]
+    }
+  >
+}
+
+export interface Experiments {
+  rows: ExperimentRow[]
+  quality_score: string
+  subset: string[]
+  pending: { name: string; label: string; cheap: string; strong: string }[]
+}
+
 async function req<T>(url: string, init?: RequestInit): Promise<T> {
   const r = await fetch(url, init)
   if (!r.ok) throw new Error(`${r.status} ${await r.text()}`)
@@ -213,6 +261,7 @@ export const api = {
   runlog: (slug: string) => req<RunEvent[]>(`/api/upgrades/${slug}/runlog`),
   evalResults: () => req<EvalResults>('/api/eval'),
   runEval: () => req<EvalResults>('/api/eval/run', { method: 'POST' }),
+  experiments: () => req<Experiments>('/api/experiments'),
   registry: () => req<{ project: string; known_releases: string[]; mode: string }[]>('/api/registry'),
   runs: () => req<Run[]>('/api/runs'),
   run: (id: string) => req<Run>(`/api/runs/${id}`),

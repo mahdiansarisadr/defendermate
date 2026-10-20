@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom server parameter names restricted to unquoted SQL identifier characters\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 14, custom (extension/placeholder) server parameter names must use only characters valid in unquoted SQL identifiers. Configurations or applications that set custom parameters with other characters (e.g. hyphens) will no longer be accepted.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 14, where custom parameter name restrictions were introduced\",\n   \"quotes\": [\n    \"Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment or application defines custom server parameter names containing characters not valid in unquoted SQL identifiers\",\n   \"quotes\": [\n    \"Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted release note supports a concrete behavior change (custom server parameter names limited to unquoted SQL identifier characters) that could break configs using other characters like hyphens, and the condition is checkable by inspecting custom parameter names, though the PG14 version attribution and hyphen example go slightly beyond the quote."
+ },
+ "usage": {
+  "input_tokens": 811,
+  "output_tokens": 123,
+  "stop_reason": "end_turn"
+ }
+}

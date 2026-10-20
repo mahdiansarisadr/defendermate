@@ -1,0 +1,130 @@
+{"item_id": "90360b753186", "label": "context", "reason": "The item is only an introductory pointer to the new features list and the React 18 release post and upgrade guide, with no action required.", "swept": false}
+{"item_id": "ad8ea6c8b11c", "label": "context", "reason": "useId is described as a new, purely additive hook for generating unique IDs, so it requires no user action.", "swept": false}
+{"item_id": "65f2a17dfdbb", "label": "context", "reason": "startTransition and useTransition are new opt-in APIs for marking non-urgent updates, requiring no changes to existing code.", "swept": false}
+{"item_id": "2289b6e12ce8", "label": "context", "reason": "useDeferredValue is a new hook offered as an option, and existing code is not described as needing changes.", "swept": false}
+{"item_id": "271048994bcd", "label": "context", "reason": "useSyncExternalStore is a new hook that is recommended but not required, so no migration is mandated by this item.", "swept": false}
+{"item_id": "d5f96f97c471", "label": "context", "reason": "useInsertionEffect is a new hook the item explicitly says most users will never need, so no user action is required.", "swept": false}
+{"item_id": "c8e5e7077c4e", "label": "noise", "reason": "The text is only a lead-in heading with no substantive content about a change.", "swept": false}
+{"item_id": "54925641c9a8", "label": "risk", "reason": "createRoot replaces ReactDOM.render, and the item states that new React 18 features do not work without migrating to it.", "swept": false}
+{"item_id": "28e58ea8654c", "label": "risk", "reason": "hydrateRoot replaces ReactDOM.hydrate, and the item states that new React 18 features do not work without migrating to it.", "swept": false}
+{"item_id": "b57470b22932", "label": "context", "reason": "onRecoverableError is a new optional option for logging, and the default behavior needs no change.", "swept": false}
+{"item_id": "0f960bc30c91", "label": "noise", "reason": "The text is only a lead-in heading with no substantive content about a change.", "swept": false}
+{"item_id": "96f97e594e08", "label": "context", "reason": "renderToPipeableStream is a new additive server API for Node streaming.", "swept": false}
+{"item_id": "902632d1000f", "label": "context", "reason": "renderToReadableStream is a new additive server API for edge runtimes.", "swept": false}
+{"item_id": "32b52672505e", "label": "context", "reason": "The item says renderToString keeps working, so it is only a discouraged pattern with no required change.", "swept": false}
+{"item_id": "5177b88f5216", "label": "risk", "reason": "ReactDOM.render is deprecated, and using it runs the app in React 17 mode, so apps must migrate to createRoot to get React 18 behavior.", "swept": false}
+{"item_id": "e09e6de73aaf", "label": "risk", "reason": "ReactDOM.hydrate is deprecated, and using it runs the app in React 17 mode, so apps must migrate to hydrateRoot to get React 18 behavior.", "swept": false}
+{"item_id": "7486a812fc1b", "label": "context", "reason": "unmountComponentAtNode is deprecated as a warning-level change with no stated removal, so the API still works in this release.", "swept": false}
+{"item_id": "8ef99b065fe8", "label": "context", "reason": "renderSubtreeIntoContainer is deprecated as a warning-level change with no stated removal, so the API still works in this release.", "swept": false}
+{"item_id": "58846cb08a52", "label": "context", "reason": "renderToNodeStream is deprecated as a warning-level change with no stated removal, so the API still works in this release.", "swept": false}
+{"item_id": "c4b46a113ab9", "label": "risk", "reason": "Automatic batching changes how updates are rendered for all users, and those who need the old behavior must opt out by wrapping updates in flushSync.", "swept": false}
+{"item_id": "9cf7cddaacbf", "label": "risk", "reason": "Strict Mode now unmounts and remounts every component on first mount, which can break apps whose components are not resilient to remounting.", "swept": false}
+{"item_id": "949a5508ab9c", "label": "risk", "reason": "React now always synchronously flushes effects for discrete input updates, a timing change that can alter existing behavior.", "swept": false}
+{"item_id": "e699a5483e59", "label": "risk", "reason": "Hydration text mismatches are now errors instead of warnings and cause client re-rendering up to the nearest Suspense boundary, a behavior change that can break hydrated apps.", "swept": false}
+{"item_id": "c4942d435676", "label": "risk", "reason": "Components that suspend are now discarded and re-rendered from scratch, a behavior change for suspending trees.", "swept": false}
+{"item_id": "6f45a989df4d", "label": "risk", "reason": "Layout effects are now cleaned up and re-created when a boundary reverts to fallback, changing effect lifecycle behavior.", "swept": false}
+{"item_id": "0c2fdbe75268", "label": "risk", "reason": "React now requires modern browser features such as Promise, Symbol, and Object.assign, so older browsers like Internet Explorer need polyfills.", "swept": false}
+{"item_id": "3e65f4f071af", "label": "risk", "reason": "The unstable scheduler/tracing API is removed, so any code using it will break.", "swept": false}
+{"item_id": "2834ff584bc2", "label": "context", "reason": "Components may now return undefined without throwing, which is a relaxation that requires no user action.", "swept": false}
+{"item_id": "fe4e379c83ca", "label": "risk", "reason": "Act warnings in tests are now opt-in rather than default, changing test behavior for users who relied on them.", "swept": false}
+{"item_id": "e7224b12d15e", "label": "context", "reason": "The setState-on-unmounted warning is removed, which requires no user action and does not break correct code.", "swept": false}
+{"item_id": "ff5e46845651", "label": "risk", "reason": "Console logs for the second Strict Mode render are no longer suppressed by default, changing default log output that may confuse existing workflows.", "swept": false}
+{"item_id": "38a35c67c536", "label": "context", "reason": "React cleans up more internal fields on unmount, a improvement that needs no user action.", "swept": false}
+{"item_id": "7101cfc96a61", "label": "risk", "reason": "renderToString no longer errors on server suspension and instead emits fallback HTML, changing server rendering behavior.", "swept": false}
+{"item_id": "94306f3195dd", "label": "risk", "reason": "renderToStaticMarkup no longer errors on server suspension and instead emits fallback HTML, changing server rendering behavior.", "swept": false}
+{"item_id": "856034318329", "label": "context", "reason": "useTransition and useDeferredValue are new additive APIs that require no migration.", "swept": false}
+{"item_id": "238ab5e207dc", "label": "context", "reason": "useId is a purely additive new hook for generating unique IDs.", "swept": false}
+{"item_id": "39aed7f53d1b", "label": "context", "reason": "useSyncExternalStore is a purely additive new hook for external store integration.", "swept": false}
+{"item_id": "e1af4988c3ec", "label": "context", "reason": "startTransition is a new additive API that requires no user action.", "swept": false}
+{"item_id": "93f0bd148088", "label": "context", "reason": "useInsertionEffect is a purely additive new hook for CSS-in-JS libraries.", "swept": false}
+{"item_id": "f6a0cbb14437", "label": "risk", "reason": "Layout effects are now remounted when Suspense content reappears, a lifecycle behavior change that can affect existing components.", "swept": false}
+{"item_id": "3629afc9a60a", "label": "risk", "reason": "Strict Mode now re-runs effects on mount to check for restorable state, a dev-time behavior change that can expose effects that are not idempotent.", "swept": false}
+{"item_id": "47d7989f9a8b", "label": "risk", "reason": "Assuming Symbols are always available raises the effective runtime requirement, so environments without Symbol support will break.", "swept": false}
+{"item_id": "d6838ccf0426", "label": "risk", "reason": "Removing the object-assign polyfill means environments that relied on React to provide it must now supply it themselves.", "swept": false}
+{"item_id": "491ba1f432ba", "label": "risk", "reason": "The unstable_changedBits API is removed, so any code using it will break and must be migrated.", "swept": false}
+{"item_id": "b754050dc453", "label": "risk", "reason": "Components can now return undefined, a behavior change that affects code previously relying on the error for undefined returns.", "swept": false}
+{"item_id": "51ebe1c4d798", "label": "risk", "reason": "useEffect resulting from discrete events is now flushed synchronously, which changes effect timing for applications.", "swept": false}
+{"item_id": "cae24fde7945", "label": "risk", "reason": "Suspense fallback={undefined} now behaves like null instead of being ignored, changing rendered output for existing code.", "swept": false}
+{"item_id": "411c7238d060", "label": "risk", "reason": "All lazy() components resolving to the same component are now treated as equivalent, which can change reconciliation and state preservation.", "swept": false}
+{"item_id": "31ca3daec0b0", "label": "risk", "reason": "Console is no longer patched during first render, changing dev console output that tests or tooling may depend on.", "swept": false}
+{"item_id": "7712d756152a", "label": "context", "reason": "Memory usage improvement is accurate and useful but requires no user action at this release.", "swept": false}
+{"item_id": "a06c807681a0", "label": "context", "reason": "Improved error messages for string coercion failures are informational and require no user action.", "swept": false}
+{"item_id": "b889de7918ef", "label": "risk", "reason": "Switching the scheduler to setImmediate when available can change scheduling behavior in environments such as jsdom or fake-timer test setups.", "swept": false}
+{"item_id": "2b706ca47976", "label": "noise", "reason": "This is a bug fix restoring correct context propagation inside suspended trees and cannot break correct behavior.", "swept": false}
+{"item_id": "9b8c836058f8", "label": "risk", "reason": "Removing the eager bailout in useReducer changes rendering behavior and can alter the number of renders for existing components.", "swept": false}
+{"item_id": "fb284132d7d0", "label": "noise", "reason": "This is a Safari-specific bug fix for setState being ignored when appending iframes and does not change correct behavior.", "swept": false}
+{"item_id": "4ca679c14049", "label": "noise", "reason": "This is a crash fix for rendering ZonedDateTime and is a pure bug fix.", "swept": false}
+{"item_id": "9452b4f263cc", "label": "noise", "reason": "This fixes a crash when document is null in tests and is a pure bug fix.", "swept": false}
+{"item_id": "72545e761412", "label": "noise", "reason": "This fixes onLoad not triggering with concurrent features and is a pure bug fix.", "swept": false}
+{"item_id": "31d934b3b4fc", "label": "noise", "reason": "This removes a spurious warning when a selector returns NaN and is a pure bug fix.", "swept": false}
+{"item_id": "218f6c923f72", "label": "noise", "reason": "This fixes the generated license header and has no bearing on application behavior.", "swept": false}
+{"item_id": "ee6efb8294c6", "label": "context", "reason": "Adding package.json as an entry point is an additive packaging change that requires no user action.", "swept": false}
+{"item_id": "d7bdf10f3ec6", "label": "risk", "reason": "Allowing suspension outside a Suspense boundary changes behavior that previously errored, which could alter how existing apps handle suspending components.", "swept": false}
+{"item_id": "99550d07bcd5", "label": "risk", "reason": "Logging a recoverable error on every hydration failure adds new error output that can affect apps with error monitoring or console-based checks.", "swept": false}
+{"item_id": "9f950eca4629", "label": "context", "reason": "createRoot and hydrateRoot are purely additive APIs, and the legacy render path still works, so no immediate user action is required.", "swept": false}
+{"item_id": "d91e28e739aa", "label": "context", "reason": "Selective hydration is a new additive capability with no required changes described in the item.", "swept": false}
+{"item_id": "620ab5e1dff5", "label": "context", "reason": "Adding aria-description to known ARIA attributes is a purely additive change.", "swept": false}
+{"item_id": "0e7b224db5b5", "label": "context", "reason": "Adding an onResize event to video elements is a purely additive new feature.", "swept": false}
+{"item_id": "fb3f734d019f", "label": "context", "reason": "Adding imageSizes and imageSrcSet as known props is an additive change requiring no action.", "swept": false}
+{"item_id": "e8d634204d4c", "label": "context", "reason": "Allowing non-string option children when a value is provided relaxes validation and does not break existing usage.", "swept": false}
+{"item_id": "29e0d0d47aa4", "label": "risk", "reason": "Fixing aspectRatio style application changes rendered output for apps that were already setting that style, so their layout may shift.", "swept": false}
+{"item_id": "2a35200eb969", "label": "context", "reason": "Warning when renderSubtreeIntoContainer is called is a warning-only deprecation signal that still works.", "swept": false}
+{"item_id": "08255edd6d11", "label": "context", "reason": "The new streaming renderer is an additive server rendering option with no required migration stated.", "swept": false}
+{"item_id": "935789c34b67", "label": "noise", "reason": "Fixing context providers across multiple SSR requests is a bug fix that does not change correct behavior.", "swept": false}
+{"item_id": "b4de6e7c06f0", "label": "risk", "reason": "Reverting to client render on text mismatch changes how apps behave when server and client markup differ.", "swept": false}
+{"item_id": "2ec5186523b8", "label": "context", "reason": "Deprecating renderToNodeStream is a deprecation that still works, so it needs no immediate action.", "swept": false}
+{"item_id": "a03e3343bee0", "label": "noise", "reason": "Fixing a spurious error log is a bug fix that cannot change correct application behavior.", "swept": false}
+{"item_id": "183638b073b5", "label": "noise", "reason": "A generic bug fix in the new server renderer with no described behavior change for correct usage.", "swept": false}
+{"item_id": "d978fb2d6fc5", "label": "risk", "reason": "Ignoring function and symbol values inside custom elements on the server changes server-rendered output for those props.", "swept": false}
+{"item_id": "f382cb9dc93c", "label": "risk", "reason": "Throwing when act is used in production will break test or tooling setups that call act in production builds.", "swept": false}
+{"item_id": "b1261a02a0a1", "label": "context", "reason": "Adding a global.IS_REACT_ACT_ENVIRONMENT option to disable spurious act warnings is a purely additive option.", "swept": false}
+{"item_id": "abd5eb4c6ebe", "label": "risk", "reason": "Expanding the act warning to cover all scheduling APIs can make existing test suites emit new warnings or fail where they previously passed.", "swept": false}
+{"item_id": "f2030a09f287", "label": "risk", "reason": "Making act batch updates changes how test updates are flushed, which can alter test timing and assertions for existing tests.", "swept": false}
+{"item_id": "b30f0378ee8f", "label": "context", "reason": "Removing a warning for dangling passive effects does not change application behavior and requires no user action.", "swept": false}
+{"item_id": "306c25a64636", "label": "context", "reason": "Tracking late-mounted roots in Fast Refresh is a development-tooling fix that appears to need no user action.", "swept": false}
+{"item_id": "ed61b38bafbe", "label": "risk", "reason": "Adding an exports field to package.json restricts module resolution, so deep imports of react-refresh internals may break for upgrading users.", "swept": false}
+{"item_id": "8c5d15ac1bdf", "label": "context", "reason": "Server Context support is a purely additive experimental feature that requires no action from existing users.", "swept": false}
+{"item_id": "b26a469f2bb1", "label": "context", "reason": "Lazy support is a purely additive experimental feature that requires no action at this release.", "swept": false}
+{"item_id": "06604f681da1", "label": "risk", "reason": "Updating the webpack plugin for webpack 5 may effectively require webpack 5 for users of the experimental Server Components tooling, which could force a migration.", "swept": false}
+{"item_id": "04f37a824001", "label": "context", "reason": "Fixing a mistake in the experimental Node loader is a bug fix that needs no user action.", "swept": false}
+{"item_id": "4f5eb922fe17", "label": "risk", "reason": "Switching from window to globalThis changes runtime behavior in edge environments and may break setups that rely on the previous global lookup.", "swept": false}
+{"item_id": "cfe733161fcc", "label": "risk", "reason": "Removing the unstable scheduler/tracing API breaks any application or tooling that imports it.", "swept": false}
+{"item_id": "e5e546f7ca6b", "label": "risk", "reason": "The post states that React Native users will not get React 18 until a future React Native version ships, since React 18 relies on the New React Native Architecture, which is an operational constraint for those users.", "swept": false}
+{"item_id": "bf33d00773b8", "label": "noise", "reason": "This is an install command for React and React DOM.", "swept": false}
+{"item_id": "50c458d9d3fb", "label": "noise", "reason": "This is a yarn install command for React and React DOM.", "swept": false}
+{"item_id": "4066f745eeb4", "label": "risk", "reason": "ReactDOM.render shows a console warning that it is no longer supported, and apps stay in React 17 behavior until they migrate to createRoot, so migration work is required.", "swept": false}
+{"item_id": "c5da55b217e6", "label": "risk", "reason": "unmountComponentAtNode is changed to root.unmount, which is a renamed API that existing code must update.", "swept": false}
+{"item_id": "c183172d165c", "label": "risk", "reason": "The callback argument to render is removed, so code relying on it must be rewritten to use an effect or other pattern.", "swept": false}
+{"item_id": "115a79ae0770", "label": "risk", "reason": "The render callback has no one-to-one replacement, and hydrate must be changed to hydrateRoot, so both require code changes.", "swept": false}
+{"item_id": "f478de67a675", "label": "risk", "reason": "Strict Mode is stricter in React 18, so an app may break and components may need fixes before Strict Mode can stay enabled.", "swept": false}
+{"item_id": "a3f8f71f6f5d", "label": "context", "reason": "The old Node streaming API is deprecated and only warns, so it still works and needs no immediate action.", "swept": false}
+{"item_id": "cc4d31a38274", "label": "context", "reason": "renderToNodeStream is marked Deprecated, which produces a warning while the API continues to function.", "swept": false}
+{"item_id": "b48dd36bf70e", "label": "context", "reason": "This line points to the recommended replacement APIs for Node streaming and does not itself require a change.", "swept": false}
+{"item_id": "e347ce2d6fb4", "label": "context", "reason": "renderToPipeableStream is a new, additive API for Node streaming with Suspense.", "swept": false}
+{"item_id": "94047f576dde", "label": "context", "reason": "This introduces a new streaming SSR API for edge runtimes, which is additive and optional.", "swept": false}
+{"item_id": "9ae9f8e67fbb", "label": "context", "reason": "renderToReadableStream is a new, additive API for edge runtime streaming.", "swept": false}
+{"item_id": "6e50b9aadd47", "label": "context", "reason": "It states these APIs will continue working, with limited Suspense support, so no action is required.", "swept": false}
+{"item_id": "594310e34959", "label": "context", "reason": "renderToString is listed as continuing to work with limited Suspense support, requiring no action.", "swept": false}
+{"item_id": "b43e9f47a6e5", "label": "context", "reason": "renderToStaticMarkup is listed as continuing to work with limited Suspense support, requiring no action.", "swept": false}
+{"item_id": "cdfae4e6ac37", "label": "context", "reason": "It states that this API will continue to work for rendering e-mails, so no action is required.", "swept": false}
+{"item_id": "2f7847ce555f", "label": "noise", "reason": "This is a bare API name with no accompanying explanation, functioning as an empty heading.", "swept": false}
+{"item_id": "8e2a1e0f658d", "label": "context", "reason": "This is a documentation pointer to the working group post, deep dive, and talk on server rendering changes.", "swept": false}
+{"item_id": "bdc4932a7acc", "label": "risk", "reason": "Projects using TypeScript must update @types/react and @types/react-dom, and the children prop must now be declared explicitly in props types, which requires code changes.", "swept": false}
+{"item_id": "806068884f95", "label": "context", "reason": "This item points to the typings PR, example fixes, an optional migration script, and where to file bugs, without stating a required change itself.", "swept": false}
+{"item_id": "e2cc7342f0a4", "label": "risk", "reason": "React 18 changes default batching so updates in promises, timeouts, and native event handlers are now batched, which alters render behavior for existing apps.", "swept": false}
+{"item_id": "35ea3d97d21c", "label": "risk", "reason": "Starting with createRoot, all updates are automatically batched regardless of origin, a behavior change that can affect applications upgrading to React 18.", "swept": false}
+{"item_id": "7a57a5990dc7", "label": "risk", "reason": "The item explicitly calls automatic batching a breaking change and shows flushSync as the opt-out that apps may need to adopt.", "swept": false}
+{"item_id": "29715db5a815", "label": "context", "reason": "This is only a pointer to a deep dive on automatic batching with no required action.", "swept": false}
+{"item_id": "b0e52e3ef8dc", "label": "risk", "reason": "It states that some libraries may need to switch to the new APIs to support React 18, which implies migration work for those library maintainers.", "swept": false}
+{"item_id": "626b4c82e79c", "label": "context", "reason": "useSyncExternalStore is a new, purely additive Hook, and the item does not require existing code to change.", "swept": false}
+{"item_id": "fd825be86ed3", "label": "context", "reason": "useInsertionEffect is a new additive Hook that the item says most users will never need unless they build a CSS-in-JS library.", "swept": false}
+{"item_id": "3b0825438d97", "label": "context", "reason": "startTransition, useDeferredValue, and useId are described as new additive APIs with a pointer to the release post.", "swept": false}
+{"item_id": "3280698778a6", "label": "risk", "reason": "Strict Mode adds a development-only check that remounts components, and the item warns that some effects assume single mount/destroy and may need changes to be resilient.", "swept": false}
+{"item_id": "66d0c77f8870", "label": "risk", "reason": "In development, Strict Mode now simulates unmount and remount with preserved state, which can expose and break effects that are not resilient to this.", "swept": false}
+{"item_id": "44cb2172052c", "label": "context", "reason": "These are pointers to working group posts about reusable state and effects, with no required user action.", "swept": false}
+{"item_id": "c9b86f4f9a85", "label": "risk", "reason": "Tests updated to createRoot can emit act warnings, and the fix requires setting globalThis.IS_REACT_ACT_ENVIRONMENT in the test setup, which is a required config change.", "swept": false}
+{"item_id": "778b40bf29d9", "label": "context", "reason": "It explains the purpose of the act environment flag and notes testing libraries will eventually configure it automatically, with no new required action.", "swept": false}
+{"item_id": "84d9fc61f968", "label": "risk", "reason": "React 18 drops Internet Explorer support, so users who must support IE are told to stay on React 17, which is a raised runtime requirement.", "swept": false}
+{"item_id": "ab03f7fcd920", "label": "risk", "reason": "Components can now return undefined without a warning, a behavior change that is not an error but alters how such components behave and may hide mistakes.", "swept": false}
+{"item_id": "66f9a4252b97", "label": "risk", "reason": "renderToStaticMarkup no longer errors when suspending on the server and instead emits the closest Suspense fallback, a server-side behavior change.", "swept": false}
+{"item_id": "e9624d687278", "label": "context", "reason": "This is a documentation pointer to the full changelog with no required action.", "swept": false}

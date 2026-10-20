@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Runtime without Symbol support\",\n \"risk_type\": \"runtime_requirement\",\n \"description\": \"React 18 assumes Symbols are always available. Environments where Symbol is absent may be affected, but the text does not state what breaks or which environments lack Symbol.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 18, which introduced the change that Symbols are assumed to always be available.\",\n   \"quotes\": [\n    \"Assume Symbols are always available.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application's runtime environment lacks native Symbol support.\",\n   \"quotes\": [\n    \"Assume Symbols are always available.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": false,
+  "reason": "The quote 'Assume Symbols are always available.' supports a runtime-requirement risk for environments without Symbol, but the path names no concrete API, setting, or affected environment and says the text does not state what breaks, so it is not specific enough for a downstream checker to verify."
+ },
+ "usage": {
+  "input_tokens": 702,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

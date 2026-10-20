@@ -1,0 +1,68 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_27194e765d/query_text_passed_to_these_functions_con_996137",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_32c6a96fa1/the_custom_scan_provider_supports_projec_a76f79",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_4645b4b0d2/input_strings_contain_newlines_so_matchi_d599a1",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_55fa40f078/the_deployment_relies_on_these_commands_41322b",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_5fd71eabce/such_pre_existing_variables_were_set_bef_401659",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_fcfbbf6b55/the_database_was_carried_over_via_pg_upg_523f3d",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_167726bd25/the_application_relies_on_the_invalid_co_a3f722",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_28d15925c3/the_application_or_its_tests_depend_on_t_e8ade0",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_614772dae3/the_application_depends_on_numeric_forma_0b4e51",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_72cf803a6f/stored_char_values_contain_bytes_with_th_b01046",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_9623a24b4c/search_input_passed_to_websearch_to_tsqu_0e4e2d",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: PostgreSQL. Upgrade: 13 -> 16. Release of these items: 14.\nSource: PostgreSQL 14 release notes: Migration to Version 14.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"06290d8c7ea7\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 14 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities:\"}\n{\"item_id\": \"3dbb820b77d1\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"User-defined objects that reference certain built-in array functions along with their argument types must be recreated (Tom Lane) Specifically, array_append(), array_prepend(), array_cat(), array_position(), array_positions(), array_remove(), array_replace(), and width_bucket() used to take anyarray arguments but now take anycompatiblearray. Therefore, user-defined objects like aggregates and operators that reference those array function signatures must be dropped before upgrading, and recreated once the upgrade completes.\"}\n{\"item_id\": \"cad43f1438ad\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove deprecated containment operators @ and ~ for built-in geometric data types and contrib modules cube, hstore, intarray, and seg (Justin Pryzby) The more consistently named <@ and @> have been recommended for many years.\"}\n{\"item_id\": \"a2d2456f2476\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens (Alexander Korotkov) Certain discarded tokens, like underscore, caused the output of these functions to produce incorrect tsquery output, e.g., both websearch_to_tsquery('\\\"pg_class pg\\\"') and to_tsquery('pg_class <-> pg') used to output ( 'pg' & 'class' ) <-> 'pg', but now both output 'pg' <-> 'class' <-> 'pg'.\"}\n{\"item_id\": \"feaa4219c16a\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes (Alexander Korotkov) Previously, quoted text that contained multiple adjacent discarded tokens was treated as multiple tokens, causing incorrect tsquery output, e.g., websearch_to_tsquery('\\\"aaa: bbb\\\"') used to output 'aaa' <2> 'bbb', but now outputs 'aaa' <-> 'bbb'.\"}\n{\"item_id\": \"b557a9d8424d\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Change EXTRACT() to return type numeric instead of float8 (Peter Eisentraut) This avoids loss-of-precision issues in some usages. The old behavior can still be obtained by using the old underlying function date_part(). Also, EXTRACT(date) now throws an error for units that are not part of the date data type.\"}\n{\"item_id\": \"8c6cf51390e3\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Change var_samp() and stddev_samp() with numeric parameters to return NULL when the input is a single NaN value (Tom Lane) Previously NaN was returned.\"}\n{\"item_id\": \"4717544b96f9\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Return false for has_column_privilege() checks on non-existent or dropped columns when using attribute numbers (Joe Conway) Previously such attribute numbers returned an invalid-column error.\"}\n{\"item_id\": \"0c91fff305de\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Fix handling of infinite window function ranges (Tom Lane) Previously window frame clauses like 'inf' PRECEDING AND 'inf' FOLLOWING returned incorrect results.\"}\n{\"item_id\": \"1906d9bca71f\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove factorial operators ! and !!, as well as function numeric_fac() (Mark Dilger) The factorial() function is still supported.\"}\n{\"item_id\": \"285646301c20\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Disallow factorial() of negative numbers (Peter Eisentraut) Previously such cases returned 1.\"}\n{\"item_id\": \"8dfcf0291a04\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove support for postfix (right-unary) operators (Mark Dilger) pg_dump and pg_upgrade will warn if postfix operators are being dumped.\"}\n{\"item_id\": \"425c5963b6bf\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Allow \\\\D and \\\\W shorthands to match newlines in regular expression newline-sensitive mode (Tom Lane) Previously they did not match newlines in this mode, but that disagrees with the behavior of other common regular expression engines. [^[:digit:]] or [^[:word:]] can be used to get the old behavior.\"}\n{\"item_id\": \"9a25306a7103\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Disregard constraints when matching regular expression back-references (Tom Lane) For example, in (^\\\\d+).*\\\\1, the ^ constraint should be applied at the start of the string, but not when matching \\\\1.\"}\n{\"item_id\": \"58f903712709\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Disallow \\\\w as a range start or end in regular expression character classes (Tom Lane) This previously was allowed but produced unexpected results.\"}\n{\"item_id\": \"fda5b456e921\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Require custom server parameter names to use only characters that are valid in unquoted SQL identifiers (Tom Lane)\"}\n{\"item_id\": \"da909bcb3baf\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Change the default of the password_encryption server parameter to scram-sha-256 (Peter Eisentraut) Previously it was md5. All new passwords will be stored as SHA256 unless this server setting is changed or the password is specified in MD5 format. Also, the legacy (and undocumented) Boolean-like values which were previously synonyms for md5 are no longer accepted.\"}\n{\"item_id\": \"d5c0c9bc6987\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove server parameter vacuum_cleanup_index_scale_factor (Peter Geoghegan) This setting was ignored starting in PostgreSQL version 13.3.\"}\n{\"item_id\": \"b0123a620c21\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove server parameter operator_precedence_warning (Tom Lane) This setting was used for warning applications about PostgreSQL 9.5 changes.\"}\n{\"item_id\": \"47e18f3689a2\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Overhaul the specification of clientcert in pg_hba.conf (Kyotaro Horiguchi) Values 1/0/no-verify are no longer supported; only the strings verify-ca and verify-full can be used. Also, disallow verify-ca if cert authentication is enabled since cert requires verify-full checking.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "06290d8c7ea7",
+    "label": "risk",
+    "reason": "States a dump/restore, pg_upgrade, or logical replication is required to migrate data from any previous release, which is mandatory migration work."
+   },
+   {
+    "item_id": "3dbb820b77d1",
+    "label": "risk",
+    "reason": "User-defined aggregates and operators referencing the changed array function signatures must be dropped before upgrade and recreated afterward."
+   },
+   {
+    "item_id": "cad43f1438ad",
+    "label": "risk",
+    "reason": "Removes the @ and ~ containment operators for geometric types and cube, hstore, intarray, and seg, so queries using them will break."
+   },
+   {
+    "item_id": "a2d2456f2476",
+    "label": "risk",
+    "reason": "Changes the tsquery output of to_tsquery() and websearch_to_tsquery() for text with discarded tokens, which can alter search results."
+   },
+   {
+    "item_id": "feaa4219c16a",
+    "label": "risk",
+    "reason": "Changes websearch_to_tsquery() output for quoted text with adjacent discarded tokens, altering phrase-search behavior."
+   },
+   {
+    "item_id": "b557a9d8424d",
+    "label": "risk",
+    "reason": "EXTRACT() now returns numeric instead of float8 and EXTRACT(date) errors for non-date units, which can break applications."
+   },
+   {
+    "item_id": "8c6cf51390e3",
+    "label": "risk",
+    "reason": "var_samp() and stddev_samp() now return NULL instead of NaN for a single NaN input, a visible result change."
+   },
+   {
+    "item_id": "4717544b96f9",
+    "label": "risk",
+    "reason": "has_column_privilege() now returns false instead of raising an error for invalid attribute numbers, changing behavior that code may depend on."
+   },
+   {
+    "item_id": "0c91fff305de",
+    "label": "risk",
+    "reason": "Window frame behavior with infinite ranges changes, so results differ from before for affected queries."
+   },
+   {
+    "item_id": "1906d9bca71f",
+    "label": "risk",
+    "reason": "Removes the factorial operators ! and !! and numeric_fac(), so existing queries using them will fail."
+   },
+   {
+    "item_id": "285646301c20",
+    "label": "risk",
+    "reason": "factorial() of negative numbers is now disallowed and raises an error where it previously returned 1."
+   },
+   {
+    "item_id": "8dfcf0291a04",
+    "label": "risk",
+    "reason": "Removes support for postfix operators, so user-defined postfix operators and queries using them will break."
+   },
+   {
+    "item_id": "425c5963b6bf",
+    "label": "risk",
+    "reason": "\\D and \\W now match newlines in newline-sensitive mode, changing regex results; old behavior needs rewriting."
+   },
+   {
+    "item_id": "9a25306a7103",
+    "label": "risk",
+    "reason": "Changes how constraints are applied when matching regex back-references, which can change match results."
+   },
+   {
+    "item_id": "58f903712709",
+    "label": "risk",
+    "reason": "Regular expressions using \\w as a character class range endpoint are now disallowed and will error."
+   },
+   {
+    "item_id": "fda5b456e921",
+    "label": "risk",
+    "reason": "Custom server parameter names must now use only valid unquoted identifier characters, which could break existing configs."
+   },
+   {
+    "item_id": "da909bcb3baf",
+    "label": "risk",
+    "reason": "Default password_encryption changes to scram-sha-256, affecting client compatibility, and legacy boolean-like values are no longer accepted."
+   },
+   {
+    "item_id": "d5c0c9bc6987",
+    "label": "risk",
+    "reason": "Removes the vacuum_cleanup_index_scale_factor parameter, so configs that set it may cause startup errors."
+   },
+   {
+    "item_id": "b0123a620c21",
+    "label": "risk",
+    "reason": "Removes the operator_precedence_warning parameter, so configs that set it will fail."
+   },
+   {
+    "item_id": "47e18f3689a2",
+    "label": "risk",
+    "reason": "pg_hba.conf clientcert values 1/0/no-verify are no longer supported and verify-ca is disallowed with cert auth, requiring config changes."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3218,
+  "output_tokens": 1295,
+  "stop_reason": "end_turn"
+ }
+}

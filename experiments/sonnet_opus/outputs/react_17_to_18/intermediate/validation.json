@@ -1,0 +1,56 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_090a4a6780/server_rendered_output_differs_from_clie_17fb84",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_2489111975/no_direct_replacement_exists_for_the_cal_8ce77b",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_385fe7836e/until_migrated_the_app_behaves_as_if_run_b9ca61",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_ab2c7932c2/the_application_relies_on_a_suspense_bou_513887",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_1ae332ab77/the_application_has_multiple_separate_la_a923d2",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_385fe7836e_5bce/the_application_relies_on_new_react_18_f_f76fbe",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_4a4e72c4eb/switching_to_createroot_enables_the_new_96c859",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_bf8746ac22/only_end_to_end_tests_are_run_so_act_war_519a49",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_d7f515143b/the_application_passes_function_or_symbo_281fc2",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

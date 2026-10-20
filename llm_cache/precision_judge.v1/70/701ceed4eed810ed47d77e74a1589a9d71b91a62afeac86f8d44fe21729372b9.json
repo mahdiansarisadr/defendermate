@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Removed pg_walinspect till_end_of_wal functions\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal() are removed in release 16, so any scripts, monitoring queries, or application code that call them will fail after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 16, where these pg_walinspect functions are removed.\",\n   \"quotes\": [\n    \"Remove pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal()\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"Application code, scripts, or monitoring queries call pg_get_wal_records_info_till_end_of_wal().\",\n   \"quotes\": [\n    \"pg_get_wal_records_info_till_end_of_wal()\"\n   ]\n  },\n  {\n   \"role\": \"alternative\",\n   \"statement\": \"Application code, scripts, or monitoring queries call pg_get_wal_stats_till_end_of_wal().\",\n   \"quotes\": [\n    \"pg_get_wal_stats_till_end_of_wal()\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote states these two pg_walinspect functions are removed, so any caller breaks after the upgrade; the risk names concrete functions that can be searched for, and the quotes support both the removal and the usage conditions."
+ },
+ "usage": {
+  "input_tokens": 916,
+  "output_tokens": 88,
+  "stop_reason": "end_turn"
+ }
+}

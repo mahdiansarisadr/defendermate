@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"SSR omits function/symbol values on custom elements\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In React 18 the server renderer ignores function and symbol values passed as props to custom elements. Server-rendered HTML for custom elements that receive such values may differ from React 17 output.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React 18, where the server renderer ignores function and symbol values inside custom elements.\",\n   \"quotes\": [\n    \"Ignore function and symbol values inside custom elements on the server.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application server-renders custom elements (hyphenated tag names) using React DOM Server.\",\n   \"quotes\": [\n    \"Ignore function and symbol values inside custom elements on the server.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application passes function or symbol values as props to those custom elements and relies on their previous server-rendered output.\",\n   \"quotes\": [\n    \"Ignore function and symbol values inside custom elements on the server.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports the behavior change (React 18 server ignores function and symbol values in custom elements), which is a concrete, checkable SSR output difference, though the conditions about hyphenated tags and relying on prior output are inferred beyond the single quote."
+ },
+ "usage": {
+  "input_tokens": 829,
+  "output_tokens": 103,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"xml2 xml_is_well_formed() function removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The xml2 extension's xml_is_well_formed() function is removed in release 15. Queries, views, functions or other objects that call the xml2 version will break. The text says the function has been implemented in the core backend since Postgres 9.1.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 13 to 16 crosses release 15, which removes xml2's xml_is_well_formed() function.\",\n   \"quotes\": [\n    \"Remove xml2's xml_is_well_formed() function\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or database uses xml_is_well_formed() from the xml2 extension (SQL queries, views, functions, or the xml2 extension installed).\",\n   \"quotes\": [\n    \"Remove xml2's xml_is_well_formed() function\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote 'Remove xml2's xml_is_well_formed() function' directly supports a concrete removed-API risk that would break callers of the xml2 version, though the quotes do not themselves state release 15 or the 9.1 core-backend detail."
+ },
+ "usage": {
+  "input_tokens": 784,
+  "output_tokens": 433,
+  "stop_reason": "end_turn"
+ }
+}

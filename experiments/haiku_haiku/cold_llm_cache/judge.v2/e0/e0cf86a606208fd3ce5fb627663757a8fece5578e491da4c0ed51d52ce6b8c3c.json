@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_change_is_introduced_in_react_releas_534c81\",\n  \"claim\": \"The change is introduced in React release 18.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Log a recoverable error whenever hydration fails.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_performs_hydration_of_se_ed4af3\",\n  \"claim\": \"The application performs hydration of server-rendered or pre-rendered markup.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Log a recoverable error whenever hydration fails.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_change_is_introduced_in_react_releas_534c81",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_performs_hydration_of_se_ed4af3",
+    "verdict": "not_supported",
+    "missing": "The quote only states that React logs a recoverable error when hydration fails; it does not establish that the application performs hydration of server-rendered or pre-rendered markup. The claim is an application-level hypothesis that the quote does not show applies to apps generally in a way that is affected by this change, and nothing about the application's own rendering is evidenced."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1031,
+  "output_tokens": 205,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_18_which_int_57ffeb\",\n  \"claim\": \"The upgrade crosses release 18, which introduced the deprecation of ReactDOM.render.\",\n  \"evidence\": [\n   {\n    \"quote\": \"ReactDOM.render has been deprecated.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_reactdom_render_fr_e4c6df\",\n  \"claim\": \"The application calls ReactDOM.render from react-dom.\",\n  \"evidence\": [\n   {\n    \"quote\": \"react-dom: ReactDOM.render has been deprecated.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"calling_reactdom_render_runs_the_app_in_febcf7\",\n  \"claim\": \"Calling ReactDOM.render runs the app in React 17 mode.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Using it will warn and run your app in React 17 mode.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_18_which_int_57ffeb",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_calls_reactdom_render_fr_e4c6df",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "calling_reactdom_render_runs_the_app_in_febcf7",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1202,
+  "output_tokens": 373,
+  "stop_reason": "end_turn"
+ }
+}

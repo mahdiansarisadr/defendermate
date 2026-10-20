@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"CREATE OR REPLACE VIEW can no longer change output column collation\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 15, CREATE OR REPLACE VIEW is prevented from changing the collation of an output column. Migrations, deployment scripts or application code that redefine views with CREATE OR REPLACE VIEW and rely on altering a column's collation will no longer be able to do so.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where CREATE OR REPLACE VIEW was changed to prevent changing an output column's collation.\",\n   \"quotes\": [\n    \"Prevent CREATE OR REPLACE VIEW from changing the collation of an output column\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application code, migrations or deployment scripts use CREATE OR REPLACE VIEW to redefine an existing view in a way that changes the collation of an output column.\",\n   \"quotes\": [\n    \"Prevent CREATE OR REPLACE VIEW from changing the collation of an output column\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports a genuine behavior change in PG 15 (within the 13->16 range) where CREATE OR REPLACE VIEW can no longer change an output column's collation, and it names a concrete SQL command that scripts can be checked for."
+ },
+ "usage": {
+  "input_tokens": 844,
+  "output_tokens": 99,
+  "stop_reason": "end_turn"
+ }
+}

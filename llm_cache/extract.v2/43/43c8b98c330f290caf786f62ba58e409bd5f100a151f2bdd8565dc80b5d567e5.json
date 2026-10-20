@@ -1,0 +1,104 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: How to Upgrade to React 18 (official_migration_guide). Section: Updates to Strict Mode.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nIn the future, we'd like to add a feature that allows React to add and remove sections of the UI while preserving state. For example, when a user tabs away from a screen and back, React should be able to immediately show the previous screen. To do this, React would unmount and remount trees using the same component state as before. This feature will give React better performance out-of-the-box, but requires components to be resilient to effects being mounted and destroyed multiple times. Most effects will work without any changes, but some effects assume they are only mounted or destroyed once. To help surface these issues, React 18 introduces a new development-only check to Strict Mode. This new check will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. Before this change, React would mount the component and create the effects: * React mounts the component. * Layout effects are created. * Effect effects are created.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nUpdates to Strict Mode: In the future, we'd like to add a feature that allows React to add and remove sections of the UI while preserving state. For example, when a user tabs away from a screen and back, React should be able to immediately show the previous screen. To do this, React would unmount and remount trees using the same component state as before. This feature will give React better performance out-of-the-box, but requires components to be resilient to effects being mounted and destroyed multiple times. Most effects will work without any changes, but some effects assume they are only mounted or destroyed once. To help surface these issues, React 18 introduces a new development-only check to Strict Mode. This new check will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. Before this change, React would mount the component and create the effects: * React mounts the component. * Layout effects are created. * Effect effects are created. With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode: * React mounts the component. * Layout effects are created. * Effect effects are created. * React simulates unmounting the component. * Layout effects are destroyed. * Effects are destroyed. * React simulates mounting the component with the previous state. * Layout effect setup code runs * Effect setup code runs For more information, see the Working Group posts for Adding Reusable State to StrictMode and How to support Reusable State in Effects.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "strict-mode-double-mount-effects",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "application_code",
+    "description": "React 18 adds a development-only Strict Mode check that unmounts and remounts components on first mount. Effects that assume they are only mounted or destroyed once can misbehave under this check.",
+    "primary_symbol": "Strict Mode",
+    "symbols": [
+     "Strict Mode",
+     "React 18"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The change is introduced in React 18.",
+      "category": "version",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "React 18",
+      "quotes": [
+       "React 18 introduces a new development-only check to Strict Mode"
+      ],
+      "relevance": "Ties the Strict Mode double-mount check to the 17 to 18 upgrade.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application uses Strict Mode.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Strict Mode",
+      "quotes": [
+       "This new check will automatically unmount and remount every component"
+      ],
+      "relevance": "The development-only check applies to components rendered under Strict Mode.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "StrictMode|Strict Mode"
+       }
+      ]
+     },
+     {
+      "statement": "The application has effects that assume they are only mounted or destroyed once.",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "effects that assume single mount or destroy",
+      "quotes": [
+       "some effects assume they are only mounted or destroyed once"
+      ],
+      "relevance": "Only these effects are affected by the simulated unmount and remount.",
+      "ambiguities": [
+       "The text does not identify which specific effects in a given codebase make this assumption."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The check runs in development mode.",
+      "category": "runtime",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "development",
+      "quotes": [
+       "React will simulate unmounting and remounting the component in development mode"
+      ],
+      "relevance": "The check is development-only, so production behavior is not affected by it.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Make effects resilient to being mounted, destroyed, and mounted again multiple times.",
+     "Run the application in development mode with Strict Mode enabled to surface effects that break on the simulated remount."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4015,
+  "output_tokens": 2101,
+  "stop_reason": "end_turn"
+ }
+}

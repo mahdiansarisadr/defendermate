@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"ecpg doubled quote mark handling in SQL command strings\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 14, ecpg correctly processes doubled quote marks in embedded SQL command strings. Previously 'abc''def' was passed to the server as 'abc'def' and \\\"abc\\\"\\\"def\\\" as \\\"abc\\\"def\\\", causing syntax errors. ecpg programs whose embedded SQL contains doubled quotes will send different text to the server after re-preprocessing with the newer ecpg. Any workaround written for the old behavior may now produce different results.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where ecpg's handling of doubled quote marks changed.\",\n   \"quotes\": [\n    \"Process doubled quote marks in ecpg SQL command strings correctly\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses ecpg embedded SQL whose command strings contain doubled quote marks ('' or \\\"\\\").\",\n   \"quotes\": [\n    \"Previously 'abc''def' was passed to the server as 'abc'def', and \\\"abc\\\"\\\"def\\\" was passed as \\\"abc\\\"def\\\", causing syntax errors.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application contains workarounds for the old incorrect quote handling that would behave differently now that doubled quotes are processed correctly.\",\n   \"quotes\": [\n    \"causing syntax errors\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete release-14 ecpg change in doubled quote handling that can alter the SQL sent to the server for programs with doubled quotes or workarounds, and it is checkable by looking for '' or \"\" in embedded SQL; the workaround claim is only uncertain, but it does not undermine the core risk."
+ },
+ "usage": {
+  "input_tokens": 980,
+  "output_tokens": 126,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"react-refresh package.json exports field may restrict deep/subpath imports\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In React 18.0.0, the React Refresh package added an \\\"exports\\\" field to its package.json. The changelog does not describe any impact. An exports field generally limits which module paths a bundler or Node.js can resolve, so code or tooling that imports react-refresh subpaths might be affected. This impact is inferred, not stated.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React release 18.0.0, where an exports field was added to the React Refresh package.json.\",\n   \"quotes\": [\n    \"Add exports field to package.json.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application or its build tooling imports react-refresh, possibly via deep/subpath imports that may no longer resolve under the new exports map.\",\n   \"quotes\": [\n    \"Add exports field to package.json. (#23087 by @otakustay)\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The quotes only state that an exports field was added to react-refresh's package.json and say nothing about restricted subpath imports or breakage, so the risk is speculative inference not supported by the evidence, even though the package, field, and version are concrete and checkable."
+ },
+ "usage": {
+  "input_tokens": 805,
+  "output_tokens": 100,
+  "stop_reason": "end_turn"
+ }
+}

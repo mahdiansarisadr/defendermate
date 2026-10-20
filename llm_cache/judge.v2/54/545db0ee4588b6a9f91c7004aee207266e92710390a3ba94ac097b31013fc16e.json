@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"upgrade_crosses_postgresql_release_15_wh_6cc6cb\",\n  \"claim\": \"Upgrade crosses PostgreSQL release 15, where the random() algorithm changed\",\n  \"evidence\": [\n   {\n    \"quote\": \"Improve the algorithm used to compute random()\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"application_or_sql_code_calls_random_423933\",\n  \"claim\": \"Application or SQL code calls random()\",\n  \"evidence\": [\n   {\n    \"quote\": \"This will cause random()'s results to differ from what was emitted by prior versions\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"application_relies_on_reproducible_rando_a29f9a\",\n  \"claim\": \"Application relies on reproducible random() output for a given seed (e.g. via setseed())\",\n  \"evidence\": [\n   {\n    \"quote\": \"even for the same seed value\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "upgrade_crosses_postgresql_release_15_wh_6cc6cb",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "application_or_sql_code_calls_random_423933",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "application_relies_on_reproducible_rando_a29f9a",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1197,
+  "output_tokens": 303,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"CREATE OR REPLACE VIEW can no longer change output column collation\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 15, CREATE OR REPLACE VIEW is prevented from changing the collation of an output column. Migration scripts or application code that relied on replacing a view with a definition whose output column collation differs will fail. The text does not name a workaround or the exact error raised.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15, where CREATE OR REPLACE VIEW was prevented from changing output column collation.\",\n   \"quotes\": [\n    \"Prevent CREATE OR REPLACE VIEW from changing the collation of an output column\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application, migration or DDL scripts use CREATE OR REPLACE VIEW.\",\n   \"quotes\": [\n    \"Prevent CREATE OR REPLACE VIEW from changing the collation of an output column\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The replacement view definition changes the collation of an existing output column (e.g. via a COLLATE clause or a differently-collated source expression).\",\n   \"quotes\": [\n    \"changing the collation of an output column\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote directly supports a concrete behavior change (CREATE OR REPLACE VIEW now rejects output column collation changes) that can break migration scripts, and a checker can search DDL for CREATE OR REPLACE VIEW statements that alter column collation; the description appropriately admits it does not name the error or a workaround."
+ },
+ "usage": {
+  "input_tokens": 915,
+  "output_tokens": 126,
+  "stop_reason": "end_turn"
+ }
+}

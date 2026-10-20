@@ -23702,8 +23702,8 @@
     "hops": 3
   },
   "pipeline": {
-    "run_id": "872720f16a",
-    "generated_at": "2026-10-20T14:32:04Z",
+    "run_id": "065ce05ef0",
+    "generated_at": "2026-10-20T15:17:15Z",
     "provider": "anthropic",
     "models": {
       "cheap": "claude-haiku-5-5",
@@ -23752,7 +23752,8 @@
         "input_tokens": 61176,
         "output_tokens": 41749,
         "usd_estimate": 0.0,
-        "usd_full": 0.269921
+        "usd_full": 0.026992099999999998,
+        "model": "claude-haiku-5-5"
       },
       "triage_sweep": {
         "calls": 2,
@@ -23760,7 +23761,8 @@
         "input_tokens": 1689,
         "output_tokens": 180,
         "usd_estimate": 0.0,
-        "usd_full": 0.007767
+        "usd_full": 0.005178,
+        "model": "claude-sonnet-5-5"
       },
       "extract": {
         "calls": 223,
@@ -23768,7 +23770,8 @@
         "input_tokens": 895107,
         "output_tokens": 220825,
         "usd_estimate": 0.0,
-        "usd_full": 5.997696
+        "usd_full": 3.998463999999996,
+        "model": "claude-sonnet-5-5"
       },
       "extract_repair": {
         "calls": 1,
@@ -23776,7 +23779,8 @@
         "input_tokens": 3588,
         "output_tokens": 1042,
         "usd_estimate": 0.0,
-        "usd_full": 0.026394
+        "usd_full": 0.017596,
+        "model": "claude-sonnet-5-5"
       },
       "reconcile": {
         "calls": 1,
@@ -23784,7 +23788,8 @@
         "input_tokens": 1247,
         "output_tokens": 199,
         "usd_estimate": 0.0,
-        "usd_full": 0.006726
+        "usd_full": 0.004484,
+        "model": "claude-sonnet-5-5"
       },
       "judge": {
         "calls": 151,
@@ -23792,15 +23797,16 @@
         "input_tokens": 189322,
         "output_tokens": 30361,
         "usd_estimate": 0.0,
-        "usd_full": 1.0233810000000003
+        "usd_full": 0.6822540000000001,
+        "model": "claude-sonnet-5-5"
       }
     },
     "timings_s": {
       "plan": 0.0,
       "fetch": 0.01,
-      "parse": 0.04,
+      "parse": 0.05,
       "triage": 0.02,
-      "extract": 0.26,
+      "extract": 0.27,
       "link": 0.03,
       "compose": 0.01,
       "judge": 0.06,

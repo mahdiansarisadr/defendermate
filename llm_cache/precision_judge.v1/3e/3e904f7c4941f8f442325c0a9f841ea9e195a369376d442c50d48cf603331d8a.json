@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"EXPLAIN output reports temporary schema as pg_temp\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 15, when EXPLAIN output references the session's temporary object schema, it shows pg_temp instead of the actual schema name (e.g. pg_temp_N). Tools, tests or scripts that parse or compare EXPLAIN output containing actual temp schema names may see different output.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15 (13 -> 16), where EXPLAIN began referring to the temporary schema as pg_temp.\",\n   \"quotes\": [\n    \"When EXPLAIN references the session's temporary object schema, refer to it as pg_temp\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or tooling runs EXPLAIN on queries that reference temporary objects (the session's temporary schema).\",\n   \"quotes\": [\n    \"When EXPLAIN references the session's temporary object schema\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Code or tests parse or compare EXPLAIN output and expect the actual temporary schema name (e.g. pg_temp_N).\",\n   \"quotes\": [\n    \"Previously the actual schema name was reported, leading to inconsistencies across sessions.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that EXPLAIN now reports the session's temporary schema as pg_temp instead of the actual schema name, which can change output for tools or tests that parse or compare it. This is a concrete, checkable behavior change within the 13->16 range."
+ },
+ "usage": {
+  "input_tokens": 938,
+  "output_tokens": 102,
+  "stop_reason": "end_turn"
+ }
+}

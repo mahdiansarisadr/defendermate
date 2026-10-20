@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"unstable_changedBits API removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"React 18 removes the unsupported unstable_changedBits API. Code relying on it will no longer have it available.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React release 18, where unstable_changedBits is removed.\",\n   \"quotes\": [\n    \"Remove unsupported unstable_changedBits API.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses the unstable_changedBits API.\",\n   \"quotes\": [\n    \"Remove unsupported unstable_changedBits API.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote 'Remove unsupported unstable_changedBits API.' directly supports removal of a concrete, checkable API (unstable_changedBits) in React 18, and code using it would break, so it is a genuine removed-API upgrade risk."
+ },
+ "usage": {
+  "input_tokens": 683,
+  "output_tokens": 100,
+  "stop_reason": "end_turn"
+ }
+}

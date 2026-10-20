@@ -1,0 +1,2213 @@
+{
+ "per_upgrade": {
+  "react_17_to_18": {
+   "project": "React",
+   "paths": 25,
+   "context_facts": 39,
+   "disqualified": 0,
+   "overall_confidence": "medium",
+   "validator_errors": 0,
+   "validator_warnings": 3,
+   "grounding": [
+    157,
+    157
+   ],
+   "grounding_failures": [],
+   "field_consistency": [
+    79,
+    79
+   ],
+   "field_failures": [],
+   "structural": [
+    25,
+    25
+   ],
+   "usage": {
+    "triage": {
+     "calls": 7,
+     "cache_hits": 7,
+     "input_tokens": 17818,
+     "output_tokens": 14682,
+     "usd_estimate": 0.0,
+     "usd_full": 0.0091228,
+     "model": "claude-haiku-5-5"
+    },
+    "extract": {
+     "calls": 57,
+     "cache_hits": 57,
+     "input_tokens": 224298,
+     "output_tokens": 49426,
+     "usd_estimate": 0.0,
+     "usd_full": 0.9428560000000001,
+     "model": "claude-sonnet-5-5"
+    },
+    "judge": {
+     "calls": 25,
+     "cache_hits": 25,
+     "input_tokens": 33830,
+     "output_tokens": 5939,
+     "usd_estimate": 0.0,
+     "usd_full": 0.12705,
+     "model": "claude-sonnet-5-5"
+    }
+   },
+   "timings_s": {
+    "plan": 0.0,
+    "fetch": 0.03,
+    "parse": 0.04,
+    "triage": 0.01,
+    "extract": 0.07,
+    "link": 0.0,
+    "compose": 0.0,
+    "judge": 0.01,
+    "rubric": 0.0,
+    "assemble": 0.03
+   },
+   "funnel": {
+    "items_total": 130,
+    "items_on_path": 130,
+    "items_future": 0,
+    "items_dropped_r4": 0,
+    "revert_candidates": 0,
+    "patch_notes_scanned": 0,
+    "triage_risk": 57,
+    "triage_context": 58,
+    "triage_noise": 15,
+    "sweep_flipped": 0,
+    "extracted_items": 57,
+    "extracted_paths": 40,
+    "extractor_context": 18,
+    "extraction_failures": 0,
+    "fact_paths": 0,
+    "linked_paths": 25,
+    "merged": 15,
+    "composed_paths": 25,
+    "disqualified": 0,
+    "superseded": 0,
+    "final_paths": 25,
+    "context_facts": 39
+   },
+   "gold_items": [
+    {
+     "gold_id": "re_render_deprecated",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "react_362d1d0639",
+       "react_4a4e72c4eb",
+       "react_5245677ce9",
+       "react_e56a0f9df4",
+       "react_7123c14ec9"
+      ],
+      "context": [
+       "ctx_54925641c9a8",
+       "ctx_8ef99b065fe8"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_hydrate_deprecated",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "react_385fe7836e",
+       "react_d1fa9e779a"
+      ],
+      "context": [
+       "ctx_28e58ea8654c"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_unmount",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_7123c14ec9"
+      ],
+      "context": [
+       "ctx_7486a812fc1b"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "low"
+    },
+    {
+     "gold_id": "re_render_callback",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_5245677ce9"
+      ],
+      "context": [
+       "ctx_115a79ae0770"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_auto_batching",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_362d1d0639",
+       "react_e56a0f9df4"
+      ],
+      "context": [
+       "ctx_29715db5a815"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_strict_mode",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_71acd3a7ef"
+      ],
+      "context": [
+       "ctx_44cb2172052c"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_effect_timing",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_4aaaf16b0e"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_hydration_errors",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_d1fa9e779a"
+      ],
+      "context": [
+       "ctx_99550d07bcd5"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_js_env",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "react_38bf30f056",
+       "react_77c14b0b1f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "re_render_to_node_stream",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_58846cb08a52",
+       "ctx_cc4d31a38274"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": false,
+     "extracted_level": null
+    },
+    {
+     "gold_id": "re_server_suspense",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_479331dfb5",
+       "react_6c336940af"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_types",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "react_0cdcfd833f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_test_env",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_0cdcfd833f",
+       "react_1174c2e1c2",
+       "react_bf8746ac22",
+       "react_dc5cc879a8"
+      ],
+      "context": [
+       "ctx_778b40bf29d9"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_scheduler_tracing",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_66adbc474f"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "re_layout_effects_suspense",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "react_44cfb7b19d",
+       "react_a6a01d8772"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "re_ctx_render_undefined",
+     "kind": "context",
+     "min_level": null,
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_b754050dc453",
+       "ctx_ab03f7fcd920",
+       "ctx_2834ff584bc2"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": null
+    },
+    {
+     "gold_id": "re_ctx_setstate_unmounted",
+     "kind": "context",
+     "min_level": null,
+     "hits": {
+      "risk": [],
+      "context": [
+       "ctx_e7224b12d15e"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": null
+    }
+   ],
+   "recall": [
+    14,
+    15
+   ],
+   "classification": [
+    16,
+    17
+   ],
+   "level_agreement": [
+    14,
+    14
+   ],
+   "strict_precision": [
+    20,
+    25
+   ],
+   "matched_path_ids": [
+    "react_0cdcfd833f",
+    "react_1174c2e1c2",
+    "react_362d1d0639",
+    "react_385fe7836e",
+    "react_38bf30f056",
+    "react_44cfb7b19d",
+    "react_479331dfb5",
+    "react_4a4e72c4eb",
+    "react_4aaaf16b0e",
+    "react_5245677ce9",
+    "react_66adbc474f",
+    "react_6c336940af",
+    "react_7123c14ec9",
+    "react_71acd3a7ef",
+    "react_77c14b0b1f",
+    "react_a6a01d8772",
+    "react_bf8746ac22",
+    "react_d1fa9e779a",
+    "react_dc5cc879a8",
+    "react_e56a0f9df4"
+   ],
+   "precision_labels": {
+    "react_38bf30f056": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_66adbc474f": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_77c14b0b1f": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_e611605e84": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete API (unstable_changedBits) and the quote 'Remove unsupported unstable_changedBits API.' supports its removal in React 18, so code or dependencies still using it would break and can be searched for.",
+     "by": "llm_judge"
+    },
+    "react_0cdcfd833f": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_1174c2e1c2": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_362d1d0639": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_385fe7836e": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_44cfb7b19d": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_479331dfb5": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_4a4e72c4eb": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_4aaaf16b0e": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_5245677ce9": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_60fe36b771": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote directly states that Suspense fallback={undefined} now behaves like null and is no longer ignored in React 18, which is a concrete behavior change affecting apps that pass an undefined fallback, and the condition about undefined fallbacks is checkable in code.",
+     "by": "llm_judge"
+    },
+    "react_6c336940af": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_71acd3a7ef": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_a6a01d8772": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_d1fa9e779a": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_e56a0f9df4": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_7123c14ec9": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_bf8746ac22": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_d7f515143b": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote directly supports a concrete React 18 behavior change (server rendering ignores function and symbol values in custom elements), which is a checkable risk for SSR apps passing such values to custom elements.",
+     "by": "llm_judge"
+    },
+    "react_dc5cc879a8": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "react_e87acb5981": {
+     "valid": false,
+     "specific": false,
+     "reason": "The only quote, 'Add exports field to package.json.', shows that an exports field was added but not its contents or any behavioral change, so the claimed restriction on deep imports is not supported by the evidence and the risk stays speculative with no concrete checkable API or path.",
+     "by": "llm_judge"
+    },
+    "react_eb824a435b": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete behavior change (React 18 reverts to client render on SSR text mismatch) that is checkable via server-rendered/hydrated text content, and the quote supports it, though the quotes are thin and the description admits missing details on prior behavior.",
+     "by": "llm_judge"
+    }
+   },
+   "estimated_precision": [
+    24,
+    25
+   ],
+   "calibration": {
+    "high": [
+     4,
+     5
+    ],
+    "medium": [
+     18,
+     18
+    ],
+    "low": [
+     2,
+     2
+    ]
+   },
+   "judge_flagged_valid": [
+    2,
+    2
+   ]
+  },
+  "postgresql_13_to_16": {
+   "project": "PostgreSQL",
+   "paths": 69,
+   "context_facts": 7,
+   "disqualified": 0,
+   "overall_confidence": "medium",
+   "validator_errors": 0,
+   "validator_warnings": 15,
+   "grounding": [
+    203,
+    203
+   ],
+   "grounding_failures": [],
+   "field_consistency": [
+    190,
+    190
+   ],
+   "field_failures": [],
+   "structural": [
+    69,
+    69
+   ],
+   "usage": {
+    "triage": {
+     "calls": 5,
+     "cache_hits": 5,
+     "input_tokens": 12224,
+     "output_tokens": 7229,
+     "usd_estimate": 0.0,
+     "usd_full": 0.0048369,
+     "model": "claude-haiku-5-5"
+    },
+    "extract": {
+     "calls": 71,
+     "cache_hits": 0,
+     "input_tokens": 299270,
+     "output_tokens": 77359,
+     "usd_estimate": 1.3721300000000005,
+     "usd_full": 1.3721300000000005,
+     "model": "claude-sonnet-5-5"
+    },
+    "judge": {
+     "calls": 69,
+     "cache_hits": 0,
+     "input_tokens": 84580,
+     "output_tokens": 12722,
+     "usd_estimate": 0.29638,
+     "usd_full": 0.29638,
+     "model": "claude-sonnet-5-5"
+    }
+   },
+   "timings_s": {
+    "plan": 0.0,
+    "fetch": 0.04,
+    "parse": 0.2,
+    "triage": 0.0,
+    "extract": 75.99,
+    "link": 0.01,
+    "compose": 0.0,
+    "judge": 18.89,
+    "rubric": 0.0,
+    "assemble": 0.23
+   },
+   "funnel": {
+    "items_total": 74,
+    "items_on_path": 74,
+    "items_future": 0,
+    "items_dropped_r4": 0,
+    "revert_candidates": 0,
+    "patch_notes_scanned": 0,
+    "triage_risk": 71,
+    "triage_context": 2,
+    "triage_noise": 1,
+    "sweep_flipped": 0,
+    "extracted_items": 71,
+    "extracted_paths": 70,
+    "extractor_context": 5,
+    "extraction_failures": 0,
+    "fact_paths": 0,
+    "linked_paths": 69,
+    "merged": 1,
+    "composed_paths": 69,
+    "disqualified": 0,
+    "superseded": 0,
+    "final_paths": 69,
+    "context_facts": 7
+   },
+   "gold_items": [
+    {
+     "gold_id": "pg_dump_restore",
+     "kind": "risk",
+     "min_level": "critical",
+     "hits": {
+      "risk": [
+       "postgresql_0172f444ca",
+       "postgresql_1e71bd2674",
+       "postgresql_72e0855f91"
+      ],
+      "context": [
+       "ctx_06290d8c7ea7",
+       "ctx_5e37995bd9ed",
+       "ctx_a49f86bfa044"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg14_array_functions",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "postgresql_d1320b72a5"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg14_containment_ops",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_9fbfbca3e1",
+       "postgresql_11b4c53a07"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg14_extract_numeric",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_86d8236c5c"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg14_factorial",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_12484be158",
+       "postgresql_0e147761ab"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg14_postfix",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_0172f444ca",
+       "postgresql_12484be158"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg14_scram",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "postgresql_987fccfe8d",
+       "postgresql_063d5aa8bb"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg14_clientcert",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "postgresql_336a22a4f4",
+       "postgresql_43d19b312e"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg14_ssl_compression",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_e068a86a55"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "low"
+    },
+    {
+     "gold_id": "pg14_v2_protocol",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_99cd4201b9"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "low"
+    },
+    {
+     "gold_id": "pg14_removed_params",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_2acbbca54c",
+       "postgresql_c57abe8742"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg14_pg_standby",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_01631e9f8c"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg15_public_schema",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "postgresql_f731db1dff"
+      ],
+      "context": [
+       "ctx_ab5fb83d79a9"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg15_exclusive_backup",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "postgresql_272d063f3f",
+       "postgresql_91ba33fe94"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg15_plpython2",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "postgresql_7bfe01bbb4"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg15_hash_mem",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_c49690050a"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg15_stats_temp_directory",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_a1802b44d1"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg15_pqsendquery",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_230760360c"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg15_admin_option",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_5e13cfd71d"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg15_numeric_literals",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_4d0f25b207",
+       "postgresql_90c31fa6ac"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg16_force_parallel_mode",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_c2bc60b77a"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg16_on_select_rules",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_c521076895"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg16_vacuum_defer",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_1f2cea1199"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg16_promote_trigger_file",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_62a430b096"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg16_lc_collate",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_cc8d8091c1"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg16_createrole",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "postgresql_5f2b8ce7c3"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "pg16_role_inheritance",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "postgresql_20f9520b98",
+       "postgresql_9d3f729496"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "pg16_postmaster_symlink",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "postgresql_2a6232c2c0"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    }
+   ],
+   "recall": [
+    28,
+    28
+   ],
+   "classification": [
+    28,
+    28
+   ],
+   "level_agreement": [
+    28,
+    28
+   ],
+   "strict_precision": [
+    37,
+    69
+   ],
+   "matched_path_ids": [
+    "postgresql_01631e9f8c",
+    "postgresql_0172f444ca",
+    "postgresql_063d5aa8bb",
+    "postgresql_0e147761ab",
+    "postgresql_11b4c53a07",
+    "postgresql_12484be158",
+    "postgresql_1e71bd2674",
+    "postgresql_1f2cea1199",
+    "postgresql_20f9520b98",
+    "postgresql_230760360c",
+    "postgresql_272d063f3f",
+    "postgresql_2a6232c2c0",
+    "postgresql_2acbbca54c",
+    "postgresql_336a22a4f4",
+    "postgresql_43d19b312e",
+    "postgresql_4d0f25b207",
+    "postgresql_5e13cfd71d",
+    "postgresql_5f2b8ce7c3",
+    "postgresql_62a430b096",
+    "postgresql_72e0855f91",
+    "postgresql_7bfe01bbb4",
+    "postgresql_86d8236c5c",
+    "postgresql_90c31fa6ac",
+    "postgresql_91ba33fe94",
+    "postgresql_987fccfe8d",
+    "postgresql_99cd4201b9",
+    "postgresql_9d3f729496",
+    "postgresql_9fbfbca3e1",
+    "postgresql_a1802b44d1",
+    "postgresql_c2bc60b77a",
+    "postgresql_c49690050a",
+    "postgresql_c521076895",
+    "postgresql_c57abe8742",
+    "postgresql_cc8d8091c1",
+    "postgresql_d1320b72a5",
+    "postgresql_e068a86a55",
+    "postgresql_f731db1dff"
+   ],
+   "precision_labels": {
+    "postgresql_01631e9f8c": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_0172f444ca": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_12484be158": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_1f2cea1199": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_230760360c": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_272d063f3f": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_336a22a4f4": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_4345c09353": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote 'Remove xml2's xml_is_well_formed() function' directly supports a concrete removed-API risk that would break callers of the xml2 version, though the quotes do not themselves state release 15 or the 9.1 core-backend detail.",
+     "by": "llm_judge"
+    },
+    "postgresql_434e0c374b": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote states these two pg_walinspect functions are removed, so any caller breaks after the upgrade; the risk names concrete functions that can be searched for, and the quotes support both the removal and the usage conditions.",
+     "by": "llm_judge"
+    },
+    "postgresql_43d19b312e": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_5f2b8ce7c3": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_62a430b096": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_724a97cbad": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes directly support that EXTRACT(date) now errors for units not part of the date type, a concrete breaking behavior change introduced in release 14 and thus crossed by a 13 to 16 upgrade, and it can be checked by searching for EXTRACT calls on date values with units such as hour or minute.",
+     "by": "llm_judge"
+    },
+    "postgresql_7bfe01bbb4": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_91ba33fe94": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_987fccfe8d": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_9fbfbca3e1": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_a1802b44d1": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_c521076895": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_d1320b72a5": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_063d5aa8bb": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_0aeb9394ab": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete removed pg_dump option (--no-synchronized-snapshots) and a checkable condition (scripts passing it), and the quote 'Remove pg_dump's --no-synchronized-snapshots option' supports the removal, though the release 15 attribution and the failure and rationale details go beyond the quote.",
+     "by": "llm_judge"
+    },
+    "postgresql_0e147761ab": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_1e71bd2674": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_20f9520b98": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_24f3172f15": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote supports a genuine behavior change in PG 15 (within the 13->16 range) where CREATE OR REPLACE VIEW can no longer change an output column's collation, and it names a concrete SQL command that scripts can be checked for.",
+     "by": "llm_judge"
+    },
+    "postgresql_27194e765d": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names concrete functions (to_tsquery, websearch_to_tsquery) and a concrete behavior change in release 14, which a 13->16 upgrade crosses, and the quotes show the old vs new output ('pg' & 'class' vs 'pg' <-> 'class'), so persisted or compared results can break.",
+     "by": "llm_judge"
+    },
+    "postgresql_28d15925c3": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a behavior change in release 14 (fix to infinite window frame ranges, where 'inf' PRECEDING AND 'inf' FOLLOWING previously returned incorrect results), which is within the 13->16 range and can change query results; it names a concrete, checkable construct.",
+     "by": "llm_judge"
+    },
+    "postgresql_2a4f5f5ead": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a concrete behavior change in psql --single-transaction where the final COMMIT becomes ROLLBACK only if ON_ERROR_STOP is set, so scripts without ON_ERROR_STOP may now commit after an error, which is a checkable operational risk; the description admits the prior behavior is unstated but the new condition is clear from the quotes.",
+     "by": "llm_judge"
+    },
+    "postgresql_2a6232c2c0": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_2acbbca54c": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_40755c4ec6": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes directly support a concrete behavior change (fractional interval units above months now round to the nearest month, e.g. 1.99 years becomes 2 years rather than 1 year 11 months) that can alter results for data loads or application logic, and the conditions are checkable, though some optional-condition quotes (trailing periods) are tangential.",
+     "by": "llm_judge"
+    },
+    "postgresql_4645b4b0d2": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a concrete behavior change (\\D and \\W now matching newlines in newline-sensitive regex mode) that can alter match results for applications relying on the old behavior, and the \\D/\\W shorthands in newline-sensitive mode are something a checker can look for.",
+     "by": "llm_judge"
+    },
+    "postgresql_4d0f25b207": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_5086aa71d0": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes directly support a concrete behavior change (UPDATE/DELETE logical replication blocked when the subscription owner lacks SELECT on the table) that can break existing subscriptions and is checkable via subscription owner privileges on subscribed tables.",
+     "by": "llm_judge"
+    },
+    "postgresql_55fa40f078": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a concrete behavior change in PG 16 (REINDEX DATABASE and reindexdb skip system catalog indexes, still reachable via REINDEX SYSTEM or reindexdb --system), which is a checkable operational risk for maintenance jobs that relied on the old behavior.",
+     "by": "llm_judge"
+    },
+    "postgresql_5b9c633eb1": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote supports a concrete behavior change in release 14 (within the 13->16 range) that can reject custom parameter names with characters invalid in unquoted SQL identifiers, and a checker can scan configs and application code for such names.",
+     "by": "llm_judge"
+    },
+    "postgresql_5e13cfd71d": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_5e668838bc": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a concrete behavior change in release 14 (back-references now ignore constraints like ^), which can alter regex match results for 13->16 upgraders, and the condition is checkable by searching for regexes combining back-references with constraints.",
+     "by": "llm_judge"
+    },
+    "postgresql_6e42608977": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes directly support that the interval output function became stable instead of immutable (depending on IntervalStyle), which can make creation of indexes relying on interval text output fail, and a checker could look for expression indexes casting interval to text in a 13->16 upgrade.",
+     "by": "llm_judge"
+    },
+    "postgresql_72cf803a6f": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a concrete behavior change in the \"char\" type's output for high-bit bytes, which can break applications that read or compare such values, and the condition (columns of type \"char\" holding non-ASCII bytes) is checkable in a schema or data scan.",
+     "by": "llm_judge"
+    },
+    "postgresql_72e0855f91": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_80f2889427": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote 'Disallow NULLS NOT DISTINCT indexes for primary keys' supports a concrete, checkable behavior change in release 16 (DDL defining a primary key with NULLS NOT DISTINCT), which could break schemas or migrations.",
+     "by": "llm_judge"
+    },
+    "postgresql_86d8236c5c": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_9623a24b4c": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes directly support a concrete behavior change in websearch_to_tsquery() (old 'aaa' <2> 'bbb' vs new 'aaa' <-> 'bbb') introduced in release 14, which lies within the 13->16 range and could alter query output and search results for dependent applications.",
+     "by": "llm_judge"
+    },
+    "postgresql_9d3f729496": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_b9ad526348": {
+     "valid": true,
+     "specific": true,
+     "reason": "The PG16 release-note change to PL/pgSQL bound cursor variable assignment is a real behavior change that can break code relying on the portal name equaling the variable name; the quotes support it and it names concrete, checkable things (bound cursor variables, OPEN, portal name, and the workaround).",
+     "by": "llm_judge"
+    },
+    "postgresql_be61b83855": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete behavior change in release 15 (logical replication running as the subscription owner), gives checkable conditions (RLS-protected target tables, and an owner who is not a superuser, lacks bypassrls and does not own the tables), and the quotes support each condition.",
+     "by": "llm_judge"
+    },
+    "postgresql_c2bc60b77a": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_c3d0f02569": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a genuine behavior change (custom scan providers assumed not to support projections by default, so projection-capable providers must be updated), and it is concrete and checkable by looking for custom scan providers in extensions or C code.",
+     "by": "llm_judge"
+    },
+    "postgresql_c49690050a": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_c57abe8742": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_cc8d8091c1": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_f1a6f3c268": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote supports a concrete behavior change in release 14 (within 13->16) that can make regex patterns with \\w as a character-class range endpoint fail, and the pattern is checkable by searching for such constructs; the claims about 'unexpected results' and rejection go slightly beyond the quote but are reasonable.",
+     "by": "llm_judge"
+    },
+    "postgresql_f1bf63ef84": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes support a concrete behavior change (introduced in release 15, within the 13->16 range) where custom GUC options matching an installed extension's name but not declared by it are deleted on extension load and cannot be created later, which can break configurations, and a checker can look for such settings.",
+     "by": "llm_judge"
+    },
+    "postgresql_f731db1dff": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_076d7c8e08": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote supports that release 15 disallows zero-length Unicode identifiers like U&\"\", which spans 13->16 and can break SQL using them, and the pattern U&\"\" is concrete and searchable (though the 'previously accepted' and 'non-Unicode already disallowed' claims go slightly beyond the quote).",
+     "by": "llm_judge"
+    },
+    "postgresql_11b4c53a07": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_167726bd25": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete function (has_column_privilege() with attribute numbers) and a checkable behavior change (false instead of an invalid-column error) that could break code relying on the error, and the quotes support the change and the prior error behavior, though the release 14 attribution rests on the extractor's context.",
+     "by": "llm_judge"
+    },
+    "postgresql_6642146d25": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names concrete functions (justify_interval, justify_hours, justify_days) and a version-bound behavior change (overflow detection) that the quotes support, and queries passing extreme interval values could now raise errors instead of silently overflowing, although the exact post-upgrade behavior is not stated in the evidence.",
+     "by": "llm_judge"
+    },
+    "postgresql_755a05d0ae": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes directly support that random() output changed versus prior versions even with the same seed, which can break reproducible tests or data generation, and it names a concrete function (random()) and behavior that can be checked in code.",
+     "by": "llm_judge"
+    },
+    "postgresql_85602454ed": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete function (tablefunc normal_rand()) and a checkable behavior change, and the quotes support that negative values are now rejected, which could break callers passing negative arguments; the release 14 attribution is not shown in the quotes, but it falls within the 13->16 range and is a minor point.",
+     "by": "llm_judge"
+    },
+    "postgresql_90c31fa6ac": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_99cd4201b9": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_9a56057ff7": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete function (chr()) and a checkable behavior change (error on negative argument), and the quote directly supports it; the claim that it landed in release 15 is not shown in the quotes but is consistent with the 13->16 range, and the risk applies to code that passes negative values.",
+     "by": "llm_judge"
+    },
+    "postgresql_d48cf30f17": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete behavior change (libpq and client programs now use HOME instead of the passwd lookup, affecting ~/.pgpass) that can cause files to be found in a different location, and the quotes support the change, the platform scope, the libpq impact, and the HOME-unset fallback.",
+     "by": "llm_judge"
+    },
+    "postgresql_dc64bb7d33": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quotes directly support a concrete behavior change in release 14 (var_samp/stddev_samp with numeric input of a single NaN now return NULL instead of NaN), which falls within the 13->16 range and could affect applications relying on NaN, and it names specific functions and input conditions that can be checked.",
+     "by": "llm_judge"
+    },
+    "postgresql_e068a86a55": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "postgresql_f785741bfd": {
+     "valid": true,
+     "specific": true,
+     "reason": "The quote directly supports removal of composite types for sequences and toast tables (a concrete behavior change in PG14, within 13->16), and a checker could look for code or catalog queries referencing those row types, though the examples in condition 2 go slightly beyond the quote.",
+     "by": "llm_judge"
+    }
+   },
+   "estimated_precision": [
+    69,
+    69
+   ],
+   "calibration": {
+    "high": [
+     8,
+     8
+    ],
+    "medium": [
+     49,
+     49
+    ],
+    "low": [
+     12,
+     12
+    ]
+   },
+   "judge_flagged_valid": [
+    3,
+    3
+   ]
+  },
+  "nextjs_12_to_14": {
+   "project": "Next.js",
+   "paths": 16,
+   "context_facts": 1,
+   "disqualified": 0,
+   "overall_confidence": "medium",
+   "validator_errors": 0,
+   "validator_warnings": 0,
+   "grounding": [
+    68,
+    68
+   ],
+   "grounding_failures": [],
+   "field_consistency": [
+    42,
+    42
+   ],
+   "field_failures": [],
+   "structural": [
+    16,
+    16
+   ],
+   "usage": {
+    "triage": {
+     "calls": 3,
+     "cache_hits": 3,
+     "input_tokens": 5127,
+     "output_tokens": 1754,
+     "usd_estimate": 0.0,
+     "usd_full": 0.0013897000000000002,
+     "model": "claude-haiku-5-5"
+    },
+    "extract": {
+     "calls": 20,
+     "cache_hits": 0,
+     "input_tokens": 79601,
+     "output_tokens": 27511,
+     "usd_estimate": 0.4343119999999999,
+     "usd_full": 0.4343119999999999,
+     "model": "claude-sonnet-5-5"
+    },
+    "judge": {
+     "calls": 14,
+     "cache_hits": 0,
+     "input_tokens": 17209,
+     "output_tokens": 2337,
+     "usd_estimate": 0.057788000000000006,
+     "usd_full": 0.057788000000000006,
+     "model": "claude-sonnet-5-5"
+    }
+   },
+   "timings_s": {
+    "plan": 0.0,
+    "fetch": 0.01,
+    "parse": 0.0,
+    "triage": 0.0,
+    "extract": 37.77,
+    "link": 0.0,
+    "compose": 0.0,
+    "judge": 5.32,
+    "rubric": 0.0,
+    "assemble": 0.01
+   },
+   "funnel": {
+    "items_total": 26,
+    "items_on_path": 26,
+    "items_future": 0,
+    "items_dropped_r4": 0,
+    "revert_candidates": 0,
+    "patch_notes_scanned": 0,
+    "triage_risk": 20,
+    "triage_context": 4,
+    "triage_noise": 2,
+    "sweep_flipped": 0,
+    "extracted_items": 20,
+    "extracted_paths": 26,
+    "extractor_context": 1,
+    "extraction_failures": 0,
+    "fact_paths": 2,
+    "linked_paths": 18,
+    "merged": 10,
+    "composed_paths": 16,
+    "disqualified": 0,
+    "superseded": 2,
+    "final_paths": 16,
+    "context_facts": 1
+   },
+   "gold_items": [
+    {
+     "gold_id": "nx_node_floor",
+     "kind": "risk",
+     "min_level": "critical",
+     "hits": {
+      "risk": [
+       "nextjs_f3317b5b79"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "critical"
+    },
+    {
+     "gold_id": "nx_react18",
+     "kind": "risk",
+     "min_level": "critical",
+     "hits": {
+      "risk": [
+       "nextjs_2323185baa",
+       "nextjs_4315b5fb92"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "nx_browsers_ie",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "nextjs_87c679607f",
+       "nextjs_c5a065b9b5"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "nx_swcminify",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "nextjs_16494e4a2c"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "nx_image_rename",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "nextjs_2ba045f66c",
+       "nextjs_24962734e7"
+      ],
+      "context": [
+       "ctx_f0193f2c012e"
+      ],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "nx_link_child",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "nextjs_523375afdf"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "nx_target_removed",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "nextjs_67098be47b",
+       "nextjs_16494e4a2c"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "nx_font",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "nextjs_8392155aea"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "nx_next_export",
+     "kind": "risk",
+     "min_level": "high",
+     "hits": {
+      "risk": [
+       "nextjs_5a5f2f6714"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "nx_imageresponse",
+     "kind": "risk",
+     "min_level": "medium",
+     "hits": {
+      "risk": [
+       "nextjs_fea20fefe0"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "high"
+    },
+    {
+     "gold_id": "nx_wasm",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "nextjs_86709c1d69"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "medium"
+    },
+    {
+     "gold_id": "nx_types_react",
+     "kind": "risk",
+     "min_level": "low",
+     "hits": {
+      "risk": [
+       "nextjs_fdd92fa177"
+      ],
+      "context": [],
+      "disqualified": []
+     },
+     "found": true,
+     "correct_bucket": true,
+     "extracted_level": "low"
+    }
+   ],
+   "recall": [
+    12,
+    12
+   ],
+   "classification": [
+    12,
+    12
+   ],
+   "level_agreement": [
+    12,
+    12
+   ],
+   "strict_precision": [
+    15,
+    16
+   ],
+   "matched_path_ids": [
+    "nextjs_16494e4a2c",
+    "nextjs_2323185baa",
+    "nextjs_24962734e7",
+    "nextjs_2ba045f66c",
+    "nextjs_4315b5fb92",
+    "nextjs_523375afdf",
+    "nextjs_5a5f2f6714",
+    "nextjs_67098be47b",
+    "nextjs_8392155aea",
+    "nextjs_86709c1d69",
+    "nextjs_87c679607f",
+    "nextjs_c5a065b9b5",
+    "nextjs_f3317b5b79",
+    "nextjs_fdd92fa177",
+    "nextjs_fea20fefe0"
+   ],
+   "precision_labels": {
+    "nextjs_f3317b5b79": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_2323185baa": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_2ba045f66c": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_4315b5fb92": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_523375afdf": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_5a5f2f6714": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_67098be47b": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_8392155aea": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_fea20fefe0": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_16494e4a2c": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_24962734e7": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_86709c1d69": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_87c679607f": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_c5a065b9b5": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    },
+    "nextjs_b09465bce4": {
+     "valid": true,
+     "specific": true,
+     "reason": "The risk names a concrete API (next/script), a release (13), and a condition (incrementally adopting app), and the quotes support the behavior change and the guidance to read the upgrade guide, though the exact breakage is unstated.",
+     "by": "llm_judge"
+    },
+    "nextjs_fdd92fa177": {
+     "valid": true,
+     "specific": true,
+     "reason": "matches a gold risk",
+     "by": "gold"
+    }
+   },
+   "estimated_precision": [
+    16,
+    16
+   ],
+   "calibration": {
+    "high": [
+     7,
+     7
+    ],
+    "medium": [
+     8,
+     8
+    ],
+    "low": [
+     1,
+     1
+    ]
+   },
+   "judge_flagged_valid": [
+    0,
+    0
+   ]
+  }
+ },
+ "extra": {
+  "drift": {
+   "n": 61,
+   "excluded_genuine": 0,
+   "exact_false_accept": 0.0,
+   "fuzzy_false_accept": 1.0
+  },
+  "models": {
+   "cheap": "claude-haiku-5-5",
+   "strong": "claude-sonnet-5-5"
+  },
+  "evaluator_models": {
+   "cheap": "claude-sonnet-5-5",
+   "strong": "claude-sonnet-5-5"
+  },
+  "judge_calibration": {
+   "n": 40,
+   "accuracy": 1.0,
+   "kappa": 1.0,
+   "tp": 30,
+   "tn": 10,
+   "fp": 0,
+   "fn": 0
+  },
+  "stability": {
+   "jaccard": 0.7,
+   "paths_a": 25,
+   "paths_b": 26,
+   "recall_a": 0.9333333333333333,
+   "recall_b": 0.8666666666666667,
+   "reused_from": "eval/results.json (same models)"
+  }
+ },
+ "metrics": [
+  {
+   "name": "grounding_rate",
+   "value": 1.0,
+   "display": "428/428 = 1.000",
+   "target": 1.0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "validator_errors",
+   "value": 0,
+   "display": "0",
+   "target": 0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "structural_completeness",
+   "value": 1.0,
+   "display": "110/110 = 1.000",
+   "target": 1.0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "recall_per_upgrade (min)",
+   "value": 0.9333333333333333,
+   "display": "React 0.93, PostgreSQL 1.00, Next.js 1.00",
+   "target": 0.8,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "recall_overall",
+   "value": 0.9818181818181818,
+   "display": "54/55 = 0.982",
+   "target": 0.85,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "strict_precision (lower bound)",
+   "value": 0.6545454545454545,
+   "display": "72/110 = 0.655",
+   "target": null,
+   "pass": null,
+   "gate": "report"
+  },
+  {
+   "name": "estimated_precision",
+   "value": 0.990909090909091,
+   "display": "109/110 = 0.991",
+   "target": 0.85,
+   "pass": true,
+   "gate": "soft"
+  },
+  {
+   "name": "classification_accuracy",
+   "value": 0.9824561403508771,
+   "display": "56/57 = 0.982",
+   "target": 0.85,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "level_agreement",
+   "value": 1.0,
+   "display": "54/54 = 1.000",
+   "target": 0.8,
+   "pass": true,
+   "gate": "soft"
+  },
+  {
+   "name": "field_consistency",
+   "value": 1.0,
+   "display": "311/311 = 1.000",
+   "target": 0.95,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "calibration (valid-rate high \u2265 medium \u2265 low)",
+   "value": {
+    "high": 0.95,
+    "medium": 1.0,
+    "low": 1.0
+   },
+   "display": "high 19/20, medium 75/75, low 15/15",
+   "target": "monotone",
+   "pass": false,
+   "gate": "soft"
+  },
+  {
+   "name": "judge_accuracy",
+   "value": 1.0,
+   "display": "1.000 on 40 synthetic pairs",
+   "target": 0.9,
+   "pass": true,
+   "gate": "soft"
+  },
+  {
+   "name": "judge_kappa",
+   "value": 1.0,
+   "display": "1.000",
+   "target": 0.8,
+   "pass": true,
+   "gate": "soft"
+  },
+  {
+   "name": "drift_false_accept_exact",
+   "value": 0.0,
+   "display": "exact 0.000 vs fuzzy(0.9) 1.000 on 61 drifted quotes (0 mutations excluded because they are real source text)",
+   "target": 0.0,
+   "pass": true,
+   "gate": "hard"
+  },
+  {
+   "name": "stability_jaccard",
+   "value": 0.7,
+   "display": "0.700 (React cold rerun; recall 0.93 vs 0.87)",
+   "target": 0.8,
+   "pass": false,
+   "gate": "soft"
+  },
+  {
+   "name": "cost_latency",
+   "value": {
+    "usd_full": 3.2458654000000005,
+    "llm_calls": 271,
+    "seconds": 138.66
+   },
+   "display": "~$3.25 for 271 LLM calls to produce 3 models; 139s stage time on the last (possibly cached) run",
+   "target": null,
+   "pass": null,
+   "gate": "report"
+  }
+ ]
+}

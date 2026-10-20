@@ -379,16 +379,24 @@ def compute_deterministic(models: dict[str, RiskModel]) -> dict:
 
 
 def run_eval(use_llm: bool = True, offline: bool = False, ablations: bool = False, stability_run: bool = False,
-             stability: bool | None = None) -> dict:
+             stability: bool | None = None, evaluator_models: dict[str, str] | None = None,
+             calibration_models: dict[str, RiskModel] | None = None, stability_cache: Path | None = None,
+             previous_stability: dict | None = None) -> dict:
+    """evaluator_models fixes the precision judge, and calibration_models fixes the judge-calibration claims,
+    so that runs with different extraction models are scored by the same yardstick."""
     stability_run = stability_run or bool(stability)
     models = load_models()
     per = compute_deterministic(models)
     client = LLMClient(offline=offline) if use_llm else None
+    evaluator = LLMClient(offline=offline, models=evaluator_models) if use_llm and evaluator_models else client
     extra: dict[str, Any] = {"drift": drift_test(models)}
+    if client:
+        extra["models"] = client.model_map()
+        extra["evaluator_models"] = evaluator.model_map()
 
     if client:
         for slug, m in models.items():
-            labels = precision_labels(client, m, set(per[slug].get("matched_path_ids", [])))
+            labels = precision_labels(evaluator, m, set(per[slug].get("matched_path_ids", [])))
             per[slug]["precision_labels"] = labels
             valid = sum(v["valid"] for v in labels.values())
             per[slug]["estimated_precision"] = [valid, len(labels)]
@@ -399,7 +407,7 @@ def run_eval(use_llm: bool = True, offline: bool = False, ablations: bool = Fals
             per[slug]["calibration"] = buckets
             flagged = [p for p in m.risk_paths if "judge_not_supported" in p.review_flags]
             per[slug]["judge_flagged_valid"] = [sum(labels[p.path_id]["valid"] for p in flagged), len(flagged)]
-        extra["judge_calibration"] = judge_calibration(client, models)
+        extra["judge_calibration"] = judge_calibration(client, calibration_models or models)
     if ablations:
         extra["ablations"] = {}
         for slug, m in models.items():
@@ -410,8 +418,10 @@ def run_eval(use_llm: bool = True, offline: bool = False, ablations: bool = Fals
             if client:
                 ab["baseline_single_prompt"] = baseline_ablation(client, slug, m, gold)
             extra["ablations"][slug] = ab
-    if stability_run and client:
-        extra["stability"] = stability_rerun(lambda d: LLMClient(cache_dir=d))
+    if previous_stability:
+        extra["stability"] = previous_stability
+    elif stability_run and client:
+        extra["stability"] = stability_rerun(lambda d: LLMClient(cache_dir=stability_cache or d))
     elif (config.EVAL_DIR / "results.json").exists():
         prev = json.loads((config.EVAL_DIR / "results.json").read_text())
         for key in ("stability", "ablations"):
@@ -420,7 +430,7 @@ def run_eval(use_llm: bool = True, offline: bool = False, ablations: bool = Fals
 
     metrics = summarize_metrics(per, extra)
     res = {"per_upgrade": per, "extra": extra, "metrics": metrics}
-    config.EVAL_DIR.mkdir(exist_ok=True)
+    config.EVAL_DIR.mkdir(parents=True, exist_ok=True)
     (config.EVAL_DIR / "results.json").write_text(json.dumps(res, indent=1, default=str))
     (config.EVAL_DIR / "results.md").write_text(render_markdown(res))
     return res

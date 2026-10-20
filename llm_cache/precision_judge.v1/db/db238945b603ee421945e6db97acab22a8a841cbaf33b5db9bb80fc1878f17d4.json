@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"React 18 requires the New React Native Architecture for React Native users\",\n \"risk_type\": \"dependency_requirement\",\n \"description\": \"The text states that React 18 relies on the New React Native Architecture and that React 18 will ship in a future version of React Native. It does not state what happens to a React Native app that moves to React 18 without the New Architecture.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 18.\",\n   \"quotes\": [\n    \"React 18 relies on the New React Native Architecture to benefit from the new capabilities presented in this blogpost.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application is a React Native app.\",\n   \"quotes\": [\n    \"For React Native users, React 18 will ship in a future version of React Native.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application uses the New React Native Architecture.\",\n   \"quotes\": [\n    \"React 18 relies on the New React Native Architecture\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": false,
+  "specific": true,
+  "reason": "The quotes only say React 18 relies on the New Architecture to benefit from new capabilities and will ship in a future React Native version; they do not state any breakage, migration need, or operational risk from upgrading without it, so it is not a supported upgrade risk, though it does name a concrete checkable property (the New React Native Architecture)."
+ },
+ "usage": {
+  "input_tokens": 802,
+  "output_tokens": 126,
+  "stop_reason": "end_turn"
+ }
+}

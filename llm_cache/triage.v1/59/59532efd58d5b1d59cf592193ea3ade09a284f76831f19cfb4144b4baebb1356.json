@@ -1,0 +1,55 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: PostgreSQL. Upgrade: 13 -> 16. Release of these items: 14.\nSource: PostgreSQL 14 release notes: Migration to Version 14.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"9ee9be5f4bf1\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove support for SSL compression (Daniel Gustafsson, Michael Paquier) This was already disabled by default in previous PostgreSQL releases, and most modern OpenSSL and TLS versions no longer support it.\"}\n{\"item_id\": \"abd96888e9f4\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove server and libpq support for the version 2 wire protocol (Heikki Linnakangas) This was last used as the default in PostgreSQL 7.3 (released in 2002).\"}\n{\"item_id\": \"937b9bec07db\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Disallow single-quoting of the language name in the CREATE/DROP LANGUAGE command (Peter Eisentraut)\"}\n{\"item_id\": \"aab8005035db\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove the composite types that were formerly created for sequences and toast tables (Tom Lane)\"}\n{\"item_id\": \"b8cbafcb51e5\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Process doubled quote marks in ecpg SQL command strings correctly (Tom Lane) Previously 'abc''def' was passed to the server as 'abc'def', and \\\"abc\\\"\\\"def\\\" was passed as \\\"abc\\\"def\\\", causing syntax errors.\"}\n{\"item_id\": \"f3e00df61bd5\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Prevent the containment operators (<@ and @>) for intarray from using GiST indexes (Tom Lane) Previously a full GiST index scan was required, so just avoid that and scan the heap, which is faster. Indexes created for this purpose should be removed.\"}\n{\"item_id\": \"e4f34e733733\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Remove contrib program pg_standby (Justin Pryzby)\"}\n{\"item_id\": \"949c89b4881e\", \"section\": \"Release 14 / Migration to Version 14\", \"text\": \"Prevent tablefunc's function normal_rand() from accepting negative values (Ashutosh Bapat) Negative values produced undesirable results.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "9ee9be5f4bf1",
+    "label": "risk",
+    "reason": "SSL compression support is removed, so any deployment or client config that still requests sslcompression will lose that capability and may need config changes."
+   },
+   {
+    "item_id": "abd96888e9f4",
+    "label": "risk",
+    "reason": "Server and libpq support for the version 2 wire protocol is removed, so very old clients or drivers using it will fail to connect."
+   },
+   {
+    "item_id": "937b9bec07db",
+    "label": "risk",
+    "reason": "Single-quoted language names in CREATE/DROP LANGUAGE are now disallowed, so existing scripts or migrations using that syntax will error."
+   },
+   {
+    "item_id": "aab8005035db",
+    "label": "risk",
+    "reason": "Composite types formerly created for sequences and toast tables are removed, which could break code or queries that referenced those types."
+   },
+   {
+    "item_id": "b8cbafcb51e5",
+    "label": "risk",
+    "reason": "ecpg now processes doubled quote marks differently, a behavior change that could affect applications that worked around the old behavior and require recompilation or review."
+   },
+   {
+    "item_id": "f3e00df61bd5",
+    "label": "risk",
+    "reason": "intarray containment operators no longer use GiST indexes, which changes query plans and the text says indexes created for this purpose should be removed."
+   },
+   {
+    "item_id": "e4f34e733733",
+    "label": "risk",
+    "reason": "The contrib program pg_standby is removed, so setups relying on it for warm standby will need migration to streaming replication or another approach."
+   },
+   {
+    "item_id": "949c89b4881e",
+    "label": "risk",
+    "reason": "normal_rand() now rejects negative values, so callers passing negative values will start failing."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1489,
+  "output_tokens": 547,
+  "stop_reason": "end_turn"
+ }
+}

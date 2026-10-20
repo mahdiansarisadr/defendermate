@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom scan providers no longer assumed to support projections\",\n \"risk_type\": \"changed_default\",\n \"description\": \"In release 15, custom scan providers are assumed by default not to support projections. Providers that do support projections must be updated to indicate this. Otherwise they are treated as not supporting projections.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the default for custom scan provider projection support changed.\",\n   \"quotes\": [\n    \"The default is now that custom scan providers are assumed to not support projections\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses a custom scan provider (typically an extension or custom C code) that supports projections.\",\n   \"quotes\": [\n    \"those that do will need to be updated for this release\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a genuine behavior change (custom scan providers assumed not to support projections by default, so projection-capable providers must be updated), and it is concrete and checkable by looking for custom scan providers in extensions or C code."
+ },
+ "usage": {
+  "input_tokens": 736,
+  "output_tokens": 93,
+  "stop_reason": "end_turn"
+ }
+}

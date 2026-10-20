@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: PostgreSQL. Upgrade: 13 -> 16. Release of these items: 15.\nSource: PostgreSQL 15 release notes: Migration to Version 15.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"5e37995bd9ed\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 15 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities:\"}\n{\"item_id\": \"8329d1df1773\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Remove PUBLIC creation permission on the public schema (Noah Misch) The new default is one of the secure schema usage patterns that ddl-schemas-patterns has recommended since the security release for CVE-2018-1058. The change applies to new database clusters and to newly-created databases in existing clusters. Upgrading a cluster or restoring a database dump will preserve public's existing permissions. For existing databases, especially those having multiple users, consider revoking CREATE permission on the public schema to adopt this new default. For new databases having no need to defend against insider threats, granting CREATE permission will yield the behavior of prior releases.\"}\n{\"item_id\": \"ab5fb83d79a9\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Change the owner of the public schema to be the new pg_database_owner role (Noah Misch) This allows each database's owner to have ownership privileges on the public schema within their database. Previously it was owned by the bootstrap superuser, so that non-superuser database owners could not do anything with it. This change applies to new database clusters and to newly-created databases in existing clusters. Upgrading a cluster or restoring a database dump will preserve public's existing ownership specification.\"}\n{\"item_id\": \"caf29c7766a1\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Remove long-deprecated exclusive backup mode (David Steele, Nathan Bossart) If the database server stops abruptly while in this mode, the server could fail to start. The non-exclusive backup mode is considered superior for all purposes. Functions pg_start_backup()/pg_stop_backup() have been renamed to pg_backup_start()/pg_backup_stop(), and the functions pg_backup_start_time() and pg_is_in_backup() have been removed.\"}\n{\"item_id\": \"7e08c3cc0bf3\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Increase hash_mem_multiplier default to 2.0 (Peter Geoghegan) This allows query hash operations to use more work_mem memory than other operations.\"}\n{\"item_id\": \"9109c2cea261\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Remove server-side language plpython2u and generic Python language plpythonu (Andres Freund) Python 2.x is no longer supported. While the original intent of plpythonu was that it could eventually refer to plpython3u, changing it now seems more likely to cause problems than solve them, so it's just been removed.\"}\n{\"item_id\": \"d94130c45aa7\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Generate an error if array_to_tsvector() is passed an empty-string array element (Jean-Christophe Arnu) This is prohibited because lexemes should never be empty. Users of previous Postgres releases should verify that no empty lexemes are stored because they can lead to dump/restore failures and inconsistent results.\"}\n{\"item_id\": \"5f2b6af0dce9\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Generate an error when chr() is supplied with a negative argument (Peter Eisentraut)\"}\n{\"item_id\": \"891839d9cfdd\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Prevent CREATE OR REPLACE VIEW from changing the collation of an output column (Tom Lane)\"}\n{\"item_id\": \"9f02faab375a\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Disallow zero-length Unicode identifiers, e.g., U&\\\"\\\" (Peter Eisentraut) Non-Unicode zero-length identifiers were already disallowed.\"}\n{\"item_id\": \"5254ba667cfd\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Prevent numeric literals from having non-numeric trailing characters (Peter Eisentraut) Previously, query text like 123abc would be interpreted as 123 followed by a separate token abc.\"}\n{\"item_id\": \"4df8b8da04db\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Adjust JSON numeric literal processing to match the SQL/JSON-standard (Peter Eisentraut) This accepts numeric formats like .1 and 1., and disallows trailing junk after numeric literals, like 1.type().\"}\n{\"item_id\": \"01b9d2879b2b\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"When interval input provides a fractional value for a unit greater than months, round to the nearest month (Bruce Momjian) For example, convert 1.99 years to 2 years, not 1 year 11 months as before.\"}\n{\"item_id\": \"af5139789b77\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Improve consistency of interval parsing with trailing periods (Tom Lane) Numbers with trailing periods were rejected on some platforms.\"}\n{\"item_id\": \"c71e3ba59b30\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Mark the interval output function as stable, not immutable, since it depends on IntervalStyle (Tom Lane) This will, for example, cause creation of indexes relying on the text output of interval values to fail.\"}\n{\"item_id\": \"409fa2967089\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Detect integer overflow in interval justification functions (Joe Koshakow) The affected functions are justify_interval(), justify_hours(), and justify_days().\"}\n{\"item_id\": \"fb49e11c8a0f\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Change the I/O format of type \\\"char\\\" for non-ASCII characters (Tom Lane) Bytes with the high bit set are now output as a backslash and three octal digits, to avoid encoding issues.\"}\n{\"item_id\": \"ac7f4ee0e4b5\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Remove the default ADMIN OPTION privilege a login role has on its own role membership (Robert Haas) Previously, a login role could add/remove members of its own role, even without ADMIN OPTION privilege.\"}\n{\"item_id\": \"420f1785089c\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Allow logical replication to run as the owner of the subscription (Mark Dilger) Because row-level security policies are not checked, only superusers, roles with bypassrls, and table owners can replicate into tables with row-level security policies.\"}\n{\"item_id\": \"c89f16360764\", \"section\": \"Release 15 / Migration to Version 15\", \"text\": \"Prevent UPDATE and DELETE logical replication operations on tables where the subscription owner does not have SELECT permission on the table (Jeff Davis) UPDATE and DELETE commands typically involve reading the table as well, so require the subscription owner to have table SELECT permission.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "5e37995bd9ed",
+    "label": "risk",
+    "reason": "States that a dump/restore, pg_upgrade, or logical replication is required to migrate data from any previous release, which is mandatory migration work."
+   },
+   {
+    "item_id": "8329d1df1773",
+    "label": "risk",
+    "reason": "The new default removes PUBLIC CREATE on the public schema for new clusters/databases, so deployments that create new databases and rely on prior behavior may break and existing databases may need review."
+   },
+   {
+    "item_id": "ab5fb83d79a9",
+    "label": "risk",
+    "reason": "Public schema ownership changes to pg_database_owner for new databases, altering privileges that scripts or deployments creating new databases may depend on."
+   },
+   {
+    "item_id": "caf29c7766a1",
+    "label": "risk",
+    "reason": "Exclusive backup mode is removed and pg_start_backup/pg_stop_backup are renamed while pg_backup_start_time and pg_is_in_backup are removed, breaking existing backup scripts."
+   },
+   {
+    "item_id": "7e08c3cc0bf3",
+    "label": "risk",
+    "reason": "The hash_mem_multiplier default change lets hash operations use more memory, which can alter memory usage and create operational risk."
+   },
+   {
+    "item_id": "9109c2cea261",
+    "label": "risk",
+    "reason": "The plpython2u and plpythonu languages are removed, so functions using them must be migrated to plpython3u."
+   },
+   {
+    "item_id": "d94130c45aa7",
+    "label": "risk",
+    "reason": "array_to_tsvector() now errors on empty-string elements and stored empty lexemes can cause dump/restore failures, requiring verification."
+   },
+   {
+    "item_id": "5f2b6af0dce9",
+    "label": "risk",
+    "reason": "chr() now raises an error for negative arguments, which could break queries that previously passed such values."
+   },
+   {
+    "item_id": "891839d9cfdd",
+    "label": "risk",
+    "reason": "CREATE OR REPLACE VIEW can no longer change an output column's collation, so existing scripts relying on that will fail."
+   },
+   {
+    "item_id": "9f02faab375a",
+    "label": "risk",
+    "reason": "Zero-length Unicode identifiers like U&\"\" are now disallowed and will error in existing SQL that uses them."
+   },
+   {
+    "item_id": "5254ba667cfd",
+    "label": "risk",
+    "reason": "Numeric literals with trailing non-numeric characters like 123abc are now rejected, which could break queries that relied on the old tokenization."
+   },
+   {
+    "item_id": "4df8b8da04db",
+    "label": "risk",
+    "reason": "JSON numeric literal processing changes, accepting new formats and disallowing trailing junk, which alters jsonpath behavior."
+   },
+   {
+    "item_id": "01b9d2879b2b",
+    "label": "risk",
+    "reason": "Interval input with fractional values for units above months is now rounded differently (1.99 years becomes 2 years), changing results."
+   },
+   {
+    "item_id": "af5139789b77",
+    "label": "risk",
+    "reason": "Interval parsing of numbers with trailing periods changes for consistency, so inputs previously rejected on some platforms may now behave differently."
+   },
+   {
+    "item_id": "c71e3ba59b30",
+    "label": "risk",
+    "reason": "Interval output function is now stable rather than immutable, which will cause creation of indexes relying on interval text output to fail."
+   },
+   {
+    "item_id": "409fa2967089",
+    "label": "risk",
+    "reason": "Integer overflow in justify_interval(), justify_hours(), and justify_days() is now detected and errors, which could affect queries that previously silently overflowed."
+   },
+   {
+    "item_id": "fb49e11c8a0f",
+    "label": "risk",
+    "reason": "The I/O format of type \"char\" for non-ASCII bytes changes to octal escapes, which can alter output and affect applications or dumps."
+   },
+   {
+    "item_id": "ac7f4ee0e4b5",
+    "label": "risk",
+    "reason": "Login roles lose the default ADMIN OPTION on their own role membership, which can break role management that relied on it."
+   },
+   {
+    "item_id": "420f1785089c",
+    "label": "risk",
+    "reason": "Logical replication now runs as the subscription owner without checking row-level security, so only superusers, bypassrls roles, and table owners can replicate into RLS tables, requiring permission changes."
+   },
+   {
+    "item_id": "c89f16360764",
+    "label": "risk",
+    "reason": "UPDATE and DELETE logical replication is prevented when the subscription owner lacks SELECT permission, which can break existing replication setups."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3194,
+  "output_tokens": 1441,
+  "stop_reason": "end_turn"
+ }
+}

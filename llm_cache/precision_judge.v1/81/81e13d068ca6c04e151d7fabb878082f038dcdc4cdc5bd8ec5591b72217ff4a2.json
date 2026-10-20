@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"xml2 xml_is_well_formed() removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The xml2 extension's xml_is_well_formed() function is removed in PostgreSQL 15. The core backend has provided an implementation since 9.1, so calls that resolve to the xml2 version will need to use the core function instead.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where xml2's xml_is_well_formed() was removed\",\n   \"quotes\": [\n    \"Remove xml2's xml_is_well_formed() function\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The database has the xml2 extension installed and uses its xml_is_well_formed() function\",\n   \"quotes\": [\n    \"Remove xml2's xml_is_well_formed() function (Tom Lane)\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that xml2's xml_is_well_formed() was removed in a release inside the 13->16 range, it names a concrete function and extension that can be checked, and affected users with xml2 calls would need to migrate, though the quotes do not themselves state version 15 or the core function replacement."
+ },
+ "usage": {
+  "input_tokens": 761,
+  "output_tokens": 114,
+  "stop_reason": "end_turn"
+ }
+}

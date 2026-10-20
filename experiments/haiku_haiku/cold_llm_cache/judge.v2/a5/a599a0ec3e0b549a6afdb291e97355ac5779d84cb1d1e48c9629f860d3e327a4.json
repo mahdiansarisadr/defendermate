@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_into_react_18_from_r_2c65f8\",\n  \"claim\": \"The upgrade crosses into React 18 (from React 17).\",\n  \"evidence\": [\n   {\n    \"quote\": \"New method to create a root to render or unmount\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"React 18 adds out-of-the-box performance improvements by doing more batching by default.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_reactdom_render_0a0587\",\n  \"claim\": \"The application calls ReactDOM.render.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Use it instead of ReactDOM.render.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"To opt-out of automatic batching, you can use flushSync:\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Starting in React 18 with createRoot\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"To opt-out of automatic batching, you can use flushSync\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_already_uses_createroot_9e3a62\",\n  \"claim\": \"The application already uses createRoot.\",\n  \"evidence\": [\n   {\n    \"quote\": \"createRoot: New method to create a root to render or unmount.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_needs_react_18_new_featu_79523b\",\n  \"claim\": \"The application needs React 18 new features.\",\n  \"evidence\": [\n   {\n    \"quote\": \"New features in React 18 don't work without it.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"updates inside of timeouts, promises, native event handlers or any other event will batch the same way\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_creates_its_root_with_cr_e9db74\",\n  \"claim\": \"The application creates its root with createRoot.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_into_react_18_from_r_2c65f8",
+    "verdict": "partially_supported",
+    "missing": "The quotes establish React 18 as the target release but do not state that the upgrade is from React 17 specifically."
+   },
+   {
+    "condition_id": "the_application_calls_reactdom_render_0a0587",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_already_uses_createroot_9e3a62",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_needs_react_18_new_featu_79523b",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_creates_its_root_with_cr_e9db74",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2059,
+  "output_tokens": 1330,
+  "stop_reason": "end_turn"
+ }
+}

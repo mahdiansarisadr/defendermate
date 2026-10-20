@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Logical replication UPDATE/DELETE requires subscription owner SELECT permission\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 15, UPDATE and DELETE logical replication operations are prevented on tables where the subscription owner lacks SELECT permission on the table. Existing logical replication subscriptions whose owner lacks SELECT on a target table will have those UPDATE/DELETE operations blocked.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, which introduced the requirement that the subscription owner have SELECT permission for replicated UPDATE and DELETE.\",\n   \"quotes\": [\n    \"Prevent UPDATE and DELETE logical replication operations on tables where the subscription owner does not have SELECT permission on the table\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses logical replication subscriptions that apply UPDATE or DELETE operations to subscriber tables.\",\n   \"quotes\": [\n    \"Prevent UPDATE and DELETE logical replication operations on tables\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The subscription owner does not have SELECT permission on a subscribed table that receives UPDATE or DELETE operations.\",\n   \"quotes\": [\n    \"where the subscription owner does not have SELECT permission on the table\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support a concrete behavior change (UPDATE/DELETE logical replication blocked when the subscription owner lacks SELECT on the table) that can break existing subscriptions and is checkable via subscription owner privileges on subscribed tables."
+ },
+ "usage": {
+  "input_tokens": 944,
+  "output_tokens": 104,
+  "stop_reason": "end_turn"
+ }
+}

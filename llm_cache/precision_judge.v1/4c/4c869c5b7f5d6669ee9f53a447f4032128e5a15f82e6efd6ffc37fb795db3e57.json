@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Window frame RANGE with infinite offsets returns different (corrected) results\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"PostgreSQL 14 fixed how infinite window function ranges are handled. Window frame clauses like 'inf' PRECEDING AND 'inf' FOLLOWING previously returned incorrect results. After upgrading from 13, queries using these frames return different (correct) results, so anything relying on the old output will see a change.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where infinite window function range handling was fixed.\",\n   \"quotes\": [\n    \"Version 14 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses window frame clauses with infinite offsets, such as 'inf' PRECEDING AND 'inf' FOLLOWING.\",\n   \"quotes\": [\n    \"Previously window frame clauses like 'inf' PRECEDING AND 'inf' FOLLOWING returned incorrect results.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application or its tests depend on the previous (incorrect) results of such window queries.\",\n   \"quotes\": [\n    \"Fix handling of infinite window function ranges\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in PostgreSQL 14 (fixed handling of infinite window frame ranges like 'inf' PRECEDING AND 'inf' FOLLOWING that previously returned incorrect results), which is checkable by searching for such frame clauses and could alter outputs for apps upgrading from 13."
+ },
+ "usage": {
+  "input_tokens": 921,
+  "output_tokens": 131,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,29 +1,29 @@
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.0, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "run_start", "project": "Next.js", "current": "12", "target": "14", "offline": true, "models": {"cheap": "claude-haiku-5-5", "strong": "claude-haiku-5-5"}}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.0, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "plan"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.0, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "plan", "releases": ["13", "14"], "future": []}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.0, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "plan", "seconds": 0.0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.0, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "fetch"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.0, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "fetch", "seconds": 0.0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.0, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "parse"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.01, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "parsed", "items_total": 26, "items_on_path": 26, "items_future": 0, "items_dropped_r4": 0, "revert_candidates": 0, "patch_notes_scanned": 0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.01, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "parse", "seconds": 0.01}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.01, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "triage"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.01, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "triage_done", "batches": 3}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.01, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "triage", "seconds": 0.0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.01, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "extract"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.04, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "extracted", "paths": 27, "failures": 0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.04, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "extract", "seconds": 0.03}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.04, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "link"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.04, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "link", "seconds": 0.0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.04, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "compose"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.04, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "compose", "seconds": 0.0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.04, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "judge"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.05, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "judge_done", "supported": 32, "partially_supported": 8, "not_supported": 0, "failed": 0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.05, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "judge", "seconds": 0.01}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.05, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "rubric"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.05, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "rubric", "seconds": 0.0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.05, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "assemble"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.05, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "assemble", "seconds": 0.0}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.05, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "validate"}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.08, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "validate", "seconds": 0.03}
-{"ts": "2026-10-20T15:08:28Z", "elapsed_s": 0.08, "run_id": "ac2ba43755", "upgrade": "nextjs_12_to_14", "event": "run_end", "status": "ok", "final_paths": 19, "validation": {"errors": 0, "warnings": 2, "by_code": {"W4_no_search_queries": 2}}, "usage": {"triage": {"calls": 3, "cache_hits": 3, "input_tokens": 5127, "output_tokens": 1754, "usd_estimate": 0.0, "usd_full": 0.013897}, "extract": {"calls": 20, "cache_hits": 20, "input_tokens": 79601, "output_tokens": 44883, "usd_estimate": 0.0, "usd_full": 0.30401599999999995}, "extract_repair": {"calls": 1, "cache_hits": 1, "input_tokens": 4189, "output_tokens": 2903, "usd_estimate": 0.0, "usd_full": 0.018704}, "judge": {"calls": 17, "cache_hits": 17, "input_tokens": 19960, "output_tokens": 8563, "usd_estimate": 0.0, "usd_full": 0.062775}}}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.0, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "run_start", "project": "Next.js", "current": "12", "target": "14", "offline": true, "models": {"cheap": "claude-haiku-5-5", "strong": "claude-haiku-5-5"}}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.0, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "plan"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.0, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "plan", "releases": ["13", "14"], "future": []}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.0, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "plan", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.0, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "fetch"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "fetch", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "parse"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "parsed", "items_total": 26, "items_on_path": 26, "items_future": 0, "items_dropped_r4": 0, "revert_candidates": 0, "patch_notes_scanned": 0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "parse", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "triage"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "triage_done", "batches": 3}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "triage", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.01, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "extract"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.04, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "extracted", "paths": 27, "failures": 0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.04, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "extract", "seconds": 0.03}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.04, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "link"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.04, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "link", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.04, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "compose"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.04, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "compose", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.04, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "judge"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.05, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "judge_done", "supported": 32, "partially_supported": 8, "not_supported": 0, "failed": 0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.05, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "judge", "seconds": 0.01}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.05, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "rubric"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.05, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "rubric", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.05, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "assemble"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.05, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "assemble", "seconds": 0.0}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.05, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_start", "stage": "validate"}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.08, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "stage_end", "stage": "validate", "seconds": 0.03}
+{"ts": "2026-10-20T15:17:17Z", "elapsed_s": 0.08, "run_id": "f1fe3b97e2", "upgrade": "nextjs_12_to_14", "event": "run_end", "status": "ok", "final_paths": 19, "validation": {"errors": 0, "warnings": 2, "by_code": {"W4_no_search_queries": 2}}, "usage": {"triage": {"calls": 3, "cache_hits": 3, "input_tokens": 5127, "output_tokens": 1754, "usd_estimate": 0.0, "usd_full": 0.0013897000000000002, "model": "claude-haiku-5-5"}, "extract": {"calls": 20, "cache_hits": 20, "input_tokens": 79601, "output_tokens": 44883, "usd_estimate": 0.0, "usd_full": 0.0304016, "model": "claude-haiku-5-5"}, "extract_repair": {"calls": 1, "cache_hits": 1, "input_tokens": 4189, "output_tokens": 2903, "usd_estimate": 0.0, "usd_full": 0.0018704000000000001, "model": "claude-haiku-5-5"}, "judge": {"calls": 17, "cache_hits": 17, "input_tokens": 19960, "output_tokens": 8563, "usd_estimate": 0.0, "usd_full": 0.0062775, "model": "claude-haiku-5-5"}}}

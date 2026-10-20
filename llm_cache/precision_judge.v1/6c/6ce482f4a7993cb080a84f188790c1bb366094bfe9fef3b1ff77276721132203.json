@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Regex back-reference matching ignores constraints\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 14, constraints (such as ^) are disregarded when matching regular expression back-references. Patterns like (^\\\\d+).*\\\\1 may match differently than in 13, changing query results.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 14 (13 -> 16), where this behavior change was introduced.\",\n   \"quotes\": [\n    \"Disregard constraints when matching regular expression back-references\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses regular expressions containing back-references (e.g. \\\\1) inside a capture group that also contains a constraint such as ^.\",\n   \"quotes\": [\n    \"in (^\\\\d+).*\\\\1, the ^ constraint should be applied at the start of the string, but not when matching \\\\1.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in regex back-reference matching (constraints like ^ no longer applied when matching \\1), and the 13->16 upgrade crosses the release that introduced it. It is a checkable pattern (back-references inside a capture group containing a constraint) that could change query results."
+ },
+ "usage": {
+  "input_tokens": 793,
+  "output_tokens": 117,
+  "stop_reason": "end_turn"
+ }
+}

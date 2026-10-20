@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_where_the_416eb3\",\n  \"claim\": \"The upgrade crosses release 15, where the hash_mem_multiplier default was increased.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Increase hash_mem_multiplier default to 2.0\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_relies_on_the_default_val_74c38a\",\n  \"claim\": \"The deployment relies on the default value of hash_mem_multiplier (does not set it explicitly in postgresql.conf, ALTER SYSTEM, per-role/database settings, or session settings).\",\n  \"evidence\": [\n   {\n    \"quote\": \"Increase hash_mem_multiplier default to 2.0\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"workloads_run_queries_with_hash_operatio_d9f599\",\n  \"claim\": \"Workloads run queries with hash operations (e.g., hash joins or hash aggregates) and memory is sized based on work_mem.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This allows query hash operations to use more work_mem memory than other operations.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_where_the_416eb3",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_deployment_relies_on_the_default_val_74c38a",
+    "verdict": "partially_supported",
+    "missing": "The quote only states that the default was increased to 2.0 in release 15. It does not say anything about deployments relying on the default or not setting the parameter explicitly, although that is a hypothesis for downstream checking."
+   },
+   {
+    "condition_id": "workloads_run_queries_with_hash_operatio_d9f599",
+    "verdict": "partially_supported",
+    "missing": "The quote says hash operations can use more work_mem than other operations. It does not say that memory is sized based on work_mem, or that workloads run hash joins or aggregates, though these are deployment conditions to be tested downstream."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1283,
+  "output_tokens": 286,
+  "stop_reason": "end_turn"
+ }
+}

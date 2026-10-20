@@ -159,6 +159,16 @@ def eval_run(llm: bool = False) -> dict:
     return run_eval(use_llm=llm)
 
 
+@app.get("/api/experiments")
+def experiments() -> dict:
+    from .experiment import CONFIGS, compare
+
+    out = compare(write=False)
+    done = {r["name"] for r in out["rows"]}
+    out["pending"] = [{"name": n, **c} for n, c in CONFIGS.items() if n not in done]
+    return out
+
+
 @app.get("/api/registry")
 def registry() -> list[dict]:
     out = []
@@ -243,4 +253,4 @@ if config.UI_DIST.exists():
         f = config.UI_DIST / full_path
         if full_path and f.is_file():
             return FileResponse(f)
-        return FileResponse(config.UI_DIST / "index.html")
+        return FileResponse(config.UI_DIST / "index.html", headers={"Cache-Control": "no-cache"})

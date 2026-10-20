@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_14_where_nex_67b99d\",\n  \"claim\": \"The upgrade crosses release 14, where @next/font was fully removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The @next/font package has been fully removed in favor of the built-in next/font.\",\n    \"source\": \"Next.js 'Version 14' upgrade guide at v14.2.0\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_imports_from_the_next_fo_759f2a\",\n  \"claim\": \"The application imports from the @next/font package.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The @next/font package has been fully removed in favor of the built-in next/font.\",\n    \"source\": \"Next.js 'Version 14' upgrade guide at v14.2.0\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_s_dependencies_list_next_cd459d\",\n  \"claim\": \"The application's dependencies list @next/font in package.json.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The @next/font package has been fully removed in favor of the built-in next/font.\",\n    \"source\": \"Next.js 'Version 14' upgrade guide at v14.2.0\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_14_where_nex_67b99d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_imports_from_the_next_fo_759f2a",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_s_dependencies_list_next_cd459d",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1216,
+  "output_tokens": 141,
+  "stop_reason": "end_turn"
+ }
+}

@@ -71,15 +71,16 @@ class Usage:
         self.by_stage: dict[str, dict[str, float]] = {}
 
     def add(self, stage: str, model: str, usage: dict, cached: bool) -> None:
-        pin, pout = config.PRICES.get(model, (0.0, 0.0))
+        tin, tout = usage.get("input_tokens", 0), usage.get("output_tokens", 0)
+        usd = config.price_usd(model, tin, tout)
         with self.lock:
             s = self.by_stage.setdefault(stage, {"calls": 0, "cache_hits": 0, "input_tokens": 0,
-                                                 "output_tokens": 0, "usd_estimate": 0.0, "usd_full": 0.0})
+                                                 "output_tokens": 0, "usd_estimate": 0.0, "usd_full": 0.0,
+                                                 "model": model})
             s["calls"] += 1
             s["cache_hits"] += int(cached)
-            s["input_tokens"] += usage.get("input_tokens", 0)
-            s["output_tokens"] += usage.get("output_tokens", 0)
-            usd = (usage.get("input_tokens", 0) * pin + usage.get("output_tokens", 0) * pout) / 1e6
+            s["input_tokens"] += tin
+            s["output_tokens"] += tout
             s["usd_full"] += usd
             if not cached:
                 s["usd_estimate"] += usd

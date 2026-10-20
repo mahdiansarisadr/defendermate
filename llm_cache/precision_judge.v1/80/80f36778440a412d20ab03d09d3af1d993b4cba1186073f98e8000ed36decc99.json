@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Logical replication apply runs as subscription owner; RLS-protected target tables require privileged owner\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 15, logical replication runs as the owner of the subscription. Row-level security policies are not checked during apply, so only superusers, roles with bypassrls, and table owners can replicate into tables that have row-level security policies. Subscriptions owned by other roles that replicate into RLS-protected tables will be unable to replicate into them.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15, where logical replication began running as the subscription owner.\",\n   \"quotes\": [\n    \"Allow logical replication to run as the owner of the subscription\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses logical replication subscriptions on the subscriber side.\",\n   \"quotes\": [\n    \"Allow logical replication to run as the owner of the subscription\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Replicated target tables on the subscriber have row-level security policies.\",\n   \"quotes\": [\n    \"only superusers, roles with bypassrls, and table owners can replicate into tables with row-level security policies\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The subscription owner is not a superuser, does not have bypassrls, and does not own the RLS-protected target tables.\",\n   \"quotes\": [\n    \"only superusers, roles with bypassrls, and table owners can replicate into tables with row-level security policies\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The subscription owner may also need ordinary privileges on target tables now that apply runs as that role.\",\n   \"quotes\": [\n    \"Allow logical replication to run as the owner of the subscription\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk is a genuine behavior change in PG 15 (logical replication applies as the subscription owner), and the quotes support the required conditions: subscription use and the need for superuser, bypassrls, or table-owner status when target tables have RLS. It is concrete and checkable by inspecting subscription owners, RLS policies on target tables, and role attributes."
+ },
+ "usage": {
+  "input_tokens": 1099,
+  "output_tokens": 135,
+  "stop_reason": "end_turn"
+ }
+}

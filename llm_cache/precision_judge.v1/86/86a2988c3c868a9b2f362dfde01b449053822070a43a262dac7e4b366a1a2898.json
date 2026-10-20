@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"chr() with negative argument now raises an error\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 15, chr() generates an error when supplied with a negative argument. Code or queries that call chr() with a negative value will now fail with an error instead of the prior behavior.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where chr() was changed to error on negative arguments (upgrade from 13 to 16).\",\n   \"quotes\": [\n    \"Generate an error when chr() is supplied with a negative argument\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application code, SQL queries, functions, or views call chr() and may pass a negative argument.\",\n   \"quotes\": [\n    \"Generate an error when chr() is supplied with a negative argument\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete function (chr()) and a checkable behavior change (error on negative argument), and the quote directly supports it; the claim that it landed in release 15 is not shown in the quotes but is consistent with the 13->16 range, and the risk applies to code that passes negative values."
+ },
+ "usage": {
+  "input_tokens": 750,
+  "output_tokens": 112,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,2537 @@
+{
+  "project": "Next.js",
+  "current_version": "12",
+  "target_version": "14",
+  "upgrade": "12_to_14",
+  "disclaimer": "Documentation-derived risk conditions; not a migration plan.",
+  "summary": "Next.js 12 -> 14 crosses 2 release(s) (13, 14). 14 risk paths: 2 critical, 9 high, 2 medium, 1 low. Main risk types: removed_api (6), dependency_requirement (3), changed_behavior (3). Critical: Minimum React version raised to 18.2.0; Node.js requirement raised to >=18.17.0. 0 context facts and 0 disqualified candidates are listed separately. Documentation-derived risk conditions; not a migration plan.",
+  "source_inventory": [
+    {
+      "source_id": "next_guide_13_current",
+      "title": "Next.js 'How to upgrade to version 13' (current docs)",
+      "url": "https://nextjs.org/docs/pages/guides/upgrading/version-13",
+      "source_type": "official_migration_guide",
+      "retrieved_at": "2026-10-20T14:02:44Z",
+      "why_relevant": "Current version of the v13 guide; covers Pages Router specifics but was edited after release, so tag-pinned and package metadata outrank it.",
+      "authority_tier": 1,
+      "content_hash": "sha256:f0a0acfb6629c4fd88ad875cd57830db005b7c39b9b9bd2faedb3c9b3d2176d0",
+      "pinned_ref": "canary@2e2ee08b604c",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "13",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/canary/docs/02-pages/02-guides/upgrading/version-13.mdx",
+      "registry_source": "next_guide_13_current"
+    },
+    {
+      "source_id": "next_guide_13_tag",
+      "title": "Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13)",
+      "url": "https://github.com/vercel/next.js/blob/v13.0.0/docs/upgrading.md",
+      "source_type": "official_migration_guide",
+      "retrieved_at": "2026-10-20T14:02:44Z",
+      "why_relevant": "Upgrade guide pinned to the 13.0.0 release tag, so later doc edits cannot change it.",
+      "authority_tier": 1,
+      "content_hash": "sha256:cd3a7d579dc1f2b6c0bf89a7e8ffba4c8ee153583ee4c35e5815910928f0f799",
+      "pinned_ref": "tag:v13.0.0",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "13",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v13.0.0/docs/upgrading.md",
+      "registry_source": "next_guide_13_tag"
+    },
+    {
+      "source_id": "next_guide_14_pages_canary",
+      "title": "Next.js 'How to upgrade to version 14' (Pages Router page, current docs)",
+      "url": "https://nextjs.org/docs/pages/guides/upgrading/version-14",
+      "source_type": "official_migration_guide",
+      "retrieved_at": "2026-10-20T14:02:45Z",
+      "why_relevant": "Candidate source; expected to be a transclusion stub pointing at the App Router page.",
+      "authority_tier": 1,
+      "content_hash": "sha256:9fe190312b8854487f277f66d3750480f3461d57f037c0daa19cfb6168b5c571",
+      "pinned_ref": "canary@ae1cad07dd32",
+      "status": "rejected",
+      "rejection_reason": "transclusion_stub",
+      "release": "14",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/canary/docs/02-pages/02-guides/upgrading/version-14.mdx",
+      "registry_source": "next_guide_14_pages_canary"
+    },
+    {
+      "source_id": "next_guide_14_tag",
+      "title": "Next.js 'Version 14' upgrade guide at v14.2.0",
+      "url": "https://github.com/vercel/next.js/blob/v14.2.0/docs/02-app/01-building-your-application/11-upgrading/03-version-14.mdx",
+      "source_type": "official_migration_guide",
+      "retrieved_at": "2026-10-20T14:02:45Z",
+      "why_relevant": "Official 13→14 guide pinned to a 14.x tag.",
+      "authority_tier": 1,
+      "content_hash": "sha256:c17acfa3fe0e4bfd14520d26a07c744b545ed6081c8d471e1920b646317e5b4e",
+      "pinned_ref": "tag:v14.2.0",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "14",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v14.2.0/docs/02-app/01-building-your-application/11-upgrading/03-version-14.mdx",
+      "registry_source": "next_guide_14_tag"
+    },
+    {
+      "source_id": "next_pkg@v12.3.4",
+      "title": "next package.json at v12.3.4",
+      "url": "https://github.com/vercel/next.js/blob/v12.3.4/packages/next/package.json",
+      "source_type": "package_registry_metadata",
+      "retrieved_at": "2026-10-20T14:02:46Z",
+      "why_relevant": "Machine-readable Node.js engine floor and React peer range per release; settles prose conflicts.",
+      "authority_tier": 1,
+      "content_hash": "sha256:6b616e26996333e96fdbbcdfba4ba8fb037a840eca4811cfd9b1341cdf700faf",
+      "pinned_ref": "tag:v12.3.4",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "12",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v12.3.4/packages/next/package.json",
+      "registry_source": "next_pkg"
+    },
+    {
+      "source_id": "next_pkg@v13.0.0",
+      "title": "next package.json at v13.0.0",
+      "url": "https://github.com/vercel/next.js/blob/v13.0.0/packages/next/package.json",
+      "source_type": "package_registry_metadata",
+      "retrieved_at": "2026-10-20T14:02:46Z",
+      "why_relevant": "Machine-readable Node.js engine floor and React peer range per release; settles prose conflicts.",
+      "authority_tier": 1,
+      "content_hash": "sha256:2528cbdeb89ead62900a9f557a8725cf9d2cd677ee7ce0aa308bcae0cb4dbda3",
+      "pinned_ref": "tag:v13.0.0",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "13",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v13.0.0/packages/next/package.json",
+      "registry_source": "next_pkg"
+    },
+    {
+      "source_id": "next_pkg@v13.4.0",
+      "title": "next package.json at v13.4.0",
+      "url": "https://github.com/vercel/next.js/blob/v13.4.0/packages/next/package.json",
+      "source_type": "package_registry_metadata",
+      "retrieved_at": "2026-10-20T14:02:46Z",
+      "why_relevant": "Machine-readable Node.js engine floor and React peer range per release; settles prose conflicts.",
+      "authority_tier": 1,
+      "content_hash": "sha256:18167d57bcc347d93fa0ea0b9161de0b002c9ad4a531b50967bd22a55fd43467",
+      "pinned_ref": "tag:v13.4.0",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "13",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v13.4.0/packages/next/package.json",
+      "registry_source": "next_pkg"
+    },
+    {
+      "source_id": "next_pkg@v13.5.0",
+      "title": "next package.json at v13.5.0",
+      "url": "https://github.com/vercel/next.js/blob/v13.5.0/packages/next/package.json",
+      "source_type": "package_registry_metadata",
+      "retrieved_at": "2026-10-20T14:02:46Z",
+      "why_relevant": "Machine-readable Node.js engine floor and React peer range per release; settles prose conflicts.",
+      "authority_tier": 1,
+      "content_hash": "sha256:979e971777f543587cec0040b6c20df6310157718d94b665946eb4c78da13443",
+      "pinned_ref": "tag:v13.5.0",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "13",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v13.5.0/packages/next/package.json",
+      "registry_source": "next_pkg"
+    },
+    {
+      "source_id": "next_pkg@v14.0.0",
+      "title": "next package.json at v14.0.0",
+      "url": "https://github.com/vercel/next.js/blob/v14.0.0/packages/next/package.json",
+      "source_type": "package_registry_metadata",
+      "retrieved_at": "2026-10-20T14:02:46Z",
+      "why_relevant": "Machine-readable Node.js engine floor and React peer range per release; settles prose conflicts.",
+      "authority_tier": 1,
+      "content_hash": "sha256:2a80c1ddb74bdff71b8e3c2f390ebe84cba966c63e4e63d118dc34c02e68908b",
+      "pinned_ref": "tag:v14.0.0",
+      "status": "used",
+      "rejection_reason": null,
+      "release": "14",
+      "raw_url": "https://raw.githubusercontent.com/vercel/next.js/v14.0.0/packages/next/package.json",
+      "registry_source": "next_pkg"
+    }
+  ],
+  "risk_paths": [
+    {
+      "path_id": "nextjs_2323185baa",
+      "path_name": "Minimum React version raised to 18.2.0",
+      "risk_type": "dependency_requirement",
+      "risk_level": "critical",
+      "affected_surface": "dependencies",
+      "description": "Next.js 13 raises the minimum React version from 17.0.2 to 18.2.0.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_13_d9d2b2",
+          "statement": "The upgrade crosses Next.js release 13.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 13",
+            "target_version": ">= 13"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "relevance": "The React minimum change is introduced in 13.",
+              "quote": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "relevance": "The change was introduced in Next.js 13, which the 12 -> 14 upgrade crosses.",
+              "quote": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "Source disagreement: Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13) says the minimum React (peer dependency) for 13 is 18.2.0; next_pkg@v13.0.0 (peerDependencies.react) says '^18.0.0-0'. Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.4.0, next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor.",
+            "Source disagreement: Next.js 'How to upgrade to version 13' (current docs) says the minimum React (peer dependency) for 13 is 18.2.0; next_pkg@v13.0.0 (peerDependencies.react) says '^18.0.0-0'. Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.4.0, next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_depends_on_a_react_versi_a1136f",
+          "statement": "The application depends on a React version below 18.2.0.",
+          "category": "dependency",
+          "required": true,
+          "operator": "less_than",
+          "expected_value": "18.2.0",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "relevance": "Older React versions do not satisfy the new minimum.",
+              "quote": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "relevance": "Apps on React older than 18.2.0 do not satisfy the new minimum.",
+              "quote": "The minimum React version has been bumped from 17.0.2 to 18.2.0.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "Package metadata for v13.0.0 declares peerDependencies.react ^18.0.0-0, while the guide states 18.2.0; ^18.2.0 is declared from v13.4.0.",
+            "The text names only react; whether react-dom must be bumped in step is not stated.",
+            "Source disagreement: Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13) says the minimum React (peer dependency) for 13 is 18.2.0; next_pkg@v13.0.0 (peerDependencies.react) says '^18.0.0-0'. Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.4.0, next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor.",
+            "Source disagreement: Next.js 'How to upgrade to version 13' (current docs) says the minimum React (peer dependency) for 13 is 18.2.0; next_pkg@v13.0.0 (peerDependencies.react) says '^18.0.0-0'. Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.4.0, next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "\"react(-dom)?\"\\s*:\\s*\"[^\"]*\""
+            },
+            {
+              "tool": "ripgrep",
+              "query": "\"react(-dom)?\"\\s*:\\s*\"[~^]?(1[0-7]|18\\.[01])\\."
+            },
+            {
+              "tool": "ripgrep",
+              "query": "\"react\"\\s*:"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Upgrade react and react-dom to 18.2.0 or later.",
+        "Upgrade react to 18.2.0 or later (satisfying peerDependencies ^18.2.0) before or along with upgrading Next.js to 14.",
+        "Upgrade react-dom to a matching 18.2.x version.",
+        "Test the application for React 18 behavior changes after the bump."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "13",
+      "primary_symbol": "react",
+      "symbols": [
+        "react",
+        "react-dom"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_2323185baa"
+      ],
+      "source_item_ids": [
+        "a9f62de4577f",
+        "feb176bab8b1"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_f3317b5b79",
+      "path_name": "Node.js requirement raised to >=18.17.0",
+      "risk_type": "runtime_requirement",
+      "risk_level": "critical",
+      "affected_surface": "runtime",
+      "description": "Package metadata changes the Node.js requirement from '>=12.22.0' (12) to '>=18.17.0' (14). Installs or runtimes that do not satisfy it fail.",
+      "conditions": [
+        {
+          "condition_id": "node_requirement_changes_12_22_0_18_17_0_bac1d8",
+          "statement": "Next.js 14 declares Node.js requirement '>=18.17.0' (was '>=12.22.0' in 12).",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 14",
+            "target_version": ">= 14"
+          },
+          "evidence": [
+            {
+              "source_id": "next_pkg@v12.3.4",
+              "source_type": "package_registry_metadata",
+              "quote_or_summary": "engines.node = '>=12.22.0'",
+              "relevance": "Node.js requirement at the current version.",
+              "quote": null,
+              "verified": true,
+              "json_path": "engines.node",
+              "expected": ">=12.22.0"
+            },
+            {
+              "source_id": "next_pkg@v14.0.0",
+              "source_type": "package_registry_metadata",
+              "quote_or_summary": "engines.node = '>=18.17.0'",
+              "relevance": "Node.js requirement at the target version.",
+              "quote": null,
+              "verified": true,
+              "json_path": "engines.node",
+              "expected": ">=18.17.0"
+            },
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum Node.js version has been bumped from 16.14 to 18.17",
+              "relevance": "Ties the Node.js requirement change to the v14 upgrade.",
+              "quote": "The minimum Node.js version has been bumped from 16.14 to 18.17",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum Node.js version has been bumped from 12.22.0 to 14.6.0, since 12.x has reached end-of-life.",
+              "relevance": "Earlier (13) step for the same symbol: Node versions below the new minimum are unsupported.",
+              "quote": "The minimum Node.js version has been bumped from 12.22.0 to 14.6.0, since 12.x has reached end-of-life.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum Node.js version has been bumped from 12.22.0 to 16.14.0, since 12.x and 14.x have reached end-of-life.",
+              "relevance": "Earlier (13) step for the same symbol: Environments running Node.js older than the new minimum are not supported by Next.js 13+.",
+              "quote": "The minimum Node.js version has been bumped from 12.22.0 to 16.14.0, since 12.x and 14.x have reached end-of-life.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "History: in 13, 'Minimum Node.js version raised to 14.6.0' applied to the same symbol (node); superseded by the 14 change (R2).",
+            "Source disagreement: Next.js 'How to upgrade to version 13' (current docs) says the minimum Node.js for 13 is 16.14.0; next_pkg@v13.0.0 (engines.node) says '>=14.6.0'. Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor."
+          ],
+          "role": "required",
+          "derived_by": "rule",
+          "search_queries": [],
+          "judge": null
+        },
+        {
+          "condition_id": "deployment_node_below_18_17_0_98096c",
+          "statement": "The application's Node.js version does not satisfy '>=18.17.0' (is below 18.17.0).",
+          "category": "runtime",
+          "required": true,
+          "operator": "less_than",
+          "expected_value": "18.17.0",
+          "evidence": [
+            {
+              "source_id": "next_pkg@v14.0.0",
+              "source_type": "package_registry_metadata",
+              "quote_or_summary": "engines.node = '>=18.17.0'",
+              "relevance": "Package metadata of the target version requires '>=18.17.0'.",
+              "quote": null,
+              "verified": true,
+              "json_path": "engines.node",
+              "expected": ">=18.17.0"
+            },
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The minimum Node.js version has been bumped from 16.14 to 18.17, since 16.x has reached end-of-life.",
+              "relevance": "Environments below the new minimum are unsupported by Next.js 14.",
+              "quote": "The minimum Node.js version has been bumped from 16.14 to 18.17, since 16.x has reached end-of-life.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "rule",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "\"node\"\\s*:\\s*\"|FROM node:|node-version"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "^\\s*\\d+(\\.\\d+)*\\s*$ --glob .nvmrc"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "\"node\"\\s*:\\s*\"[^\"]*\""
+            },
+            {
+              "tool": "ripgrep",
+              "query": "FROM\\s+node:(1[0-7]|18\\.(\\d|1[0-6]))\\b"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "node-version:\\s*['\"]?(1[0-7]|18\\.(\\d|1[0-6]))\\b"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "^(v)?(1[0-7]|18\\.(\\d|1[0-6]))(\\.|$)"
+            },
+            {
+              "tool": "kubectl",
+              "query": "kubectl get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{\"\\n\"}{end}' | grep -E 'node:(1[0-7]|18\\.(\\d|1[0-6]))'"
+            }
+          ],
+          "judge": null
+        }
+      ],
+      "suggested_actions": [
+        "Check the deployed Node.js version against '>=18.17.0' before upgrading.",
+        "Upgrade Node.js to version 18.17.0 or later in all build, CI and runtime environments (Dockerfiles, CI configs, .nvmrc, engines field).",
+        "Update package.json engines.node to \">=18.17.0\"."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "14",
+      "primary_symbol": "Node.js",
+      "symbols": [
+        "Node.js",
+        "node",
+        "engines.node"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_815bc909ef",
+        "nextjs_9322335d26"
+      ],
+      "source_item_ids": [
+        "0f3eb7ed96fe"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_24962734e7",
+      "path_name": "next/future/image renamed to next/image",
+      "risk_type": "removed_api",
+      "risk_level": "high",
+      "affected_surface": "application_code",
+      "description": "In Next.js 13 the next/future/image import was renamed to next/image.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_13_d9d2b2",
+          "statement": "The upgrade crosses Next.js release 13.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 13",
+            "target_version": ">= 13"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/future/image import was renamed to next/image.",
+              "relevance": "The rename is introduced in 13.",
+              "quote": "The next/future/image import was renamed to next/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/future/image import was renamed to next/image.",
+              "relevance": "The rename happens in v13.",
+              "quote": "The next/future/image import was renamed to next/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_imports_next_future_imag_43bd60",
+          "statement": "The application imports next/future/image.",
+          "category": "api_usage",
+          "required": true,
+          "operator": "present",
+          "expected_value": "next/future/image",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/future/image import was renamed to next/image.",
+              "relevance": "Imports of the old path must be renamed.",
+              "quote": "The next/future/image import was renamed to next/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/future/image import was renamed to next/image.",
+              "relevance": "Imports of the old path must be renamed.",
+              "quote": "The next/future/image import was renamed to next/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "The text does not state whether next/future/image is removed outright or still resolves in 13/14."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "next/future/image"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Run the provided codemod to rename next/future/image imports to next/image.",
+        "Run the codemod to rename next/future/image imports to next/image."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "13",
+      "primary_symbol": "next/future/image",
+      "symbols": [
+        "next/future/image",
+        "next/image"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_24962734e7"
+      ],
+      "source_item_ids": [
+        "a9f62de4577f",
+        "28157854fc7e"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_4315b5fb92",
+      "path_name": "React (peer dependency) requirement raised to ^18.2.0",
+      "risk_type": "dependency_requirement",
+      "risk_level": "high",
+      "affected_surface": "dependencies",
+      "description": "Package metadata changes the React (peer dependency) requirement from '^17.0.2 || ^18.0.0-0' (12) to '^18.2.0' (14). Installs or runtimes that do not satisfy it fail.",
+      "conditions": [
+        {
+          "condition_id": "react_peer_requirement_changes_17_0_2_18_f2aee4",
+          "statement": "Next.js 14 declares React (peer dependency) requirement '^18.2.0' (was '^17.0.2 || ^18.0.0-0' in 12).",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 14",
+            "target_version": ">= 14"
+          },
+          "evidence": [
+            {
+              "source_id": "next_pkg@v12.3.4",
+              "source_type": "package_registry_metadata",
+              "quote_or_summary": "peerDependencies.react = '^17.0.2 || ^18.0.0-0'",
+              "relevance": "React (peer dependency) requirement at the current version.",
+              "quote": null,
+              "verified": true,
+              "json_path": "peerDependencies.react",
+              "expected": "^17.0.2 || ^18.0.0-0"
+            },
+            {
+              "source_id": "next_pkg@v14.0.0",
+              "source_type": "package_registry_metadata",
+              "quote_or_summary": "peerDependencies.react = '^18.2.0'",
+              "relevance": "React (peer dependency) requirement at the target version.",
+              "quote": null,
+              "verified": true,
+              "json_path": "peerDependencies.react",
+              "expected": "^18.2.0"
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "rule",
+          "search_queries": [],
+          "judge": null
+        },
+        {
+          "condition_id": "deployment_react_peer_below_18_2_0_17c597",
+          "statement": "The application's React (peer dependency) version does not satisfy '^18.2.0' (is below 18.2.0).",
+          "category": "dependency",
+          "required": true,
+          "operator": "less_than",
+          "expected_value": "18.2.0",
+          "evidence": [
+            {
+              "source_id": "next_pkg@v14.0.0",
+              "source_type": "package_registry_metadata",
+              "quote_or_summary": "peerDependencies.react = '^18.2.0'",
+              "relevance": "Package metadata of the target version requires '^18.2.0'.",
+              "quote": null,
+              "verified": true,
+              "json_path": "peerDependencies.react",
+              "expected": "^18.2.0"
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "rule",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "\"react\"\\s*:\\s*\""
+            }
+          ],
+          "judge": null
+        }
+      ],
+      "suggested_actions": [
+        "Check the deployed React (peer dependency) version against '^18.2.0' before upgrading."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "14",
+      "primary_symbol": "React (peer dependency)",
+      "symbols": [
+        "React (peer dependency)",
+        "react_peer"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [],
+      "source_item_ids": [],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_523375afdf",
+      "path_name": "next/link <Link> with manually nested <a> child must be migrated (new-link codemod)",
+      "risk_type": "changed_behavior",
+      "risk_level": "high",
+      "affected_surface": "application_code",
+      "description": "In Next.js 13, <Link> always renders an <a> tag itself and no longer requires a manually nested <a> child. Next.js 12 code that nests <a> inside <Link> needs updating; the docs recommend the new-link codemod. The text does not say exactly what happens to unmigrated <Link><a>…</a></Link> code at runtime.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_13_where_lin_e4e948",
+          "statement": "The upgrade crosses Next.js 13, where <Link> always renders <a> by default",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 13",
+            "target_version": ">= 13"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "In Next.js 13, <Link> always renders <a> and allows you to forward props to the underlying tag.",
+              "relevance": "Ties the Link rendering change and the codemod to release 13.",
+              "quote": "In Next.js 13, <Link> always renders <a> and allows you to forward props to the underlying tag.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "To upgrade your links to Next.js 13, you can use the new-link codemod.",
+              "relevance": "Ties the Link rendering change and the codemod to release 13.",
+              "quote": "To upgrade your links to Next.js 13, you can use the new-link codemod.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/link child can no longer be <a>.",
+              "relevance": "The change is introduced in 13.",
+              "quote": "The next/link child can no longer be <a>.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/link child can no longer be <a>.",
+              "relevance": "The change is part of the v13 summary for upgrading from 12 to 13.",
+              "quote": "The next/link child can no longer be <a>.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_imports_link_from_next_l_50bfa0",
+          "statement": "The application imports Link from 'next/link' and nests an <a> tag as the child of <Link> (Next.js 12 pattern)",
+          "category": "api_usage",
+          "required": true,
+          "operator": "present",
+          "expected_value": "<Link ...><a>...</a></Link>",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "import Link from 'next/link'",
+              "relevance": "This Next.js 12 pattern is what has to be updated now that <Link> renders <a> itself.",
+              "quote": "import Link from 'next/link'",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "<a> has to be nested otherwise it's excluded",
+              "relevance": "This Next.js 12 pattern is what has to be updated now that <Link> renders <a> itself.",
+              "quote": "<a> has to be nested otherwise it's excluded",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/link child can no longer be <a>.",
+              "relevance": "Link components wrapping <a> must be changed.",
+              "quote": "The next/link child can no longer be <a>.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "Add the legacyBehavior prop to use the legacy behavior",
+              "relevance": "legacyBehavior keeps the old <a> child behavior.",
+              "quote": "Add the legacyBehavior prop to use the legacy behavior",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/link child can no longer be <a>.",
+              "relevance": "Only Link usages with an <a> child are affected.",
+              "quote": "The next/link child can no longer be <a>.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "Add the legacyBehavior prop to use the legacy behavior",
+              "relevance": "legacyBehavior preserves the old <a> child behavior.",
+              "quote": "Add the legacyBehavior prop to use the legacy behavior",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "Next.js 12: <a> has to be nested otherwise it's excluded",
+              "relevance": "Links written in the Next.js 12 style with nested <a> must be upgraded.",
+              "quote": "Next.js 12: <a> has to be nested otherwise it's excluded",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "The text does not state exactly what happens at runtime to Links that still contain a nested <a> child (e.g. error vs. nested anchors)."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "from ['\"]next/link['\"]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "-U <Link[^>]*>\\s*<a[\\s>]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "from\\s+['\"]next/link['\"]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "-U <Link[^>]*>\\s*<a"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "legacyBehavior"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "<Link[^>]*>\\s*<a[\\s>]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "<Link[^>]*legacyBehavior"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_had_already_opted_into_t_2276af",
+          "statement": "The application had already opted into the new Link behavior through the experimental option introduced in 12.2",
+          "category": "configuration",
+          "required": false,
+          "operator": "present",
+          "expected_value": "experimental new Link behavior option enabled",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "This behavior was added as an experimental option in version 12.2 and is now the default.",
+              "relevance": "Apps that already enabled the new behavior on 12.2+ would already have migrated their links.",
+              "quote": "This behavior was added as an experimental option in version 12.2 and is now the default.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "low",
+          "ambiguities": [
+            "The text does not name the experimental option or how it was configured.",
+            "The text does not name the experimental option or setting key."
+          ],
+          "role": "disqualifying",
+          "derived_by": "inference",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_consequence_of_leaving_a_nested_a_in_669555",
+          "statement": "The consequence of leaving a nested <a> inside <Link> in Next.js 13 (e.g. error vs. nested anchors) is not stated",
+          "category": "behavior",
+          "required": false,
+          "operator": "unknown",
+          "expected_value": "unknown",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The <Link> Component no longer requires manually adding an <a> tag as a child.",
+              "relevance": "Determines severity of unmigrated code.",
+              "quote": "The <Link> Component no longer requires manually adding an <a> tag as a child.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "low",
+          "ambiguities": [
+            "The text does not state whether unmigrated <Link><a> code errors, renders nested anchors, or keeps working."
+          ],
+          "role": "uncertain",
+          "derived_by": "inference",
+          "search_queries": [],
+          "judge": {
+            "verdict": "partially_supported",
+            "missing": "The quote shows only that <a> is no longer required as a child. A single quote cannot establish that the docs nowhere state the consequence (error vs. nested anchors) of leaving a nested <a>."
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Run the new-link codemod to upgrade <Link> usages to the Next.js 13 form.",
+        "Remove manually nested <a> children from <Link> and pass the props that were on <a> directly to <Link>, which forwards them to the underlying tag.",
+        "Review links after migration to confirm rendering and forwarded props behave as expected.",
+        "Remove the <a> child from next/link or add the legacyBehavior prop; a codemod is available to automatically upgrade code.",
+        "Remove the <a> child from next/link usages, moving its attributes onto <Link>.",
+        "Alternatively, add the legacyBehavior prop to <Link> to keep the legacy behavior.",
+        "Run the available Next.js codemod to automatically upgrade next/link usages.",
+        "Run the new-link codemod to upgrade links to Next.js 13.",
+        "Remove manually nested <a> children from <Link> and forward props (e.g. className) directly to <Link>."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "13",
+      "primary_symbol": "next/link",
+      "symbols": [
+        "next/link",
+        "Link",
+        "<a>",
+        "new-link",
+        "legacyBehavior"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_523375afdf",
+        "nextjs_523375afdf",
+        "nextjs_523375afdf"
+      ],
+      "source_item_ids": [
+        "29d0485933a8",
+        "a9f62de4577f",
+        "1fd4d357ead8",
+        "3d62ea0f1eec"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_5a5f2f6714",
+      "path_name": "next export command removed",
+      "risk_type": "removed_api",
+      "risk_level": "high",
+      "affected_surface": "deployment",
+      "description": "The `next export` CLI command was removed in Next.js 14. Build scripts or deployment pipelines that run `next export` will break after upgrading. The replacement is the `output: 'export'` setting in the Next.js config.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_14_w_908e6e",
+          "statement": "The upgrade crosses Next.js release 14, where the next export command was removed.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 14",
+            "target_version": ">= 14"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next export command has been removed in favor of output: 'export' config.",
+              "relevance": "The removal is introduced in v14.",
+              "quote": "The next export command has been removed in favor of output: 'export' config.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_project_s_scripts_ci_or_deployment_p_67979a",
+          "statement": "The project's scripts, CI or deployment pipeline invokes the `next export` command.",
+          "category": "deployment",
+          "required": true,
+          "operator": "present",
+          "expected_value": "next export",
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next export command has been removed",
+              "relevance": "Any invocation of the removed command will fail after the upgrade.",
+              "quote": "The next export command has been removed",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "next\\s+export"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_project_already_uses_output_export_i_64131f",
+          "statement": "The project already uses `output: 'export'` in the Next.js config instead of `next export`.",
+          "category": "configuration",
+          "required": false,
+          "operator": "present",
+          "expected_value": "output: 'export'",
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "in favor of output: 'export' config",
+              "relevance": "Projects already on the replacement config are not affected, provided they do not also invoke `next export`.",
+              "quote": "in favor of output: 'export' config",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The text does not say whether the behavior of output: 'export' differs from next export; it defers to the docs."
+          ],
+          "role": "disqualifying",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "output\\s*:\\s*['\"]export['\"]"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Remove `next export` from package.json scripts and CI/deployment pipelines.",
+        "Set `output: 'export'` in next.config.js and use `next build` to produce the static export.",
+        "Consult the Next.js static export docs for details."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "14",
+      "primary_symbol": "next export",
+      "symbols": [
+        "next export",
+        "output: 'export'",
+        "next.config.js"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [],
+      "source_item_ids": [
+        "58e1ee35cef7"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_67098be47b",
+      "path_name": "target configuration property removed",
+      "risk_type": "removed_api",
+      "risk_level": "high",
+      "affected_surface": "configuration",
+      "description": "In Next.js 13 the target configuration property has been removed and superseded by Output File Tracing.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_13_d9d2b2",
+          "statement": "The upgrade crosses Next.js release 13.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 13",
+            "target_version": ">= 13"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The target configuration property has been removed and superseded by Output File Tracing.",
+              "relevance": "The removal is introduced in 13.",
+              "quote": "The target configuration property has been removed and superseded by Output File Tracing.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The target configuration property has been removed and superseded by Output File Tracing.",
+              "relevance": "The removal was introduced in release 13.",
+              "quote": "The target configuration property has been removed and superseded by Output File Tracing.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_s_next_config_sets_the_t_f9e154",
+          "statement": "The application's next.config sets the target property.",
+          "category": "configuration",
+          "required": true,
+          "operator": "present",
+          "expected_value": "target",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The target configuration property has been removed",
+              "relevance": "Configs relying on target no longer work.",
+              "quote": "The target configuration property has been removed",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The target configuration property has been removed",
+              "relevance": "Only apps configuring `target` are affected by the removal.",
+              "quote": "The target configuration property has been removed",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "The text does not state whether a set target causes an error or is ignored.",
+            "The text does not state whether a remaining `target` setting causes a build error, a warning, or is silently ignored."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "\\btarget\\s*:\\s*['\"](server|serverless|experimental-serverless-trace)['\"]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "\\btarget\\s*:\\s*['\"](serverless|experimental-serverless-trace|server)['\"]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "-g 'next.config.*' '\\btarget\\s*:'"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Remove the target property from next.config and migrate to Output File Tracing.",
+        "Remove the `target` property from next.config.js/next.config.mjs.",
+        "Migrate to Output File Tracing as the replacement for the removed `target` property and verify the deployment packaging works with it."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "13",
+      "primary_symbol": "target",
+      "symbols": [
+        "target",
+        "next.config.js",
+        "Output File Tracing"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_67098be47b"
+      ],
+      "source_item_ids": [
+        "a9f62de4577f",
+        "a0edede396c4"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_8392155aea",
+      "path_name": "@next/font package removed in favor of built-in next/font",
+      "risk_type": "removed_api",
+      "risk_level": "high",
+      "affected_surface": "application_code",
+      "description": "In Next.js 14 the @next/font package has been fully removed. Applications importing from @next/font must switch their imports to the built-in next/font (a codemod is available).",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_14_w_d4760a",
+          "statement": "The upgrade crosses Next.js release 14, where @next/font was fully removed.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 14",
+            "target_version": ">= 14"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The @next/font package has been fully removed in favor of the built-in next/font.",
+              "relevance": "The removal takes effect in v14, so an upgrade from 12 to 14 crosses it.",
+              "quote": "The @next/font package has been fully removed in favor of the built-in next/font.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_imports_from_or_depends_f91e2b",
+          "statement": "The application imports from or depends on the @next/font package.",
+          "category": "dependency",
+          "required": true,
+          "operator": "present",
+          "expected_value": "@next/font",
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The @next/font package has been fully removed in favor of the built-in next/font.",
+              "relevance": "Only apps that use @next/font are affected by its removal.",
+              "quote": "The @next/font package has been fully removed in favor of the built-in next/font.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "['\"]@next/font(/[^'\"]*)?['\"]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "\"@next/font\"\\s*:"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Run the official Next.js codemod to rename @next/font imports to next/font.",
+        "Replace imports from '@next/font/...' with 'next/font/...' and remove @next/font from package.json dependencies."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "14",
+      "primary_symbol": "@next/font",
+      "symbols": [
+        "@next/font",
+        "next/font"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [],
+      "source_item_ids": [
+        "b819a280fe0e"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_86709c1d69",
+      "path_name": "next-swc WASM target removed",
+      "risk_type": "removed_api",
+      "risk_level": "high",
+      "affected_surface": "runtime",
+      "description": "Next.js 14 removes the WASM target for next-swc. Environments that relied on the WASM build of the SWC compiler (e.g. platforms without a native next-swc binary) will no longer have that fallback.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_14_w_79d5f7",
+          "statement": "The upgrade crosses Next.js release 14, where the next-swc WASM target was removed",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 14",
+            "target_version": ">= 14"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The WASM target for next-swc has been removed.",
+              "relevance": "The removal is listed in the v14 summary.",
+              "quote": "The WASM target for next-swc has been removed.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_or_build_environment_use_ea0318",
+          "statement": "The application or build environment uses the WASM target for next-swc",
+          "category": "dependency",
+          "required": true,
+          "operator": "present",
+          "expected_value": "next-swc WASM target",
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The WASM target for next-swc has been removed.",
+              "relevance": "Only builds relying on the WASM build of next-swc are affected.",
+              "quote": "The WASM target for next-swc has been removed.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The text does not name the specific package names (e.g. @next/swc-wasm-nodejs) or which platforms used the WASM target, nor does it name a replacement."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "@next/swc-wasm"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "swc-wasm|next-swc.*wasm"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Check whether your build environment relies on the WASM build of next-swc (e.g. @next/swc-wasm-* packages) and ensure a native next-swc binary is available for your platform before upgrading to Next.js 14."
+      ],
+      "confidence": "medium",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "14",
+      "primary_symbol": "next-swc WASM target",
+      "symbols": [
+        "next-swc",
+        "@next/swc-wasm-nodejs",
+        "@next/swc-wasm-web"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [],
+      "source_item_ids": [
+        "f9d34cd5ecae"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_f8d3770f36",
+      "path_name": "next/image default behavior switched to former next/future/image",
+      "risk_type": "changed_behavior",
+      "risk_level": "high",
+      "affected_surface": "application_code",
+      "description": "Starting in Next.js 13, next/image adopts the new Image Component behavior (formerly next/future/image). Apps using next/image with Next.js 12 behavior (e.g. layout prop) must migrate, either by renaming imports to next/legacy/image or by updating to the new component.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_13_where_the_1f2257",
+          "statement": "The upgrade crosses Next.js 13, where the new Image behavior becomes the default for next/image.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 13",
+            "target_version": ">= 13"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "Starting in Next.js 13, this new behavior is now the default for next/image.",
+              "relevance": "Ties the behavior change to release 13.",
+              "quote": "Starting in Next.js 13, this new behavior is now the default for next/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/image import was renamed to next/legacy/image.",
+              "relevance": "The rename is introduced in 13.",
+              "quote": "The next/image import was renamed to next/legacy/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/image import was renamed to next/legacy/image.",
+              "relevance": "The rename happens in v13.",
+              "quote": "The next/image import was renamed to next/legacy/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_imports_the_image_compon_98ae94",
+          "statement": "The application imports the Image component from next/image.",
+          "category": "api_usage",
+          "required": true,
+          "operator": "present",
+          "expected_value": "next/image",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "Starting in Next.js 13, this new behavior is now the default for next/image.",
+              "relevance": "Only next/image imports change behavior.",
+              "quote": "Starting in Next.js 13, this new behavior is now the default for next/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/image import was renamed to next/legacy/image.",
+              "relevance": "Existing next/image imports resolve to a different component after upgrade.",
+              "quote": "The next/image import was renamed to next/legacy/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/image import was renamed to next/legacy/image.",
+              "relevance": "Existing next/image imports now resolve to the new image component rather than the legacy one.",
+              "quote": "The next/image import was renamed to next/legacy/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "rename next/image imports to next/legacy/image to maintain the same behavior as Next.js 12",
+              "relevance": "Code importing next/image gets the new Image Component behavior after upgrading; the codemod targets these imports.",
+              "quote": "rename next/image imports to next/legacy/image to maintain the same behavior as Next.js 12",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "The text does not describe the specific behavioral differences between the legacy and new image components.",
+            "The text does not enumerate which specific behaviors or props break; it only says next/legacy/image maintains Next.js 12 behavior."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "from\\s+['\"]next/image['\"]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "require\\(['\"]next/image['\"]\\)"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "from\\s+['\"]next/image['\"]|require\\(['\"]next/image['\"]\\)"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "usage_of_props_removed_in_the_new_compon_4b9a98",
+          "statement": "Usage of props removed in the new component (e.g. layout) raises impact; the experimental codemod removes unused props and adds inline styles.",
+          "category": "api_usage",
+          "required": false,
+          "operator": "present",
+          "expected_value": "layout=",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "upgrade next/legacy/image to the new next/image, which will remove unused props and add inline styles",
+              "relevance": "Legacy props like layout indicate code relying on Next.js 12 image behavior.",
+              "quote": "upgrade next/legacy/image to the new next/image, which will remove unused props and add inline styles",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "low",
+          "ambiguities": [
+            "The text does not list exactly which props are removed beyond the layout example."
+          ],
+          "role": "optional",
+          "derived_by": "inference",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "<Image[^>]*layout="
+            }
+          ],
+          "judge": {
+            "verdict": "partially_supported",
+            "missing": "The quotes do not name layout as a removed prop, do not say that using removed props raises impact, and do not call the codemod experimental."
+          }
+        },
+        {
+          "condition_id": "dynamic_image_usage_spread_props_is_not_a07061",
+          "statement": "Dynamic Image usage (spread props) is not covered by the experimental codemod and requires manual migration.",
+          "category": "api_usage",
+          "required": false,
+          "operator": "present",
+          "expected_value": "<Image {...props} />",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "only covers static usage (such as <Image src={img} layout=\"responsive\" />) but not dynamic usage (such as <Image {...props} />)",
+              "relevance": "Increases manual migration work.",
+              "quote": "only covers static usage (such as <Image src={img} layout=\"responsive\" />) but not dynamic usage (such as <Image {...props} />)",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [],
+          "role": "optional",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "<Image\\s+\\{\\.\\.\\."
+            }
+          ],
+          "judge": {
+            "verdict": "partially_supported",
+            "missing": "The quote does not identify the codemod as the experimental one, and does not state that manual migration is required."
+          }
+        },
+        {
+          "condition_id": "if_the_application_already_uses_next_fut_be9242",
+          "statement": "If the application already uses next/future/image, it already uses the new behavior.",
+          "category": "api_usage",
+          "required": false,
+          "operator": "present",
+          "expected_value": "next/future/image",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "Next.js 12 introduced many improvements to the Image Component with a temporary import: next/future/image.",
+              "relevance": "Those imports already match the new default, though the import path itself may need updating.",
+              "quote": "Next.js 12 introduced many improvements to the Image Component with a temporary import: next/future/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "low",
+          "ambiguities": [
+            "The text does not state what happens to next/future/image imports in Next.js 13/14."
+          ],
+          "role": "uncertain",
+          "derived_by": "inference",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "next/future/image"
+            }
+          ],
+          "judge": {
+            "verdict": "partially_supported",
+            "missing": "The quote does not state that next/future/image's behavior is the same new behavior that becomes the default for next/image."
+          }
+        },
+        {
+          "condition_id": "after_upgrade_next_image_provides_the_co_375b8d",
+          "statement": "After upgrade, next/image provides the component formerly at next/future/image.",
+          "category": "behavior",
+          "required": false,
+          "operator": "present",
+          "expected_value": "next/image",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/future/image import was renamed to next/image.",
+              "relevance": "Unmigrated imports get the new image component behavior.",
+              "quote": "The next/future/image import was renamed to next/image.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The specific behavioral differences between the components are not described in this text."
+          ],
+          "role": "optional",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Run the next-image-to-legacy-image codemod to rename next/image imports to next/legacy/image and keep Next.js 12 behavior.",
+        "Optionally run the experimental next-image-experimental codemod to migrate next/legacy/image to the new next/image; manually migrate dynamic usages like <Image {...props} />.",
+        "Alternatively, manually update following the Image migration guide and legacy comparison.",
+        "Run the provided codemod to rename next/image imports to next/legacy/image, or migrate to the new next/image.",
+        "Run the Next.js codemod to rename next/image imports to next/legacy/image (and next/future/image to next/image).",
+        "Alternatively migrate usages to the new next/image component.",
+        "Run the next-image-to-legacy-image codemod (npx @next/codemod next-image-to-legacy-image) to rename next/image imports to next/legacy/image and keep Next.js 12 behavior.",
+        "Optionally run the experimental next-image-experimental codemod afterwards to migrate next/legacy/image to the new next/image; it only covers static usage, so manually update dynamic usage such as <Image {...props} /> following the migration guide."
+      ],
+      "confidence": "high",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "13",
+      "primary_symbol": "next/image",
+      "symbols": [
+        "next/image",
+        "next/future/image",
+        "next/legacy/image",
+        "next-image-to-legacy-image",
+        "next-image-experimental"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_f8d3770f36",
+        "nextjs_f8d3770f36",
+        "nextjs_f8d3770f36"
+      ],
+      "source_item_ids": [
+        "7f6f7d06347e",
+        "a9f62de4577f",
+        "28157854fc7e",
+        "e22866274e94"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_fea20fefe0",
+      "path_name": "ImageResponse import from next/server renamed to next/og",
+      "risk_type": "removed_api",
+      "risk_level": "high",
+      "affected_surface": "application_code",
+      "description": "In Next.js 14, the ImageResponse import was moved from next/server to next/og. Code importing ImageResponse from next/server must be updated; a codemod is available.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_14_w_ad1ddb",
+          "statement": "The upgrade crosses Next.js release 14, where the ImageResponse import was renamed from next/server to next/og.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 14",
+            "target_version": ">= 14"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/server import for ImageResponse was renamed to next/og.",
+              "relevance": "The rename is part of the v14 summary of changes.",
+              "quote": "The next/server import for ImageResponse was renamed to next/og.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_imports_imageresponse_fr_331cbe",
+          "statement": "The application imports ImageResponse from next/server.",
+          "category": "api_usage",
+          "required": true,
+          "operator": "present",
+          "expected_value": "ImageResponse imported from next/server",
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The next/server import for ImageResponse was renamed to next/og.",
+              "relevance": "Only code importing ImageResponse from next/server is affected by the rename.",
+              "quote": "The next/server import for ImageResponse was renamed to next/og.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The text does not state whether the old next/server import fails outright or still works with a deprecation warning in 14."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "import\\s*\\{[^}]*\\bImageResponse\\b[^}]*\\}\\s*from\\s*['\"]next/server['\"]"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "ImageResponse"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Change imports of ImageResponse from 'next/server' to 'next/og'.",
+        "Run the official Next.js codemod to automatically rename the ImageResponse imports."
+      ],
+      "confidence": "medium",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "14",
+      "primary_symbol": "ImageResponse",
+      "symbols": [
+        "ImageResponse",
+        "next/server",
+        "next/og"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [],
+      "source_item_ids": [
+        "8d129625a7ee"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_16494e4a2c",
+      "path_name": "swcMinify default changed from false to true",
+      "risk_type": "changed_default",
+      "risk_level": "medium",
+      "affected_surface": "configuration",
+      "description": "In Next.js 13 the swcMinify configuration property's default changed from false to true. Applications that relied on the previous default will have their production JavaScript minified by the SWC minifier after upgrading, which may change build output behavior.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_13_w_552088",
+          "statement": "The upgrade crosses Next.js release 13, where the swcMinify default changed from false to true.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 13",
+            "target_version": ">= 13"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The swcMinify configuration property was changed from false to true.",
+              "relevance": "The default change was introduced in the 12 -> 13 upgrade, which is crossed by 12 -> 14.",
+              "quote": "The swcMinify configuration property was changed from false to true.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The swcMinify configuration property was changed from false to true.",
+              "relevance": "The default change is introduced in 13.",
+              "quote": "The swcMinify configuration property was changed from false to true.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_does_not_explicitly_set_8169e0",
+          "statement": "The application does not explicitly set swcMinify in its Next.js config and therefore relies on the default value.",
+          "category": "configuration",
+          "required": true,
+          "operator": "absent",
+          "expected_value": "swcMinify",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The swcMinify configuration property was changed from false to true.",
+              "relevance": "Only apps relying on the default (previously false) get the new minification behavior.",
+              "quote": "The swcMinify configuration property was changed from false to true.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The swcMinify configuration property was changed from false to true.",
+              "relevance": "Apps relying on the old default get SWC minification.",
+              "quote": "The swcMinify configuration property was changed from false to true.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The text does not describe what concrete behavior differences the new default causes or whether builds may break.",
+            "The text does not describe output differences caused by SWC minification."
+          ],
+          "role": "required",
+          "derived_by": "inference",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "swcMinify"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_explicitly_sets_swcminif_df7eae",
+          "statement": "The application explicitly sets swcMinify: false in its Next.js config, opting out of the new default.",
+          "category": "configuration",
+          "required": false,
+          "operator": "equals",
+          "expected_value": "false",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The swcMinify configuration property was changed from false to true.",
+              "relevance": "An explicit false would keep the previous behavior, if still honored.",
+              "quote": "The swcMinify configuration property was changed from false to true.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "low",
+          "ambiguities": [
+            "The text does not state whether explicitly setting swcMinify to false remains supported in version 14."
+          ],
+          "role": "uncertain",
+          "derived_by": "inference",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "swcMinify\\s*:\\s*false"
+            }
+          ],
+          "judge": {
+            "verdict": "partially_supported",
+            "missing": "The quotes do not say that explicitly setting swcMinify: false overrides or opts out of the new default."
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Check next.config.js for a swcMinify setting; if absent, test production builds with SWC minification enabled after upgrading.",
+        "Review the Next.js Compiler documentation for details on swcMinify.",
+        "Test production builds with SWC minification; set swcMinify explicitly if needed. See Next.js Compiler docs."
+      ],
+      "confidence": "medium",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "13",
+      "primary_symbol": "swcMinify",
+      "symbols": [
+        "swcMinify",
+        "next.config.js"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_16494e4a2c"
+      ],
+      "source_item_ids": [
+        "8ddf774f317f",
+        "a9f62de4577f"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_c5a065b9b5",
+      "path_name": "Internet Explorer dropped from supported browsers",
+      "risk_type": "changed_behavior",
+      "risk_level": "medium",
+      "affected_surface": "application_code",
+      "description": "Next.js 13 changes Supported Browsers to drop Internet Explorer and target modern browsers.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_crosses_next_js_release_13_d9d2b2",
+          "statement": "The upgrade crosses Next.js release 13.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 13",
+            "target_version": ">= 13"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.",
+              "relevance": "The browser support change is introduced in 13.",
+              "quote": "The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.",
+              "relevance": "The browser support change was introduced in v13.",
+              "quote": "The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_must_support_internet_ex_5f88ed",
+          "statement": "The application must support Internet Explorer users.",
+          "category": "behavior",
+          "required": true,
+          "operator": "present",
+          "expected_value": "Internet Explorer",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "drop Internet Explorer and target modern browsers",
+              "relevance": "Apps that serve IE users lose official support.",
+              "quote": "drop Internet Explorer and target modern browsers",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The text does not describe how output fails in Internet Explorer."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "(?i)\\bie\\s*(11|>=?\\s*\\d+)|internet explorer"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_must_support_internet_ex_158aa4",
+          "statement": "The application must support Internet Explorer users (e.g. targets IE in its browser targets).",
+          "category": "deployment",
+          "required": true,
+          "operator": "present",
+          "expected_value": "IE",
+          "evidence": [
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "drop Internet Explorer and target modern browsers",
+              "relevance": "Only apps needing IE support are affected by dropping IE.",
+              "quote": "drop Internet Explorer and target modern browsers",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The text does not state how support is dropped (e.g. browserslist defaults, polyfills) or whether IE can be re-enabled."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "(?i)\\bIE\\s*\\d+|internet explorer"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "browserslist"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Confirm whether Internet Explorer support is required before upgrading; if so, plan an alternative.",
+        "Confirm whether any users require Internet Explorer; if so, plan for IE no longer being a supported target in Next.js 13+.",
+        "Review browser target configuration (e.g. browserslist) against the modern-browser defaults."
+      ],
+      "confidence": "medium",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "13",
+      "primary_symbol": "Internet Explorer",
+      "symbols": [
+        "Internet Explorer",
+        "browserslist"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_c5a065b9b5"
+      ],
+      "source_item_ids": [
+        "a9f62de4577f",
+        "d4e173812e93"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    },
+    {
+      "path_id": "nextjs_fdd92fa177",
+      "path_name": "TypeScript projects must upgrade @types/react and @types/react-dom with Next.js 14",
+      "risk_type": "dependency_requirement",
+      "risk_level": "low",
+      "affected_surface": "dependencies",
+      "description": "When upgrading to Next.js 14, TypeScript users are told to also upgrade @types/react and @types/react-dom to their latest versions. The text does not say what fails if they are left outdated.",
+      "conditions": [
+        {
+          "condition_id": "the_upgrade_moves_the_application_to_nex_8db080",
+          "statement": "The upgrade moves the application to Next.js version 14.",
+          "category": "version",
+          "required": true,
+          "operator": "in_range",
+          "expected_value": {
+            "current_version": "< 14",
+            "target_version": ">= 14"
+          },
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "To update to Next.js version 14, run the following command using your preferred package manager",
+              "relevance": "The type-package upgrade note applies to the 13 -> 14 upgrade procedure.",
+              "quote": "To update to Next.js version 14, run the following command using your preferred package manager",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            },
+            {
+              "source_id": "next_guide_13_current",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom",
+              "relevance": "Earlier (13) step for the same symbol: The guidance applies only to TypeScript projects.",
+              "quote": "If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [
+            "History: in 13, 'TypeScript projects must upgrade @types/react and @types/react-dom alongside Next.js 13' applied to the same symbol (@types/react); superseded by the 14 change (R2)."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_uses_typescript_523ea4",
+          "statement": "The application uses TypeScript.",
+          "category": "dependency",
+          "required": true,
+          "operator": "present",
+          "expected_value": "typescript",
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom",
+              "relevance": "The guidance only applies to TypeScript projects.",
+              "quote": "If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "high",
+          "ambiguities": [],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "\"typescript\"\\s*:"
+            },
+            {
+              "tool": "ripgrep",
+              "query": "--files -g 'tsconfig.json'"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        },
+        {
+          "condition_id": "the_application_depends_on_types_react_o_638b47",
+          "statement": "The application depends on @types/react or @types/react-dom at a version that is not the latest.",
+          "category": "dependency",
+          "required": true,
+          "operator": "present",
+          "expected_value": "@types/react",
+          "evidence": [
+            {
+              "source_id": "next_guide_14_tag",
+              "source_type": "official_migration_guide",
+              "quote_or_summary": "ensure you also upgrade @types/react and @types/react-dom to their latest versions",
+              "relevance": "Outdated React type packages are the thing the guide says must be upgraded.",
+              "quote": "ensure you also upgrade @types/react and @types/react-dom to their latest versions",
+              "verified": true,
+              "json_path": null,
+              "expected": null
+            }
+          ],
+          "confidence": "medium",
+          "ambiguities": [
+            "The text does not state which minimum @types versions are required or what errors occur if they are not upgraded."
+          ],
+          "role": "required",
+          "derived_by": "extraction",
+          "search_queries": [
+            {
+              "tool": "ripgrep",
+              "query": "\"@types/react(-dom)?\"\\s*:"
+            }
+          ],
+          "judge": {
+            "verdict": "supported",
+            "missing": ""
+          }
+        }
+      ],
+      "suggested_actions": [
+        "Upgrade @types/react and @types/react-dom to their latest versions alongside next, react, react-dom and eslint-config-next (e.g. npm i @types/react@latest @types/react-dom@latest).",
+        "Run a TypeScript type check after upgrading to confirm there are no type errors."
+      ],
+      "confidence": "medium",
+      "applies_to": null,
+      "fires_at": "upgrade",
+      "introduced_in": "14",
+      "primary_symbol": "@types/react",
+      "symbols": [
+        "@types/react",
+        "@types/react-dom",
+        "react",
+        "react-dom",
+        "next"
+      ],
+      "superseded_by": null,
+      "reverted_in": null,
+      "merged_from": [
+        "nextjs_b9f1b391a2"
+      ],
+      "source_item_ids": [
+        "ac8c7ce0ed67"
+      ],
+      "review_status": "unreviewed",
+      "review_flags": []
+    }
+  ],
+  "open_questions": [
+    "Next.js 13.x and 14.x minor release notes (blog posts, GitHub releases) were not mined; deprecations introduced in minors (for example in 13.3/13.4) may be missing.",
+    "Hosting platforms (Vercel, Netlify, self-hosted Node, Docker) and third-party Next.js plugins have their own compatibility windows.",
+    "App Router adoption is optional; risks specific to migrating pages/ to app/ are out of scope unless the guides state them.",
+    "Source next_guide_14_pages_canary was rejected (transclusion_stub); its content was not used.",
+    "[nextjs_523375afdf] Unconfirmed: The consequence of leaving a nested <a> inside <Link> in Next.js 13 (e.g. error vs. nested anchors) is not stated (The text does not state whether unmigrated <Link><a> code errors, renders nested anchors, or keeps working.)",
+    "[nextjs_f8d3770f36] Unconfirmed: If the application already uses next/future/image, it already uses the new behavior. (The text does not state what happens to next/future/image imports in Next.js 13/14.)",
+    "[nextjs_16494e4a2c] Unconfirmed: The application explicitly sets swcMinify: false in its Next.js config, opting out of the new default. (The text does not state whether explicitly setting swcMinify to false remains supported in version 14.)"
+  ],
+  "overall_confidence": "medium",
+  "evidence_summary": {
+    "high_confidence_risks": [
+      "nextjs_24962734e7: next/future/image renamed to next/image",
+      "nextjs_4315b5fb92: React (peer dependency) requirement raised to ^18.2.0",
+      "nextjs_523375afdf: next/link <Link> with manually nested <a> child must be migrated (new-link codemod)",
+      "nextjs_5a5f2f6714: next export command removed",
+      "nextjs_67098be47b: target configuration property removed",
+      "nextjs_8392155aea: @next/font package removed in favor of built-in next/font",
+      "nextjs_f8d3770f36: next/image default behavior switched to former next/future/image"
+    ],
+    "medium_confidence_risks": [
+      "nextjs_86709c1d69: next-swc WASM target removed",
+      "nextjs_fea20fefe0: ImageResponse import from next/server renamed to next/og",
+      "nextjs_16494e4a2c: swcMinify default changed from false to true",
+      "nextjs_c5a065b9b5: Internet Explorer dropped from supported browsers",
+      "nextjs_fdd92fa177: TypeScript projects must upgrade @types/react and @types/react-dom with Next.js 14"
+    ],
+    "low_confidence_or_disputed_risks": [
+      "nextjs_2323185baa: Minimum React version raised to 18.2.0",
+      "nextjs_f3317b5b79: Node.js requirement raised to >=18.17.0"
+    ],
+    "sources_with_disagreements": [
+      {
+        "topic": "node minimum for 13",
+        "sources": [
+          "next_guide_13_current",
+          "next_pkg@v13.0.0",
+          "next_pkg@v13.5.0"
+        ],
+        "detail": "Next.js 'How to upgrade to version 13' (current docs) says the minimum Node.js for 13 is 16.14.0; next_pkg@v13.0.0 (engines.node) says '>=14.6.0'.",
+        "resolution": "Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor."
+      },
+      {
+        "topic": "react_peer minimum for 13",
+        "sources": [
+          "next_guide_13_tag",
+          "next_pkg@v13.0.0",
+          "next_pkg@v13.4.0",
+          "next_pkg@v13.5.0"
+        ],
+        "detail": "Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13) says the minimum React (peer dependency) for 13 is 18.2.0; next_pkg@v13.0.0 (peerDependencies.react) says '^18.0.0-0'.",
+        "resolution": "Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.4.0, next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor."
+      },
+      {
+        "topic": "react_peer minimum for 13",
+        "sources": [
+          "next_guide_13_current",
+          "next_pkg@v13.0.0",
+          "next_pkg@v13.4.0",
+          "next_pkg@v13.5.0"
+        ],
+        "detail": "Next.js 'How to upgrade to version 13' (current docs) says the minimum React (peer dependency) for 13 is 18.2.0; next_pkg@v13.0.0 (peerDependencies.react) says '^18.0.0-0'.",
+        "resolution": "Package metadata outranks prose. The prose matches later 13.x metadata (next_pkg@v13.4.0, next_pkg@v13.5.0), so the page was likely edited after release to reflect the latest 13.x floor."
+      }
+    ],
+    "open_questions": [
+      "Next.js 13.x and 14.x minor release notes (blog posts, GitHub releases) were not mined; deprecations introduced in minors (for example in 13.3/13.4) may be missing.",
+      "Hosting platforms (Vercel, Netlify, self-hosted Node, Docker) and third-party Next.js plugins have their own compatibility windows.",
+      "App Router adoption is optional; risks specific to migrating pages/ to app/ are out of scope unless the guides state them.",
+      "Source next_guide_14_pages_canary was rejected (transclusion_stub); its content was not used.",
+      "[nextjs_523375afdf] Unconfirmed: The consequence of leaving a nested <a> inside <Link> in Next.js 13 (e.g. error vs. nested anchors) is not stated (The text does not state whether unmigrated <Link><a> code errors, renders nested anchors, or keeps working.)",
+      "[nextjs_f8d3770f36] Unconfirmed: If the application already uses next/future/image, it already uses the new behavior. (The text does not state what happens to next/future/image imports in Next.js 13/14.)",
+      "[nextjs_16494e4a2c] Unconfirmed: The application explicitly sets swcMinify: false in its Next.js config, opting out of the new default. (The text does not state whether explicitly setting swcMinify to false remains supported in version 14.)"
+    ]
+  },
+  "context_facts": [],
+  "disqualified_candidates": [],
+  "requires_upgrades": [
+    {
+      "project": "React",
+      "current_version": "17",
+      "target_version": "18",
+      "reason": "Next.js 14 requires React (peer dependency) '^18.2.0'; apps on React 17 must also upgrade React (R7).",
+      "evidence": [
+        {
+          "source_id": "next_pkg@v14.0.0",
+          "source_type": "package_registry_metadata",
+          "quote_or_summary": "peerDependencies.react = '^18.2.0'",
+          "relevance": "Peer dependency range of the target version.",
+          "quote": null,
+          "verified": true,
+          "json_path": "peerDependencies.react",
+          "expected": "^18.2.0"
+        }
+      ],
+      "model_ref": "react_17_to_18"
+    }
+  ],
+  "plan": {
+    "project": "Next.js",
+    "current_version": "12",
+    "target_version": "14",
+    "mode": "walk_majors",
+    "releases": [
+      "13",
+      "14"
+    ],
+    "future_releases": [],
+    "hops": 2
+  },
+  "pipeline": {
+    "run_id": "5ed9c4a71b",
+    "generated_at": "2026-10-20T15:33:29Z",
+    "provider": "anthropic",
+    "models": {
+      "cheap": "claude-sonnet-5-5",
+      "strong": "claude-opus-5-5"
+    },
+    "prompts": [
+      "triage.v1",
+      "extract.v1",
+      "judge.v1",
+      "reconcile.v1"
+    ],
+    "funnel": {
+      "items_total": 26,
+      "items_on_path": 26,
+      "items_future": 0,
+      "items_dropped_r4": 0,
+      "revert_candidates": 0,
+      "patch_notes_scanned": 0,
+      "triage_risk": 19,
+      "triage_context": 5,
+      "triage_noise": 2,
+      "sweep_flipped": 0,
+      "extracted_items": 19,
+      "extracted_paths": 27,
+      "extractor_context": 0,
+      "extraction_failures": 0,
+      "fact_paths": 2,
+      "linked_paths": 16,
+      "merged": 13,
+      "composed_paths": 14,
+      "disqualified": 0,
+      "superseded": 2,
+      "final_paths": 14,
+      "context_facts": 0
+    },
+    "judge": {
+      "supported": 29,
+      "partially_supported": 5,
+      "not_supported": 0,
+      "failed": 0
+    },
+    "usage": {
+      "triage": {
+        "calls": 3,
+        "cache_hits": 0,
+        "input_tokens": 5127,
+        "output_tokens": 1656,
+        "usd_estimate": 0.026813999999999998,
+        "usd_full": 0.026813999999999998,
+        "model": "claude-sonnet-5-5"
+      },
+      "extract": {
+        "calls": 19,
+        "cache_hits": 0,
+        "input_tokens": 75574,
+        "output_tokens": 23390,
+        "usd_estimate": 0.770096,
+        "usd_full": 0.770096,
+        "model": "claude-opus-5-5"
+      },
+      "judge": {
+        "calls": 12,
+        "cache_hits": 0,
+        "input_tokens": 16391,
+        "output_tokens": 3153,
+        "usd_estimate": 0.128624,
+        "usd_full": 0.128624,
+        "model": "claude-opus-5-5"
+      }
+    },
+    "timings_s": {
+      "plan": 0.0,
+      "fetch": 0.01,
+      "parse": 0.0,
+      "triage": 7.48,
+      "extract": 40.96,
+      "link": 0.0,
+      "compose": 0.0,
+      "judge": 7.67,
+      "rubric": 0.0,
+      "assemble": 0.01
+    },
+    "validation": {
+      "errors": 0,
+      "warnings": 2,
+      "by_code": {
+        "W4_no_search_queries": 2
+      }
+    }
+  }
+}

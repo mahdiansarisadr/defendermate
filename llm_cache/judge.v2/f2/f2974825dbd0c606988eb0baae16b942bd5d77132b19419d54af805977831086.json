@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_14_13_16_whe_23cc91\",\n  \"claim\": \"The upgrade crosses release 14 (13 -> 16), where this parsing fix was introduced.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_to_tsquery_or_webs_02248c\",\n  \"claim\": \"The application calls to_tsquery() or websearch_to_tsquery().\",\n  \"evidence\": [\n   {\n    \"quote\": \"Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_query_text_passed_to_these_functions_86d25c\",\n  \"claim\": \"The query text passed to these functions contains discarded tokens such as underscore (for example 'pg_class'), or quoted text that includes them.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Certain discarded tokens, like underscore, caused the output of these functions to produce incorrect tsquery output\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"results_are_persisted_or_compared_agains_90fe8b\",\n  \"claim\": \"Results are persisted or compared against expected tsquery output (stored queries, expression indexes, tests) that rely on the old output.\",\n  \"evidence\": [\n   {\n    \"quote\": \"both websearch_to_tsquery('\\\"pg_class pg\\\"') and to_tsquery('pg_class <-> pg') used to output ( 'pg' & 'class' ) <-> 'pg', but now both output 'pg' <-> 'class' <-> 'pg'.\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_14_13_16_whe_23cc91",
+    "verdict": "partially_supported",
+    "missing": "The quote only establishes that the fix is in release 14's notes. It does not state the specific upgrade path 13 -> 16 or that such an upgrade crosses release 14."
+   },
+   {
+    "condition_id": "the_application_calls_to_tsquery_or_webs_02248c",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_query_text_passed_to_these_functions_86d25c",
+    "verdict": "partially_supported",
+    "missing": "The quote names underscore as an example of a discarded token that caused incorrect output. It does not mention the 'pg_class' example in this quote or quoted text containing discarded tokens."
+   },
+   {
+    "condition_id": "results_are_persisted_or_compared_agains_90fe8b",
+    "verdict": "partially_supported",
+    "missing": "The quote shows the output changed from the old to the new form. It does not mention persisted results, stored queries, expression indexes, or tests relying on the old output."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1541,
+  "output_tokens": 358,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"children prop must be listed explicitly in props types\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The children prop now needs to be listed explicitly when defining props, so props definitions that omit children may produce type errors after the upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 18, and the children prop must now be listed explicitly in props definitions.\",\n   \"quotes\": [\n    \"The most notable change is that the children prop now needs to be listed explicitly when defining props\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application defines props types that do not list children explicitly.\",\n   \"quotes\": [\n    \"the children prop now needs to be listed explicitly when defining props\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted evidence directly supports that the children prop must now be listed explicitly in props definitions, which can cause type errors for props types that omit it, and it names a concrete, checkable item (the children prop in props type definitions)."
+ },
+ "usage": {
+  "input_tokens": 715,
+  "output_tokens": 92,
+  "stop_reason": "end_turn"
+ }
+}

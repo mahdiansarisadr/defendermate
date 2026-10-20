@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"websearch_to_tsquery quoted adjacent discarded tokens output change\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In release 14, websearch_to_tsquery() parses quoted text containing multiple adjacent discarded tokens differently. Previously such tokens were treated as multiple tokens, producing a distance operator like <2>; now the output uses <->. Applications, stored tsqueries, or tests that depend on the old tsquery output or on search results derived from it may see different results.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14 (13 -> 16), where websearch_to_tsquery() parsing of adjacent discarded tokens in quotes changed.\",\n   \"quotes\": [\n    \"Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls websearch_to_tsquery() with quoted text that can contain multiple adjacent discarded tokens (e.g. punctuation such as ': ').\",\n   \"quotes\": [\n    \"Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application or its tests depend on the exact tsquery output (e.g. the old 'aaa' <2> 'bbb' form) or on matching behavior derived from it.\",\n   \"quotes\": [\n    \"websearch_to_tsquery('\\\"aaa: bbb\\\"') used to output 'aaa' <2> 'bbb', but now outputs 'aaa' <-> 'bbb'.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support a concrete behavior change in websearch_to_tsquery() (old 'aaa' <2> 'bbb' vs new 'aaa' <-> 'bbb') introduced in release 14, which lies within the 13->16 range and could alter query output and search results for dependent applications."
+ },
+ "usage": {
+  "input_tokens": 1044,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}

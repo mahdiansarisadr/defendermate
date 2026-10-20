@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Fractional interval input above months now rounds to nearest month\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 15, interval input with a fractional value for a unit greater than months (e.g. years) is rounded to the nearest month, so '1.99 years' becomes 2 years instead of 1 year 11 months. Applications that store or compute with such interval literals may get different values.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15, where interval input rounding changed.\",\n   \"quotes\": [\n    \"round to the nearest month (Bruce Momjian) For example, convert 1.99 years to 2 years, not 1 year 11 months as before.\",\n    \"Improve consistency of interval parsing with trailing periods\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or stored data supplies interval input with a fractional value for a unit greater than months (e.g. fractional years, decades, centuries, millennia).\",\n   \"quotes\": [\n    \"When interval input provides a fractional value for a unit greater than months, round to the nearest month\",\n    \"Numbers with trailing periods were rejected on some platforms.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The first quote of each condition directly supports a concrete changed behavior (fractional interval input above months rounds to nearest month, e.g. 1.99 years becomes 2 years) that crosses PG 15 within 13->16 and can change computed values, though the second quotes about trailing periods are unrelated filler and do not weaken the core support."
+ },
+ "usage": {
+  "input_tokens": 879,
+  "output_tokens": 129,
+  "stop_reason": "end_turn"
+ }
+}

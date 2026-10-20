@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"tablefunc normal_rand() rejects negative values\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 14, tablefunc's normal_rand() no longer accepts negative values. Calls that pass negative values, which previously produced undesirable results, will now be rejected.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where normal_rand() stopped accepting negative values\",\n   \"quotes\": [\n    \"Prevent tablefunc's function normal_rand() from accepting negative values\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The tablefunc extension is installed and normal_rand() is called\",\n   \"quotes\": [\n    \"Prevent tablefunc's function normal_rand() from accepting negative values\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"normal_rand() is called with negative argument values\",\n   \"quotes\": [\n    \"Negative values produced undesirable results.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support that normal_rand() in tablefunc now rejects negative values (a release-14 change within the 13->16 range), and this names a concrete function and checkable condition (calls with negative arguments) that could cause errors after upgrade."
+ },
+ "usage": {
+  "input_tokens": 812,
+  "output_tokens": 98,
+  "stop_reason": "end_turn"
+ }
+}

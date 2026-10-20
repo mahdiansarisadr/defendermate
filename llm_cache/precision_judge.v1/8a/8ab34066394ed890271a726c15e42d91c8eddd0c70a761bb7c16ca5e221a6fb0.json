@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"pg_statio_all_tables TOAST multi-index row aggregation change\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In release 15, pg_statio_all_tables sums values for TOAST tables with multiple indexes instead of showing one row per index. Monitoring or reporting queries against this view may see fewer rows and aggregated TOAST index values. The text calls this a rare case.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where pg_statio_all_tables output changed\",\n   \"quotes\": [\n    \"Version 15 contains a number of changes that may affect compatibility with previous releases.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or monitoring tooling queries pg_statio_all_tables\",\n   \"quotes\": [\n    \"Fix pg_statio_all_tables to sum values for the rare case of TOAST tables with multiple indexes\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The database has TOAST tables with multiple indexes, which previously produced one row per index\",\n   \"quotes\": [\n    \"Previously such cases would show one row for each index.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in pg_statio_all_tables in release 15 (summing values for TOAST tables with multiple indexes instead of one row per index), which falls within the 13->16 range and could affect monitoring queries, though it is rare and low-impact."
+ },
+ "usage": {
+  "input_tokens": 867,
+  "output_tokens": 109,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Infinite window frame offsets return different (corrected) results\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Window frame clauses using infinite offsets such as 'inf' PRECEDING AND 'inf' FOLLOWING previously returned incorrect results and are now handled correctly. Queries relying on the old (incorrect) output will see different results after crossing release 14.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, which fixed handling of infinite window function ranges (13 -> 16 includes 14).\",\n   \"quotes\": [\n    \"Fix handling of infinite window function ranges\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses window frame clauses with infinite offsets such as 'inf' PRECEDING AND 'inf' FOLLOWING.\",\n   \"quotes\": [\n    \"window frame clauses like 'inf' PRECEDING AND 'inf' FOLLOWING returned incorrect results\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"The application or its tests depend on the previous incorrect results from such queries.\",\n   \"quotes\": [\n    \"Previously window frame clauses like 'inf' PRECEDING AND 'inf' FOLLOWING returned incorrect results.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a behavior change in release 14 (fix to infinite window frame ranges, where 'inf' PRECEDING AND 'inf' FOLLOWING previously returned incorrect results), which is within the 13->16 range and can change query results; it names a concrete, checkable construct."
+ },
+ "usage": {
+  "input_tokens": 917,
+  "output_tokens": 115,
+  "stop_reason": "end_turn"
+ }
+}

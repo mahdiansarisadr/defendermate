@@ -1,0 +1,164 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: How to Upgrade to React 18 (official_migration_guide). Section: Updates to Client Rendering APIs.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nThere is no one-to-one replacement for the old render callback API — it depends on your use case. See the working group post for Replacing render with createRoot for more information. Finally, if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot: // Before import { hydrate } from 'react-dom'; const container = document.getElementById('app'); hydrate(<App tab=\"home\" />, container); // After import { hydrateRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = hydrateRoot(container, <App tab=\"home\" />); // Unlike with createRoot, you don't need a separate root.render() call here.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nUpdates to Client Rendering APIs: When you first install React 18, you will see a warning in the console: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features. // Before import { render } from 'react-dom'; const container = document.getElementById('app'); render(<App tab=\"home\" />, container); // After import { createRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = createRoot(container); // createRoot(container!) if you use TypeScript root.render(<App tab=\"home\" />); We've also changed unmountComponentAtNode to root.unmount: // Before unmountComponentAtNode(container); // After root.unmount(); We've also removed the callback from render, since it usually does not have the expected result when using Suspense: // Before const container = document.getElementById('app'); render(<App tab=\"home\" />, container, () => { console.log('rendered'); }); // After function AppWithCallbackAfterRender() { useEffect(() => { console.log('rendered'); }); return <App tab=\"home\" /> } const container = document.getElementById('app'); const root = createRoot(container); root.render(<AppWithCallbackAfterRender />); There is no one-to-one replacement for the old render callback API — it depends on your use case. See the working group post for Replacing render with createRoot for more information. Finally, if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot: // Before import { hydrate } from 'react-dom'; const container = document.getElementById('app'); hydrate(<App tab=\"home\" />, container); // After import { hydrateRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = hydrateRoot(container, <App tab=\"home\" />); // Unlike with createRoot, you don't need a separate root.render() call here. For more information, see the working group discussion here. If your app doesn't work after upgrading, check whether it's wrapped in <StrictMode>. Strict Mode has gotten stricter in React 18, and not all your components may be resilient to the new checks it adds in development mode. If removing Strict Mode fixes your app, you\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "render callback argument has no direct replacement in createRoot API",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "React 18 removed the third callback argument from render. Code that relies on the render callback must be rewritten when moving to createRoot, for example by using useEffect in a wrapper component. There is no one-to-one replacement.",
+    "primary_symbol": "render callback",
+    "symbols": [
+     "render",
+     "ReactDOM.render",
+     "createRoot",
+     "root.render",
+     "useEffect"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, which removed the callback from render.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "18",
+      "quotes": [
+       "We've also removed the callback from render, since it usually does not have the expected result when using Suspense"
+      ],
+      "relevance": "Ties the removal to React 18.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application passes a callback as the third argument to render.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "render(element, container, callback)",
+      "quotes": [
+       "There is no one-to-one replacement for the old render callback API — it depends on your use case."
+      ],
+      "relevance": "Only apps using the render callback need to rewrite this logic.",
+      "ambiguities": [
+       "The text does not state whether the callback keeps working under legacy ReactDOM.render in React 18 compatibility mode, or only stops working after switching to createRoot."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\brender\\(\\s*<[^;]*,\\s*[^,;]+,\\s*(\\(\\s*\\)\\s*=>|function\\b|\\w+\\s*\\))"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Replace the render callback with a useEffect inside a wrapper component rendered via createRoot(container).render(...).",
+     "Consult the working group post 'Replacing render with createRoot' for use-case-specific replacements."
+    ]
+   },
+   {
+    "path_name": "hydrate must be migrated to hydrateRoot for SSR apps",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "Apps that use server-side rendering with hydration should switch from hydrate (from 'react-dom') to hydrateRoot (from 'react-dom/client'). hydrateRoot takes the container first and the element second. Unlike createRoot, it does not need a separate root.render() call.",
+    "primary_symbol": "hydrate",
+    "symbols": [
+     "hydrate",
+     "hydrateRoot",
+     "react-dom",
+     "react-dom/client",
+     "root.render"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18, where client rendering APIs change and hydrate should be upgraded to hydrateRoot.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "18",
+      "quotes": [
+       "When you first install React 18, you will see a warning in the console"
+      ],
+      "relevance": "The API change is introduced in React 18.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application uses server-side rendering and calls hydrate from react-dom.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "hydrate",
+      "quotes": [
+       "if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot"
+      ],
+      "relevance": "Only apps calling hydrate are affected.",
+      "ambiguities": [
+       "The text does not state whether hydrate keeps working, like ReactDOM.render in React 17 mode with a warning, or fails in React 18."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "import\\s*\\{[^}]*\\bhydrate\\b[^}]*\\}\\s*from\\s*['\"]react-dom['\"]"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\b(ReactDOM\\.)?hydrate\\s*\\("
+       }
+      ]
+     },
+     {
+      "statement": "hydrateRoot takes (container, element) and does not need a separate root.render() call, unlike createRoot.",
+      "category": "behavior",
+      "role": "optional",
+      "operator": "present",
+      "expected_value": "hydrateRoot(container, element)",
+      "quotes": [
+       "Unlike with createRoot, you don't need a separate root.render() call here."
+      ],
+      "relevance": "The argument order and call pattern differ from hydrate and createRoot.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\bhydrateRoot\\s*\\("
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Replace `import { hydrate } from 'react-dom'` with `import { hydrateRoot } from 'react-dom/client'`.",
+     "Change hydrate(<App />, container) to hydrateRoot(container, <App />), swapping the argument order, and do not add a separate root.render() call."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4311,
+  "output_tokens": 2479,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"psql --single-transaction final COMMIT now becomes ROLLBACK only when ON_ERROR_STOP is set\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In psql's --single-transaction mode, after an error the final COMMIT is changed to ROLLBACK only if ON_ERROR_STOP is set. Scripts that run psql with --single-transaction and do not set ON_ERROR_STOP may now commit the work done despite an error, where previously the transaction was rolled back. The text states only the new condition, not the prior behavior, so the exact previous behavior is not specified.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, which introduced this psql --single-transaction change.\",\n   \"quotes\": [\n    \"change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Scripts or deployment tooling invoke psql with the --single-transaction mode.\",\n   \"quotes\": [\n    \"After an error is detected in psql's --single-transaction mode\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"ON_ERROR_STOP is not set in those psql runs, so the final COMMIT is no longer changed to ROLLBACK after an error.\",\n   \"quotes\": [\n    \"change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in psql --single-transaction where the final COMMIT becomes ROLLBACK only if ON_ERROR_STOP is set, so scripts without ON_ERROR_STOP may now commit after an error, which is a checkable operational risk; the description admits the prior behavior is unstated but the new condition is clear from the quotes."
+ },
+ "usage": {
+  "input_tokens": 969,
+  "output_tokens": 140,
+  "stop_reason": "end_turn"
+ }
+}

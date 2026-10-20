@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_tests_1ebfbc\",\n  \"claim\": \"The upgrade crosses React 18, where tests using createRoot may warn about act environment configuration\",\n  \"evidence\": [\n   {\n    \"quote\": \"When you first update your tests to use createRoot, you may see this warning in your test console\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"tests_render_with_createroot_433995\",\n  \"claim\": \"Tests render with createRoot\",\n  \"evidence\": [\n   {\n    \"quote\": \"When you first update your tests to use createRoot\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_test_setup_does_not_set_globalthis_i_ad8926\",\n  \"claim\": \"The test setup does not set globalThis.IS_REACT_ACT_ENVIRONMENT\",\n  \"evidence\": [\n   {\n    \"quote\": \"set globalThis.IS_REACT_ACT_ENVIRONMENT to true before running your test\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"a_testing_library_version_with_built_in_78f625\",\n  \"claim\": \"A testing library version with built-in React 18 support configures the flag automatically\",\n  \"evidence\": [\n   {\n    \"quote\": \"the next version of React Testing Library has built-in support for React 18 without any additional configuration\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_tests_1ebfbc",
+    "verdict": "partially_supported",
+    "missing": "The quote says a warning may appear but does not say it concerns act environment configuration."
+   },
+   {
+    "condition_id": "tests_render_with_createroot_433995",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_test_setup_does_not_set_globalthis_i_ad8926",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "a_testing_library_version_with_built_in_78f625",
+    "verdict": "partially_supported",
+    "missing": "The quote says React 18 support works without additional configuration but does not say the library sets the IS_REACT_ACT_ENVIRONMENT flag automatically."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1340,
+  "output_tokens": 521,
+  "stop_reason": "end_turn"
+ }
+}

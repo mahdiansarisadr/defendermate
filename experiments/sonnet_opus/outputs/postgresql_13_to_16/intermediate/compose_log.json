@@ -1,0 +1,38 @@
+{
+ "r5": [],
+ "r1": [],
+ "r1_unresolved": [],
+ "r2": [
+  {
+   "superseded": "postgresql_e7e8bd445e",
+   "by": "postgresql_af45c85281",
+   "symbol": "pg_upgrade"
+  },
+  {
+   "superseded": "postgresql_f1f4b0e679",
+   "by": "postgresql_af45c85281",
+   "symbol": "pg_upgrade"
+  }
+ ],
+ "r3": [],
+ "merge": [
+  {
+   "kept": "postgresql_d00aff3b01_2",
+   "merged": "postgresql_d00aff3b01",
+   "release": "14",
+   "symbol": "@"
+  },
+  {
+   "kept": "postgresql_86d8236c5c",
+   "merged": "postgresql_86d8236c5c_2",
+   "release": "14",
+   "symbol": "EXTRACT"
+  },
+  {
+   "kept": "postgresql_40755c4ec6",
+   "merged": "postgresql_40755c4ec6",
+   "release": "15",
+   "symbol": "interval"
+  }
+ ]
+}

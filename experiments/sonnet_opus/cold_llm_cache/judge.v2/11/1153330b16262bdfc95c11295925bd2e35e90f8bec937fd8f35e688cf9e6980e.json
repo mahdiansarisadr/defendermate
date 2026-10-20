@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_creat_790b83\",\n  \"claim\": \"The upgrade crosses React 18, where createRoot replaces ReactDOM.render as the root API that new features depend on.\",\n  \"evidence\": [\n   {\n    \"quote\": \"New features in React 18 don't work without it.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"react-dom: ReactDOM.render has been deprecated.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_its_root_with_re_6cc1e4\",\n  \"claim\": \"The application renders its root with ReactDOM.render.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Use it instead of ReactDOM.render.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Using it will warn and run your app in React 17 mode.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_already_creates_its_root_9e99a5\",\n  \"claim\": \"The application already creates its root with createRoot imported from react-dom/client.\",\n  \"evidence\": [\n   {\n    \"quote\": \"These new APIs are now exported from react-dom/client:\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"after_migrating_to_createroot_recoverabl_a943ff\",\n  \"claim\": \"After migrating to createRoot, recoverable errors during rendering are reported by default via reportError, or console.error in older browsers, unless an onRecoverableError option is passed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"By default, React will use reportError, or console.error in the older browsers.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"run your app in React 17 mode\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_creat_790b83",
+    "verdict": "partially_supported",
+    "missing": "The quotes never name createRoot. The 'it' that new features depend on is unidentified, and only the deprecation of ReactDOM.render is stated."
+   },
+   {
+    "condition_id": "the_application_renders_its_root_with_re_6cc1e4",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_already_creates_its_root_9e99a5",
+    "verdict": "partially_supported",
+    "missing": "The quote says new APIs are exported from react-dom/client but does not name createRoot as one of them."
+   },
+   {
+    "condition_id": "after_migrating_to_createroot_recoverabl_a943ff",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not mention recoverable errors, the onRecoverableError option, or createRoot as the context for the reportError default."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1574,
+  "output_tokens": 742,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,327 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: How to Upgrade to React 18 (official_migration_guide). Section: Updates to Client Rendering APIs.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nWhen you first install React 18, you will see a warning in the console: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features. // Before import { render } from 'react-dom'; const container = document.getElementById('app'); render(<App tab=\"home\" />, container); // After import { createRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = createRoot(container); // createRoot(container!) if you use TypeScript root.render(<App tab=\"home\" />);\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nUpdates to Client Rendering APIs: When you first install React 18, you will see a warning in the console: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot React 18 introduces a new root API which provides better ergonomics for managing roots. The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features. // Before import { render } from 'react-dom'; const container = document.getElementById('app'); render(<App tab=\"home\" />, container); // After import { createRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = createRoot(container); // createRoot(container!) if you use TypeScript root.render(<App tab=\"home\" />); We've also changed unmountComponentAtNode to root.unmount: // Before unmountComponentAtNode(container); // After root.unmount(); We've also removed the callback from render, since it usually does not have the expected result when using Suspense: // Before const container = document.getElementById('app'); render(<App tab=\"home\" />, container, () => { console.log('rendered'); }); // After function AppWithCallbackAfterRender() { useEffect(() => { console.log('rendered'); }); return <App tab=\"home\" /> } const container = document.getElementById('app'); const root = createRoot(container); root.render(<AppWithCallbackAfterRender />); There is no one-to-one replacement for the old render callback API — it depends on your use case. See the working group post for Replacing render with createRoot for more information. Finally, if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot: // Before import { hydrate } from 'react-dom'; const container = document.getElementById('app'); hydrate(<App tab=\"home\" />, container); // After import { hydrateRoot } from 'react-dom/client'; const container = document.getElementById('app'); const root = hydrateRoot(container, <App tab=\"home\" />); // Unlike with createRoot, you don't need a separate root.render() call here. For more information, see the working group discussion here. If your app doesn't work after upgrading, check whether it's wrapped in <StrictMode>. Strict Mode has gotten stricter in React 18, and not all your components may be resilient to the new checks it adds in development mode. If removing Strict Mode fixes your app, you\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "ReactDOM.render replaced by createRoot",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "In React 18, ReactDOM.render is no longer supported and logs a console warning. Until the app switches to createRoot, it behaves as if it is running React 17.",
+    "primary_symbol": "ReactDOM.render",
+    "symbols": [
+     "ReactDOM.render",
+     "createRoot",
+     "react-dom/client"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "Upgrade crosses into React 18, where ReactDOM.render is no longer supported",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "React 18",
+      "quotes": [
+       "When you first install React 18, you will see a warning in the console: ReactDOM.render is no longer supported in React 18."
+      ],
+      "relevance": "Ties the removal of ReactDOM.render to React 18.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Application calls ReactDOM.render to mount the app",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "ReactDOM.render",
+      "quotes": [
+       "ReactDOM.render is no longer supported in React 18. Use createRoot instead."
+      ],
+      "relevance": "The risk applies only if the app uses ReactDOM.render.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "ReactDOM\\.render\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "import \\{ render \\} from 'react-dom'"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Replace ReactDOM.render with createRoot from 'react-dom/client' and call root.render(<App />) on the returned root."
+    ]
+   },
+   {
+    "path_name": "unmountComponentAtNode changed to root.unmount",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "unmountComponentAtNode has been changed to root.unmount.",
+    "primary_symbol": "unmountComponentAtNode",
+    "symbols": [
+     "unmountComponentAtNode",
+     "root.unmount"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "Upgrade crosses into React 18, where unmountComponentAtNode is replaced by root.unmount",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "React 18",
+      "quotes": [
+       "We've also changed unmountComponentAtNode to root.unmount:"
+      ],
+      "relevance": "The change statement is part of the React 18 client rendering API section.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Application calls unmountComponentAtNode",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "unmountComponentAtNode",
+      "quotes": [
+       "We've also changed unmountComponentAtNode to root.unmount:"
+      ],
+      "relevance": "The risk applies only if the app calls unmountComponentAtNode.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "unmountComponentAtNode"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Replace unmountComponentAtNode(container) with root.unmount() on the root created by createRoot."
+    ]
+   },
+   {
+    "path_name": "render callback removed",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "The callback argument to render was removed because it usually does not have the expected result when using Suspense. The text states there is no one-to-one replacement and that the replacement depends on the use case.",
+    "primary_symbol": "render",
+    "symbols": [
+     "render",
+     "useEffect",
+     "createRoot"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "Upgrade crosses into React 18, where the callback argument to render is removed",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "React 18",
+      "quotes": [
+       "We've also removed the callback from render, since it usually does not have the expected result when using Suspense:"
+      ],
+      "relevance": "The change statement is part of the React 18 client rendering API section.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Application passes a callback to render",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "render with callback argument",
+      "quotes": [
+       "We've also removed the callback from render"
+      ],
+      "relevance": "The risk applies only if the app passes a callback to render.",
+      "ambiguities": [
+       "The text does not state the exact call shape that counts as using the render callback."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "render\\([^)]*,[^)]*,"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Move the logic from the render callback into a useEffect inside a component rendered by root.render, as shown in the migration guide.",
+     "Consult the working group post Replacing render with createRoot to choose a replacement for the use case."
+    ]
+   },
+   {
+    "path_name": "hydrate replaced by hydrateRoot",
+    "risk_type": "removed_api",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "Server-side rendering apps that use hydrate must upgrade to hydrateRoot. Unlike createRoot, no separate root.render() call is needed.",
+    "primary_symbol": "hydrate",
+    "symbols": [
+     "hydrate",
+     "hydrateRoot",
+     "react-dom/client"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "Upgrade crosses into React 18, where hydrate is replaced by hydrateRoot",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "React 18",
+      "quotes": [
+       "Finally, if your app uses server-side rendering with hydration, upgrade hydrate to hydrateRoot:"
+      ],
+      "relevance": "Ties the hydrate change to the React 18 client rendering API section.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Application calls hydrate to hydrate server-rendered markup",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "hydrate",
+      "quotes": [
+       "upgrade hydrate to hydrateRoot:"
+      ],
+      "relevance": "The risk applies only if the app calls hydrate.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\bhydrate\\("
+       },
+       {
+        "tool": "ripgrep",
+        "query": "import \\{ hydrate \\} from 'react-dom'"
+       }
+      ]
+     },
+     {
+      "statement": "Application uses server-side rendering with hydration",
+      "category": "runtime",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "server-side rendering with hydration",
+      "quotes": [
+       "if your app uses server-side rendering with hydration"
+      ],
+      "relevance": "The hydrate change applies only to apps using server-side rendering with hydration.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Replace hydrate(<App />, container) with hydrateRoot(container, <App />) imported from 'react-dom/client'."
+    ]
+   },
+   {
+    "path_name": "Stricter Strict Mode checks",
+    "risk_type": "changed_behavior",
+    "risk_level": "low",
+    "affected_surface": "runtime",
+    "description": "Strict Mode has gotten stricter in React 18 and adds new checks in development mode. Not all components may be resilient to these checks. If removing Strict Mode fixes the app, the app should be fixed to be compatible with Strict Mode.",
+    "primary_symbol": "StrictMode",
+    "symbols": [
+     "StrictMode"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "Upgrade crosses into React 18, where Strict Mode is stricter",
+      "category": "version",
+      "role": "required",
+      "operator": "equals",
+      "expected_value": "React 18",
+      "quotes": [
+       "Strict Mode has gotten stricter in React 18, and not all your components may be resilient to the new checks it adds in development mode."
+      ],
+      "relevance": "Ties the stricter Strict Mode checks to React 18.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "Application wraps part of the tree in StrictMode",
+      "category": "configuration",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "StrictMode",
+      "quotes": [
+       "If your app doesn't work after upgrading, check whether it's wrapped in <StrictMode>."
+      ],
+      "relevance": "The risk applies only if the app is wrapped in StrictMode.",
+      "ambiguities": [
+       "The text says not all components may be resilient, so it does not state that every app will break."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "<StrictMode>"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "If the app fails after upgrading, test with StrictMode removed to confirm it is the cause.",
+     "Fix components that are not resilient to the new Strict Mode development checks."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4363,
+  "output_tokens": 7379,
+  "stop_reason": "end_turn"
+ }
+}

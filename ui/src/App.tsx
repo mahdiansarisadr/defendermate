@@ -2,6 +2,7 @@ import { NavLink, Route, Routes } from 'react-router-dom'
 import Overview from './pages/Overview'
 import UpgradePage from './pages/Upgrade'
 import Evals from './pages/Evals'
+import Experiments from './pages/Experiments'
 import Runs from './pages/Runs'
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <nav>
           <NavLink to="/" end>Overview</NavLink>
           <NavLink to="/evals">Evals</NavLink>
+          <NavLink to="/experiments">Experiments</NavLink>
           <NavLink to="/runs">Runs</NavLink>
         </nav>
       </header>
@@ -23,6 +25,7 @@ export default function App() {
           <Route path="/" element={<Overview />} />
           <Route path="/upgrade/:slug" element={<UpgradePage />} />
           <Route path="/evals" element={<Evals />} />
+          <Route path="/experiments" element={<Experiments />} />
           <Route path="/runs" element={<Runs />} />
         </Routes>
       </main>

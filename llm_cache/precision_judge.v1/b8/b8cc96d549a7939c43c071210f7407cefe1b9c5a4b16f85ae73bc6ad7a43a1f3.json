@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom scan providers assumed not to support projections\",\n \"risk_type\": \"changed_default\",\n \"description\": \"Starting in PostgreSQL 15, custom scan providers are assumed by default to not support projections. Extensions implementing custom scan providers that do support projections must be updated to indicate so.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15 (13 -> 16).\",\n   \"quotes\": [\n    \"The default is now that custom scan providers are assumed to not support projections\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The deployment uses an extension or C code that implements a custom scan provider.\",\n   \"quotes\": [\n    \"custom scan providers are assumed to not support projections\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The custom scan provider supports projections and relied on the previous default.\",\n   \"quotes\": [\n    \"those that do will need to be updated for this release\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support that the default changed so custom scan providers are assumed not to support projections and those that do must be updated, a genuine compatibility risk for extensions when upgrading from 13 to 16 that is checkable via custom scan provider code or extensions."
+ },
+ "usage": {
+  "input_tokens": 800,
+  "output_tokens": 103,
+  "stop_reason": "end_turn"
+ }
+}

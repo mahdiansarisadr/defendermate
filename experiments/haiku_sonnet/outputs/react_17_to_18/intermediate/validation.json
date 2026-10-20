@@ -1,0 +1,20 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_d1fa9e779a/the_server_rendered_markup_and_client_re_37e03d",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_bf8746ac22/if_the_project_only_runs_end_to_end_test_75d576",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_eb824a435b/the_application_renders_text_content_on_1ebb1e",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

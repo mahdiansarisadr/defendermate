@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"interval fractional input rounding for units greater than months\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"When interval input gives a fractional value for a unit greater than months, the value is now rounded to the nearest month. For example, 1.99 years now becomes 2 years rather than 1 year 11 months. Applications or data loads that supply fractional years, decades, centuries or similar interval inputs may get different results.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the interval fractional-unit rounding change was introduced (13 -> 16).\",\n   \"quotes\": [\n    \"round to the nearest month\",\n    \"Improve consistency of interval parsing with trailing periods\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or its data supplies interval input with a fractional value for a unit greater than months (e.g. '1.99 years').\",\n   \"quotes\": [\n    \"When interval input provides a fractional value for a unit greater than months\"\n   ]\n  },\n  {\n   \"role\": \"optional\",\n   \"statement\": \"Application logic or stored results depend on the previous result, such as 1.99 years being converted to 1 year 11 months.\",\n   \"quotes\": [\n    \"convert 1.99 years to 2 years, not 1 year 11 months as before\",\n    \"Numbers with trailing periods were rejected on some platforms.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support a concrete behavior change (fractional interval units above months now round to the nearest month, e.g. 1.99 years becomes 2 years rather than 1 year 11 months) that can alter results for data loads or application logic, and the conditions are checkable, though some optional-condition quotes (trailing periods) are tangential."
+ },
+ "usage": {
+  "input_tokens": 931,
+  "output_tokens": 129,
+  "stop_reason": "end_turn"
+ }
+}

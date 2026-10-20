@@ -80,6 +80,28 @@ def eval_cmd(llm: bool = typer.Option(True, help="Run LLM-based metrics (precisi
 
 
 @app.command()
+def experiment(name: str = typer.Option(..., "--config", help="haiku_haiku | haiku_sonnet | sonnet_opus"),
+               stability: bool = typer.Option(True, help="Cold React rerun for the stability metric")) -> None:
+    """Rerun React, PostgreSQL and Next.js under one model config and evaluate into experiments/<config>/."""
+    from .experiment import CONFIGS, run_experiment
+
+    if name not in CONFIGS:
+        raise typer.BadParameter(f"one of {sorted(CONFIGS)}")
+    run_experiment(name, stability=stability, log=typer.echo)
+
+
+@app.command(name="compare-experiments")
+def compare_experiments() -> None:
+    """Write experiments/comparison.{json,md} from every finished config."""
+    from .experiment import compare
+
+    out = compare()
+    for r in out["rows"]:
+        typer.echo(f"{r['label']:16} ${r['cost_usd']:.2f}  recall {r['recall']:.3f}  est.prec {r['estimated_precision']:.3f}"
+                   f"  F1 {r['f1']:.3f}  pareto={r['pareto']}")
+
+
+@app.command()
 def scan(model: Path = typer.Option(..., "--model"), repo: Path = typer.Option(..., "--repo")) -> None:
     """Demo downstream consumer over fixtures/demo_app (never real repositories)."""
     from .scan import scan as run_scan

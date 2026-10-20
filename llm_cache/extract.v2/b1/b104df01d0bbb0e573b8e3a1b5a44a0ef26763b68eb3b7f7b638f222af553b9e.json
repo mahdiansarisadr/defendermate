@@ -1,0 +1,486 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: Next.js. Upgrade being assessed: 12 -> 14.\nThis change was introduced in release 13. Source: Next.js upgrade guide at v13.0.0 (Upgrading from 12 to 13) (official_migration_guide). Section: Upgrade Guide / Upgrading from 12 to 13.\nVersion facts from package metadata for this release (authoritative for version numbers): [\n {\n  \"release\": \"13\",\n  \"field\": \"node\",\n  \"value\": \">=14.6.0\",\n  \"source_id\": \"next_pkg@v13.0.0\",\n  \"json_path\": \"engines.node\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"react_peer\",\n  \"value\": \"^18.0.0-0\",\n  \"source_id\": \"next_pkg@v13.0.0\",\n  \"json_path\": \"peerDependencies.react\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"node\",\n  \"value\": \">=16.8.0\",\n  \"source_id\": \"next_pkg@v13.4.0\",\n  \"json_path\": \"engines.node\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"react_peer\",\n  \"value\": \"^18.2.0\",\n  \"source_id\": \"next_pkg@v13.4.0\",\n  \"json_path\": \"peerDependencies.react\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"node\",\n  \"value\": \">=16.14.0\",\n  \"source_id\": \"next_pkg@v13.5.0\",\n  \"json_path\": \"engines.node\"\n },\n {\n  \"release\": \"13\",\n  \"field\": \"react_peer\",\n  \"value\": \"^18.2.0\",\n  \"source_id\": \"next_pkg@v13.5.0\",\n  \"json_path\": \"peerDependencies.react\"\n }\n]\n\nITEM:\n<<<\nThe Supported Browsers have been changed to drop Internet Explorer and target modern browsers. The minimum Node.js version has been bumped from 12.22.0 to 14.6.0, since 12.x has reached end-of-life. The minimum React version has been bumped from 17.0.2 to 18.2.0. The swcMinify configuration property was changed from false to true. See Next.js Compiler for more info. The next/image import was renamed to next/legacy/image. The next/future/image import was renamed to next/image. A codemod is available to safely and automatically rename your imports. The next/link child can no longer be <a>. Add the legacyBehavior prop to use the legacy behavior or remove the <a> to upgrade. A codemod is available to automatically upgrade your code. The target configuration property has been removed and superseded by Output File Tracing.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nUpgrade Guide / Upgrading from 12 to 13: The Supported Browsers have been changed to drop Internet Explorer and target modern browsers. The minimum Node.js version has been bumped from 12.22.0 to 14.6.0, since 12.x has reached end-of-life. The minimum React version has been bumped from 17.0.2 to 18.2.0. The swcMinify configuration property was changed from false to true. See Next.js Compiler for more info. The next/image import was renamed to next/legacy/image. The next/future/image import was renamed to next/image. A codemod is available to safely and automatically rename your imports. The next/link child can no longer be <a>. Add the legacyBehavior prop to use the legacy behavior or remove the <a> to upgrade. A codemod is available to automatically upgrade your code. The target configuration property has been removed and superseded by Output File Tracing.\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 14 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 13 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Minimum Node.js version raised to 14.6.0",
+    "risk_type": "runtime_requirement",
+    "risk_level": "critical",
+    "affected_surface": "runtime",
+    "description": "The minimum Node.js version was bumped from 12.22.0 to 14.6.0 in release 13, so deployments and build environments on older Node.js no longer meet the requirement.",
+    "primary_symbol": "Node.js",
+    "symbols": [
+     "Node.js"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 12 to 14 crosses release 13, which bumped the minimum Node.js version.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "Next.js 12.x -> 14.x (crosses 13)",
+      "quotes": [
+       "The minimum Node.js version has been bumped from 12.22.0 to 14.6.0"
+      ],
+      "relevance": "Ties the Node.js requirement change to release 13.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The Node.js runtime used for build or deployment is older than the new minimum of 14.6.0.",
+      "category": "runtime",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "14.6.0",
+      "quotes": [
+       "bumped from 12.22.0 to 14.6.0"
+      ],
+      "relevance": "Node.js below the new minimum is not supported.",
+      "ambiguities": [
+       "Package metadata shows later 13.x releases require Node.js >=16.8.0 (13.4.0) and >=16.14.0 (13.5.0); the item text itself only states 14.6.0 and does not give the minimum for 14."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\"node\"\\s*:\\s*\"[^\"]*\"|FROM node:|nvm use|node-version"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "(^|\\s)(12|13)\\.\\d+\\.\\d+"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Upgrade the Node.js runtime in CI, build images and production to at least 14.6.0 before upgrading Next.js.",
+     "Check package metadata for the target Next.js release, because later releases require a higher Node.js minimum."
+    ]
+   },
+   {
+    "path_name": "Minimum React version raised to 18.2.0",
+    "risk_type": "dependency_requirement",
+    "risk_level": "high",
+    "affected_surface": "dependencies",
+    "description": "The minimum React version was bumped from 17.0.2 to 18.2.0 in release 13, so projects on React 17 do not meet the requirement.",
+    "primary_symbol": "react",
+    "symbols": [
+     "react",
+     "react-dom"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 12 to 14 crosses release 13, which bumped the minimum React version.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "Next.js 12.x -> 14.x (crosses 13)",
+      "quotes": [
+       "The minimum React version has been bumped from 17.0.2 to 18.2.0"
+      ],
+      "relevance": "Ties the React requirement change to release 13.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The project depends on a React version older than 18.2.0.",
+      "category": "dependency",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "18.2.0",
+      "quotes": [
+       "bumped from 17.0.2 to 18.2.0"
+      ],
+      "relevance": "React below the new minimum does not satisfy the requirement.",
+      "ambiguities": [
+       "Package metadata for 13.0.0 lists the react peer as ^18.0.0-0 while the item text states 18.2.0; 13.4.0 and later list ^18.2.0."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\"(react|react-dom)\"\\s*:\\s*\"[^\"]*\""
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Upgrade react and react-dom to 18.2.0 or later together with Next.js.",
+     "Test the application against React 18 behavior."
+    ]
+   },
+   {
+    "path_name": "Internet Explorer no longer supported",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "runtime",
+    "description": "Supported browsers now target modern browsers and drop Internet Explorer, so users on Internet Explorer may not be supported.",
+    "primary_symbol": "Internet Explorer",
+    "symbols": [
+     "Internet Explorer"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 12 to 14 crosses release 13, which changed the supported browsers.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "Next.js 12.x -> 14.x (crosses 13)",
+      "quotes": [
+       "The Supported Browsers have been changed to drop Internet Explorer and target modern browsers"
+      ],
+      "relevance": "Ties the browser support change to release 13.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The application needs to serve users on Internet Explorer.",
+      "category": "runtime",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "Internet Explorer",
+      "quotes": [
+       "drop Internet Explorer and target modern browsers"
+      ],
+      "relevance": "Only applications with Internet Explorer users are affected.",
+      "ambiguities": [
+       "The text does not state what specifically fails on Internet Explorer."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "browserslist|\\bie ?(10|11)\\b|MSIE|Trident"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Confirm that Internet Explorer support is no longer required, or keep a Next.js version that supports it.",
+     "Review the browserslist configuration against the new modern-browser targets."
+    ]
+   },
+   {
+    "path_name": "swcMinify default changed from false to true",
+    "risk_type": "changed_default",
+    "risk_level": "medium",
+    "affected_surface": "configuration",
+    "description": "The swcMinify configuration property changed from false to true, so builds that do not set it explicitly now use SWC minification.",
+    "primary_symbol": "swcMinify",
+    "symbols": [
+     "swcMinify",
+     "next.config.js"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 12 to 14 crosses release 13, which changed the swcMinify default.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "Next.js 12.x -> 14.x (crosses 13)",
+      "quotes": [
+       "The swcMinify configuration property was changed from false to true"
+      ],
+      "relevance": "Ties the default change to release 13.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The Next.js configuration does not set swcMinify explicitly, so it picks up the new default.",
+      "category": "configuration",
+      "role": "required",
+      "operator": "absent",
+      "expected_value": "swcMinify",
+      "quotes": [
+       "The swcMinify configuration property was changed from false to true"
+      ],
+      "relevance": "Only apps relying on the default are affected by the change.",
+      "ambiguities": [
+       "The text does not describe what breaks with SWC minification; it only refers to the Next.js Compiler docs."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "swcMinify"
+       }
+      ]
+     },
+     {
+      "statement": "The configuration explicitly sets swcMinify, so the default change does not apply.",
+      "category": "configuration",
+      "role": "disqualifying",
+      "operator": "present",
+      "expected_value": "swcMinify",
+      "quotes": [
+       "The swcMinify configuration property was changed from false to true"
+      ],
+      "relevance": "An explicit value overrides the default.",
+      "ambiguities": [],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "swcMinify\\s*:"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Test production builds with SWC minification.",
+     "Set swcMinify: false explicitly in the Next.js config if the previous behavior is needed."
+    ]
+   },
+   {
+    "path_name": "next/image and next/future/image imports renamed",
+    "risk_type": "changed_behavior",
+    "risk_level": "high",
+    "affected_surface": "application_code",
+    "description": "The next/image import was renamed to next/legacy/image and next/future/image was renamed to next/image, so existing imports of next/image now resolve to the component formerly at next/future/image.",
+    "primary_symbol": "next/image",
+    "symbols": [
+     "next/image",
+     "next/legacy/image",
+     "next/future/image"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 12 to 14 crosses release 13, which renamed the image imports.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "Next.js 12.x -> 14.x (crosses 13)",
+      "quotes": [
+       "The next/future/image import was renamed to next/image"
+      ],
+      "relevance": "Ties the rename to release 13.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "Application code imports next/image or next/future/image.",
+      "category": "api_usage",
+      "role": "alternative",
+      "operator": "present",
+      "expected_value": "next/image",
+      "quotes": [
+       "The next/image import was renamed to next/legacy/image",
+       "The next/future/image import was renamed to next/image"
+      ],
+      "relevance": "Code importing either path is affected by the rename.",
+      "ambiguities": [
+       "The text does not describe behavior differences between the old and new image components."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "from ['\"]next/(image|future/image|legacy/image)['\"]"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "require\\(['\"]next/(image|future/image)['\"]\\)"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Run the available codemod to rename the imports safely and automatically.",
+     "Import next/legacy/image where the previous next/image behavior must be kept."
+    ]
+   },
+   {
+    "path_name": "next/link child can no longer be <a>",
+    "risk_type": "changed_behavior",
+    "risk_level": "high",
+    "affected_surface": "application_code",
+    "description": "The next/link child can no longer be an <a> element. Code must add the legacyBehavior prop or remove the <a>.",
+    "primary_symbol": "next/link",
+    "symbols": [
+     "next/link",
+     "legacyBehavior",
+     "<a>"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 12 to 14 crosses release 13, which changed the next/link child requirement.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "Next.js 12.x -> 14.x (crosses 13)",
+      "quotes": [
+       "The next/link child can no longer be <a>"
+      ],
+      "relevance": "Ties the next/link change to release 13.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "Application code uses next/link with an <a> element as its child.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "next/link with <a> child",
+      "quotes": [
+       "The next/link child can no longer be <a>"
+      ],
+      "relevance": "Only Link components wrapping <a> are affected.",
+      "ambiguities": [
+       "The text does not state how the failure appears (build error, runtime error or warning)."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "from ['\"]next/link['\"]"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "-U <Link[^>]*>\\s*<a[\\s>]"
+       }
+      ]
+     },
+     {
+      "statement": "The Link already uses the legacyBehavior prop, so the new restriction is satisfied.",
+      "category": "api_usage",
+      "role": "disqualifying",
+      "operator": "present",
+      "expected_value": "legacyBehavior",
+      "quotes": [
+       "Add the legacyBehavior prop to use the legacy behavior"
+      ],
+      "relevance": "Adding legacyBehavior preserves the old behavior.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "legacyBehavior"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Run the available codemod to automatically upgrade next/link usage.",
+     "Alternatively add the legacyBehavior prop to Link or remove the <a> child."
+    ]
+   },
+   {
+    "path_name": "target configuration property removed",
+    "risk_type": "removed_api",
+    "risk_level": "high",
+    "affected_surface": "configuration",
+    "description": "The target configuration property was removed and superseded by Output File Tracing, so configs that set it need to be migrated.",
+    "primary_symbol": "target",
+    "symbols": [
+     "target",
+     "Output File Tracing",
+     "next.config.js"
+    ],
+    "fires_at": "upgrade",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade from 12 to 14 crosses release 13, which removed the target configuration property.",
+      "category": "version",
+      "role": "required",
+      "operator": "in_range",
+      "expected_value": "Next.js 12.x -> 14.x (crosses 13)",
+      "quotes": [
+       "The target configuration property has been removed and superseded by Output File Tracing"
+      ],
+      "relevance": "Ties the removal to release 13.",
+      "ambiguities": [],
+      "derived_by": "rule",
+      "search_queries": []
+     },
+     {
+      "statement": "The Next.js configuration sets the target property.",
+      "category": "configuration",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "target",
+      "quotes": [
+       "The target configuration property has been removed"
+      ],
+      "relevance": "Only configs that set target are affected by the removal.",
+      "ambiguities": [
+       "The text does not state what happens when a removed target value is still set."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "target\\s*:\\s*['\"](serverless|server|experimental-serverless-trace)['\"]"
+       },
+       {
+        "tool": "ripgrep",
+        "query": "\\btarget\\s*:"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Remove the target property from the Next.js config.",
+     "Migrate to Output File Tracing as the replacement."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4329,
+  "output_tokens": 6596,
+  "stop_reason": "end_turn"
+ }
+}

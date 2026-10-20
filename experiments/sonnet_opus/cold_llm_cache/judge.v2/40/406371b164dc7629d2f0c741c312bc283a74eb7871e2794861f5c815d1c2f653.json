@@ -1,0 +1,50 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whe_fe00ee\",\n  \"claim\": \"The upgrade crosses React release 18, where the act warning was expanded.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Expand act warning to cover all APIs that might schedule React work.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Throw when act is used in production.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Make act batch updates. (#21797 by @acdlite)\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_s_tests_use_react_test_u_e4d54c\",\n  \"claim\": \"The application's tests use React test utilities or act, and trigger APIs that schedule React work.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Expand act warning to cover all APIs that might schedule React work.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Make act batch updates.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_test_setup_fails_tests_on_console_wa_ceadac\",\n  \"claim\": \"The test setup fails tests on console warnings or errors, which raises the impact from noise to failures.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Expand act warning to cover all APIs that might schedule React work.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_environment_configures_global_is_rea_b0a7c4\",\n  \"claim\": \"The environment configures global.IS_REACT_ACT_ENVIRONMENT, which can be used to disable spurious act warnings.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Support disabling spurious act warnings with global.IS_REACT_ACT_ENVIRONMENT.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_its_tests_call_act_992ad2\",\n  \"claim\": \"The application or its tests call act.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Throw when act is used in production.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"act_is_invoked_while_running_a_productio_462534\",\n  \"claim\": \"act is invoked while running a production build of React (e.g. NODE_ENV=production).\",\n  \"evidence\": [\n   {\n    \"quote\": \"Throw when act is used in production.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"test_assertions_depend_on_observing_inte_dd5e35\",\n  \"claim\": \"Test assertions depend on observing intermediate renders, or on updates inside act being applied unbatched.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Make act batch updates.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whe_fe00ee",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_s_tests_use_react_test_u_e4d54c",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_test_setup_fails_tests_on_console_wa_ceadac",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not mention test setups that fail on console warnings or errors, or that this raises the impact from noise to failures."
+   },
+   {
+    "condition_id": "the_environment_configures_global_is_rea_b0a7c4",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_its_tests_call_act_992ad2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "act_is_invoked_while_running_a_productio_462534",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not mention NODE_ENV=production or define what counts as a production build."
+   },
+   {
+    "condition_id": "test_assertions_depend_on_observing_inte_dd5e35",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not say that batching hides intermediate renders or affects test assertions."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2011,
+  "output_tokens": 918,
+  "stop_reason": "end_turn"
+ }
+}

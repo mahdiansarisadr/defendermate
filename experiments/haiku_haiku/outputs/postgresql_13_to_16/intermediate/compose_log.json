@@ -1,0 +1,21 @@
+{
+ "r5": [],
+ "r1": [],
+ "r1_unresolved": [],
+ "r2": [
+  {
+   "superseded": "postgresql_d259e6a2e1",
+   "by": "postgresql_c9d93d5231",
+   "symbol": "pg_dumpall"
+  }
+ ],
+ "r3": [],
+ "merge": [
+  {
+   "kept": "postgresql_9623a24b4c",
+   "merged": "postgresql_9623a24b4c",
+   "release": "14",
+   "symbol": "websearch_to_tsquery()"
+  }
+ ]
+}

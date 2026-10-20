@@ -1,0 +1,92 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_272d063f3f/backups_rely_on_exclusive_backup_mode_wh_57068c",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_7bfe01bbb4/the_deployment_relies_on_python_2_for_se_6a5643",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_0e147761ab/factorial_may_be_called_with_a_negative_635621",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_27194e765d/the_query_text_passed_to_these_functions_86d25c",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_4645b4b0d2/the_application_depends_on_d_or_w_not_ma_bd7434",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_9d3f729496/a_parent_partitioned_table_column_and_th_0581fc",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_b9ad526348/the_code_depends_on_the_cursor_variable_173ce1",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_b9ad526348/the_application_already_assigns_the_desi_ea1864",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_f1bf63ef84/the_matching_custom_options_are_set_befo_eeb587",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_167726bd25/the_attribute_number_passed_refers_to_a_ea8872",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_167726bd25/the_application_depends_on_the_previous_729750",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_85602454ed/the_calls_to_normal_rand_pass_a_negative_b214d1",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_90c31fa6ac/the_application_relies_on_json_numeric_l_753446",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_dc64bb7d33/the_input_to_the_aggregate_is_a_single_n_889d0d",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/postgresql_e068a86a55/the_deployment_uses_an_openssl_tls_versi_ccd305",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

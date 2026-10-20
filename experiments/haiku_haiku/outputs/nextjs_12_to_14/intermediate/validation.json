@@ -1,0 +1,14 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/nextjs_1300ee090f/the_link_component_always_renders_an_a_e_912edf",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/nextjs_2a246a90c5/application_must_serve_internet_explorer_93d119",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

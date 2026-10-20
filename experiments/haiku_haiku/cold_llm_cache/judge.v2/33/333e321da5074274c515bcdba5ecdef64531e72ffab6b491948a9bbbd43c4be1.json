@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_change_is_introduced_in_release_18_s_d967a9\",\n  \"claim\": \"The change is introduced in release 18, so the upgrade from 17 crosses release 18.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Will no longer error when suspending on the server.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_calls_rendertostring_fro_07f815\",\n  \"claim\": \"The application calls renderToString from react-dom/server to render on the server.\",\n  \"evidence\": [\n   {\n    \"quote\": \"renderToString: Will no longer error when suspending on the server.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"server_rendering_of_the_application_can_fe13a8\",\n  \"claim\": \"Server rendering of the application can suspend inside a Suspense boundary.\",\n  \"evidence\": [\n   {\n    \"quote\": \"it will emit the fallback HTML for the closest <Suspense> boundary\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_change_is_introduced_in_release_18_s_d967a9",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_calls_rendertostring_fro_07f815",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "server_rendering_of_the_application_can_fe13a8",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1197,
+  "output_tokens": 610,
+  "stop_reason": "end_turn"
+ }
+}

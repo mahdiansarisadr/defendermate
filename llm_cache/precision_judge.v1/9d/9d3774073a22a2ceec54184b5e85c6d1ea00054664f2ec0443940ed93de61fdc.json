@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"pg_get_wal_stats_till_end_of_wal removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"The pg_walinspect function pg_get_wal_stats_till_end_of_wal() is removed in PostgreSQL 16; calls to it will fail after upgrade.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"Upgrade crosses release 16, where the function was removed\",\n   \"quotes\": [\n    \"Remove pg_walinspect functions pg_get_wal_records_info_till_end_of_wal() and pg_get_wal_stats_till_end_of_wal()\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application or scripts call pg_get_wal_stats_till_end_of_wal()\",\n   \"quotes\": [\n    \"and pg_get_wal_stats_till_end_of_wal() (Bharath Rupireddy)\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote from the release notes states that pg_get_wal_stats_till_end_of_wal() was removed in 16, so calls to it would fail after upgrade, and the function name is concrete and searchable in application code or scripts."
+ },
+ "usage": {
+  "input_tokens": 779,
+  "output_tokens": 92,
+  "stop_reason": "end_turn"
+ }
+}

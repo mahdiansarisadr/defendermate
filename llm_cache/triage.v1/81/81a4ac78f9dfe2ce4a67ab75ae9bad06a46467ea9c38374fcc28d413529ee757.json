@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade: 17 -> 18. Release of these items: 18.\nSource: React CHANGELOG (18.0.0 section).\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"3629afc9a60a\", \"section\": \"React\", \"text\": \"Make <StrictMode> re-run effects to check for restorable state. (#19523 , #21418 by @bvaughn and @lunaruan)\"}\n{\"item_id\": \"47d7989f9a8b\", \"section\": \"React\", \"text\": \"Assume Symbols are always available. (#23348 by @sebmarkbage)\"}\n{\"item_id\": \"d6838ccf0426\", \"section\": \"React\", \"text\": \"Remove object-assign polyfill. (#23351 by @sebmarkbage)\"}\n{\"item_id\": \"491ba1f432ba\", \"section\": \"React\", \"text\": \"Remove unsupported unstable_changedBits API. (#20953 by @acdlite)\"}\n{\"item_id\": \"b754050dc453\", \"section\": \"React\", \"text\": \"Allow components to render undefined. (#21869 by @rickhanlonii)\"}\n{\"item_id\": \"51ebe1c4d798\", \"section\": \"React\", \"text\": \"Flush useEffect resulting from discrete events like clicks synchronously. (#21150 by @acdlite)\"}\n{\"item_id\": \"cae24fde7945\", \"section\": \"React\", \"text\": \"Suspense fallback={undefined} now behaves the same as null and isn't ignored. (#21854 by @rickhanlonii)\"}\n{\"item_id\": \"411c7238d060\", \"section\": \"React\", \"text\": \"Consider all lazy() resolving to the same component equivalent. (#20357 by @sebmarkbage)\"}\n{\"item_id\": \"31ca3daec0b0\", \"section\": \"React\", \"text\": \"Don't patch console during first render. (#22308 by @lunaruan)\"}\n{\"item_id\": \"7712d756152a\", \"section\": \"React\", \"text\": \"Improve memory usage. (#21039 by @bgirard)\"}\n{\"item_id\": \"a06c807681a0\", \"section\": \"React\", \"text\": \"Improve messages if string coercion throws (Temporal.*, Symbol, etc.) (#22064 by @justingrant)\"}\n{\"item_id\": \"b889de7918ef\", \"section\": \"React\", \"text\": \"Use setImmediate when available over MessageChannel. (#20834 by @gaearon)\"}\n{\"item_id\": \"2b706ca47976\", \"section\": \"React\", \"text\": \"Fix context failing to propagate inside suspended trees. (#23095 by @gaearon)\"}\n{\"item_id\": \"9b8c836058f8\", \"section\": \"React\", \"text\": \"Fix useReducer observing incorrect props by removing the eager bailout mechanism. (#22445 by @josephsavona)\"}\n{\"item_id\": \"fb284132d7d0\", \"section\": \"React\", \"text\": \"Fix setState being ignored in Safari when appending iframes. (#23111 by @gaearon)\"}\n{\"item_id\": \"4ca679c14049\", \"section\": \"React\", \"text\": \"Fix a crash when rendering ZonedDateTime in the tree. (#20617 by @dimaqq)\"}\n{\"item_id\": \"9452b4f263cc\", \"section\": \"React\", \"text\": \"Fix a crash when document is set to null in tests. (#22695 by @SimenB)\"}\n{\"item_id\": \"72545e761412\", \"section\": \"React\", \"text\": \"Fix onLoad not triggering when concurrent features are on. (#23316 by @gnoff)\"}\n{\"item_id\": \"31d934b3b4fc\", \"section\": \"React\", \"text\": \"Fix a warning when a selector returns NaN. (#23333 by @hachibeeDI)\"}\n{\"item_id\": \"218f6c923f72\", \"section\": \"React\", \"text\": \"Fix the generated license header. (#23004 by @vitaliemiron)\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "3629afc9a60a",
+    "label": "risk",
+    "reason": "StrictMode now re-runs effects, which can expose effects that are not resilient to being mounted/unmounted repeatedly in development."
+   },
+   {
+    "item_id": "47d7989f9a8b",
+    "label": "risk",
+    "reason": "React now assumes Symbols are always available, which could break environments lacking Symbol support without a polyfill."
+   },
+   {
+    "item_id": "d6838ccf0426",
+    "label": "risk",
+    "reason": "Removing the object-assign polyfill means environments relying on React's bundled polyfill may need to provide their own Object.assign."
+   },
+   {
+    "item_id": "491ba1f432ba",
+    "label": "risk",
+    "reason": "The unstable_changedBits API is removed, so any code using it will break."
+   },
+   {
+    "item_id": "b754050dc453",
+    "label": "context",
+    "reason": "Allowing components to render undefined is an additive relaxation that does not break existing code."
+   },
+   {
+    "item_id": "51ebe1c4d798",
+    "label": "risk",
+    "reason": "useEffect from discrete events now flushes synchronously, a timing behavior change that could affect app logic."
+   },
+   {
+    "item_id": "cae24fde7945",
+    "label": "risk",
+    "reason": "Suspense fallback={undefined} is no longer ignored and now behaves like null, changing rendered behavior."
+   },
+   {
+    "item_id": "411c7238d060",
+    "label": "risk",
+    "reason": "Changes how lazy() components resolving to the same component are treated, a behavior change that could affect rendering or remount behavior."
+   },
+   {
+    "item_id": "31ca3daec0b0",
+    "label": "risk",
+    "reason": "Console is no longer patched during first render, changing the logging behavior that some apps or tooling may depend on."
+   },
+   {
+    "item_id": "7712d756152a",
+    "label": "noise",
+    "reason": "A generic memory usage improvement with no behavior change or required action."
+   },
+   {
+    "item_id": "a06c807681a0",
+    "label": "context",
+    "reason": "Only improves error messages when string coercion throws; no migration action is needed."
+   },
+   {
+    "item_id": "b889de7918ef",
+    "label": "risk",
+    "reason": "Scheduler now prefers setImmediate over MessageChannel, which changes task scheduling and could affect timing in tests or environments."
+   },
+   {
+    "item_id": "2b706ca47976",
+    "label": "noise",
+    "reason": "A bug fix for context propagation in suspended trees that restores correct behavior."
+   },
+   {
+    "item_id": "9b8c836058f8",
+    "label": "risk",
+    "reason": "Removes the useReducer eager bailout mechanism, which changes when reducers run and renders occur."
+   },
+   {
+    "item_id": "fb284132d7d0",
+    "label": "noise",
+    "reason": "A pure bug fix for setState being ignored in Safari when appending iframes."
+   },
+   {
+    "item_id": "4ca679c14049",
+    "label": "noise",
+    "reason": "A pure crash fix when rendering ZonedDateTime."
+   },
+   {
+    "item_id": "9452b4f263cc",
+    "label": "noise",
+    "reason": "A pure crash fix when document is null in tests."
+   },
+   {
+    "item_id": "72545e761412",
+    "label": "noise",
+    "reason": "A bug fix for onLoad not triggering with concurrent features on."
+   },
+   {
+    "item_id": "31d934b3b4fc",
+    "label": "noise",
+    "reason": "A fix for a spurious warning when a selector returns NaN."
+   },
+   {
+    "item_id": "218f6c923f72",
+    "label": "noise",
+    "reason": "A fix to the generated license header with no functional impact."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1902,
+  "output_tokens": 1103,
+  "stop_reason": "end_turn"
+ }
+}

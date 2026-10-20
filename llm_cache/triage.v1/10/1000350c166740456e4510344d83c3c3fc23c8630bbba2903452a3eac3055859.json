@@ -1,0 +1,20 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "Project: React. Upgrade: 17 -> 18. Release of these items: 18.\nSource: React CHANGELOG (18.0.0 section).\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"90360b753186\", \"section\": \"18.0.0 (March 29, 2022)\", \"text\": \"Below is a list of all new features, APIs, deprecations, and breaking changes. Read React 18 release post and React 18 upgrade guide for more information.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "90360b753186",
+    "label": "context",
+    "reason": "This is an introductory pointer to the release post and upgrade guide and contains no specific change itself."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 786,
+  "output_tokens": 63,
+  "stop_reason": "end_turn"
+ }
+}

@@ -152,4 +152,10 @@ mark { background: #fff3bf; padding: 0 1px; }
 .stage.done { background: #d3f9d8; color: #2b8a3e; }
 .stage.cur { background: #fff3bf; color: #8a6100; font-weight: 600; }
 
+.scatter { width: 100%; height: auto; }
+.takeaways { padding-left: 18px; }
+.takeaways li { margin-bottom: 8px; }
+.costbar-row { display: grid; grid-template-columns: 120px 1fr 60px; gap: 8px; align-items: center; margin: 4px 0; }
+.costbar { height: 12px; border-radius: 3px; }
+
 @media (max-width: 900px) { .cols { grid-template-columns: 1fr; } .hero { flex-direction: column; } }

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Custom options matching an installed extension name are deleted and cannot be created\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 15, custom options (custom GUC variables) whose names match an installed extension's name, but which are not variables declared by that extension, are deleted when the extension loads. New ones of that kind cannot be created later in the session. Applications or configurations that rely on such variables will lose them or fail to set them.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15 (13 -> 16), where this change was introduced.\",\n   \"quotes\": [\n    \"Disallow setting custom options that match the name of an installed extension, but are not one of the extension's declared variables\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or configuration sets custom options whose prefix matches the name of an installed extension but which are not variables declared by that extension.\",\n   \"quotes\": [\n    \"custom options that match the name of an installed extension, but are not one of the extension's declared variables\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The matching custom options are set before the extension is loaded, or an attempt is made to set them after the extension is loaded in the same session.\",\n   \"quotes\": [\n    \"This change causes any such pre-existing variables to be deleted during extension load, and then prevents new ones from being created later in the session.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change (introduced in release 15, within the 13->16 range) where custom GUC options matching an installed extension's name but not declared by it are deleted on extension load and cannot be created later, which can break configurations, and a checker can look for such settings."
+ },
+ "usage": {
+  "input_tokens": 935,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

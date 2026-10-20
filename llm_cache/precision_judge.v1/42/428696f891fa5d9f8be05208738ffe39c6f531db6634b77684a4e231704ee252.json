@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"\\\"char\\\" type output format change for non-ASCII bytes\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The I/O format of type \\\"char\\\" changed for non-ASCII characters: bytes with the high bit set are now output as a backslash and three octal digits instead of the raw byte. Applications that read or compare \\\"char\\\" values containing such bytes may see different output.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, which introduced the \\\"char\\\" I/O format change (13 -> 16).\",\n   \"quotes\": [\n    \"Change the I/O format of type \\\"char\\\" for non-ASCII characters\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The database or application uses the type \\\"char\\\" (not char(n)) for columns or values containing non-ASCII bytes (high bit set) whose output is read or compared.\",\n   \"quotes\": [\n    \"Bytes with the high bit set are now output as a backslash and three octal digits\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in the \"char\" type's output for high-bit bytes, which can break applications that read or compare such values, and the condition (columns of type \"char\" holding non-ASCII bytes) is checkable in a schema or data scan."
+ },
+ "usage": {
+  "input_tokens": 805,
+  "output_tokens": 105,
+  "stop_reason": "end_turn"
+ }
+}

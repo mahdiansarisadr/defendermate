@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"REINDEX DATABASE / reindexdb no longer reindex system catalog indexes\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in 16, REINDEX DATABASE and reindexdb do not process indexes on system catalogs. Maintenance jobs that relied on them to rebuild system catalog indexes will skip those indexes. They can still be processed with REINDEX SYSTEM and reindexdb --system.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 16, where REINDEX DATABASE and reindexdb stop processing system catalog indexes.\",\n   \"quotes\": [\n    \"Change REINDEX DATABASE and reindexdb to not process indexes on system catalogs\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Scripts, cron jobs or runbooks run REINDEX DATABASE or reindexdb (without --system) and rely on it to reindex system catalog indexes.\",\n   \"quotes\": [\n    \"Change REINDEX DATABASE and reindexdb to not process indexes on system catalogs\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"The maintenance job already runs REINDEX SYSTEM or reindexdb --system separately, so system catalog indexes are still processed.\",\n   \"quotes\": [\n    \"Processing such indexes is still possible using REINDEX SYSTEM and reindexdb --system.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in PG 16 (REINDEX DATABASE and reindexdb skip system catalog indexes, still reachable via REINDEX SYSTEM or reindexdb --system), which is a checkable operational risk for maintenance jobs that relied on the old behavior."
+ },
+ "usage": {
+  "input_tokens": 969,
+  "output_tokens": 120,
+  "stop_reason": "end_turn"
+ }
+}

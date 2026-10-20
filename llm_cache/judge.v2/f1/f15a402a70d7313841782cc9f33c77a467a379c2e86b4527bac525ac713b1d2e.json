@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_postgresql_release_1_0c9fcc\",\n  \"claim\": \"The upgrade crosses PostgreSQL release 15, where the public schema owner changed to pg_database_owner.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Change the owner of the public schema to be the new pg_database_owner role\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_creates_new_database_clus_931faa\",\n  \"claim\": \"The deployment creates new database clusters or new databases in existing clusters after upgrading.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This change applies to new database clusters and to newly-created databases in existing clusters.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_is_an_existing_database_car_a4ace2\",\n  \"claim\": \"The database is an existing database carried over by pg_upgrade or restored from a dump, so its existing public ownership is preserved.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Upgrading a cluster or restoring a database dump will preserve public's existing ownership specification.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"scripts_audits_or_security_policies_assu_4d338e\",\n  \"claim\": \"Scripts, audits or security policies assume the public schema is owned by the bootstrap superuser, or that non-superuser database owners cannot control it.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously it was owned by the bootstrap superuser, so that non-superuser database owners could not do anything with it.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_postgresql_release_1_0c9fcc",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_deployment_creates_new_database_clus_931faa",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_is_an_existing_database_car_a4ace2",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "scripts_audits_or_security_policies_assu_4d338e",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1464,
+  "output_tokens": 392,
+  "stop_reason": "end_turn"
+ }
+}

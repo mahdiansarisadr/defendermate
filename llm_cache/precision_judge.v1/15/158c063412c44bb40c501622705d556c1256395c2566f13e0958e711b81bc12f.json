@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"NULLS NOT DISTINCT primary key indexes disallowed\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Release 16 disallows NULLS NOT DISTINCT indexes for primary keys. Schemas, migrations or DDL that define a primary key with NULLS NOT DISTINCT may fail once on version 16.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 16, which disallows NULLS NOT DISTINCT indexes for primary keys.\",\n   \"quotes\": [\n    \"Disallow NULLS NOT DISTINCT indexes for primary keys\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Schemas, migrations or application DDL define a primary key index using NULLS NOT DISTINCT.\",\n   \"quotes\": [\n    \"Disallow NULLS NOT DISTINCT indexes for primary keys\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote 'Disallow NULLS NOT DISTINCT indexes for primary keys' supports a concrete, checkable behavior change in release 16 (DDL defining a primary key with NULLS NOT DISTINCT), which could break schemas or migrations."
+ },
+ "usage": {
+  "input_tokens": 788,
+  "output_tokens": 107,
+  "stop_reason": "end_turn"
+ }
+}

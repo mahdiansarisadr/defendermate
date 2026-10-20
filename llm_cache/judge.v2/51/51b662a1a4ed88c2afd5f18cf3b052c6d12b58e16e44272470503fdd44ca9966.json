@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_16_where_rol_f688fb\",\n  \"claim\": \"The upgrade crosses release 16, where role inheritance for member roles is determined at GRANT time.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Role inheritance now controls the default inheritance status of member roles added during GRANT\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_uses_role_membership_grant_6f0b9d\",\n  \"claim\": \"The database uses role membership (GRANT role TO role) where members' privilege inheritance depends on role inheritance settings.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Role inheritance now controls the default inheritance status of member roles added during GRANT\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   },\n   {\n    \"quote\": \"Previously the inheritance status of member roles was controlled only by the role's inheritan\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"roles_are_created_or_altered_with_inheri_32168b\",\n  \"claim\": \"Roles are created or altered with INHERIT/NOINHERIT attributes, or the application/migrations change a role's inheritance status after memberships exist.\",\n  \"evidence\": [\n   {\n    \"quote\": \"changes to a role's inheritance status affected all previous and future member roles\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_deployment_does_not_rely_on_any_role_91e4d2\",\n  \"claim\": \"The deployment does not rely on any role membership inheritance (no GRANT of roles to other roles).\",\n  \"evidence\": [\n   {\n    \"quote\": \"Role inheritance now controls the default inheritance status of member roles added during GRANT\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_16_where_rol_f688fb",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_uses_role_membership_grant_6f0b9d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "roles_are_created_or_altered_with_inheri_32168b",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_deployment_does_not_rely_on_any_role_91e4d2",
+    "verdict": "not_supported",
+    "missing": "The quote describes a behavior change for role inheritance during GRANT. It says nothing about deployments that do not use role membership, and the claim describes the opposite scenario (no GRANTs of roles), which the quote does not address."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1534,
+  "output_tokens": 263,
+  "stop_reason": "end_turn"
+ }
+}

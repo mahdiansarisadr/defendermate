@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"psql --single-transaction no longer rolls back on error unless ON_ERROR_STOP is set\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In PostgreSQL 15, when psql runs in --single-transaction mode and an error is detected, the final COMMIT is changed to ROLLBACK only if ON_ERROR_STOP is set. Scripts relying on rollback after errors in --single-transaction mode without ON_ERROR_STOP may behave differently.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15, where this psql behavior change was introduced.\",\n   \"quotes\": [\n    \"change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Scripts or tooling invoke psql with --single-transaction mode.\",\n   \"quotes\": [\n    \"After an error is detected in psql's --single-transaction mode\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"ON_ERROR_STOP is set for those psql invocations; if it is set, the final COMMIT is still changed to ROLLBACK after an error.\",\n   \"quotes\": [\n    \"change the final COMMIT command to ROLLBACK only if ON_ERROR_STOP is set\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names concrete items (psql --single-transaction, ON_ERROR_STOP, COMMIT vs ROLLBACK) that a checker can look for, and the quotes support the behavior change; the disqualifying condition is consistent with the quote and the risk applies when upgrading from 13 to 16 across release 15."
+ },
+ "usage": {
+  "input_tokens": 938,
+  "output_tokens": 126,
+  "stop_reason": "end_turn"
+ }
+}

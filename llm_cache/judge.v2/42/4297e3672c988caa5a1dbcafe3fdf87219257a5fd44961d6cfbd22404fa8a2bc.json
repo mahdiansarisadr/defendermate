@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_where_the_385361\",\n  \"claim\": \"The upgrade crosses release 15, where the default ADMIN OPTION on a login role's own membership was removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove the default ADMIN OPTION privilege a login role has on its own role membership\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"a_login_role_adds_or_removes_members_of_0597d9\",\n  \"claim\": \"A login role adds or removes members of its own role (e.g. via GRANT/REVOKE of that role) without having been explicitly granted ADMIN OPTION.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Previously, a login role could add/remove members of its own role, even without ADMIN OPTION privilege.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_role_is_explicitly_granted_admin_opt_f89b07\",\n  \"claim\": \"The role is explicitly granted ADMIN OPTION on its own membership, in which case the behavior is not lost.\",\n  \"evidence\": [\n   {\n    \"quote\": \"even without ADMIN OPTION privilege\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_where_the_385361",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "a_login_role_adds_or_removes_members_of_0597d9",
+    "verdict": "partially_supported",
+    "missing": "The quote describes the previous behavior (before 15) but not the GRANT/REVOKE mechanism as an example. The core of the claim is supported, but the 'e.g. via GRANT/REVOKE' specific is not stated."
+   },
+   {
+    "condition_id": "the_role_is_explicitly_granted_admin_opt_f89b07",
+    "verdict": "not_supported",
+    "missing": "The quote only says that previously a login role could add/remove members even without ADMIN OPTION. It does not state that an explicit grant of ADMIN OPTION on the role's own membership preserves the behavior after the change."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1288,
+  "output_tokens": 292,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_14_where_the_05817f\",\n  \"claim\": \"The upgrade crosses release 14, where the back-reference matching change was introduced (13 -> 16).\",\n  \"evidence\": [\n   {\n    \"quote\": \"Disregard constraints when matching regular expression back-references\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_database_objects_use_b191c3\",\n  \"claim\": \"The application or database objects use regular expressions containing back-references (e.g. \\\\1) combined with constraints such as ^.\",\n  \"evidence\": [\n   {\n    \"quote\": \"in (^\\\\d+).*\\\\1, the ^ constraint should be applied at the start of the string, but not when matching \\\\1\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_14_where_the_05817f",
+    "verdict": "partially_supported",
+    "missing": "The quote only shows the change is listed in the PostgreSQL 14 migration notes, not that the upgrade 13 -> 16 crosses release 14 (an arithmetic/version-range inference). It also does not state the change was introduced in 14 beyond the section metadata, though that metadata does establish it."
+   },
+   {
+    "condition_id": "the_application_or_database_objects_use_b191c3",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1097,
+  "output_tokens": 196,
+  "stop_reason": "end_turn"
+ }
+}

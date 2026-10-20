@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Single-quoted language name in CREATE/DROP LANGUAGE rejected\",\n \"risk_type\": \"removed_api\",\n \"description\": \"Starting in PostgreSQL 14, CREATE LANGUAGE and DROP LANGUAGE no longer accept a single-quoted language name. Scripts, migrations or dumps that quote the language name with single quotes will fail.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where single-quoting of the language name was disallowed\",\n   \"quotes\": [\n    \"Disallow single-quoting of the language name in the CREATE/DROP LANGUAGE command\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application SQL, migrations or scripts use CREATE LANGUAGE or DROP LANGUAGE with a single-quoted language name\",\n   \"quotes\": [\n    \"Disallow single-quoting of the language name in the CREATE/DROP LANGUAGE command\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quoted PostgreSQL 14 release note says single-quoting the language name in CREATE/DROP LANGUAGE is disallowed, which supports a concrete, checkable break for scripts or migrations that single-quote the name when upgrading from 13 to 16."
+ },
+ "usage": {
+  "input_tokens": 808,
+  "output_tokens": 108,
+  "stop_reason": "end_turn"
+ }
+}

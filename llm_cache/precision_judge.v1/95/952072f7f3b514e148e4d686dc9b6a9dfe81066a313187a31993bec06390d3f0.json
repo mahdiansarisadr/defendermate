@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: Next.js 12 -> 14.\nExtracted risk path (JSON):\n{\n \"path_name\": \"next/script behavior change when incrementally adopting app\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The behavior of next/script was updated in release 13 to support both pages and app. The text directs apps incrementally adopting app to read the upgrade guide, but does not state what specifically changed or what breaks.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 13, where the behavior of next/script was updated.\",\n   \"quotes\": [\n    \"The behavior of next/script has been updated to support both pages and app.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses next/script.\",\n   \"quotes\": [\n    \"The behavior of next/script has been updated to support both pages and app.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application is incrementally adopting the app directory alongside pages.\",\n   \"quotes\": [\n    \"If incrementally adopting app, read the upgrade guide.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The risk names a concrete API (next/script), a release (13), and a condition (incrementally adopting app), and the quotes support the behavior change and the guidance to read the upgrade guide, though the exact breakage is unstated."
+ },
+ "usage": {
+  "input_tokens": 799,
+  "output_tokens": 92,
+  "stop_reason": "end_turn"
+ }
+}

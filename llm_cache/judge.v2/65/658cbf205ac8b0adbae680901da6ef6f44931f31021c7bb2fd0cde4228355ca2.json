@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_postgresql_release_1_93a117\",\n  \"claim\": \"The upgrade crosses PostgreSQL release 15, where libpq and client programs began consulting HOME to find the home directory.\",\n  \"evidence\": [\n   {\n    \"quote\": \"On non-Windows platforms, consult the HOME environment variable to find the user's home directory\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"client_programs_or_libpq_based_applicati_97674d\",\n  \"claim\": \"Client programs or libpq-based applications run on a non-Windows platform.\",\n  \"evidence\": [\n   {\n    \"quote\": \"On non-Windows platforms, consult the HOME environment variable\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_client_relies_on_files_in_the_home_d_695bce\",\n  \"claim\": \"The client relies on files in the home directory that libpq or client applications read, such as ~/.pgpass.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This change affects libpq (for example, while looking up ~/.pgpass) as well as various client application programs.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_home_environment_variable_in_the_cli_e29bf9\",\n  \"claim\": \"The HOME environment variable in the client process is set to a directory other than the user's passwd (<pwd.h>) home directory.\",\n  \"evidence\": [\n   {\n    \"quote\": \"consult the HOME environment variable to find the user's home directory\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"home_is_empty_or_unset_in_which_case_the_49513a\",\n  \"claim\": \"HOME is empty or unset, in which case the previous <pwd.h> lookup is still used.\",\n  \"evidence\": [\n   {\n    \"quote\": \"If HOME is empty or unset, fall back to the previous method of checking the <pwd.h> database.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_postgresql_release_1_93a117",
+    "verdict": "partially_supported",
+    "missing": "The quote does not name libpq or client programs as what consults HOME."
+   },
+   {
+    "condition_id": "client_programs_or_libpq_based_applicati_97674d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_client_relies_on_files_in_the_home_d_695bce",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_home_environment_variable_in_the_cli_e29bf9",
+    "verdict": "partially_supported",
+    "missing": "The quote does not mention the passwd (<pwd.h>) home directory or a mismatch between it and HOME."
+   },
+   {
+    "condition_id": "home_is_empty_or_unset_in_which_case_the_49513a",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1611,
+  "output_tokens": 585,
+  "stop_reason": "end_turn"
+ }
+}

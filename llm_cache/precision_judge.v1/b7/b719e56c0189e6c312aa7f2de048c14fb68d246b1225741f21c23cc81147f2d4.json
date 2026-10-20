@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"var_samp/stddev_samp return NULL instead of NaN for single NaN numeric input\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In release 14, var_samp() and stddev_samp() with numeric parameters return NULL when the input is a single NaN value, where NaN was previously returned. Applications that depend on a NaN result for this edge case may see different results after upgrading from 13 to 16.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade from 13 to 16 crosses release 14, which introduced this change.\",\n   \"quotes\": [\n    \"Change var_samp() and stddev_samp() with numeric parameters to return NULL when the input is a single NaN value\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application calls var_samp() or stddev_samp() with numeric arguments.\",\n   \"quotes\": [\n    \"Change var_samp() and stddev_samp() with numeric parameters to return NULL\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The input to the aggregate is a single NaN numeric value, for example a group containing exactly one row whose value is NaN.\",\n   \"quotes\": [\n    \"when the input is a single NaN value\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"Application code or downstream logic relies on a NaN result rather than NULL for this case.\",\n   \"quotes\": [\n    \"Previously NaN was returned.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support a concrete behavior change in release 14 (var_samp/stddev_samp with numeric input of a single NaN now return NULL instead of NaN), which falls within the 13->16 range and could affect applications relying on NaN, and it names specific functions and input conditions that can be checked."
+ },
+ "usage": {
+  "input_tokens": 965,
+  "output_tokens": 118,
+  "stop_reason": "end_turn"
+ }
+}

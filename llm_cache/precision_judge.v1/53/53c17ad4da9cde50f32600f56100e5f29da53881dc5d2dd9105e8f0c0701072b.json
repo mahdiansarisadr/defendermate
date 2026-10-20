@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Composite row types for sequences and toast tables removed\",\n \"risk_type\": \"removed_api\",\n \"description\": \"PostgreSQL 14 no longer creates composite types for sequences and toast tables. Code or objects that reference the row type of a sequence or toast table will no longer find it after upgrading from 13.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, where composite types for sequences and toast tables were removed\",\n   \"quotes\": [\n    \"Remove the composite types that were formerly created for sequences and toast tables\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or database objects reference the composite type of a sequence or toast table\",\n   \"quotes\": [\n    \"composite types that were formerly created for sequences and toast tables\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote shows PG14 removed composite types formerly created for sequences and toast tables, which falls within the 13->16 range and can break objects that reference those row types; the risk names a concrete, checkable behavior, though the second condition's quote only restates the removal rather than showing usage."
+ },
+ "usage": {
+  "input_tokens": 738,
+  "output_tokens": 110,
+  "stop_reason": "end_turn"
+ }
+}

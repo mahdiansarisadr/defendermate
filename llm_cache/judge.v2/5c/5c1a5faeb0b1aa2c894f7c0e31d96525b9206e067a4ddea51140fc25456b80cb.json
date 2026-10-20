@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_16_where_the_338b51\",\n  \"claim\": \"The upgrade crosses release 16, where the GENERATED expression restrictions on inherited and partitioned tables were tightened.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Tighten GENERATED expression restrictions on inherited and partitioned tables\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_uses_inheritance_or_partiti_d7bc58\",\n  \"claim\": \"The database uses inheritance or partitioning with GENERATED columns in parent/partitioned and child/partition tables.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Columns of parent/partitioned and child/partition tables must all have the same generation status\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"a_parent_partitioned_table_column_and_th_0581fc\",\n  \"claim\": \"A parent/partitioned table column and the corresponding child/partition column differ in generation status (one generated, the other not).\",\n  \"evidence\": [\n   {\n    \"quote\": \"must all have the same generation status\",\n    \"source\": \"PostgreSQL 16 release notes: Migration to Version 16\",\n    \"release_of_change\": \"16\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_16_where_the_338b51",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_uses_inheritance_or_partiti_d7bc58",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "a_parent_partitioned_table_column_and_th_0581fc",
+    "verdict": "partially_supported",
+    "missing": "The quote states the requirement that generation status must match, but does not say that existing schemas may have mismatched columns (one generated, other not), nor that such a state is affected; the claim describes a hypothesized mismatch condition."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1264,
+  "output_tokens": 217,
+  "stop_reason": "end_turn"
+ }
+}

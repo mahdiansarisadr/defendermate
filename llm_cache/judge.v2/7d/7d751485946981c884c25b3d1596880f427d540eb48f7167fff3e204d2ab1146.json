@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_0_0_where_h_6b5601\",\n  \"claim\": \"The upgrade crosses React 18.0.0, where hydrateRoot was introduced in react-dom/client.\",\n  \"evidence\": [\n   {\n    \"quote\": \"These new APIs are now exported from react-dom/client\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"react-dom: ReactDOM.hydrate has been deprecated.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_hydrates_a_server_render_006426\",\n  \"claim\": \"The application hydrates a server-rendered app using ReactDOM.hydrate.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Use it instead of ReactDOM.hydrate in conjunction with the new React DOM Server APIs\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"Using it will warn and run your app in React 17 mode.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_already_uses_hydrateroot_22d96b\",\n  \"claim\": \"The application already uses hydrateRoot from react-dom/client.\",\n  \"evidence\": [\n   {\n    \"quote\": \"hydrateRoot: New method to hydrate a server rendered application.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_relies_on_new_react_18_f_f76fbe\",\n  \"claim\": \"The application relies on new React 18 features, which do not work without hydrateRoot.\",\n  \"evidence\": [\n   {\n    \"quote\": \"New features in React 18 don't work without it.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"after_migrating_to_hydrateroot_react_rep_5615e3\",\n  \"claim\": \"After migrating to hydrateRoot, React reports recoverable hydration errors via reportError (or console.error in older browsers) unless an onRecoverableError option is provided.\",\n  \"evidence\": [\n   {\n    \"quote\": \"By default, React will use reportError, or console.error in the older browsers.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_0_0_where_h_6b5601",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not name hydrateRoot as one of the new APIs exported from react-dom/client."
+   },
+   {
+    "condition_id": "the_application_hydrates_a_server_render_006426",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_already_uses_hydrateroot_22d96b",
+    "verdict": "partially_supported",
+    "missing": "The quote does not state that hydrateRoot is imported from react-dom/client."
+   },
+   {
+    "condition_id": "the_application_relies_on_new_react_18_f_f76fbe",
+    "verdict": "partially_supported",
+    "missing": "The quote's 'it' is unidentified; nothing establishes that the referent is hydrateRoot."
+   },
+   {
+    "condition_id": "after_migrating_to_hydrateroot_react_rep_5615e3",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not mention the onRecoverableError option, recoverable hydration errors, or that this default applies to hydrateRoot."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1699,
+  "output_tokens": 837,
+  "stop_reason": "end_turn"
+ }
+}

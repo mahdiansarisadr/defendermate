@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: React. Upgrade: 17 -> 18. Release of these items: 18.\nSource: React CHANGELOG (18.0.0 section).\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"ee6efb8294c6\", \"section\": \"React\", \"text\": \"Add package.json as one of the entry points. (#22954 by @Jack)\"}\n{\"item_id\": \"d7bdf10f3ec6\", \"section\": \"React\", \"text\": \"Allow suspending outside a Suspense boundary. (#23267 by @acdlite)\"}\n{\"item_id\": \"99550d07bcd5\", \"section\": \"React\", \"text\": \"Log a recoverable error whenever hydration fails. (#23319 by @acdlite)\"}\n{\"item_id\": \"9f950eca4629\", \"section\": \"React / React DOM\", \"text\": \"Add createRoot and hydrateRoot. (#10239, #11225, #12117, #13732, #15502, #15532, #17035, #17165, #20669, #20748, #20888, #21072, #21417, #21652, #21687, #23207, #23385 by @acdlite, @bvaughn, @gaearon, @lunaruan, @rickhanlonii, @trueadm, and @sebmarkbage)\"}\n{\"item_id\": \"d91e28e739aa\", \"section\": \"React / React DOM\", \"text\": \"Add selective hydration. (#14717, #14884, #16725, #16880, #17004, #22416, #22629, #22448, #22856, #23176 by @acdlite, @gaearon, @salazarm, and @sebmarkbage)\"}\n{\"item_id\": \"620ab5e1dff5\", \"section\": \"React / React DOM\", \"text\": \"Add aria-description to the list of known ARIA attributes. (#22142 by @mahyareb)\"}\n{\"item_id\": \"0e7b224db5b5\", \"section\": \"React / React DOM\", \"text\": \"Add onResize event to video elements. (#21973 by @rileyjshaw)\"}\n{\"item_id\": \"fb3f734d019f\", \"section\": \"React / React DOM\", \"text\": \"Add imageSizes and imageSrcSet to known props. (#22550 by @eps1lon)\"}\n{\"item_id\": \"e8d634204d4c\", \"section\": \"React / React DOM\", \"text\": \"Allow non-string <option> children if value is provided. (#21431 by @sebmarkbage)\"}\n{\"item_id\": \"29e0d0d47aa4\", \"section\": \"React / React DOM\", \"text\": \"Fix aspectRatio style not being applied. (#21100 by @gaearon)\"}\n{\"item_id\": \"2a35200eb969\", \"section\": \"React / React DOM\", \"text\": \"Warn if renderSubtreeIntoContainer is called. (#23355 by @acdlite)\"}\n{\"item_id\": \"08255edd6d11\", \"section\": \"React / React DOM Server\", \"text\": \"Add the new streaming renderer. (#14144, #20970, #21056, #21255, #21200, #21257, #21276, #22443, #22450, #23247, #24025, #24030 by @sebmarkbage)\"}\n{\"item_id\": \"935789c34b67\", \"section\": \"React / React DOM Server\", \"text\": \"Fix context providers in SSR when handling multiple requests. (#23171 by @frandiox)\"}\n{\"item_id\": \"b4de6e7c06f0\", \"section\": \"React / React DOM Server\", \"text\": \"Revert to client render on text mismatch. (#23354 by @acdlite)\"}\n{\"item_id\": \"2ec5186523b8\", \"section\": \"React / React DOM Server\", \"text\": \"Deprecate renderToNodeStream. (#23359 by @sebmarkbage)\"}\n{\"item_id\": \"a03e3343bee0\", \"section\": \"React / React DOM Server\", \"text\": \"Fix a spurious error log in the new server renderer. (#24043 by @eps1lon)\"}\n{\"item_id\": \"183638b073b5\", \"section\": \"React / React DOM Server\", \"text\": \"Fix a bug in the new server renderer. (#22617 by @shuding)\"}\n{\"item_id\": \"d978fb2d6fc5\", \"section\": \"React / React DOM Server\", \"text\": \"Ignore function and symbol values inside custom elements on the server. (#21157 by @sebmarkbage)\"}\n{\"item_id\": \"f382cb9dc93c\", \"section\": \"React / React DOM Test Utils\", \"text\": \"Throw when act is used in production. (#21686 by @acdlite)\"}\n{\"item_id\": \"b1261a02a0a1\", \"section\": \"React / React DOM Test Utils\", \"text\": \"Support disabling spurious act warnings with global.IS_REACT_ACT_ENVIRONMENT. (#22561 by @acdlite)\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "ee6efb8294c6",
+    "label": "context",
+    "reason": "Adding package.json as an entry point is additive and requires no user action."
+   },
+   {
+    "item_id": "d7bdf10f3ec6",
+    "label": "risk",
+    "reason": "Allowing suspending outside a Suspense boundary changes previous behavior (which errored), which could alter app behavior."
+   },
+   {
+    "item_id": "99550d07bcd5",
+    "label": "context",
+    "reason": "Logging a recoverable error on hydration failure is additive diagnostics, though it may surface new console errors."
+   },
+   {
+    "item_id": "9f950eca4629",
+    "label": "risk",
+    "reason": "createRoot and hydrateRoot are the new root APIs that enable React 18 behavior (automatic batching, concurrent features) and the legacy ReactDOM.render path changes behavior, requiring migration work."
+   },
+   {
+    "item_id": "d91e28e739aa",
+    "label": "risk",
+    "reason": "Selective hydration changes hydration timing and ordering with hydrateRoot and Suspense, which can affect apps relying on prior hydration behavior."
+   },
+   {
+    "item_id": "620ab5e1dff5",
+    "label": "context",
+    "reason": "Adding aria-description to known ARIA attributes is purely additive."
+   },
+   {
+    "item_id": "0e7b224db5b5",
+    "label": "context",
+    "reason": "Adding an onResize event for video elements is purely additive."
+   },
+   {
+    "item_id": "fb3f734d019f",
+    "label": "context",
+    "reason": "Adding imageSizes and imageSrcSet to known props is additive."
+   },
+   {
+    "item_id": "e8d634204d4c",
+    "label": "context",
+    "reason": "Allowing non-string option children when value is provided relaxes a restriction and is additive."
+   },
+   {
+    "item_id": "29e0d0d47aa4",
+    "label": "noise",
+    "reason": "Fixes aspectRatio style not being applied; a pure bug fix."
+   },
+   {
+    "item_id": "2a35200eb969",
+    "label": "context",
+    "reason": "Only adds a warning for renderSubtreeIntoContainer, which still works."
+   },
+   {
+    "item_id": "08255edd6d11",
+    "label": "risk",
+    "reason": "The new streaming renderer replaces the previous server rendering internals and introduces new APIs, with behavior differences (e.g. Suspense on server) that can require migration."
+   },
+   {
+    "item_id": "935789c34b67",
+    "label": "noise",
+    "reason": "Bug fix for context providers handling multiple requests in SSR."
+   },
+   {
+    "item_id": "b4de6e7c06f0",
+    "label": "risk",
+    "reason": "Falling back to client render on text mismatch is a behavior change in hydration that can affect SSR apps."
+   },
+   {
+    "item_id": "2ec5186523b8",
+    "label": "context",
+    "reason": "renderToNodeStream is deprecated but still works; no immediate action is required."
+   },
+   {
+    "item_id": "a03e3343bee0",
+    "label": "noise",
+    "reason": "Fixes a spurious error log, a pure bug fix."
+   },
+   {
+    "item_id": "183638b073b5",
+    "label": "noise",
+    "reason": "Generic bug fix in the new server renderer with no behavior change for correct usage."
+   },
+   {
+    "item_id": "d978fb2d6fc5",
+    "label": "risk",
+    "reason": "Ignoring function and symbol values inside custom elements on the server changes SSR output for apps passing such values."
+   },
+   {
+    "item_id": "f382cb9dc93c",
+    "label": "risk",
+    "reason": "act now throws in production, which could break code that calls act outside test environments."
+   },
+   {
+    "item_id": "b1261a02a0a1",
+    "label": "context",
+    "reason": "Support for disabling act warnings via global.IS_REACT_ACT_ENVIRONMENT is an additive option, though tests may need it set to avoid warnings."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2185,
+  "output_tokens": 1185,
+  "stop_reason": "end_turn"
+ }
+}

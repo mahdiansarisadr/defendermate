@@ -1,0 +1,35 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_into_react_release_1_b00968\",\n  \"claim\": \"The upgrade crosses into React release 18, where the new typings require explicit children props.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The most notable change is that the children prop now needs to be listed explicitly when defining props\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_uses_typescript_ebe252\",\n  \"claim\": \"The project uses TypeScript.\",\n  \"evidence\": [\n   {\n    \"quote\": \"If your project uses TypeScript\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_project_depends_on_types_react_and_t_ee9ae5\",\n  \"claim\": \"The project depends on @types/react and @types/react-dom, which must be updated.\",\n  \"evidence\": [\n   {\n    \"quote\": \"you will need to update your @types/react and @types/react-dom dependencies to the latest versions\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_defines_component_props_054ba0\",\n  \"claim\": \"The application defines component props interfaces that rely on implicit children.\",\n  \"evidence\": [\n   {\n    \"quote\": \"the children prop now needs to be listed explicitly when defining props\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_into_react_release_1_b00968",
+    "verdict": "partially_supported",
+    "missing": "The quotes do not say the explicit-children requirement comes from new typings; they only state that the children prop must now be listed explicitly."
+   },
+   {
+    "condition_id": "the_project_uses_typescript_ebe252",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_project_depends_on_types_react_and_t_ee9ae5",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_defines_component_props_054ba0",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1307,
+  "output_tokens": 695,
+  "stop_reason": "end_turn"
+ }
+}

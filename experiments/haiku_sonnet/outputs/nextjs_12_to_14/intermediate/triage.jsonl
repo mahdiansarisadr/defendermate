@@ -1,0 +1,26 @@
+{"item_id": "a9f62de4577f", "label": "risk", "reason": "The item lists breaking changes that require migration work, including dropped browser support, raised minimum Node.js (14.6.0) and React (18.2.0) versions, a changed swcMinify default, renamed next/image imports, next/link no longer accepting an <a> child, and the removed target configuration property.", "swept": false}
+{"item_id": "2396000e13e7", "label": "noise", "reason": "This is an install/upgrade command block (npm, yarn, pnpm, bun) with no behavioral change described.", "swept": false}
+{"item_id": "736c29c11229", "label": "risk", "reason": "Users of TypeScript must upgrade @types/react and @types/react-dom, which is required migration work to avoid type errors.", "swept": false}
+{"item_id": "d4e173812e93", "label": "risk", "reason": "Dropping Internet Explorer support changes the supported browser targets, which can break apps relying on IE.", "swept": false}
+{"item_id": "ebb3e9d48420", "label": "risk", "reason": "Raising the minimum Node.js version from 12.22.0 to 16.14.0 requires runtime upgrades in deployments.", "swept": false}
+{"item_id": "feb176bab8b1", "label": "risk", "reason": "Raising the minimum React version from 17.0.2 to 18.2.0 requires dependency upgrades for users.", "swept": false}
+{"item_id": "8ddf774f317f", "label": "risk", "reason": "The swcMinify default/config value changed from false to true, a changed default that can alter build output.", "swept": false}
+{"item_id": "28157854fc7e", "label": "risk", "reason": "The next/image and next/future/image imports were renamed, requiring import changes in code.", "swept": false}
+{"item_id": "1fd4d357ead8", "label": "risk", "reason": "next/link no longer accepts an <a> child without legacyBehavior, so existing markup breaks unless changed.", "swept": false}
+{"item_id": "a0edede396c4", "label": "risk", "reason": "The target configuration property was removed, so configs using it must be migrated to Output File Tracing.", "swept": false}
+{"item_id": "07fd2aadba4e", "label": "context", "reason": "It states that upgrading does not require adopting the new app Router and that pages continue to work, so no action is needed.", "swept": false}
+{"item_id": "7f6f7d06347e", "label": "risk", "reason": "next/image now uses the new behavior by default, a changed default that can alter existing image rendering, with codemods offered for migration.", "swept": false}
+{"item_id": "e22866274e94", "label": "risk", "reason": "This codemod renames next/image imports to next/legacy/image and is recommended to keep Next.js 12 behavior, indicating required migration work.", "swept": false}
+{"item_id": "f0193f2c012e", "label": "risk", "reason": "This optional experimental codemod rewrites components and removes props like layout, with known gaps for dynamic usage, so it can change behavior if applied.", "swept": false}
+{"item_id": "2161edabe55d", "label": "context", "reason": "It is a pointer to a manual migration guide and legacy comparison, which is documentation only.", "swept": false}
+{"item_id": "3d62ea0f1eec", "label": "risk", "reason": "Link now always renders an <a> and nested <a> tags from Next.js 12 must be removed, a behavior change requiring code updates.", "swept": false}
+{"item_id": "29d0485933a8", "label": "context", "reason": "It mentions an optional codemod for links, which is a helper tool rather than a required change.", "swept": false}
+{"item_id": "d9452281082c", "label": "risk", "reason": "next/script behavior was updated, and incremental adoption of app requires reading the upgrade guide, indicating possible behavior changes.", "swept": false}
+{"item_id": "d2184f97e70e", "label": "context", "reason": "It introduces the new next/font module as an additive feature and points to documentation without requiring changes.", "swept": false}
+{"item_id": "7d6ffc931020", "label": "noise", "reason": "This item is an install/upgrade command listing package manager invocations, which the classification treats as noise.", "swept": false}
+{"item_id": "ac8c7ce0ed67", "label": "risk", "reason": "Users with TypeScript must upgrade @types/react and @types/react-dom to be compatible, which requires a dependency update action to avoid build breakage.", "swept": false}
+{"item_id": "0f3eb7ed96fe", "label": "risk", "reason": "Raising the minimum Node.js version from 16.14 to 18.17 can break deployments and CI environments still running Node 16.", "swept": false}
+{"item_id": "58e1ee35cef7", "label": "risk", "reason": "The next export command was removed, so scripts relying on it must migrate to output: 'export' config.", "swept": false}
+{"item_id": "8d129625a7ee", "label": "risk", "reason": "The ImageResponse import path was renamed from next/server to next/og, so existing imports break until updated (a codemod is available).", "swept": false}
+{"item_id": "b819a280fe0e", "label": "risk", "reason": "The @next/font package was fully removed, so existing imports break and must be migrated to next/font (a codemod is available).", "swept": false}
+{"item_id": "f9d34cd5ecae", "label": "risk", "reason": "The WASM target for next-swc was removed, which can break users who relied on that build target or deployment setup.", "swept": false}

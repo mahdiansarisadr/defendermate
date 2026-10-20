@@ -1,0 +1,98 @@
+{
+ "r5": [],
+ "r1": [],
+ "r1_unresolved": [],
+ "r2": [
+  {
+   "superseded": "nextjs_9322335d26",
+   "by": "nextjs_f3317b5b79",
+   "symbol": "node"
+  },
+  {
+   "superseded": "nextjs_b9f1b391a2",
+   "by": "nextjs_fdd92fa177",
+   "symbol": "@types/react"
+  }
+ ],
+ "r3": [],
+ "merge": [
+  {
+   "kept": "nextjs_9322335d26",
+   "merged": "nextjs_9322335d26",
+   "release": "13",
+   "symbol": "Node.js"
+  },
+  {
+   "kept": "nextjs_2323185baa",
+   "merged": "nextjs_2323185baa",
+   "release": "13",
+   "symbol": "react"
+  },
+  {
+   "kept": "nextjs_c5a065b9b5",
+   "merged": "nextjs_c5a065b9b5",
+   "release": "13",
+   "symbol": "Internet Explorer"
+  },
+  {
+   "kept": "nextjs_16494e4a2c",
+   "merged": "nextjs_16494e4a2c",
+   "release": "13",
+   "symbol": "swcMinify"
+  },
+  {
+   "kept": "nextjs_f8d3770f36",
+   "merged": "nextjs_f8d3770f36",
+   "release": "13",
+   "symbol": "next/image"
+  },
+  {
+   "kept": "nextjs_f8d3770f36",
+   "merged": "nextjs_f8d3770f36",
+   "release": "13",
+   "symbol": "next/image"
+  },
+  {
+   "kept": "nextjs_f8d3770f36",
+   "merged": "nextjs_f8d3770f36",
+   "release": "13",
+   "symbol": "next/image"
+  },
+  {
+   "kept": "nextjs_24962734e7",
+   "merged": "nextjs_24962734e7",
+   "release": "13",
+   "symbol": "next/future/image"
+  },
+  {
+   "kept": "nextjs_523375afdf",
+   "merged": "nextjs_523375afdf",
+   "release": "13",
+   "symbol": "next/link"
+  },
+  {
+   "kept": "nextjs_523375afdf",
+   "merged": "nextjs_523375afdf",
+   "release": "13",
+   "symbol": "next/link"
+  },
+  {
+   "kept": "nextjs_523375afdf",
+   "merged": "nextjs_523375afdf",
+   "release": "13",
+   "symbol": "next/link"
+  },
+  {
+   "kept": "nextjs_67098be47b",
+   "merged": "nextjs_67098be47b",
+   "release": "13",
+   "symbol": "target"
+  },
+  {
+   "kept": "nextjs_f3317b5b79",
+   "merged": "nextjs_815bc909ef",
+   "release": "14",
+   "symbol": "Node.js"
+  }
+ ]
+}

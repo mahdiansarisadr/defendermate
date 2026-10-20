@@ -1,0 +1,110 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: React. Upgrade: 17 -> 18. Release of these items: 18.\nSource: How to Upgrade to React 18.\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"bdc4932a7acc\", \"section\": \"Updates to TypeScript definitions\", \"text\": \"If your project uses TypeScript, you will need to update your @types/react and @types/react-dom dependencies to the latest versions. The new types are safer and catch issues that used to be ignored by the type checker. The most notable change is that the children prop now needs to be listed explicitly when defining props, for example: interface MyButtonProps { color: string; children?: React.ReactNode; }\"}\n{\"item_id\": \"806068884f95\", \"section\": \"Updates to TypeScript definitions\", \"text\": \"See the React 18 typings pull request for a full list of type-only changes. It links to example fixes in library types so you can see how to adjust your code. You can use the automated migration script to help port your application code to the new and safer typings faster. If you find a bug in the typings, please file an issue in the DefinitelyTyped repo.\"}\n{\"item_id\": \"e2cc7342f0a4\", \"section\": \"Automatic Batching\", \"text\": \"React 18 adds out-of-the-box performance improvements by doing more batching by default. Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default: // Before React 18 only React events were batched function handleClick() { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) } setTimeout(() => { setCount(c => c + 1); setFlag(f => !f); // React will render twice, once for each state update (no batching) }, 1000);\"}\n{\"item_id\": \"35ea3d97d21c\", \"section\": \"Automatic Batching\", \"text\": \"Starting in React 18 with createRoot, all updates will be automatically batched, no matter where they originate from. This means that updates inside of timeouts, promises, native event handlers or any other event will batch the same way as updates inside of React events: // After React 18 updates inside of timeouts, promises, // native event handlers or any other event are batched. function handleClick() { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) } setTimeout(() => { setCount(c => c + 1); setFlag(f => !f); // React will only re-render once at the end (that's batching!) }, 1000);\"}\n{\"item_id\": \"7a57a5990dc7\", \"section\": \"Automatic Batching\", \"text\": \"This is a breaking change, but we expect this to result in less work rendering, and therefore better performance in your applications. To opt-out of automatic batching, you can use flushSync: import { flushSync } from 'react-dom'; function handleClick() { flushSync(() => { setCounter(c => c + 1); }); // React has updated the DOM by now flushSync(() => { setFlag(f => !f); }); // React has updated the DOM by now }\"}\n{\"item_id\": \"29715db5a815\", \"section\": \"Automatic Batching\", \"text\": \"For more information, see the Automatic batching deep dive.\"}\n{\"item_id\": \"b0e52e3ef8dc\", \"section\": \"New APIs for Libraries\", \"text\": \"In the React 18 Working Group we worked with library maintainers to create new APIs needed to support concurrent rendering for use cases specific to their use case in areas like styles, and external stores. To support React 18, some libraries may need to switch to one of the following APIs:\"}\n{\"item_id\": \"626b4c82e79c\", \"section\": \"New APIs for Libraries\", \"text\": \"useSyncExternalStore is a new Hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. This new API is recommended for any library that integrates with state external to React. For more information, see the useSyncExternalStore overview post and useSyncExternalStore API details.\"}\n{\"item_id\": \"fd825be86ed3\", \"section\": \"New APIs for Libraries\", \"text\": \"useInsertionEffect is a new Hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you've already built a CSS-in-JS library we don't expect you to ever use this. This Hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout. For more information, see the Library Upgrade Guide for <style>.\"}\n{\"item_id\": \"3b0825438d97\", \"section\": \"New APIs for Libraries\", \"text\": \"React 18 also introduces new APIs for concurrent rendering such as startTransition, useDeferredValue and useId, which we share more about in the release post.\"}\n{\"item_id\": \"3280698778a6\", \"section\": \"Updates to Strict Mode\", \"text\": \"In the future, we'd like to add a feature that allows React to add and remove sections of the UI while preserving state. For example, when a user tabs away from a screen and back, React should be able to immediately show the previous screen. To do this, React would unmount and remount trees using the same component state as before. This feature will give React better performance out-of-the-box, but requires components to be resilient to effects being mounted and destroyed multiple times. Most effects will work without any changes, but some effects assume they are only mounted or destroyed once. To help surface these issues, React 18 introduces a new development-only check to Strict Mode. This new check will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount. Before this change, React would mount the component and create the effects: * React mounts the component. * Layout effects are created. * Effect effects are created.\"}\n{\"item_id\": \"66d0c77f8870\", \"section\": \"Updates to Strict Mode\", \"text\": \"With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode: * React mounts the component. * Layout effects are created. * Effect effects are created. * React simulates unmounting the component. * Layout effects are destroyed. * Effects are destroyed. * React simulates mounting the component with the previous state. * Layout effect setup code runs * Effect setup code runs\"}\n{\"item_id\": \"44cb2172052c\", \"section\": \"Updates to Strict Mode\", \"text\": \"For more information, see the Working Group posts for Adding Reusable State to StrictMode and How to support Reusable State in Effects.\"}\n{\"item_id\": \"c9b86f4f9a85\", \"section\": \"Configuring Your Testing Environment\", \"text\": \"When you first update your tests to use createRoot, you may see this warning in your test console: The current testing environment is not configured to support act(...) To fix this, set globalThis.IS_REACT_ACT_ENVIRONMENT to true before running your test: // In your test setup file globalThis.IS_REACT_ACT_ENVIRONMENT = true;\"}\n{\"item_id\": \"778b40bf29d9\", \"section\": \"Configuring Your Testing Environment\", \"text\": \"The purpose of the flag is to tell React that it's running in a unit test-like environment. React will log helpful warnings if you forget to wrap an update with act. You can also set the flag to false to tell React that act isn't needed. This can be useful for end-to-end tests that simulate a full browser environment. Eventually, we expect testing libraries will configure this for you automatically. For example, the next version of React Testing Library has built-in support for React 18 without any additional configuration. More background on the act testing API and related changes is available in the working group.\"}\n{\"item_id\": \"84d9fc61f968\", \"section\": \"Dropping Support for Internet Explorer\", \"text\": \"In this release, React is dropping support for Internet Explorer, which is going out of support on June 15, 2022. We're making this change now because new features introduced in React 18 are built using modern browser features such as microtasks which cannot be adequately polyfilled in IE. If you need to support Internet Explorer we recommend you stay with React 17.\"}\n{\"item_id\": \"ab03f7fcd920\", \"section\": \"Other Notable Changes / React\", \"text\": \"Components can now render undefined: React no longer warns if you return undefined from a component. This makes the allowed component return values consistent with values that are allowed in the middle of a component tree. We suggest to use a linter to prevent mistakes like forgetting a return statement before JSX.\"}\n{\"item_id\": \"66f9a4252b97\", \"section\": \"Other Notable Changes / React DOM Server\", \"text\": \"renderToStaticMarkup: Will no longer error when suspending on the server. Instead, it will emit the fallback HTML for the closest <Suspense> boundary.\"}\n{\"item_id\": \"e9624d687278\", \"section\": \"Changelog\", \"text\": \"You can view the full changelog here.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "bdc4932a7acc",
+    "label": "risk",
+    "reason": "Projects using TypeScript must update @types/react and @types/react-dom, and children must now be listed explicitly in props, which requires code changes."
+   },
+   {
+    "item_id": "806068884f95",
+    "label": "context",
+    "reason": "It points to typings PRs, an automated migration script, and a bug-reporting location without requiring a specific change."
+   },
+   {
+    "item_id": "e2cc7342f0a4",
+    "label": "risk",
+    "reason": "It describes React 18 batching updates outside React event handlers by default, a behavior change that can alter render counts and timing in existing code."
+   },
+   {
+    "item_id": "35ea3d97d21c",
+    "label": "risk",
+    "reason": "Starting with createRoot, all updates are automatically batched regardless of origin, which changes existing rendering behavior for applications."
+   },
+   {
+    "item_id": "7a57a5990dc7",
+    "label": "risk",
+    "reason": "The text explicitly calls automatic batching a breaking change and says flushSync is needed to opt out of it."
+   },
+   {
+    "item_id": "29715db5a815",
+    "label": "context",
+    "reason": "It is a documentation pointer to a deep dive on automatic batching with no user action required."
+   },
+   {
+    "item_id": "b0e52e3ef8dc",
+    "label": "risk",
+    "reason": "It states some libraries may need to switch to the new APIs to support React 18, which implies migration work for library authors."
+   },
+   {
+    "item_id": "626b4c82e79c",
+    "label": "context",
+    "reason": "useSyncExternalStore is a purely additive new Hook that is recommended for libraries but needs no action from typical users."
+   },
+   {
+    "item_id": "fd825be86ed3",
+    "label": "context",
+    "reason": "useInsertionEffect is a new additive Hook that the text says most users will never need, so no action is required."
+   },
+   {
+    "item_id": "3b0825438d97",
+    "label": "context",
+    "reason": "It mentions new additive concurrent APIs (startTransition, useDeferredValue, useId) and points to the release post."
+   },
+   {
+    "item_id": "3280698778a6",
+    "label": "risk",
+    "reason": "Strict Mode now simulates unmount and remount of components in development, so components whose effects assume a single mount or destroy may break."
+   },
+   {
+    "item_id": "66d0c77f8870",
+    "label": "risk",
+    "reason": "The text describes React simulating unmounting and remounting components in development, which can expose effects that are not resilient to repeated mounting."
+   },
+   {
+    "item_id": "44cb2172052c",
+    "label": "context",
+    "reason": "It only links to Working Group posts about reusable state and Strict Mode, with no required action."
+   },
+   {
+    "item_id": "c9b86f4f9a85",
+    "label": "risk",
+    "reason": "Tests updated to createRoot may emit act warnings, requiring users to set globalThis.IS_REACT_ACT_ENVIRONMENT in their test setup."
+   },
+   {
+    "item_id": "778b40bf29d9",
+    "label": "risk",
+    "reason": "It explains the IS_REACT_ACT_ENVIRONMENT flag that test environments may need to configure, and whether to set it to true or false affects test behavior."
+   },
+   {
+    "item_id": "84d9fc61f968",
+    "label": "risk",
+    "reason": "React 18 drops Internet Explorer support, so applications that still target IE cannot upgrade without staying on React 17."
+   },
+   {
+    "item_id": "ab03f7fcd920",
+    "label": "context",
+    "reason": "Components returning undefined no longer trigger a warning, which is a relaxation that breaks nothing and needs no user action."
+   },
+   {
+    "item_id": "66f9a4252b97",
+    "label": "risk",
+    "reason": "renderToStaticMarkup no longer errors on server suspension and instead emits fallback HTML, a server-side behavior change that can alter rendered output."
+   },
+   {
+    "item_id": "e9624d687278",
+    "label": "context",
+    "reason": "It is a documentation pointer to the full changelog with no action required."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3591,
+  "output_tokens": 2123,
+  "stop_reason": "end_turn"
+ }
+}

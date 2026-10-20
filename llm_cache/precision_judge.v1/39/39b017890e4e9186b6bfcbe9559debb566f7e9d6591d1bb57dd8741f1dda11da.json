@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"libpq and client programs resolve home directory from HOME instead of passwd database\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in PostgreSQL 15, on non-Windows platforms libpq and various client applications use the HOME environment variable to locate the user's home directory, for example when looking up ~/.pgpass. They fall back to the <pwd.h> database only when HOME is empty or unset. If a client process has HOME set to a different directory than its passwd home directory, files such as ~/.pgpass may be looked up in a different location after the upgrade. Where the files actually live is an inference; the text does not state it.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 15, where libpq and client programs began consulting HOME to find the home directory.\",\n   \"quotes\": [\n    \"On non-Windows platforms, consult the HOME environment variable to find the user's home directory\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Client programs or libpq-based applications run on a non-Windows platform.\",\n   \"quotes\": [\n    \"On non-Windows platforms, consult the HOME environment variable\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The client relies on files in the home directory that libpq or client applications read, such as ~/.pgpass.\",\n   \"quotes\": [\n    \"This change affects libpq (for example, while looking up ~/.pgpass) as well as various client application programs.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The HOME environment variable in the client process is set to a directory other than the user's passwd (<pwd.h>) home directory.\",\n   \"quotes\": [\n    \"consult the HOME environment variable to find the user's home directory\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"HOME is empty or unset, in which case the previous <pwd.h> lookup is still used.\",\n   \"quotes\": [\n    \"If HOME is empty or unset, fall back to the previous method of checking the <pwd.h> database.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a concrete behavior change in PG 15 where libpq and client programs use HOME (falling back to <pwd.h> only if HOME is empty or unset), which can change where ~/.pgpass is looked up when HOME differs from the passwd home directory, and the conditions are checkable."
+ },
+ "usage": {
+  "input_tokens": 1168,
+  "output_tokens": 117,
+  "stop_reason": "end_turn"
+ }
+}

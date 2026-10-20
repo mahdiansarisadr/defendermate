@@ -1,0 +1,105 @@
+{
+ "r5": [],
+ "r1": [],
+ "r1_unresolved": [],
+ "r2": [],
+ "r3": [],
+ "merge": [
+  {
+   "kept": "react_4a4e72c4eb",
+   "merged": "react_4a4e72c4eb",
+   "release": "18",
+   "symbol": "ReactDOM.render"
+  },
+  {
+   "kept": "react_4a4e72c4eb",
+   "merged": "react_4a4e72c4eb",
+   "release": "18",
+   "symbol": "ReactDOM.render"
+  },
+  {
+   "kept": "react_385fe7836e",
+   "merged": "react_385fe7836e",
+   "release": "18",
+   "symbol": "ReactDOM.hydrate"
+  },
+  {
+   "kept": "react_71acd3a7ef",
+   "merged": "react_71acd3a7ef",
+   "release": "18",
+   "symbol": "StrictMode"
+  },
+  {
+   "kept": "react_71acd3a7ef",
+   "merged": "react_71acd3a7ef",
+   "release": "18",
+   "symbol": "StrictMode"
+  },
+  {
+   "kept": "react_71acd3a7ef",
+   "merged": "react_71acd3a7ef",
+   "release": "18",
+   "symbol": "StrictMode"
+  },
+  {
+   "kept": "react_71acd3a7ef",
+   "merged": "react_71acd3a7ef",
+   "release": "18",
+   "symbol": "StrictMode"
+  },
+  {
+   "kept": "react_4aaaf16b0e",
+   "merged": "react_4aaaf16b0e",
+   "release": "18",
+   "symbol": "useEffect"
+  },
+  {
+   "kept": "react_090a4a6780",
+   "merged": "react_090a4a6780",
+   "release": "18",
+   "symbol": "hydrateRoot"
+  },
+  {
+   "kept": "react_44cfb7b19d",
+   "merged": "react_44cfb7b19d",
+   "release": "18",
+   "symbol": "Suspense"
+  },
+  {
+   "kept": "react_66adbc474f",
+   "merged": "react_66adbc474f",
+   "release": "18",
+   "symbol": "scheduler/tracing"
+  },
+  {
+   "kept": "react_479331dfb5",
+   "merged": "react_479331dfb5",
+   "release": "18",
+   "symbol": "renderToStaticMarkup"
+  },
+  {
+   "kept": "react_1174c2e1c2",
+   "merged": "react_1174c2e1c2",
+   "release": "18",
+   "symbol": "act"
+  },
+  {
+   "kept": "react_1174c2e1c2",
+   "merged": "react_1174c2e1c2",
+   "release": "18",
+   "symbol": "act"
+  },
+  {
+   "kept": "react_2489111975",
+   "merged": "react_2489111975",
+   "release": "18",
+   "symbol": "render callback"
+  },
+  {
+   "kept": "react_e56a0f9df4",
+   "merged": "react_e56a0f9df4",
+   "release": "18",
+   "symbol": "createRoot"
+  }
+ ]
+}

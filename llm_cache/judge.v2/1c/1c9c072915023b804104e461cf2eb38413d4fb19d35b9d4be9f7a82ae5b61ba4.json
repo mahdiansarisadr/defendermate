@@ -1,0 +1,65 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"m20\",\n  \"claim\": \"Next.js documentation states that The WASM target for next-swc has been added.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The WASM target for next-swc has been removed.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s21\",\n  \"claim\": \"React documentation states that not all your components may be resilient to the new checks it adds in development mode\",\n  \"evidence\": [\n   {\n    \"quote\": \"not all your components may be resilient to the new checks it adds in development mode\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s22\",\n  \"claim\": \"Next.js documentation states that The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The Supported Browsers have been changed to drop Internet Explorer and target modern browsers.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s23\",\n  \"claim\": \"React documentation states that Until you switch to the new API, your app will behave as if it's running React 17.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Until you switch to the new API, your app will behave as if it's running React 17.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m24\",\n  \"claim\": \"React documentation states that Until you switch to the new API, your app will behave as if it's running React 20.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Until you switch to the new API, your app will behave as if it's running React 17.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s25\",\n  \"claim\": \"Next.js documentation states that The target configuration property has been removed and superseded by Output File Tracing.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The target configuration property has been removed and superseded by Output File Tracing.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m26\",\n  \"claim\": \"Next.js documentation states that The target configuration property has been added and superseded by Output File Tracing.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The target configuration property has been removed and superseded by Output File Tracing.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s27\",\n  \"claim\": \"React documentation states that Hydration mismatches due to missing or extra text content\",\n  \"evidence\": [\n   {\n    \"quote\": \"Hydration mismatches due to missing or extra text content\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s28\",\n  \"claim\": \"PostgreSQL documentation states that Version 16 contains a number of changes that may affect compatibility with previous releases.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 16 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m29\",\n  \"claim\": \"PostgreSQL documentation states that Version 19 contains a number of changes that may affect compatibility with previous releases.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 16 contains a number of changes that may affect compatibility with previous releases.\",\n    \"source\": \"official docs\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "m20",
+    "verdict": "not_supported",
+    "missing": "The quote says the WASM target was removed, which contradicts the claim that it was added."
+   },
+   {
+    "condition_id": "s21",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s22",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s23",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m24",
+    "verdict": "not_supported",
+    "missing": "The quote says the app behaves as if running React 17, not React 20."
+   },
+   {
+    "condition_id": "s25",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m26",
+    "verdict": "not_supported",
+    "missing": "The quote says the target property was removed, contradicting the claim that it was added."
+   },
+   {
+    "condition_id": "s27",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s28",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m29",
+    "verdict": "not_supported",
+    "missing": "The quote refers to Version 16, not Version 19."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1910,
+  "output_tokens": 347,
+  "stop_reason": "end_turn"
+ }
+}

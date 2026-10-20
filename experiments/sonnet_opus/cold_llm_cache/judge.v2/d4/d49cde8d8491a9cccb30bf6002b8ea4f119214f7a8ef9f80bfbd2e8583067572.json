@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_18_where_react_bc0428\",\n  \"claim\": \"The upgrade crosses React 18, where ReactDOM.render is no longer supported\",\n  \"evidence\": [\n   {\n    \"quote\": \"When you first install React 18, you will see a warning in the console\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"ReactDOM.render is no longer supported in React 18. Use createRoot instead.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_renders_its_root_with_re_9b1bfa\",\n  \"claim\": \"The application renders its root with ReactDOM.render (render imported from 'react-dom')\",\n  \"evidence\": [\n   {\n    \"quote\": \"ReactDOM.render is no longer supported in React 18. Use createRoot instead.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"import { render } from 'react-dom';\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"until_migrated_the_app_behaves_as_react_70c294\",\n  \"claim\": \"Until migrated, the app behaves as React 17; switching to createRoot enables the concurrent renderer and opt-in concurrent features, which changes rendering behavior\",\n  \"evidence\": [\n   {\n    \"quote\": \"Until you switch to the new API, your app will behave as if it's running React 17.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   },\n   {\n    \"quote\": \"The new root API also enables the new concurrent renderer, which allows you to opt-into concurrent features.\",\n    \"source\": \"How to Upgrade to React 18\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_18_where_react_bc0428",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_renders_its_root_with_re_9b1bfa",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "until_migrated_the_app_behaves_as_react_70c294",
+    "verdict": "supported",
+    "missing": ""
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1435,
+  "output_tokens": 324,
+  "stop_reason": "end_turn"
+ }
+}

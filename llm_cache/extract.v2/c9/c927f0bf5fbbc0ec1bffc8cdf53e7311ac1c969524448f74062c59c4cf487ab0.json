@@ -1,0 +1,92 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "Project: React. Upgrade being assessed: 17 -> 18.\nThis change was introduced in release 18. Source: React CHANGELOG (18.0.0 section) (official_changelog). Section: React / React DOM Server.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nRevert to client render on text mismatch. (#23354 by @acdlite)\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nReact / React DOM Server: Add the new streaming renderer. (#14144, #20970, #21056, #21255, #21200, #21257, #21276, #22443, #22450, #23247, #24025, #24030 by @sebmarkbage) Fix context providers in SSR when handling multiple requests. (#23171 by @frandiox) Revert to client render on text mismatch. (#23354 by @acdlite) Deprecate renderToNodeStream. (#23359 by @sebmarkbage) Fix a spurious error log in the new server renderer. (#24043 by @eps1lon) Fix a bug in the new server renderer. (#22617 by @shuding) Ignore function and symbol values inside custom elements on the server. (#21157 by @sebmarkbage)\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 18 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 18 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "Hydration text mismatch now falls back to client rendering",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "In React 18, when server-rendered text does not match the client during hydration, React reverts to client rendering instead of patching the text. Apps that server-render and hydrate with text mismatches may see different behavior (client re-render of content).",
+    "primary_symbol": "hydrateRoot",
+    "symbols": [
+     "hydrateRoot",
+     "hydrate"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses React 18.0.0, where client render on text mismatch was introduced.",
+      "category": "version",
+      "role": "required",
+      "operator": "greater_than",
+      "expected_value": "17",
+      "quotes": [
+       "Revert to client render on text mismatch."
+      ],
+      "relevance": "Change introduced in the 18.0.0 release.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application server-renders HTML and hydrates it on the client.",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "hydrateRoot",
+      "quotes": [
+       "Revert to client render on text mismatch."
+      ],
+      "relevance": "Text mismatch only occurs when hydrating server-rendered markup.",
+      "ambiguities": [
+       "The text does not name the hydration API involved; hydrateRoot/hydrate are inferred."
+      ],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "\\b(hydrateRoot|ReactDOM\\.hydrate|hydrate)\\s*\\("
+       }
+      ]
+     },
+     {
+      "statement": "Rendered text differs between server and client (e.g. dates, random values, locale-dependent text).",
+      "category": "behavior",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "text mismatch between server and client render",
+      "quotes": [
+       "Revert to client render on text mismatch."
+      ],
+      "relevance": "The fallback to client rendering only triggers on a text mismatch.",
+      "ambiguities": [
+       "The text does not state the scope of the client re-render or any performance or warning impact."
+      ],
+      "derived_by": "extraction",
+      "search_queries": []
+     }
+    ],
+    "suggested_actions": [
+     "Check SSR pages for hydration text mismatches (e.g. timestamps, random IDs, locale formatting) and make server and client output identical.",
+     "Test hydrated pages under React 18 for unexpected client re-rendering."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 3565,
+  "output_tokens": 849,
+  "stop_reason": "end_turn"
+ }
+}

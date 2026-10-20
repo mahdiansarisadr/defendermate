@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_from_13_to_16_crosses_releas_bff786\",\n  \"claim\": \"The upgrade from 13 to 16 crosses release 14, where the @ and ~ containment operators were removed.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove deprecated containment operators @ and ~ for built-in geometric data types and contrib modules cube, hstore, intarray, and seg\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"application_sql_views_functions_or_other_bff81d\",\n  \"claim\": \"Application SQL, views, functions, or other database objects use the @ or ~ containment operators with built-in geometric types or with cube, hstore, intarray, or seg data.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove deprecated containment operators @ and ~ for built-in geometric data types and contrib modules cube, hstore, intarray, and seg\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_already_uses_only_and_in_776bf1\",\n  \"claim\": \"The application already uses only <@ and @> instead of @ and ~.\",\n  \"evidence\": [\n   {\n    \"quote\": \"The more consistently named <@ and @> have been recommended for many years.\",\n    \"source\": \"PostgreSQL 14 release notes: Migration to Version 14\",\n    \"release_of_change\": \"14\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_from_13_to_16_crosses_releas_bff786",
+    "verdict": "partially_supported",
+    "missing": "The quote only establishes removal in release 14 (from the 14 section). It does not state that an upgrade from 13 to 16 crosses release 14; that is an inference from version numbers not stated in the quote."
+   },
+   {
+    "condition_id": "application_sql_views_functions_or_other_bff81d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_already_uses_only_and_in_776bf1",
+    "verdict": "partially_supported",
+    "missing": "The quote only says <@ and @> have been recommended for many years. It does not say that any application already uses only those operators, or that this avoids the removal impact."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1309,
+  "output_tokens": 258,
+  "stop_reason": "end_turn"
+ }
+}

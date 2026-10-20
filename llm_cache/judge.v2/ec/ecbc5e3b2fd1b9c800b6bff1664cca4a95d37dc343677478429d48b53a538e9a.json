@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_postgresql_release_1_416f2d\",\n  \"claim\": \"The upgrade crosses PostgreSQL release 15 (13 -> 16).\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 15 contains a number of changes that may affect compatibility with previous releases\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_contains_stored_tsvector_va_0f783f\",\n  \"claim\": \"The database contains stored tsvector values that include empty lexemes.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Users of previous Postgres releases should verify that no empty lexemes are stored\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"data_is_migrated_by_dump_restore_where_e_25129f\",\n  \"claim\": \"Data is migrated by dump/restore, where empty lexemes can cause failures.\",\n  \"evidence\": [\n   {\n    \"quote\": \"they can lead to dump/restore failures and inconsistent results\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_postgresql_release_1_416f2d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_contains_stored_tsvector_va_0f783f",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "data_is_migrated_by_dump_restore_where_e_25129f",
+    "verdict": "partially_supported",
+    "missing": "The quote's 'they' is never identified as empty lexemes, so the quote alone does not tie dump/restore failures to empty lexemes."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1233,
+  "output_tokens": 585,
+  "stop_reason": "end_turn"
+ }
+}

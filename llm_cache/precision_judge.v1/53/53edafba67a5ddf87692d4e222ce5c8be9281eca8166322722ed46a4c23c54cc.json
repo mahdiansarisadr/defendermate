@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Regex character class with \\\\w as range start or end now disallowed\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"Starting in release 14, PostgreSQL disallows \\\\w as a range start or end in regular expression character classes. This was previously allowed but produced unexpected results. Patterns that use such a range will now be rejected, so queries or application code containing them need to be rewritten.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 14, which disallows \\\\w as a range start or end in regex character classes.\",\n   \"quotes\": [\n    \"Disallow \\\\w as a range start or end in regular expression character classes\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application or database code uses regular expressions with \\\\w as the start or end of a range inside a character class (e.g. [\\\\w-x] or [a-\\\\w]).\",\n   \"quotes\": [\n    \"Disallow \\\\w as a range start or end in regular expression character classes\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports a concrete behavior change in release 14 (within 13->16) that can make regex patterns with \\w as a character-class range endpoint fail, and the pattern is checkable by searching for such constructs; the claims about 'unexpected results' and rejection go slightly beyond the quote but are reasonable."
+ },
+ "usage": {
+  "input_tokens": 800,
+  "output_tokens": 122,
+  "stop_reason": "end_turn"
+ }
+}

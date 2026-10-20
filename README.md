@@ -13,13 +13,13 @@ The design is in [`TDD.md`](TDD.md); section 17 lists the gaps found while build
 
 | Upgrade | Paths | Context facts | Gold recall | Validator errors | Strong model | LLM cost to produce |
 |---|---|---|---|---|---|---|
-| Django 3.2→4.2 | 151 | 126 | 36/36 | 0 | Sonnet 5.5 | ~$7.33 |
-| React 17→18 | 25 | 39 | 14/15 | 0 | Sonnet 5.5 | ~$1.70 |
-| Kubernetes 1.23→1.29 | 83 | 48 | 30/30 | 0 | Haiku 5.5 | ~$2.21 |
-| PostgreSQL 13→16 | 69 | 8 | 27/28 | 0 | Haiku 5.5 | ~$1.38 |
-| Next.js 12→14 | 19 | 1 | 12/12 | 0 | Haiku 5.5 | ~$0.40 |
+| Django 3.2→4.2 | 151 | 126 | 36/36 | 0 | Sonnet 5.5 | ~$4.74 |
+| React 17→18 | 25 | 39 | 14/15 | 0 | Sonnet 5.5 | ~$1.08 |
+| Kubernetes 1.23→1.29 | 83 | 48 | 30/30 | 0 | Haiku 5.5 | ~$0.22 |
+| PostgreSQL 13→16 | 69 | 8 | 27/28 | 0 | Haiku 5.5 | ~$0.14 |
+| Next.js 12→14 | 19 | 1 | 12/12 | 0 | Haiku 5.5 | ~$0.04 |
 
-Costs are estimates from token counts; the LLM evals added about $3–5.
+Costs are list-price estimates (Anthropic pricing page, 2026-10-20) applied to recorded token counts. Prompt-caching discounts are not modeled.
 
 Kubernetes, PostgreSQL and Next.js were extracted with Haiku as the strong model, after the API credit ran out mid-run. Each model records the models it used in `pipeline.models`, and offline replay uses those recorded models.
 
@@ -47,6 +47,34 @@ How to read these numbers:
 - **Calibration** is monotone but weakly separated. Almost every path is judged valid, so the confidence bands mostly reflect evidence strength, not validity.
 - **The judge set** is synthetic and easy (identity claims versus mutated claims), so it shows the judge isn't broken. It does not show real-world entailment accuracy.
 - **The single-prompt ablation**, run over the same windowed change items, reaches similar gold recall. Its quotes ground, but it has no conditions, roles, version ranges or search queries, and no revert, supersession or remediation handling. What the decomposition buys is structure and composition, not raw recall.
+
+## Model experiment: quality vs cost
+
+The same pipeline ran on React, PostgreSQL and Next.js under three cheap/strong model pairs. The cheap tier does triage; the strong tier does extraction, the recall sweep, revert reconcile and the grounding judge. Every config is scored against the same gold sets (55 gold risks) by the same Sonnet 5.5 precision judge, and judge calibration uses the same claim set for every config. Full results are in [`experiments/comparison.md`](experiments/comparison.md) and on the UI's **Experiments** page, which plots quality against cost with the Pareto frontier.
+
+| Config (cheap / strong) | Cost to produce | × cheapest | Paths | Gold recall | Est. precision | F1 | Classification | Stability |
+|---|---|---|---|---|---|---|---|---|
+| Haiku / Haiku | $0.27 | 1× | 115 | 53/55 | 99.1% | 0.977 | 96.5% | 0.74 |
+| Haiku / Sonnet | $3.25 | 12× | 110 | 54/55 | 99.1% | 0.986 | 98.2% | 0.70 |
+| Sonnet / Opus | $7.65 | 28× | 123 | 55/55 | 98.4% | 0.992 | 100% | 0.62 |
+
+All three pass the hard gates: 100% grounding and 0 validator errors.
+
+**Trade-off.** Haiku / Sonnet costs 12× as much as Haiku / Haiku and finds one more gold risk (PostgreSQL `ssl_compression`). Sonnet / Opus costs 28× as much and finds two more (that one, plus React `renderToNodeStream`). On F1 that is about $3.3 per F1 point (0.01 F1) from Haiku / Haiku to Haiku / Sonnet, and about $7.3 per point from Haiku / Sonnet to Sonnet / Opus. Every config sits on the frontier: each extra dollar buys a little more recall, with fast-diminishing returns.
+
+Caveats:
+
+- The differences are one or two gold items out of 55, which is within noise for a set this small.
+- Estimated precision is near the ceiling for every config, so it doesn't separate them.
+- The judge-calibration set is saturated (1.00 for every config).
+- Stability (path-ID overlap) *drops* as the models get stronger. Stronger models emit more, and differently named, paths, and the metric penalizes renaming. It is not a reliability signal on its own.
+
+What this suggests: Haiku / Haiku for bulk or first-pass coverage, and a stronger strong tier only where the last few percent of recall matters. This is in line with the design choice that grounding and structure come from the deterministic stages, not the model.
+
+```bash
+urx experiment --config haiku_haiku     # also haiku_sonnet, sonnet_opus; writes experiments/<config>/
+urx compare-experiments                 # experiments/comparison.{json,md}
+```
 
 ## Quick start (offline, no API key)
 

@@ -1,0 +1,115 @@
+{
+ "prompt_id": "triage.v1",
+ "provider": "anthropic",
+ "model": "claude-haiku-5-5",
+ "user": "Project: React. Upgrade: 17 -> 18. Release of these items: 18.\nSource: React CHANGELOG (18.0.0 section).\n\nLabel every item:\n- risk = the change could break an application or deployment, require migration work, or create operational risk for SOME user upgrading across this release (removed or renamed APIs/settings/flags, changed defaults, behavior changes, raised minimum versions of runtimes/databases/dependencies, data or schema migration, required config changes, deprecated-and-removed features).\n- context = accurate and useful but needs no user action at this release: explicitly \"no user action required\", a deprecation that still works (warning only), a purely additive new feature or option, documentation pointers.\n- noise = credits, install/download commands, pure bug fixes that cannot change correct behavior, marketing text, headings with no content.\n\nReturn one label per item_id with a one-sentence reason grounded in the item text.\n\nItems (JSON lines):\n{\"item_id\": \"90360b753186\", \"section\": \"18.0.0 (March 29, 2022)\", \"text\": \"Below is a list of all new features, APIs, deprecations, and breaking changes. Read React 18 release post and React 18 upgrade guide for more information.\"}\n{\"item_id\": \"ad8ea6c8b11c\", \"section\": \"18.0.0 (March 29, 2022) / React\", \"text\": \"useId is a new hook for generating unique IDs on both the client and server, while avoiding hydration mismatches. It is primarily useful for component libraries integrating with accessibility APIs that require unique IDs. This solves an issue that already exists in React 17 and below, but it's even more important in React 18 because of how the new streaming server renderer delivers HTML out-of-order.\"}\n{\"item_id\": \"65f2a17dfdbb\", \"section\": \"18.0.0 (March 29, 2022) / React\", \"text\": \"startTransition and useTransition let you mark some state updates as not urgent. Other state updates are considered urgent by default. React will allow urgent state updates (for example, updating a text input) to interrupt non-urgent state updates (for example, rendering a list of search results).\"}\n{\"item_id\": \"2289b6e12ce8\", \"section\": \"18.0.0 (March 29, 2022) / React\", \"text\": \"useDeferredValue lets you defer re-rendering a non-urgent part of the tree. It is similar to debouncing, but has a few advantages compared to it. There is no fixed time delay, so React will attempt the deferred render right after the first render is reflected on the screen. The deferred render is interruptible and doesn't block user input.\"}\n{\"item_id\": \"271048994bcd\", \"section\": \"18.0.0 (March 29, 2022) / React\", \"text\": \"useSyncExternalStore is a new hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. It removes the need for useEffect when implementing subscriptions to external data sources, and is recommended for any library that integrates with state external to React.\"}\n{\"item_id\": \"d5f96f97c471\", \"section\": \"18.0.0 (March 29, 2022) / React\", \"text\": \"useInsertionEffect is a new hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you've already built a CSS-in-JS library we don't expect you to ever use this. This hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout.\"}\n{\"item_id\": \"c8e5e7077c4e\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Client\", \"text\": \"These new APIs are now exported from react-dom/client:\"}\n{\"item_id\": \"54925641c9a8\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Client\", \"text\": \"createRoot: New method to create a root to render or unmount. Use it instead of ReactDOM.render. New features in React 18 don't work without it.\"}\n{\"item_id\": \"28e58ea8654c\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Client\", \"text\": \"hydrateRoot: New method to hydrate a server rendered application. Use it instead of ReactDOM.hydrate in conjunction with the new React DOM Server APIs. New features in React 18 don't work without it.\"}\n{\"item_id\": \"b57470b22932\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Client\", \"text\": \"Both createRoot and hydrateRoot accept a new option called onRecoverableError in case you want to be notified when React recovers from errors during rendering or hydration for logging. By default, React will use reportError, or console.error in the older browsers.\"}\n{\"item_id\": \"0f960bc30c91\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Server\", \"text\": \"These new APIs are now exported from react-dom/server and have full support for streaming Suspense on the server:\"}\n{\"item_id\": \"96f97e594e08\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Server\", \"text\": \"renderToPipeableStream: for streaming in Node environments.\"}\n{\"item_id\": \"902632d1000f\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Server\", \"text\": \"renderToReadableStream: for modern edge runtime environments, such as Deno and Cloudflare workers.\"}\n{\"item_id\": \"32b52672505e\", \"section\": \"18.0.0 (March 29, 2022) / React DOM Server\", \"text\": \"The existing renderToString method keeps working but is discouraged.\"}\n{\"item_id\": \"5177b88f5216\", \"section\": \"Deprecations\", \"text\": \"react-dom: ReactDOM.render has been deprecated. Using it will warn and run your app in React 17 mode.\"}\n{\"item_id\": \"e09e6de73aaf\", \"section\": \"Deprecations\", \"text\": \"react-dom: ReactDOM.hydrate has been deprecated. Using it will warn and run your app in React 17 mode.\"}\n{\"item_id\": \"7486a812fc1b\", \"section\": \"Deprecations\", \"text\": \"react-dom: ReactDOM.unmountComponentAtNode has been deprecated.\"}\n{\"item_id\": \"8ef99b065fe8\", \"section\": \"Deprecations\", \"text\": \"react-dom: ReactDOM.renderSubtreeIntoContainer has been deprecated.\"}\n{\"item_id\": \"58846cb08a52\", \"section\": \"Deprecations\", \"text\": \"react-dom/server: ReactDOMServer.renderToNodeStream has been deprecated.\"}\n{\"item_id\": \"c4b46a113ab9\", \"section\": \"Breaking Changes / React\", \"text\": \"Automatic batching: This release introduces a performance improvement that changes to the way React batches updates to do more batching automatically. See Automatic batching for fewer renders in React 18 for more info. In the rare case that you need to opt out, wrap the state update in flushSync.\"}",
+ "response": {
+  "labels": [
+   {
+    "item_id": "90360b753186",
+    "label": "context",
+    "reason": "It is a documentation pointer to the React 18 release post and upgrade guide, with no change of its own."
+   },
+   {
+    "item_id": "ad8ea6c8b11c",
+    "label": "context",
+    "reason": "useId is described as a new hook, a purely additive feature that needs no user action."
+   },
+   {
+    "item_id": "65f2a17dfdbb",
+    "label": "context",
+    "reason": "startTransition and useTransition are new opt-in APIs for marking updates as non-urgent, so no action is required."
+   },
+   {
+    "item_id": "2289b6e12ce8",
+    "label": "context",
+    "reason": "useDeferredValue is a new additive hook that users may adopt optionally."
+   },
+   {
+    "item_id": "271048994bcd",
+    "label": "context",
+    "reason": "useSyncExternalStore is a new hook offered as an option, and existing code is not described as broken."
+   },
+   {
+    "item_id": "d5f96f97c471",
+    "label": "context",
+    "reason": "useInsertionEffect is a new hook the text says most users will never need, so it requires no action."
+   },
+   {
+    "item_id": "c8e5e7077c4e",
+    "label": "context",
+    "reason": "It is a lead-in noting that the new APIs are exported from react-dom/client, which tells users where to import them from."
+   },
+   {
+    "item_id": "54925641c9a8",
+    "label": "risk",
+    "reason": "createRoot replaces ReactDOM.render, and the text says new React 18 features do not work without it, so apps must migrate to get the new behavior."
+   },
+   {
+    "item_id": "28e58ea8654c",
+    "label": "risk",
+    "reason": "hydrateRoot replaces ReactDOM.hydrate, and the text says new React 18 features do not work without it, so hydration code must migrate."
+   },
+   {
+    "item_id": "b57470b22932",
+    "label": "context",
+    "reason": "onRecoverableError is a new optional option for logging recovered errors, with no required change."
+   },
+   {
+    "item_id": "0f960bc30c91",
+    "label": "context",
+    "reason": "It is a lead-in noting that new server APIs with streaming Suspense support are exported from react-dom/server."
+   },
+   {
+    "item_id": "96f97e594e08",
+    "label": "context",
+    "reason": "renderToPipeableStream is a new additive server API for Node streaming."
+   },
+   {
+    "item_id": "902632d1000f",
+    "label": "context",
+    "reason": "renderToReadableStream is a new additive server API for edge runtimes."
+   },
+   {
+    "item_id": "32b52672505e",
+    "label": "context",
+    "reason": "renderToString keeps working and is only discouraged, so no action is required."
+   },
+   {
+    "item_id": "5177b88f5216",
+    "label": "risk",
+    "reason": "ReactDOM.render runs the app in React 17 mode with a warning, so apps relying on it stay on legacy behavior and need migration to get React 18 behavior."
+   },
+   {
+    "item_id": "e09e6de73aaf",
+    "label": "risk",
+    "reason": "ReactDOM.hydrate runs the app in React 17 mode with a warning, so hydrated apps keep legacy behavior until they migrate."
+   },
+   {
+    "item_id": "7486a812fc1b",
+    "label": "context",
+    "reason": "unmountComponentAtNode is deprecated but the text does not say it stops working, so it is a warning-level deprecation."
+   },
+   {
+    "item_id": "8ef99b065fe8",
+    "label": "context",
+    "reason": "renderSubtreeIntoContainer is deprecated with no stated removal or breakage, so it is a warning-level deprecation."
+   },
+   {
+    "item_id": "58846cb08a52",
+    "label": "context",
+    "reason": "renderToNodeStream is deprecated with no stated removal in this release, so it still works."
+   },
+   {
+    "item_id": "c4b46a113ab9",
+    "label": "risk",
+    "reason": "Automatic batching changes how many renders occur, which can alter behavior, and users who need the old timing must wrap updates in flushSync."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 2718,
+  "output_tokens": 2426,
+  "stop_reason": "end_turn"
+ }
+}

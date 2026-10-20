@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Index creation relying on interval text output fails\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"The interval output function is now marked stable rather than immutable because it depends on IntervalStyle. Creating indexes that rely on the text output of interval values (for example, expression indexes casting interval to text) will fail.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where the interval output function was changed from immutable to stable.\",\n   \"quotes\": [\n    \"Mark the interval output function as stable, not immutable, since it depends on IntervalStyle\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The database defines or creates indexes (or other immutable-requiring expressions) that rely on the text output of interval values.\",\n   \"quotes\": [\n    \"cause creation of indexes relying on the text output of interval values to fail\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes directly support that the interval output function became stable instead of immutable (depending on IntervalStyle), which can make creation of indexes relying on interval text output fail, and a checker could look for expression indexes casting interval to text in a 13->16 upgrade."
+ },
+ "usage": {
+  "input_tokens": 767,
+  "output_tokens": 104,
+  "stop_reason": "end_turn"
+ }
+}

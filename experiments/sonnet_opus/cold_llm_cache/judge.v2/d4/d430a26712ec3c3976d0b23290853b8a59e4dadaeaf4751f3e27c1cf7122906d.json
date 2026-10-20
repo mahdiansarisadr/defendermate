@@ -1,0 +1,25 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_react_release_18_whe_2a7105\",\n  \"claim\": \"The upgrade crosses React release 18, where React assumes Symbols are always available\",\n  \"evidence\": [\n   {\n    \"quote\": \"Assume Symbols are always available. (#23348 by @sebmarkbage)\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_targets_a_javascript_run_f3ab4c\",\n  \"claim\": \"The application targets a JavaScript runtime or browser that lacks a native Symbol and has no Symbol polyfill loaded\",\n  \"evidence\": [\n   {\n    \"quote\": \"Assume Symbols are always available.\",\n    \"source\": \"React CHANGELOG (18.0.0 section)\",\n    \"release_of_change\": \"18\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_react_release_18_whe_2a7105",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_targets_a_javascript_run_f3ab4c",
+    "verdict": "partially_supported",
+    "missing": "The quote only says React assumes Symbols are always available. It does not state that runtimes or browsers without native Symbol are affected or break, and it does not mention a Symbol polyfill as a mitigating factor."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1069,
+  "output_tokens": 459,
+  "stop_reason": "end_turn"
+ }
+}

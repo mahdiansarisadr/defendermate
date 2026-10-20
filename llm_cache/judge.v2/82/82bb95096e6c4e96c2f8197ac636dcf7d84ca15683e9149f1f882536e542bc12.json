@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"upgrade_crosses_postgresql_release_15_wh_988882\",\n  \"claim\": \"Upgrade crosses PostgreSQL release 15, where plpythonu was removed\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove server-side language plpython2u and generic Python language plpythonu\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_database_has_the_plpythonu_language_0fffb8\",\n  \"claim\": \"The database has the plpythonu language installed or functions or DDL scripts using LANGUAGE plpythonu\",\n  \"evidence\": [\n   {\n    \"quote\": \"generic Python language plpythonu\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"plpythonu_was_not_redirected_to_plpython_11e16e\",\n  \"claim\": \"plpythonu was not redirected to plpython3u; it was removed\",\n  \"evidence\": [\n   {\n    \"quote\": \"changing it now seems more likely to cause problems than solve them, so it's just been removed\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "upgrade_crosses_postgresql_release_15_wh_988882",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_database_has_the_plpythonu_language_0fffb8",
+    "verdict": "partially_supported",
+    "missing": "The quote fragment only names plpythonu. It does not state that it was removed, or that installed languages, functions, or DDL scripts using LANGUAGE plpythonu are affected."
+   },
+   {
+    "condition_id": "plpythonu_was_not_redirected_to_plpython_11e16e",
+    "verdict": "partially_supported",
+    "missing": "The quote does not name plpythonu or plpython3u. It says only that 'changing it' was rejected and it was removed; it does not say the rejected change was a redirect to plpython3u."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1234,
+  "output_tokens": 622,
+  "stop_reason": "end_turn"
+ }
+}

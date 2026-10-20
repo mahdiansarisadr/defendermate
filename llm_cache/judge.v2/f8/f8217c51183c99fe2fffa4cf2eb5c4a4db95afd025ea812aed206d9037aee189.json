@@ -1,0 +1,40 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_which_int_894b4d\",\n  \"claim\": \"The upgrade crosses release 15, which introduced overflow detection in the interval justification functions.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Detect integer overflow in interval justification functions\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_database_code_calls_j_e3e5fe\",\n  \"claim\": \"The application or database code calls justify_interval().\",\n  \"evidence\": [\n   {\n    \"quote\": \"The affected functions are justify_interval(), justify_hours(), and justify_days().\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_database_code_calls_j_12ee8e\",\n  \"claim\": \"The application or database code calls justify_hours().\",\n  \"evidence\": [\n   {\n    \"quote\": \"The affected functions are justify_interval(), justify_hours(), and justify_days().\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_database_code_calls_j_a566e4\",\n  \"claim\": \"The application or database code calls justify_days().\",\n  \"evidence\": [\n   {\n    \"quote\": \"The affected functions are justify_interval(), justify_hours(), and justify_days().\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_functions_are_called_with_interval_v_48c81d\",\n  \"claim\": \"The functions are called with interval values large enough to overflow an integer.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Detect integer overflow in interval justification functions\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_which_int_894b4d",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_database_code_calls_j_e3e5fe",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_database_code_calls_j_12ee8e",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_database_code_calls_j_a566e4",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_functions_are_called_with_interval_v_48c81d",
+    "verdict": "partially_supported",
+    "missing": "The quote only says integer overflow is now detected in these functions; it does not state that calls with sufficiently large interval values are affected or what the resulting behavior is (e.g., an error instead of a wrapped result)."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1504,
+  "output_tokens": 295,
+  "stop_reason": "end_turn"
+ }
+}

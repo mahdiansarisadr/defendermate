@@ -1,0 +1,65 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"s30\",\n  \"claim\": \"React documentation states that some effects assume they are only mounted or destroyed once\",\n  \"evidence\": [\n   {\n    \"quote\": \"some effects assume they are only mounted or destroyed once\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s31\",\n  \"claim\": \"PostgreSQL documentation states that Version 15 contains a number of changes that may affect compatibility with previous releases\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 15 contains a number of changes that may affect compatibility with previous releases\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m32\",\n  \"claim\": \"PostgreSQL documentation states that Version 18 contains a number of changes that may affect compatibility with previous releases\",\n  \"evidence\": [\n   {\n    \"quote\": \"Version 15 contains a number of changes that may affect compatibility with previous releases\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s33\",\n  \"claim\": \"React documentation states that changes to the way React batches updates to do more batching automatically\",\n  \"evidence\": [\n   {\n    \"quote\": \"changes to the way React batches updates to do more batching automatically\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s34\",\n  \"claim\": \"PostgreSQL documentation states that disallow verify-ca if cert authentication is enabled since cert requires verify-full checking.\",\n  \"evidence\": [\n   {\n    \"quote\": \"disallow verify-ca if cert authentication is enabled since cert requires verify-full checking.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s35\",\n  \"claim\": \"React documentation states that will revert to client rendering up to the closest <Suspense> boundary in the tree\",\n  \"evidence\": [\n   {\n    \"quote\": \"will revert to client rendering up to the closest <Suspense> boundary in the tree\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s36\",\n  \"claim\": \"PostgreSQL documentation states that Prevent the containment operators (<@ and @>) for intarray from using GiST indexes\",\n  \"evidence\": [\n   {\n    \"quote\": \"Prevent the containment operators (<@ and @>) for intarray from using GiST indexes\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s37\",\n  \"claim\": \"PostgreSQL documentation states that Remove factorial operators ! and !!, as well as function numeric_fac()\",\n  \"evidence\": [\n   {\n    \"quote\": \"Remove factorial operators ! and !!, as well as function numeric_fac()\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"s38\",\n  \"claim\": \"Next.js documentation states that Starting in Next.js 13, this new behavior is now the default for next/image.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Starting in Next.js 13, this new behavior is now the default for next/image.\",\n    \"source\": \"official docs\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"m39\",\n  \"claim\": \"Next.js documentation states that Starting in Next.js 16, this new behavior is now the default for next/image.\",\n  \"evidence\": [\n   {\n    \"quote\": \"Starting in Next.js 13, this new behavior is now the default for next/image.\",\n    \"source\": \"official docs\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "s30",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s31",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m32",
+    "verdict": "not_supported",
+    "missing": "The quote refers to Version 15, not Version 18."
+   },
+   {
+    "condition_id": "s33",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s34",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s35",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s36",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s37",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "s38",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "m39",
+    "verdict": "not_supported",
+    "missing": "The quote says Next.js 13, not Next.js 16."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1956,
+  "output_tokens": 292,
+  "stop_reason": "end_turn"
+ }
+}

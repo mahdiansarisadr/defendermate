@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"PL/pgSQL bound cursor variable name no longer assigned at cursor assignment\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In PostgreSQL 16, the string value (portal name) of PL/pgSQL bound cursor variables is assigned during OPEN rather than set to the variable name during cursor assignment, and will not match the variable name. Code that relies on the portal name equaling the cursor variable name (e.g., returning the refcursor and FETCHing by the variable name) may break.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses PostgreSQL release 16, where bound cursor variable assignment rules changed.\",\n   \"quotes\": [\n    \"Change assignment rules for PL/pgSQL bound cursor variables (Tom Lane)\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application has PL/pgSQL functions/procedures that declare bound cursor variables.\",\n   \"quotes\": [\n    \"Change assignment rules for PL/pgSQL bound cursor variables\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The code relies on the cursor variable's string value (portal name) matching the variable name, e.g. returning the cursor and fetching from it by the variable name.\",\n   \"quotes\": [\n    \"now it will be assigned during OPEN, and will not match the variable name\"\n   ]\n  },\n  {\n   \"role\": \"disqualifying\",\n   \"statement\": \"If the code already assigns an explicit portal name to the cursor variable before OPEN, the risk does not apply.\",\n   \"quotes\": [\n    \"assign the desired portal name to the cursor variable before OPEN\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a genuine behavior change in PG16 (bound cursor portal name assigned during OPEN, not matching the variable name) and name concrete checkable items: PL/pgSQL bound cursor variables, OPEN, portal name, and the workaround of assigning a name before OPEN."
+ },
+ "usage": {
+  "input_tokens": 1039,
+  "output_tokens": 117,
+  "stop_reason": "end_turn"
+ }
+}

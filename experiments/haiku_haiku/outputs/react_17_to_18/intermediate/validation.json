@@ -1,0 +1,68 @@
+[
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_090a4a6780/the_application_uses_react_18_features_t_751f42",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_362d1d0639/the_application_code_performs_state_upda_d1a41e",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_479331dfb5/the_server_render_suspends_inside_a_susp_8dca13",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_60a311143f/application_uses_server_side_rendering_w_9a6424",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_a96061b2ea/the_application_has_effects_that_assume_392465",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_e56a0f9df4/the_application_has_updates_inside_timeo_81bda8",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_385fe7836e/using_reactdom_hydrate_causes_a_warning_e42060",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_4a4e72c4eb/calling_reactdom_render_runs_the_app_in_febcf7",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_d7f515143b/the_application_renders_custom_elements_e87f0c",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_d7f515143b/the_application_performs_server_side_ren_2c92ae",
+  "message": "symbol-bearing app condition has no search queries"
+ },
+ {
+  "level": "warning",
+  "code": "W4_no_search_queries",
+  "where": "risk_paths/react_02909746db/the_application_uses_the_new_react_nativ_78f1c3",
+  "message": "symbol-bearing app condition has no search queries"
+ }
+]

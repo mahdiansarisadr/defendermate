@@ -1,0 +1,100 @@
+{
+ "prompt_id": "extract.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Project: PostgreSQL. Upgrade being assessed: 13 -> 16.\nThis change was introduced in release 14. Source: PostgreSQL 14 release notes: Migration to Version 14 (official_release_notes). Section: Release 14 / Migration to Version 14.\nVersion facts from package metadata for this release (authoritative for version numbers): none\n\nITEM:\n<<<\nFix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes (Alexander Korotkov) Previously, quoted text that contained multiple adjacent discarded tokens was treated as multiple tokens, causing incorrect tsquery output, e.g., websearch_to_tsquery('\"aaa: bbb\"') used to output 'aaa' <2> 'bbb', but now outputs 'aaa' <-> 'bbb'.\n>>>\n\nPARENT CONTEXT (same section, for disambiguation only):\n<<<\nRelease 14 / Migration to Version 14: A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release. See upgrading for general information on migrating to new major releases. Version 14 contains a number of changes that may affect compatibility with previous releases. Observe the following incompatibilities: User-defined objects that reference certain built-in array functions along with their argument types must be recreated (Tom Lane) Specifically, array_append(), array_prepend(), array_cat(), array_position(), array_positions(), array_remove(), array_replace(), and width_bucket() used to take anyarray arguments but now take anycompatiblearray. Therefore, user-defined objects like aggregates and operators that reference those array function signatures must be dropped before upgrading, and recreated once the upgrade completes. Remove deprecated containment operators @ and ~ for built-in geometric data types and contrib modules cube, hstore, intarray, and seg (Justin Pryzby) The more consistently named <@ and @> have been recommended for many years. Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens (Alexander Korotkov) Certain discarded tokens, like underscore, caused the output of these functions to produce incorrect tsquery output, e.g., both websearch_to_tsquery('\"pg_class pg\"') and to_tsquery('pg_class <-> pg') used to output ( 'pg' & 'class' ) <-> 'pg', but now both output 'pg' <-> 'class' <-> 'pg'. Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes (Alexander Korotkov) Previously, quoted text that contained multiple adjacent discarded tokens was treated as multiple tokens, causing incorrect tsquery output, e.g., websearch_to_tsquery('\"aaa: bbb\"') used to output 'aaa' <2> 'bbb', but now outputs 'aaa' <-> 'bbb'. Change EXTRACT() to return type numeric instead of float8 (Peter Eisentraut) This avoids loss-of-precision issues in some usages. The old behavior can still be obtained by using the old underlying function date_part(). Also, EXTRACT(date) now throws an error for units that are not part of the date data type. Change var_samp() and stddev_samp() with numeric parameters to return NULL when the input is a single NaN value (Tom Lane) Previously NaN was returned. Return false for has_column_privilege() checks on non-existent or dropped columns when using attribute numbers (Joe C\n>>>\n\nDecide the disposition:\n- \"risk\": the item describes something that can break an app/deployment, require migration work, or create operational risk.\n- \"context\": it is accurate but needs no action at 16 (no user action required, deprecated-but-working, additive feature). Give the reason.\n\nFor \"risk\", produce one or more risk paths. Use separate paths for separate symbols/APIs when they can be checked independently. Hard rules:\n1. Every condition has at least one quote copied EXACTLY, character for character, from ITEM or PARENT CONTEXT (contiguous span, 3-40 words, no ellipses, no added words). Do not fix typos or formatting.\n2. Each path has exactly one condition with category \"version\" stating that the upgrade crosses release 14 (quote the text that ties the change to this release, or the change statement itself), and at least one application/deployment condition (category api_usage, configuration, dependency, runtime, deployment, database, behavior or test_coverage) describing what the app or deployment must use/have for the risk to apply.\n3. If the text does not state something you need, do not assert it: use role \"uncertain\" and explain in ambiguities. derived_by: \"extraction\" when the text states the fact; for an application/deployment condition (\"the application uses X\"), use \"extraction\" when the text names X as the thing affected by the change. Use \"inference\" only when you infer an affected symbol, scope or impact that the text does not name. Only add ambiguities for real gaps or conflicts in the text, not for the general fact that a specific application has not been inspected.\n4. role: \"required\" (must hold), \"alternative\" (any one of the alternatives suffices), \"optional\" (raises impact), \"disqualifying\" (if it holds, the risk does NOT apply, e.g. not using the new opt-in API), \"uncertain\".\n5. operator/expected_value must be checkable: e.g. operator \"present\" with expected_value the literal symbol; \"less_than\" with a version; \"equals\" with a setting value. expected_value is a string.\n6. If a replacement API/setting/version is named, put the migration step in suggested_actions and add a condition for any behavior that differs in the replacement when the text states one.\n7. search_queries: for app-side conditions with a literal symbol, give ripgrep regexes (tool \"ripgrep\"), kubectl commands (tool \"kubectl\") or SQL (tool \"sql\") that would find usage. Empty list if no literal symbol.\n8. primary_symbol: the most specific identifier of the change (full apiVersion string like \"policy/v1beta1\", setting name, function, flag, or runtime name like \"Python\"/\"Node.js\"). symbols: all identifiers involved.\n9. risk_level rubric: critical = upgrade fails or data is at risk for most users meeting the conditions (e.g. unsupported runtime/database version, removed API version that stops serving); high = code or config meeting the conditions breaks at upgrade; medium = behavior change or migration with a clear workaround; low = edge case, cosmetic, or warning-only.\n10. fires_at: \"upgrade\" (at upgrade time), \"first_use\" (when a feature is first exercised), \"rotation\" (on credential/password rotation), \"rollout\" (on deployment rollout), \"future_removal\" (deprecated now, removed later).\n11. applies_to: fill upgrade_method (e.g. \"pg_upgrade\", \"dump/restore\"), cluster_type, or from_versions (a version specifier like \"<3.1\") ONLY if the text restricts applicability; otherwise null.\nDo not output confidence.",
+ "response": {
+  "disposition": "risk",
+  "context_reason": "",
+  "paths": [
+   {
+    "path_name": "websearch_to_tsquery quoted adjacent discarded tokens output change",
+    "risk_type": "changed_behavior",
+    "risk_level": "medium",
+    "affected_surface": "application_code",
+    "description": "In release 14, websearch_to_tsquery() parses quoted text containing multiple adjacent discarded tokens differently. Previously such tokens were treated as multiple tokens, producing a distance operator like <2>; now the output uses <->. Applications, stored tsqueries, or tests that depend on the old tsquery output or on search results derived from it may see different results.",
+    "primary_symbol": "websearch_to_tsquery()",
+    "symbols": [
+     "websearch_to_tsquery()",
+     "tsquery"
+    ],
+    "fires_at": "first_use",
+    "applies_to": {
+     "upgrade_method": null,
+     "cluster_type": null,
+     "from_versions": null
+    },
+    "conditions": [
+     {
+      "statement": "The upgrade crosses release 14 (13 -> 16), where websearch_to_tsquery() parsing of adjacent discarded tokens in quotes changed.",
+      "category": "version",
+      "role": "required",
+      "operator": "less_than",
+      "expected_value": "14",
+      "quotes": [
+       "Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes"
+      ],
+      "relevance": "Ties the behavior change to release 14, which is crossed when upgrading from 13 to 16.",
+      "ambiguities": [],
+      "derived_by": "extraction",
+      "search_queries": []
+     },
+     {
+      "statement": "The application calls websearch_to_tsquery() with quoted text that can contain multiple adjacent discarded tokens (e.g. punctuation such as ': ').",
+      "category": "api_usage",
+      "role": "required",
+      "operator": "present",
+      "expected_value": "websearch_to_tsquery",
+      "quotes": [
+       "Fix websearch_to_tsquery() to properly parse multiple adjacent discarded tokens in quotes"
+      ],
+      "relevance": "Only queries built with websearch_to_tsquery() and quoted text with adjacent discarded tokens produce different output.",
+      "ambiguities": [
+       "The text does not define which tokens count as discarded beyond the examples of underscore and the ': ' sequence."
+      ],
+      "derived_by": "extraction",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "websearch_to_tsquery\\s*\\("
+       },
+       {
+        "tool": "sql",
+        "query": "SELECT oid::regprocedure, pg_get_functiondef(oid) FROM pg_proc WHERE prosrc ILIKE '%websearch_to_tsquery%' OR pg_get_functiondef(oid) ILIKE '%websearch_to_tsquery%';"
+       }
+      ]
+     },
+     {
+      "statement": "The application or its tests depend on the exact tsquery output (e.g. the old 'aaa' <2> 'bbb' form) or on matching behavior derived from it.",
+      "category": "behavior",
+      "role": "optional",
+      "operator": "contains",
+      "expected_value": "<2>",
+      "quotes": [
+       "websearch_to_tsquery('\"aaa: bbb\"') used to output 'aaa' <2> 'bbb', but now outputs 'aaa' <-> 'bbb'."
+      ],
+      "relevance": "Old and new outputs differ, so anything relying on the previous output or its matching semantics is affected.",
+      "ambiguities": [],
+      "derived_by": "inference",
+      "search_queries": [
+       {
+        "tool": "ripgrep",
+        "query": "<2>"
+       }
+      ]
+     }
+    ],
+    "suggested_actions": [
+     "Find usages of websearch_to_tsquery() with quoted phrases and re-test their output and search results on version 16.",
+     "Update tests or expected outputs that encode the old 'aaa' <2> 'bbb' form to the new 'aaa' <-> 'bbb' form.",
+     "Regenerate any stored tsquery values or indexes/materialized results derived from websearch_to_tsquery() on quoted text if they must reflect the corrected parsing."
+    ]
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 4352,
+  "output_tokens": 1284,
+  "stop_reason": "end_turn"
+ }
+}

@@ -2643,8 +2643,8 @@
     "hops": 2
   },
   "pipeline": {
-    "run_id": "ac2ba43755",
-    "generated_at": "2026-10-20T15:08:28Z",
+    "run_id": "f1fe3b97e2",
+    "generated_at": "2026-10-20T15:17:17Z",
     "provider": "anthropic",
     "models": {
       "cheap": "claude-haiku-5-5",
@@ -2693,7 +2693,8 @@
         "input_tokens": 5127,
         "output_tokens": 1754,
         "usd_estimate": 0.0,
-        "usd_full": 0.013897
+        "usd_full": 0.0013897000000000002,
+        "model": "claude-haiku-5-5"
       },
       "extract": {
         "calls": 20,
@@ -2701,7 +2702,8 @@
         "input_tokens": 79601,
         "output_tokens": 44883,
         "usd_estimate": 0.0,
-        "usd_full": 0.30401599999999995
+        "usd_full": 0.0304016,
+        "model": "claude-haiku-5-5"
       },
       "extract_repair": {
         "calls": 1,
@@ -2709,7 +2711,8 @@
         "input_tokens": 4189,
         "output_tokens": 2903,
         "usd_estimate": 0.0,
-        "usd_full": 0.018704
+        "usd_full": 0.0018704000000000001,
+        "model": "claude-haiku-5-5"
       },
       "judge": {
         "calls": 17,
@@ -2717,13 +2720,14 @@
         "input_tokens": 19960,
         "output_tokens": 8563,
         "usd_estimate": 0.0,
-        "usd_full": 0.062775
+        "usd_full": 0.0062775,
+        "model": "claude-haiku-5-5"
       }
     },
     "timings_s": {
       "plan": 0.0,
       "fetch": 0.0,
-      "parse": 0.01,
+      "parse": 0.0,
       "triage": 0.0,
       "extract": 0.03,
       "link": 0.0,

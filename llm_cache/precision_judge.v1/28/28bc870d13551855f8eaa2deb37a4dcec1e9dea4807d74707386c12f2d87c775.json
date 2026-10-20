@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"Zero-length Unicode identifiers (U&\\\"\\\") rejected\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"PostgreSQL 15 disallows zero-length Unicode identifiers such as U&\\\"\\\". SQL statements that use them will be rejected after upgrading from 13 to 16. Non-Unicode zero-length identifiers were already disallowed.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses release 15, where zero-length Unicode identifiers became disallowed.\",\n   \"quotes\": [\n    \"Disallow zero-length Unicode identifiers, e.g., U&\\\"\\\"\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application's SQL (queries, scripts, migrations, functions) contains zero-length Unicode identifiers such as U&\\\"\\\".\",\n   \"quotes\": [\n    \"Disallow zero-length Unicode identifiers, e.g., U&\\\"\\\"\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote 'Disallow zero-length Unicode identifiers, e.g., U&\"\"' directly supports a concrete behavior change that could break SQL using U&\"\" when crossing release 15, and a checker can search SQL for that literal pattern."
+ },
+ "usage": {
+  "input_tokens": 802,
+  "output_tokens": 104,
+  "stop_reason": "end_turn"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: React 17 -> 18.\nExtracted risk path (JSON):\n{\n \"path_name\": \"lazy() components resolving to the same component treated as equivalent\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In React 18, all lazy() wrappers that resolve to the same component are considered equivalent. Apps that create multiple lazy() wrappers for the same underlying component may see different reconciliation behavior than in React 17. The text does not describe the exact effect.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"The upgrade crosses React release 18, where lazy() equivalence changed\",\n   \"quotes\": [\n    \"Consider all lazy() resolving to the same component equivalent.\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"The application uses lazy() to load components\",\n   \"quotes\": [\n    \"Consider all lazy() resolving to the same component equivalent.\"\n   ]\n  },\n  {\n   \"role\": \"uncertain\",\n   \"statement\": \"The application has multiple separate lazy() wrappers that resolve to the same component and depends on them being treated as distinct (e.g. remounting or state reset when switching between them)\",\n   \"quotes\": [\n    \"Consider all lazy() resolving to the same component equivalent.\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quote supports a concrete behavior change in React 18 (lazy() wrappers resolving to the same component are treated as equivalent), it names a checkable API (lazy()), and the description appropriately hedges that the exact effect is unstated while the uncertain condition flags the dependence on distinct treatment."
+ },
+ "usage": {
+  "input_tokens": 854,
+  "output_tokens": 119,
+  "stop_reason": "end_turn"
+ }
+}

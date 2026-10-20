@@ -1,0 +1,16 @@
+{
+ "prompt_id": "precision_judge.v1",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "Upgrade: PostgreSQL 13 -> 16.\nExtracted risk path (JSON):\n{\n \"path_name\": \"to_tsquery/websearch_to_tsquery output changes for discarded tokens\",\n \"risk_type\": \"changed_behavior\",\n \"description\": \"In PostgreSQL 14, to_tsquery() and websearch_to_tsquery() parse query text containing discarded tokens (e.g. underscore) differently, producing different tsquery output (e.g. 'pg' <-> 'class' <-> 'pg' instead of ( 'pg' & 'class' ) <-> 'pg'). Full-text search results and any stored/compared tsquery values may change.\",\n \"conditions\": [\n  {\n   \"role\": \"required\",\n   \"statement\": \"Upgrade crosses release 14, where to_tsquery() and websearch_to_tsquery() parsing of discarded tokens was fixed\",\n   \"quotes\": [\n    \"Fix to_tsquery() and websearch_to_tsquery() to properly parse query text containing discarded tokens\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Application calls to_tsquery() or websearch_to_tsquery()\",\n   \"quotes\": [\n    \"both websearch_to_tsquery('\\\"pg_class pg\\\"') and to_tsquery('pg_class <-> pg') used to output ( 'pg' & 'class' ) <-> 'pg'\"\n   ]\n  },\n  {\n   \"role\": \"required\",\n   \"statement\": \"Query text passed to these functions contains discarded tokens such as underscore\",\n   \"quotes\": [\n    \"Certain discarded tokens, like underscore, caused the output of these functions to produce incorrect tsquery output\"\n   ]\n  }\n ]\n}\n\nAnswer:\n- valid: true if this is a genuine upgrade risk for someone upgrading across this range (it can break, require migration, or create operational risk), it is specific and checkable (names a concrete API, setting, version, behavior or deployment property), and the quotes support it.\n- specific: true if it names something concrete that a downstream checker could look for.\n- reason: one sentence.",
+ "response": {
+  "valid": true,
+  "specific": true,
+  "reason": "The quotes support a behavior change in to_tsquery()/websearch_to_tsquery() for discarded tokens like underscore at release 14 (within the 13->16 range), with a concrete example of changed output that could alter search results or stored tsquery values."
+ },
+ "usage": {
+  "input_tokens": 1000,
+  "output_tokens": 102,
+  "stop_reason": "end_turn"
+ }
+}

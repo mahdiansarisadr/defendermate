@@ -1,0 +1,30 @@
+{
+ "prompt_id": "judge.v2",
+ "provider": "anthropic",
+ "model": "claude-sonnet-5-5",
+ "user": "For each claim below, decide whether its evidence quotes, on their own, support the claim.\n- supported: the quotes state everything the claim asserts.\n- partially_supported: the claim adds specifics (versions, impacts, scopes, causes) that the quotes do not state, but its core is supported.\n- not_supported: the quotes do not support the claim, or contradict it.\nIn \"missing\", name what the claim adds beyond the quotes (empty string if supported).\nEach claim lists the source document and section its quotes come from. That metadata is trustworthy: a quote taken from the \"18.0.0\" section of the changelog does establish that the change is in release 18, even if the quote does not repeat the version number.\nClaims about the application or deployment (e.g. \"The application uses X\", \"The cluster serves Y\") are hypotheses that a downstream checker will test, not facts about a specific app. Judge them supported when the quotes establish that apps or deployments meeting the condition are affected; do not penalize them for lacking evidence about a particular application.\n\nClaims (JSON):\n[\n {\n  \"condition_id\": \"the_upgrade_crosses_release_15_where_the_ef289e\",\n  \"claim\": \"The upgrade crosses release 15, where the random() algorithm was changed (13 -> 16 spans 15).\",\n  \"evidence\": [\n   {\n    \"quote\": \"Improve the algorithm used to compute random()\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_tests_or_sql_scripts_cal_95ccbb\",\n  \"claim\": \"The application, tests, or SQL scripts call random(), particularly depending on a seed value for reproducible results.\",\n  \"evidence\": [\n   {\n    \"quote\": \"This will cause random()'s results to differ from what was emitted by prior versions, even for the same seed value.\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n },\n {\n  \"condition_id\": \"the_application_or_tests_depend_on_repro_b9ebcc\",\n  \"claim\": \"The application or tests depend on reproducible random() sequences for a given seed (e.g., golden-file tests or deterministic sampling).\",\n  \"evidence\": [\n   {\n    \"quote\": \"even for the same seed value\",\n    \"source\": \"PostgreSQL 15 release notes: Migration to Version 15\",\n    \"release_of_change\": \"15\"\n   }\n  ]\n }\n]",
+ "response": {
+  "verdicts": [
+   {
+    "condition_id": "the_upgrade_crosses_release_15_where_the_ef289e",
+    "verdict": "partially_supported",
+    "missing": "The quote shows the random() algorithm change occurred in release 15, but it does not state the 13 -> 16 upgrade path or that this span includes 15; the arithmetic comes from the claim itself."
+   },
+   {
+    "condition_id": "the_application_tests_or_sql_scripts_cal_95ccbb",
+    "verdict": "supported",
+    "missing": ""
+   },
+   {
+    "condition_id": "the_application_or_tests_depend_on_repro_b9ebcc",
+    "verdict": "partially_supported",
+    "missing": "The quote says random() results differ across versions even for the same seed, which implies that anything relying on reproducible seeded sequences would be affected. It does not mention golden-file tests or deterministic sampling; those are only examples."
+   }
+  ]
+ },
+ "usage": {
+  "input_tokens": 1258,
+  "output_tokens": 287,
+  "stop_reason": "end_turn"
+ }
+}
