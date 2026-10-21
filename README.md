@@ -7,7 +7,7 @@ URX reads public release notes, migration guides, changelogs, deprecation guides
 
 Upgrades covered: Django 3.2→4.2, React 17→18, Kubernetes 1.23→1.29, PostgreSQL 13→16, Next.js 12→14.
 
-The required design note, answering the ten questions, is [`DESIGN_NOTE.md`](DESIGN_NOTE.md). The full design is in [`TDD.md`](TDD.md); section 17 lists the gaps found while building it. Eval results are in [`eval/results.md`](eval/results.md).
+The required design note, answering the ten questions, is `[DESIGN_NOTE.md](DESIGN_NOTE.md)`. The full design is in `[TDD.md](TDD.md)`; section 17 lists the gaps found while building it. Eval results are in `[eval/results.md](eval/results.md)`.
 
 ## Design overview
 
@@ -26,14 +26,18 @@ flowchart LR
   V --> O[risk_model.json<br/>inventory, report, graph]
 ```
 
-| Stage | LLM? | What it does |
-|---|---|---|
-| Source gathering | no | The per-project registry lists official sources by type and authority tier. The fetcher pins each to a tag or commit, records a SHA-256 hash, rejects stubs and caches it. |
-| Document processing | no | Adapters (RST, Markdown/MDX, DocBook, JSON) split documents into release-tagged change items (one bullet each) with heading path and section type. Exact duplicates across sources are merged. Package metadata becomes version facts. |
-| Triage | cheap | Labels each item risk, context or noise. A strong-model sweep re-checks noise items that contain signal words. |
-| Extraction | strong | Builds risk paths with typed conditions, roles, verbatim quotes and search queries under a JSON schema. Unverifiable quotes get one repair round. |
-| Composition | no | Links duplicates across sources, then applies rules for reverts, supersession, Kubernetes remediation, release filtering, applicability and cross-project requirements. Separates risks, context facts and disqualified candidates. |
-| Checking | strong + no | The LLM judge checks each condition against its quotes and demotes unsupported ones to `uncertain`. A deterministic rubric sets confidence, and the validator (E1–E11, W1–W4) repairs the model or blocks the write. |
+
+
+
+| Stage               | LLM?        | What it does                                                                                                                                                                                                                           |
+| ------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Source gathering    | no          | The per-project registry lists official sources by type and authority tier. The fetcher pins each to a tag or commit, records a SHA-256 hash, rejects stubs and caches it.                                                             |
+| Document processing | no          | Adapters (RST, Markdown/MDX, DocBook, JSON) split documents into release-tagged change items (one bullet each) with heading path and section type. Exact duplicates across sources are merged. Package metadata becomes version facts. |
+| Triage              | cheap       | Labels each item risk, context or noise. A strong-model sweep re-checks noise items that contain signal words.                                                                                                                         |
+| Extraction          | strong      | Builds risk paths with typed conditions, roles, verbatim quotes and search queries under a JSON schema. Unverifiable quotes get one repair round.                                                                                      |
+| Composition         | no          | Links duplicates across sources, then applies rules for reverts, supersession, Kubernetes remediation, release filtering, applicability and cross-project requirements. Separates risks, context facts and disqualified candidates.    |
+| Checking            | strong + no | The LLM judge checks each condition against its quotes and demotes unsupported ones to `uncertain`. A deterministic rubric sets confidence, and the validator (E1–E11, W1–W4) repairs the model or blocks the write.                   |
+
 
 Key choices:
 
@@ -47,35 +51,39 @@ Key choices:
 
 ## Results
 
-| Upgrade | Paths | Context facts | Gold recall | Validator errors | Strong model | LLM cost to produce |
-|---|---|---|---|---|---|---|
-| Django 3.2→4.2 | 151 | 126 | 36/36 | 0 | Sonnet 5.5 | ~$4.74 |
-| React 17→18 | 25 | 39 | 14/15 | 0 | Sonnet 5.5 | ~$1.08 |
-| Kubernetes 1.23→1.29 | 83 | 48 | 30/30 | 0 | Haiku 5.5 | ~$0.22 |
-| PostgreSQL 13→16 | 69 | 8 | 27/28 | 0 | Haiku 5.5 | ~$0.14 |
-| Next.js 12→14 | 19 | 1 | 12/12 | 0 | Haiku 5.5 | ~$0.04 |
+
+| Upgrade              | Paths | Context facts | Gold recall | Validator errors | Strong model | LLM cost to produce |
+| -------------------- | ----- | ------------- | ----------- | ---------------- | ------------ | ------------------- |
+| Django 3.2→4.2       | 151   | 126           | 36/36       | 0                | Sonnet 5.5   | ~$4.74              |
+| React 17→18          | 25    | 39            | 14/15       | 0                | Sonnet 5.5   | ~$1.08              |
+| Kubernetes 1.23→1.29 | 83    | 48            | 30/30       | 0                | Haiku 5.5    | ~$0.22              |
+| PostgreSQL 13→16     | 69    | 8             | 27/28       | 0                | Haiku 5.5    | ~$0.14              |
+| Next.js 12→14        | 19    | 1             | 12/12       | 0                | Haiku 5.5    | ~$0.04              |
+
 
 Costs are list-price estimates (Anthropic pricing page, 2026-10-20) applied to recorded token counts. Prompt-caching discounts are not modeled.
 
 Kubernetes, PostgreSQL and Next.js were extracted with Haiku as the strong model, after the API credit ran out mid-run. Each model records the models it used in `pipeline.models`, and offline replay uses those recorded models.
 
-Eval summary (full table in [`eval/results.md`](eval/results.md); hard gates are asserted in `tests/test_eval_gates.py`):
+Eval summary (full table in `[eval/results.md](eval/results.md)`; hard gates are asserted in `tests/test_eval_gates.py`):
 
-| Metric | Result | Target |
-|---|---|---|
-| Grounding (quotes verified against cache) | 1384/1384 | 1.00, hard |
-| Validator errors | 0 | 0, hard |
-| Structural completeness | 347/347 | 1.00, hard |
-| Recall per upgrade (min) / overall | 0.93 / 0.98 | ≥0.80 / ≥0.85, hard |
-| Classification (risk / context / disqualified) | 0.97 | ≥0.85, hard |
-| Field consistency | 0.996 | ≥0.95, hard |
-| Drift false-accept, exact matching (fuzzy 0.9 shown for contrast) | 0.00 (fuzzy 1.00) | 0, hard |
-| Estimated precision (gold match or precision judge) | 0.97 | ≥0.85, soft |
-| Strict precision (gold matches only; lower bound) | 0.48 | report |
-| Level agreement | 0.99 | ≥0.80, soft |
-| Calibration: valid rate for high ≥ medium ≥ low | 0.99 ≥ 0.96 ≥ 0.94 | monotone, soft |
-| Judge accuracy and κ on synthetic pairs | 1.00, 1.00 (41 pairs) | ≥0.90, κ≥0.8, soft |
-| **Stability** (path-ID Jaccard, cold React rerun) | **0.70** | ≥0.80, soft: **missed** |
+
+| Metric                                                            | Result                | Target                  |
+| ----------------------------------------------------------------- | --------------------- | ----------------------- |
+| Grounding (quotes verified against cache)                         | 1384/1384             | 1.00, hard              |
+| Validator errors                                                  | 0                     | 0, hard                 |
+| Structural completeness                                           | 347/347               | 1.00, hard              |
+| Recall per upgrade (min) / overall                                | 0.93 / 0.98           | ≥0.80 / ≥0.85, hard     |
+| Classification (risk / context / disqualified)                    | 0.97                  | ≥0.85, hard             |
+| Field consistency                                                 | 0.996                 | ≥0.95, hard             |
+| Drift false-accept, exact matching (fuzzy 0.9 shown for contrast) | 0.00 (fuzzy 1.00)     | 0, hard                 |
+| Estimated precision (gold match or precision judge)               | 0.97                  | ≥0.85, soft             |
+| Strict precision (gold matches only; lower bound)                 | 0.48                  | report                  |
+| Level agreement                                                   | 0.99                  | ≥0.80, soft             |
+| Calibration: valid rate for high ≥ medium ≥ low                   | 0.99 ≥ 0.96 ≥ 0.94    | monotone, soft          |
+| Judge accuracy and κ on synthetic pairs                           | 1.00, 1.00 (41 pairs) | ≥0.90, κ≥0.8, soft      |
+| **Stability** (path-ID Jaccard, cold React rerun)                 | **0.70**              | ≥0.80, soft: **missed** |
+
 
 How to read these numbers:
 
@@ -86,13 +94,15 @@ How to read these numbers:
 
 ## Model experiment: quality vs cost
 
-The same pipeline ran on React, PostgreSQL and Next.js under three cheap/strong model pairs. The cheap tier does triage; the strong tier does extraction, the recall sweep, revert reconcile and the grounding judge. Every config is scored against the same gold sets (55 gold risks) by the same Sonnet 5.5 precision judge, and judge calibration uses the same claim set for every config. Full results are in [`experiments/comparison.md`](experiments/comparison.md) and on the UI's **Experiments** page, which plots quality against cost with the Pareto frontier.
+The same pipeline ran on React, PostgreSQL and Next.js under three cheap/strong model pairs. The cheap tier does triage; the strong tier does extraction, the recall sweep, revert reconcile and the grounding judge. Every config is scored against the same gold sets (55 gold risks) by the same Sonnet 5.5 precision judge, and judge calibration uses the same claim set for every config. Full results are in `[experiments/comparison.md](experiments/comparison.md)` and on the UI's **Experiments** page, which plots quality against cost with the Pareto frontier.
 
-| Config (cheap / strong) | Cost to produce | × cheapest | Paths | Gold recall | Est. precision | F1 | Classification | Stability |
-|---|---|---|---|---|---|---|---|---|
-| Haiku / Haiku | $0.27 | 1× | 115 | 53/55 | 99.1% | 0.977 | 96.5% | 0.74 |
-| Haiku / Sonnet | $3.25 | 12× | 110 | 54/55 | 99.1% | 0.986 | 98.2% | 0.70 |
-| Sonnet / Opus | $7.65 | 28× | 123 | 55/55 | 98.4% | 0.992 | 100% | 0.62 |
+
+| Config (cheap / strong) | Cost to produce | × cheapest | Paths | Gold recall | Est. precision | F1    | Classification | Stability |
+| ----------------------- | --------------- | ---------- | ----- | ----------- | -------------- | ----- | -------------- | --------- |
+| Haiku / Haiku           | $0.27           | 1×         | 115   | 53/55       | 99.1%          | 0.977 | 96.5%          | 0.74      |
+| Haiku / Sonnet          | $3.25           | 12×        | 110   | 54/55       | 99.1%          | 0.986 | 98.2%          | 0.70      |
+| Sonnet / Opus           | $7.65           | 28×        | 123   | 55/55       | 98.4%          | 0.992 | 100%           | 0.62      |
+
 
 All three pass the hard gates: 100% grounding and 0 validator errors.
 
@@ -117,11 +127,12 @@ urx compare-experiments                 # experiments/comparison.{json,md}
 You don't need an API key or network access. The fetched sources (`cache/`) and every LLM response (`llm_cache/`) are committed, so the steps below replay the committed outputs exactly and cost nothing.
 
 **Prerequisites:**
+
 - Python 3.11 or newer. [uv](https://docs.astral.sh/uv/) is recommended; plain `pip` works too.
 - Node 20 or newer, only for the UI.
 - [ripgrep](https://github.com/BurntSushi/ripgrep), only for the `urx scan` demo.
 
-### 1. Install (about 1 minute)
+### 1. Install 
 
 ```bash
 uv venv --python 3.12 && source .venv/bin/activate
@@ -131,7 +142,7 @@ uv pip install -e '.[dev]'
 
 This installs the `urx` command. `extract_upgrade_risks.py` is the same CLI under the name the assignment uses.
 
-### 2. Reproduce an upgrade (seconds)
+### 2. Reproduce an upgrade 
 
 ```bash
 python extract_upgrade_risks.py --project Django --current-version 3.2 --target-version 4.2 --offline
@@ -172,7 +183,7 @@ urx scan --model outputs/django_3.2_to_4.2/risk_model.json --repo fixtures/demo_
 
 This runs each condition's search queries against a synthetic Django 3.2 app and lists the risk paths that fire. It only runs inside `fixtures/`.
 
-### 6. Run online (optional, costs money)
+### 6. Run online 
 
 ```bash
 echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env       # gitignored
@@ -181,14 +192,11 @@ python extract_upgrade_risks.py --project React --current-version 17 --target-ve
 
 Online runs only fetch documents and call the model for content that isn't already cached. Each run prints its estimated cost; per-upgrade costs are in the Results table above. Model choices are under [Online runs](#online-runs).
 
-### Troubleshooting
 
-| Symptom | Fix |
-|---|---|
-| `OfflineCacheMiss` or `CacheMiss` | That upgrade, source or model isn't cached. Drop `--offline`, and set an API key. |
-| The UI shows a blank page or an old layout | Build the UI first (step 3), then hard-refresh with Cmd+Shift+R or Ctrl+Shift+R. |
-| Different numbers after a replay | Check that `URX_CHEAP_MODEL` and `URX_STRONG_MODEL` are unset. Offline replay uses the models recorded in each output. |
-| `urx scan` finds nothing | Install ripgrep (`brew install ripgrep` or `apt install ripgrep`). |
+|     |
+| --- |
+|     |
+
 
 ## UI
 
@@ -199,7 +207,6 @@ The UI is described here in more detail; to start it, see [Quick start](#quick-s
   - conditions grouped by role (required, alternative, uncertain), with operator, expected value, confidence, judge verdict and ripgrep search queries
   - verbatim evidence with a **show in source** view that highlights the quote inside the cached document
   - suggested actions, a Mermaid condition graph, and Accept/Reject review buttons, which write to `review/overrides.yaml`
-
   Other tabs cover sources (used or rejected, pinned ref, hash), the evidence summary with disagreements and open questions, context facts and disqualified candidates, the pipeline (funnel, judge stats, LLM usage per stage, timings, rejected drafts, run log) and the Markdown report.
 - **Evals**: every metric grouped into hard gates, soft targets and informational, plus the per-gold-item hit and miss list for each upgrade.
 - **Experiments**: quality versus cost for each model pair, with the Pareto frontier, the trade-off, and summary, all-metric and per-upgrade tables.
@@ -207,77 +214,5 @@ The UI is described here in more detail; to start it, see [Quick start](#quick-s
 
 For UI development, run `cd ui && npm run dev`, which proxies `/api` to port 8765.
 
-## Online runs
 
-Add `ANTHROPIC_API_KEY=...` to `.env` (gitignored) and drop `--offline`. Network fetches and model calls happen only for content that isn't cached. To pick models or a provider, set these environment variables:
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `URX_PROVIDER` | `anthropic` | `anthropic` or `openai` (`pip install -e '.[openai]'`, `OPENAI_API_KEY`) |
-| `URX_CHEAP_MODEL` | `claude-haiku-5-5` | triage |
-| `URX_STRONG_MODEL` | `claude-sonnet-5-5` | recall sweep, extraction, revert reconcile, grounding judge; in eval, the precision judge and baseline |
-
-`urx eval` with no flags also runs the LLM-based metrics (precision judge and judge calibration). Add `--ablations` for the single-prompt baseline and the filter ablations, and `--stability` for a cold React rerun.
-
-## Other commands
-
-```bash
-urx report outputs/django_3.2_to_4.2
-urx export-schema                  # schemas/risk_model.schema.json
-```
-
-`urx scan` is a small demo of a downstream consumer. It runs each condition's ripgrep queries and reports which paths fire. It refuses any directory outside `fixtures/`. `fixtures/demo_app` is a synthetic Django 3.2 app with planted usages; all of them fire, and the `urlquote` control does not.
-
-## Outputs
-
-`outputs/<project>_<cur>_to_<tgt>/` contains:
-
-| File | Content |
-|---|---|
-| `risk_model.json` | The final model: the assignment schema plus additive fields (`role`, `derived_by`, `search_queries`, `judge`, `context_facts`, `disqualified_candidates`, `requires_upgrades`, `plan`, `pipeline`) |
-| `source_inventory.json` | Every source with type, authority tier, pinned ref, content hash, and used or rejected status with a reason |
-| `report.md`, `graph.mmd` | Human-readable report and Mermaid graph |
-| `run_log.jsonl` | Stage events, timings, token usage and cost estimates |
-| `intermediate/` | `items` (parsed change items), `triage`, `triage_disagreements`, `extractions`, `release_risks` (linked), `revert_candidates`, `version_facts`, `rejected` (every dropped draft or evidence item with a reason), `compose_log.json`, `validation.json` |
-
-## Caching and reuse
-
-- **Docs:** each fetched doc is stored in `cache/` with its ID (for example `dj_notes@4.0`), its URL, its pinned ref and a SHA-256 `content_hash`. Later runs read from the cache, and `--refresh` re-downloads.
-- **Change items:** each has a content-derived ID, so unchanged text keeps the same ID across runs.
-- **LLM calls:** cached under a SHA-256 of the model, prompt version, rendered input and schema, so replays cost nothing.
-- **Limitation:** the triage and extraction prompts include the upgrade pair. A new pair, such as Django 4.0→5.0, therefore re-pays for releases already processed (see the design note, question 7).
-
-## What I trusted, what I did not
-
-**Trusted, in order:** package registry metadata (JSON-path evidence) > official deprecation and migration guides > official release notes and changelogs. Tier-2 and tier-3 sources were not used for evidence.
-
-**Not trusted:**
-- the LLM's own confidence (confidence is rubric-only)
-- unpinned "latest" docs (everything is pinned to a tag or commit)
-- search snippets
-- any quote that fails exact match after normalization (fuzzy matching accepted 100% of injected one-number drifts in the drift test, exact matching accepted 0%)
-- LLM-written disqualifier queries in the scan demo
-
-## Assumptions and limitations
-
-- **Policy:** something that is only deprecated in the target, and still works there, is context, not a risk, unless the docs describe a behavior change. Two gold items sit on this boundary and disagree with the pipeline: `index_together` (gold says context, extracted as a risk) and `renderToNodeStream` (gold says risk, extracted as context). The gold was committed before extraction and was not edited afterwards.
-- **Coverage gaps** (also listed as `open_questions` in each model):
-  - Kubernetes "API Change" and "Feature" sections are not mined.
-  - Next.js minor-release notes and GitHub issues are not mined.
-  - PostgreSQL uses one source type, its release notes. Each major release's "Migration to Version N" section is the official upgrade guidance, and it lives inside those notes; there is no separate migration guide.
-  - Ecosystem risks are out of scope: `@types/react`, PostgreSQL extensions, drivers, managed-service behavior, and third-party packages pinned to old versions.
-- **Strict precision is a lower bound:** gold sets are small and not exhaustive. Estimated precision adds an LLM precision judge. Both are reported.
-- **Determinism:** current models reject `temperature`, so replays are deterministic only through the cache. Cold-run stability is measured, not assumed (TDD G27).
-- **Cut for the time budget:** discovery agent, Ollama provider, dense retrieval, mining tier-2 issue trackers, and the Postgres/pgvector linker. BM25 runs in process instead (TDD G22, G25).
-
-## Where it can fail
-
-- An adapter drops entities in a new format, so quotes verify against broken text. Each adapter has golden-sentence tests.
-- Docs edited retroactively. Mitigated by tag and commit pinning and content hashes.
-- Gates or scopes the docs only imply, such as React behaviors that apply only under Strict Mode or `createRoot`. These are marked `uncertain` with an ambiguity rather than asserted.
-- A revert whose original change was never extracted as a risk. It is recorded as a disqualified candidate quoting the revert note (TDD G29).
-- Over- or under-merging in the linker. The merge log is in `intermediate/compose_log.json`.
-
-## Constraints respected
-
-Public documentation only. No issues or comments were filed upstream. No private or real repositories were analyzed: `scan` is hard-limited to `fixtures/`. Every output states that it is not a migration plan.
